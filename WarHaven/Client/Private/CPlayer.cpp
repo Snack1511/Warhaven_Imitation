@@ -22,6 +22,7 @@
 #include "CCell.h"
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
+#include "Loading_Manager.h"
 
 #include "CTeamConnector.h"
 #include "CUI_Popup.h"
@@ -69,12 +70,16 @@
 
 #include "CUI_Trail.h"
 
+#include "CUI_HUD.h"
+#include "CUI_Skill.h"
+#include "CUI_ScoreInfo.h"
+
 #pragma region AI 추가용
 #include "CAIController.h"
 #include "CAIPersonality.h"
 #include "CBehavior.h"
 #pragma endregion AI 추가용
-
+#include "CDebugObject.h"
 
 
 
@@ -86,6 +91,9 @@ CPlayer::~CPlayer()
 {
 	m_DeadLights.clear();
 	SAFE_DELETE(m_pCurPath);
+#ifdef _DEBUG
+	Clear_DebugObject();
+#endif
 }
 
 CPlayer* CPlayer::Create(CPlayerInfo* pPlayerInfo)
@@ -138,10 +146,9 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 		L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Face_A00_50.fbx",
 		L"../bin/resources/meshes/Characters/Qanda/Head/SK_Qanda0001_Face_A00_50.fbx",
 		L"",
-		L"../bin/resources/meshes/Characters/Lancer/Head/SK_Lancer0000_Face_A00_20.fbx",
+		L""
 	};
 
-	//L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00_50.fbx", // WARRIOR
 
 	wstring wstrModeWeapon_L[CLASS_END] =
 	{
@@ -183,9 +190,9 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 		tModelData[i].strModelPaths[MODEL_PART_SKEL] = wstrModeSkel[i];
 
 		tModelData[i].strModelPaths[MODEL_PART_BODY] = wstrModeBody[i];
+
 		tModelData[i].strModelPaths[MODEL_PART_FACE] = wstrModeFace[i];
 		tModelData[i].strModelPaths[MODEL_PART_HEAD] = wstrModeHead[i];
-
 
 		if (wstrModeWeapon_R[i] != L"")
 		{
@@ -276,7 +283,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	m_iChangeHeroAnimIndex[PALADIN] = 41;
 	m_iChangeHeroAnimIndex[ARCHER] = 53;
 	m_iChangeHeroAnimIndex[ENGINEER] = 62;
-	m_iChangeHeroAnimIndex[PRIEST] = 62;
+	m_iChangeHeroAnimIndex[PRIEST] = 49;
 }
 
 void CPlayer::Player_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
@@ -323,43 +330,53 @@ HRESULT CPlayer::Set_FollowCam(wstring wstrCamKey)
 
 HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 {
-	if (eClassType >= CLASS_END)
-		return E_FAIL;
+	CUnit* pUnit = m_pAllUnitClass[eClassType];
 
-	if (eClassType >= CT_DEFAULT_END)
-		m_bIsHero = true;
-
-
-	m_ePrevClass = m_eCurrentClass;
-
-	m_eCurrentClass = eClassType;
-
-	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
-	_float4	vLook = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_LOOK);
-
-
-	if (m_pCurrentUnit)
+	if (nullptr != pUnit)
 	{
-		DISABLE_GAMEOBJECT(m_pCurrentUnit);
+		if (eClassType >= CLASS_END)
+			return E_FAIL;
+
+		if (eClassType >= CT_DEFAULT_END)
+			m_bIsHero = true;
+
+
+		m_ePrevClass = m_eCurrentClass;
+
+		m_eCurrentClass = eClassType;
+
+		_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+		_float4	vLook = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_LOOK);
+
+
+		if (m_pCurrentUnit)
+		{
+			//m_pCurrentUnit->On_ChangeClass();
+			DISABLE_GAMEOBJECT(m_pCurrentUnit);
+		}
+		m_pCurrentUnit = pUnit;
+
+		if (m_eCurrentClass >= FIONA)
+		{
+			m_pCurrentUnit->Get_Status().fHP = m_pCurrentUnit->Get_Status().fMaxHP;
+		}
+
+
+		ENABLE_GAMEOBJECT(pUnit);
+
+		m_pFollowCam->Set_FollowTarget(pUnit);
+		Set_Postion(vPos);
+		pUnit->Get_Transform()->Set_Look(vLook);
+		pUnit->Get_Transform()->Make_WorldMatrix();
+
+		if (m_bIsMainPlayer)
+			m_pCurrentUnit->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
+
+		pUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
+
+
+
 	}
-
-	if (m_eCurrentClass >= FIONA)
-	{
-		m_pCurrentUnit->Get_Status().fHP = m_pCurrentUnit->Get_Status().fMaxHP;
-	}
-
-	m_pCurrentUnit = m_pAllUnitClass[eClassType];
-	ENABLE_GAMEOBJECT(m_pCurrentUnit);
-
-	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
-	Set_Postion(vPos);
-	m_pCurrentUnit->Get_Transform()->Set_Look(vLook);
-	m_pCurrentUnit->Get_Transform()->Make_WorldMatrix();
-
-
-	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
-
-
 	if (m_bIsMainPlayer)
 	{
 		GAMEINSTANCE->Stop_GrayScale();
@@ -372,9 +389,6 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 			CUser::Get_Instance()->Set_HeroPort(1);
 		}
 	}
-
-
-
 
 	return S_OK;
 }
@@ -414,16 +428,37 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 
 			if (m_bIsLeaderPlayer)
 			{
-				/*Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
-				m_strStartPath = m_pCurPath->m_strName;*/
+				CPath* pNewPath = nullptr;
 
-				m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
-				Set_NewPath(CGameSystem::Get_Instance()->Clone_Path(m_strStartPath, m_pAIController));
+				// 1. respawn 거점 먹었으면 respawn에서
+				if (m_pMyTeam->Has_RespawnTrigger())
+				{
+					pNewPath = CGameSystem::Get_Instance()->Clone_RandomRespawnPath(m_pAIController, m_pMyTeam->Get_TeamType());
+				}
+				else if (m_pMyTeam->Has_CenterTrigger())
+				{
+					pNewPath = CGameSystem::Get_Instance()->Clone_CenterPath(m_pAIController, m_pMyTeam->Get_TeamType());
+				}
+				else
+				{
+					pNewPath = CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType());
+				}
+
+				Set_NewPath(pNewPath);
+				m_strStartPath = m_pCurPath->m_strName;
+
+				/*무조건 중앙으로 모이게 하는 코드*/
+				//m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
+				//Set_NewPath(CGameSystem::Get_Instance()->Clone_Path(m_strStartPath, m_pAIController));
 
 			}
 			else
 			{
-				Set_NewPath(CGameSystem::Get_Instance()->Clone_Path(m_pMySquad->Get_LeaderPlayer()->m_strStartPath, m_pAIController));
+
+				CPath* pNewPath = CGameSystem::Get_Instance()->Clone_Path(m_pMySquad->Get_LeaderPlayer()->m_strStartPath, m_pAIController);
+
+
+				Set_NewPath(pNewPath);
 			}
 		}
 	}
@@ -520,8 +555,8 @@ void CPlayer::SetUp_ReserveState()
 		m_iReserveStateDefault[PALADIN] = STATE_IDLE_PALADIN_R;
 		m_iReserveStateDefault[FIONA] = STATE_IDLE_VALKYRIE_R;
 		m_iReserveStateDefault[QANDA] = STATE_IDLE_QANDA;
-		m_iReserveStateDefault[LANCER] = STATE_IDLE_PLAYER_R;
-		m_iReserveStateDefault[PRIEST] = STATE_IDLE_PLAYER_R;
+		m_iReserveStateDefault[LANCER] = STATE_IDLE_LANCER;
+		m_iReserveStateDefault[PRIEST] = STATE_IDLE_PRIEST;
 		break;
 
 	case CUnit::UNIT_TYPE::eAI_Default:
@@ -529,8 +564,9 @@ void CPlayer::SetUp_ReserveState()
 		m_iReserveStateDefault[WARRIOR] = AI_STATE_PATROL_DEFAULT_WARRIOR_R;
 		//	m_iReserveStateDefault[ARCHER] = AI_STATE_PATROL_DEFAULT_ARCHER_R;
 		m_iReserveStateDefault[ENGINEER] = AI_STATE_PATROL_DEFAULT_ENGINEER_R;
-		m_iReserveStateDefault[FIONA] = AI_STATE_PATROL_DEFAULT_FIONA_R;
+		m_iReserveStateDefault[FIONA] = AI_STATE_COMBAT_DEFAULT_FIONA_R;
 		m_iReserveStateDefault[PALADIN] = AI_STATE_PATROL_DEFAULT_PALADIN_R;
+		m_iReserveStateDefault[PRIEST] = AI_STATE_PATROL_DEFAULT_PRIEST;
 
 		break;
 
@@ -541,6 +577,7 @@ void CPlayer::SetUp_ReserveState()
 		m_iReserveStateDefault[ENGINEER] = AI_STATE_COMMON_HIT_WARRIOR;
 		m_iReserveStateDefault[FIONA] = AI_STATE_COMMON_HIT_WARRIOR;
 		m_iReserveStateDefault[PALADIN] = AI_STATE_COMMON_HIT_WARRIOR;
+		m_iReserveStateDefault[PRIEST] = AI_STATE_COMMON_HIT_WARRIOR;
 
 		break;
 
@@ -605,6 +642,7 @@ void CPlayer::Set_MainPlayer()
 		m_pAllUnitClass[i]->Set_MainPlayer();
 	}
 
+	m_pFollowCam->Set_MainCam();
 
 }
 
@@ -737,6 +775,27 @@ HRESULT CPlayer::Start()
 
 	// 미니맵에 트랜스폼 할당
 	CUser::Get_Instance()->Set_MiniMapPlayer(this);
+	CUser::Get_Instance()->Set_OperPlayer(this);
+
+	if (m_bIsMainPlayer)
+	{
+		CUser::Get_Instance()->Set_ScoreBoardPlayer(this);
+	}
+
+	if (!m_pScoreInfo)
+	{
+		LEVEL_TYPE_CLIENT eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
+		if (eLoadLevel >= LEVEL_PADEN)
+		{
+			m_pScoreInfo = CUI_ScoreInfo::Create();
+			m_pScoreInfo->Set_Player(this);
+
+			CUser::Get_Instance()->Get_ScoreInfo(this);
+
+			CREATE_GAMEOBJECT(m_pScoreInfo, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pScoreInfo);
+		}
+	}
 
 	if (m_pCurrentUnit)
 	{
@@ -864,7 +923,7 @@ void CPlayer::On_Die()
 
 	if (m_bIsMainPlayer)
 	{
-
+		CUser::Get_Instance()->SetActive_HUD(false);
 	}
 }
 
@@ -881,6 +940,19 @@ _bool	CPlayer::Is_Died()
 _bool CPlayer::Is_AbleRevival()
 {
 	return m_bAbleRevival;
+}
+
+CPlayer* CPlayer::Get_TargetPlayer(eTargetPlayerType eType) 
+{
+	if (nullptr == m_pCurBehaviorDesc)
+		return nullptr;
+	switch (eType)
+	{
+	case eTargetPlayerType::eEnemy:
+		return m_pCurBehaviorDesc->pEnemyPlayer;
+	case eTargetPlayerType::eAllies:
+		return m_pCurBehaviorDesc->pAlliesPlayer;
+	}
 }
 
 void CPlayer::On_RealDie()
@@ -900,9 +972,7 @@ void CPlayer::On_RealDie()
 			return;
 
 		if (Get_Team()->IsMainPlayerTeam())
-		{
 			m_pUnitHUD->Enable_RevivalUI();
-		}
 	}
 
 	m_bDieDelay = false;
@@ -945,6 +1015,7 @@ void CPlayer::On_Reborn()
 
 	if (m_bIsMainPlayer)
 	{
+		CUser::Get_Instance()->Toggle_DeadUI(false, false);
 		CUser::Get_Instance()->SetActive_HUD(true);
 		CUser::Get_Instance()->SetActive_SquardInfo(true);
 	}
@@ -987,6 +1058,9 @@ void CPlayer::On_RealChangeBehavior()
 	case eBehaviorType::eAttack:
 		m_pTargetPlayer = m_pCurBehaviorDesc->pEnemyPlayer;
 		break;
+	case eBehaviorType::eResurrect:
+		m_pTargetPlayer = m_pCurBehaviorDesc->pAlliesPlayer;
+		break;
 	default:
 		break;
 	}
@@ -1009,6 +1083,12 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 	m_tKdaStat.iCurKillCount++;
 	m_tKdaStat.iKillStreak++;
 	m_tKdaStat.iTotalKillCount++;
+
+	if (CLoading_Manager::Get_Instance()->Get_LoadLevel() >= LEVEL_PADEN)
+	{
+		m_pScoreInfo->Update_KillCnt(m_tKdaStat.iTotalKillCount);
+		CUser::Get_Instance()->Sort_ScoreInfo();
+	}
 
 	if (m_bIsMainPlayer)
 	{
@@ -1043,6 +1123,14 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 	}
 }
 
+void CPlayer::On_ScoreKDA_Death()
+{
+	m_tKdaStat.iDeathCount++;
+
+	m_pScoreInfo->Update_DeathCont(m_tKdaStat.iDeathCount);
+	CUser::Get_Instance()->Sort_ScoreInfo();
+}
+
 void CPlayer::Change_NearPath()
 {
 	_float4 vUnitPosition = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
@@ -1050,6 +1138,9 @@ void CPlayer::Change_NearPath()
 	if (nullptr == pPath)
 		return;
 	Set_NewPath(pPath->Clone());
+
+	Make_BestRoute(m_pCurPath->Get_vecPositions()[0]);
+
 }
 
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
@@ -1095,6 +1186,16 @@ void CPlayer::My_Tick()
 		}
 	}
 
+	if (m_bIsBattle)
+	{
+		m_fBattlAccTime += fDT(0);
+
+		if (m_fBattlAccTime > m_fMaxBattlTime)
+		{
+			m_fBattlAccTime = 0.f;
+			m_bIsBattle = false;
+		}
+	}
 
 	//공통으로 업데이트 되어야 하는것
 
@@ -1118,6 +1219,54 @@ void CPlayer::My_LateTick()
 {
 	//공통으로 업데이트 되어야 하는것
 
+	//POINT m_ptMouse;
+	//GetCursorPos(&m_ptMouse);
+	//ScreenToClient(g_hWnd, &m_ptMouse);
+
+	//_float fFixPosX = 11.f;
+	//_float fFixPosY = 13.f;
+
+	//_float4 vPos = CFunctor::To_Descartes(_float4(m_ptMouse.x + fFixPosX, m_ptMouse.y + fFixPosY, 0.f));
+
+	//_float2 vSunUV;
+	//vSunUV.x = vPos.x;
+	//vSunUV.y = vPos.y * -1.f;
+	//GAMEINSTANCE->Set_SunUV(vSunUV);
+
+	//// 마우스용 코드
+
+	//vSunUV.x /= 1280.f;
+	//vSunUV.y /= 720.f;
+
+	//_float fUVx = vSunUV.x + 0.5f;
+	//_float fUVy = vSunUV.y + 0.5f;
+	//fUVy = 1.f - fUVy;
+
+	//fUVy = 1.f - fUVy;
+
+	//fUVx -= 0.5f;
+	//fUVy -= 0.5f;
+
+	//cout << "x : " << fUVx << " y : " << fUVy << endl;
+
+	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+	vPos.y += 2.f;
+	m_bIsInFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
+	if (!m_bIsInFrustum)
+	{
+		m_pUnitHUD->Disable_RevivalUI();
+	}
+	else
+	{
+		if (!Get_Team())
+			return;
+
+		if (Get_Team()->IsMainPlayerTeam())
+		{
+			if (m_bAbleRevival)
+				m_pUnitHUD->Enable_RevivalUI();
+		}                           
+	}
 
 	if (m_pCurrentUnit->Get_Status().fHP > 0.f)
 	{
@@ -1161,20 +1310,39 @@ _float4 CPlayer::Get_LookDir()
 
 void CPlayer::Set_MainPlayerStartPath(_uint iTriggerType)
 {
-	switch (iTriggerType)
+	if (CGameSystem::Get_Instance()->m_eCurStageType == CGameSystem::eSTAGE_PADEN)
 	{
-	case 0:
-		m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
-		break;
-	case 1:
-		m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_Respawn_1") : ("Paden_RedTeam_Respawn_1");
-		break;
-	case 2:
-		m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_Cannon_0") : ("Paden_RedTeam_Cannon_0");
-		break;
-	default:
-		break;
+		switch (iTriggerType)
+		{
+		case 0:
+			m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
+			break;
+		case 1:
+			m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_Respawn_1") : ("Paden_RedTeam_Respawn_1");
+			break;
+		case 2:
+			m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_Cannon_0") : ("Paden_RedTeam_Cannon_0");
+			break;
+		default:
+			break;
+		}
 	}
+	else // Hwara
+	{
+		switch (iTriggerType)
+		{
+		case 0:
+			m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Hwara_BlueTeam_ToCenter_0") : ("Hwara_RedTeam_ToCenter_0");
+			break;
+		case 1:
+			m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Hwara_BlueTeam_ToRespawn_0") : ("Hwara_RedTeam_ToRespawn_0");
+			break;
+		default:
+			break;
+		}
+	}
+
+
 
 }
 
@@ -1210,8 +1378,11 @@ void CPlayer::Update_HeroGauge()
 		_float fGaugeSpeed = fDT(0) * 0.1f;
 
 		if (m_bIsMainPlayer)
+		{
+			//if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_TEST)
 			fGaugeSpeed *= 200.f;
 
+		}
 		if (!m_bIsHero) //CChangeHero_Player
 		{
 			if (m_bAlive)
@@ -1233,7 +1404,7 @@ void CPlayer::Update_HeroGauge()
 			{
 				On_FinishHero_KeyInput();
 			}
-			else if (0 >= m_fGauge)
+			else if (0.f >= m_fGauge)
 			{
 				On_FinishHero();
 			}
@@ -1254,6 +1425,67 @@ void CPlayer::Update_KDA()
 		}
 	}
 }
+#ifdef _DEBUG
+void CPlayer::Add_DebugObject(_float4 vPosition)
+{
+	PxTransform tTransform;
+	ZeroMemory(&tTransform, sizeof(PxTransform));
+	tTransform.p.x = vPosition.x;
+	tTransform.p.y = vPosition.y;
+	tTransform.p.z = vPosition.z;
+	m_pRouteDebug.push_back(
+		CDebugObject::Create(tTransform)
+	);
+	CREATE_GAMEOBJECT(m_pRouteDebug.back(), GROUP_PHYSX);
+}
+
+void CPlayer::Clear_DebugObject()
+{
+	for (auto& Debug : m_pRouteDebug)
+	{
+		DELETE_GAMEOBJECT(Debug);
+	}
+	m_pRouteDebug.clear();
+}
+
+#endif
+_bool CPlayer::Is_OpenCell()
+{
+	if (nullptr == m_pCurrentUnit)
+		return false;
+	CNavigation* pNaviComponent = m_pCurrentUnit->Get_NaviCom();
+	if (nullptr == pNaviComponent)
+		return false;
+
+	_float4 vUnitPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+
+	CCell* pCell = pNaviComponent->Get_CurCell(vUnitPos, CGameSystem::Get_Instance()->Get_CellLayer());
+
+	if (nullptr == pCell)
+		return false;
+
+	if (pCell->Check_Attribute(CELL_BLOCKED))
+		return false;
+
+	return true;
+}
+void CPlayer::Make_BestRoute(_float4 vPosition)
+{
+#ifdef _DEBUG
+	Clear_DebugObject();
+#endif
+	m_CurRoute.clear();
+	m_CurRoute = m_pCurrentUnit->Get_NaviCom()->
+		Get_BestRoute(CGameSystem::Get_Instance()->Get_CellLayer(),
+			Get_WorldPos(), vPosition);
+
+	m_CurNodeList = m_pCurrentUnit->Get_NaviCom()->m_DebugRouteNode;
+
+	if (m_CurRoute.empty())
+		Set_IsFindRoute(false);
+	else
+		Set_IsFindRoute(true);
+}
 
 void CPlayer::On_AbleHero()
 {
@@ -1273,6 +1505,11 @@ void CPlayer::On_FinishHero()
 {
 	m_fGauge = 0.f;
 	m_bIsHero = false;
+
+	STATE_TYPE eCurState = m_pCurrentUnit->Get_CurState();
+
+	if (m_pCurrentUnit->Get_CurState() != STATE_END)
+		m_pCurrentUnit->Get_CurStateP()->Exit(m_pCurrentUnit, GET_COMPONENT_FROM(m_pCurrentUnit, CAnimator));
 
 	Change_UnitClass(m_ePrevClass);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"UnHenshin", m_pCurrentUnit, m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
@@ -1303,6 +1540,8 @@ void CPlayer::Update_DieDelay()
 	if (m_bDieDelay)
 	{
 		m_fDieDelayAcc += fDT(0);
+
+
 		if (m_fDieDelayAcc >= m_fDieCoolTime)
 		{
 			On_RealDie();
@@ -1320,8 +1559,10 @@ void CPlayer::Check_AbleRevival()
 	if (m_bAbleRevival)
 	{
 		m_fRevivalAcc += fDT(0);
+		m_pUnitHUD->Set_RevivalGauge(m_fRevivalAcc, m_fMaxRevivalTime);
 		if (m_fRevivalAcc >= m_fMaxRevivalTime)
 		{
+
 			/*if (m_bIsLeaderPlayer)
 				Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
 			else
@@ -1340,7 +1581,22 @@ void CPlayer::Check_AbleRevival()
 			}*/
 			if (!m_bIsMainPlayer)
 			{
-				_float4 vStartPos = m_pMyTeam->Find_RespawnPosition_Start();
+				_float4 vStartPos;
+
+				// 1. respawn 거점 먹었으면 respawn에서
+				if (m_pMyTeam->Has_RespawnTrigger())
+				{
+					vStartPos = m_pMyTeam->Find_RespawnPosition("Hwara_Respawn");
+				}
+				else if (m_pMyTeam->Has_CenterTrigger())
+				{
+					vStartPos = m_pMyTeam->Find_RespawnPosition("Hwara_Center");
+				}
+				else
+				{
+					vStartPos = m_pMyTeam->Find_RespawnPosition_Start();
+				}
+
 				Respawn_Unit(vStartPos, m_eCurrentClass);
 			}
 
@@ -1365,29 +1621,23 @@ void CPlayer::Enable_UnitHUD()
 void CPlayer::Frustum_UnitHUD()
 {
 	if (!m_pCurrentUnit->Is_Valid())
-		return;
+		return;	
 
 	_float fDis = CUtility_Transform::Get_FromCameraDistance(m_pCurrentUnit);
 	if (fDis < m_fEnable_UnitHUDis)
 	{
 		m_pUnitHUD->Set_UnitDis(fDis);
 
-		_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
-		vPos.y += 2.f;
 
-		if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f))
+		if (m_bIsInFrustum)
 		{
 			if (!m_pUnitHUD->Is_Valid())
-			{
 				ENABLE_GAMEOBJECT(m_pUnitHUD);
-			}
 		}
 		else
 		{
 			if (m_pUnitHUD->Is_Valid())
-			{
 				DISABLE_GAMEOBJECT(m_pUnitHUD);
-			}
 		}
 	}
 	else

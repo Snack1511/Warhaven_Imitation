@@ -32,12 +32,17 @@ public:
 public:
 	void Set_Respawn(_bool value) { m_bIsRespawn = value; }
 
+	void Set_PointColor(_bool IsMainTeam, _uint iPoinIdx);
+	void Set_Player(CPlayer* pPlayer);
+	void Set_BattlePlayer(_bool IsBattle);
+
 	void SetActive_BG(_bool value);
 	void SetActive_Profile(_bool value);
 	void SetActive_LeftIcon(_bool value);
 
 private:
 	virtual void My_Tick() override;
+	virtual void My_LateTick() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
@@ -127,6 +132,7 @@ private:
 
 	_float4 m_vColorBlue = _float4(0.f, 0.8f, 1.f, 1.f);
 	_float4 m_vColorRed = _float4(1.f, 0.2f, 0.f, 1.f);
+	_float4 m_vColorLightGreen = _float4(0.6f, 0.85f, 0.3f, 1.f);
 
 private:
 	void Create_TeamIcon();
@@ -150,7 +156,7 @@ private:	// 작전회의 타이머
 	enum TimerUI { TU_BG, TU_Bar, TU_End };
 	CUI_Object* m_pTimer[TU_End];
 
-	_float m_fMaxOperTime = 5.f;
+	_float m_fMaxOperTime = 5;
 	_float m_fOperTime = 0.f;
 	_float m_fTimerRatio = 1.f;
 
@@ -192,7 +198,40 @@ private:
 	CUI_Object* m_pBriefingUI[BU_End];
 
 private:
+	CUI_Object* m_pPlayerIcon[8];
+
+	CPlayer* m_pPlayers[8];
+	CTransform* m_pPlayerTransform[8];
+
+	_uint m_iMainSquadIdx = 1;
+	_uint m_iMainSquadMaxIdx = 3;
+
+	_uint m_iMainTeamIdx = 4;
+	_uint m_iMainTeamMaxIdx = 8;
+
+	_bool m_bIsBattle = false;
+	_float m_fBattleTime = 0.f;
+
+private:
+	void Create_PlayerIcon();
+
+private:
 	void Create_BriefingUI();
+
+private:
+	CUI_Object* m_pSelectEffect = nullptr;
+	CUI_Object* m_pArrSelectEffect[7];
+
+	_float m_fSelectEffect_RotValue = 0.f;
+
+	CUI_Object* m_pConquestBlur = nullptr;
+	CUI_Object* m_pArrConquestBlur[3];
+
+private:
+	void Create_SelectEffect();
+	void Init_SelectEffect();
+	void Create_ConquestBlur();
+	void Init_ConquestBlur();
 
 private:
 	void Bind_Shader();

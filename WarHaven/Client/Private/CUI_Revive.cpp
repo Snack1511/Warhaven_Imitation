@@ -6,6 +6,8 @@
 #include "Texture.h"
 #include "CPlayer.h"
 #include "CTeamConnector.h"
+#include "CUI_Renderer.h"
+#include "CShader.h"
 
 CUI_Revive::CUI_Revive()
 {
@@ -32,7 +34,14 @@ HRESULT CUI_Revive::Start()
 {
 	__super::Start();
 
+	GET_COMPONENT_FROM(m_pClassIcon[Class_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Revive::Set_Shader_RevivalGauge, this, placeholders::_1, "g_fValue");
+
 	return S_OK;
+}
+
+void CUI_Revive::Set_Shader_RevivalGauge(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fGaugeRatio, sizeof(_float));
 }
 
 void CUI_Revive::Set_ReviveIcon(_uint iIconIndex)
@@ -55,7 +64,12 @@ void CUI_Revive::Set_ClassIcon(CPlayer* pDeadPlayer)
 		{
 			m_pClassIcon[Class_Icon]->Set_Color(_float4(0.25f, 0.65f, 0.9f, 1.f));
 		}
-	}
+	} 
+}
+
+void CUI_Revive::Set_GaugeRatio(_float fCurTime, _float fMaxTime)
+{
+	m_fGaugeRatio = fCurTime / fMaxTime;
 }
 
 void CUI_Revive::My_Tick()
@@ -73,8 +87,6 @@ void CUI_Revive::My_LateTick()
 void CUI_Revive::OnEnable()
 {
 	__super::OnEnable();
-
-	m_fAccTime = 0.f;
 
 	m_pReviveIcon->SetActive(true);
 
@@ -94,6 +106,9 @@ void CUI_Revive::OnDisable()
 
 void CUI_Revive::Update_Pos()
 {
+	if (!m_pReviveUnitTransform)
+		return;
+
 	_float4 vReviveUnitPos = CUtility_Transform::Get_ProjPos(m_pReviveUnitTransform);
 
 	for (int i = 0; i < Class_End; ++i)
@@ -150,7 +165,16 @@ void CUI_Revive::Create_ClassIcon()
 			GET_COMPONENT_FROM(m_pClassIcon[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pClassIcon[i], "/Oper", "Class");
 
-			m_pClassIcon[i]->Set_Scale(40.f);
+			m_pClassIcon[i]->Set_Scale(35.f);
+			m_pClassIcon[i]->Set_Sort(0.49f);
+
+			break;
+
+		case Class_Gauge:
+
+			GET_COMPONENT_FROM(m_pClassIcon[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_CircleGauge);
+			m_pClassIcon[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_64CircleStroke5px.dds"));
+			m_pClassIcon[i]->Set_Scale(42.f);
 			m_pClassIcon[i]->Set_Sort(0.49f);
 
 			break;

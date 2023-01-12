@@ -49,6 +49,10 @@ HRESULT CPlayerInfo_Leader::Initialize()
 
 #ifdef ENGINEER_TH
 		m_vecPrefClassType.push_back(ENGINEER);
+
+#else
+		m_vecPrefClassType.push_back(WARRIOR);
+
 #endif // WARRIOR_TH
 
 	}

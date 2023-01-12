@@ -49,6 +49,11 @@ public:
 		CAMERA_LERP_ZOOM,
 		CAMERA_LERP_ZOOMMAX,
 		CAMERA_LERP_CANNON,
+		CAMERA_LERP_QANDA,
+		CAMERA_LERP_LANCER,
+		CAMERA_LERP_BREEZE,
+		CAMERA_LERP_RUSH,
+		CAMERA_LERP_ZOOMOUT,
 
 		CAMERA_LERP_END, 
 	};
@@ -91,8 +96,9 @@ public:
 	virtual void OnDisable() override;
 
 private:
-	//µé¾î¿À´Â Èû, ½Ã°£ °è¼Ó ¹Þ¾Æ¼­ Èçµë
+	_bool	m_bIsMainPlayerCam = false;
 
+	//µé¾î¿À´Â Èû, ½Ã°£ °è¼Ó ¹Þ¾Æ¼­ Èçµë
 	_bool	m_bShaking = false;
 	_float	m_fShakingTimeAcc = 0.f;
 	_float	m_fShakingTime = 0.f;

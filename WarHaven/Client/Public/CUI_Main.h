@@ -1,12 +1,15 @@
 #pragma once
 #include "CUI_Wrapper.h"
+
+BEGIN(Client)
+
 class CUI_Main : public CUI_Wrapper
 {
-private:
-	enum MainWindow { MW_Play, MW_Barracks, MW_Profile, MW_End };
-
 	DECLARE_PROTOTYPE(CUI_Main);
 	DECLARE_GAMEOBJECT(CUI_Main);
+
+private:
+	enum MainWindow { MW_Play, MW_Barracks, MW_Profile, MW_End };
 
 private:
 	CUI_Main();
@@ -14,7 +17,6 @@ private:
 
 public:
 	virtual	HRESULT	Initialize_Prototype();
-	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
 
 public:
@@ -24,10 +26,14 @@ public:
 
 	void Set_Shader_TopBtnEffect(CShader* pShader, const char* pConstName);
 
+
+
 public:
 	void SetActive_TopBtn(_bool value);
 	void SetActive_PlayerNameText(_bool value);
 	void SetActive_MainWindow(MainWindow eWindow);
+
+	void Set_TopBtnEffectPosX(_float fPosX);
 
 private:
 	enum TopBtn { TB_Play, TB_Barracks, TB_Profile, TB_End };
@@ -68,3 +74,4 @@ private:
 	void Bind_Shader();
 };
 
+END

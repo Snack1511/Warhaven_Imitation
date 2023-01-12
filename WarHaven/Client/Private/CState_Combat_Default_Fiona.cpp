@@ -43,7 +43,7 @@ void CState_Combat_Default_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 
 	m_vAIRandLook = _float4(frandom(0.f, 1.f), frandom(0.f, 1.f), frandom(0.f, 1.f));
 
-	m_iStateChangeKeyFrame = 15;
+	m_iStateChangeKeyFrame = 99;
 
 	m_fAIMyLength = 2.5f;
 
@@ -52,35 +52,6 @@ void CState_Combat_Default_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 
 STATE_TYPE CState_Combat_Default_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	_uint iFrame = pAnimator->Get_CurAnimFrame() + 1;
-
-	switch (m_iDirectionRand)
-	{
-	case 0:
-	case 1:
-	case 2:
-
-		if (iFrame == m_iStateChangeKeyFrame)
-			return m_eStateType;
-
-		break;
-
-	case 3:
-	case 4:
-	case 5:
-	case 6:
-	case 7:
-
-		if (iFrame == _uint(_float(m_iStateChangeKeyFrame) * 1.5f))
-			return m_eStateType;
-
-		break;
-
-	default:
-		break;
-	}
-
-
 	DoMove_AI(pOwner, pAnimator);
 
     return __super::Tick(pOwner, pAnimator);

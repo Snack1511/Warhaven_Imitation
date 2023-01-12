@@ -110,12 +110,22 @@ namespace Engine
 		XMFLOAT4			vLook;
 		XMFLOAT4			vTranslation;
 		XMFLOAT4			vColor;
-	}VTXRECTINSTANCE;
+	}VTXRECTINSTANCE;	
 
 	typedef struct tagVertex_Default
 	{
 		XMFLOAT3		vPosition;
 	}VTXDEFAULT;
+	typedef struct ENGINE_DLL tagVertex_Default_Declaration
+	{
+		static const unsigned int		iNumElements = 1;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	} VTXDEFAULT_DECLARATION;
+	typedef struct ENGINE_DLL tagVertex_Default_TRI_Instance_Declaration
+	{
+		static const unsigned int		iNumElements = 5;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	} VTXDEFAULT_TRI_INSTANCE_DECLARATION;
 
 	typedef struct tagVertexTri_Instance
 	{

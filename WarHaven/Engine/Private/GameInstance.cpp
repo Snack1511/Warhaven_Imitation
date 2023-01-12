@@ -414,9 +414,9 @@ void CGameInstance::End_PhysScene()
 	return m_pPhysXManager->End_PhysScene();
 }
 
-void CGameInstance::Bake_StaticShadow(vector<CGameObject*>& MapList, _float4 vCenterPos, _float fDistance)
+void CGameInstance::Bake_StaticShadow(vector<CGameObject*>& MapList, _float4 vCenterPos, _float fDistance, _float4 vSunLook, _bool bLensFlare)
 {
-	m_pRenderManager->Bake_StaticShadow(MapList, vCenterPos, fDistance);
+	m_pRenderManager->Bake_StaticShadow(MapList, vCenterPos, fDistance, vSunLook, bLensFlare);
 }
 
 void CGameInstance::Start_RadialBlur(_float fTargetPower)
@@ -492,9 +492,19 @@ void CGameInstance::Regist_Mesh(CMesh* pMesh, _float fDistanceToPlayer)
 
 }
 
+_bool CGameInstance::Is_Picked_OutObject(list<CGameObject*>& GameObjectList, _float4* pOut, _float4* pOutNormal, CGameObject** ppOut)
+{
+	return m_pPickingManager->Is_Picked_OutObject(GameObjectList, pOut, pOutNormal, ppOut);
+}
+
 _bool CGameInstance::Is_Picked(list<CGameObject*>& GameObjectList, _float4* pOut, _float4* pOutNormal)
 {
 	return m_pPickingManager->Is_Picked(GameObjectList, pOut, pOutNormal);
+}
+
+_bool CGameInstance::Is_Picked(list<CGameObject*>& GameObjectList, CGameObject** ppOut)
+{
+	return m_pPickingManager->Is_Picked(GameObjectList, ppOut);
 }
 
 _bool CGameInstance::Is_Picked(CGameObject* pGameObject, _float4* pOut, _float4* pOutNormal)
@@ -520,6 +530,11 @@ _bool CGameInstance::Is_Picked_Cubes(vector<CGameObject*>& GameObjectList, _floa
 _bool CGameInstance::Is_Picked(CMesh* pRenderer, _float4 vStartPos, _float4 vRayDir, _float4* pOut, _float4* pOutNormal)
 {
 	return m_pPickingManager->Is_Picked(pRenderer, vStartPos, vRayDir, pOut, pOutNormal);
+}
+
+_bool CGameInstance::Is_Picked_FixedHeight(_float fHeight, _float4* pOut)
+{
+	return m_pPickingManager->Is_Picked_FixedHeight(fHeight, pOut);
 }
 
 HRESULT CGameInstance::Create_Layers(_uint iNumTilesX, _uint iNumTilesZ, _float fTileSize, _uint iNumLayers)

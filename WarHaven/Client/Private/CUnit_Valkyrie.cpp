@@ -166,13 +166,15 @@ void CUnit_Valkyrie::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_VALKYRIE_R;
 		m_eSprintEndState = STATE_SPRINT_END_VALKYRIE;
-
+		m_eSprintFallState = STATE_SPRINT_JUMPFALL_VALKYRIE;
+		
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_FIONA_R;
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_FIONA;
+		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_FIONA;
 
 		break;
 
@@ -455,7 +457,7 @@ HRESULT CUnit_Valkyrie::Initialize_Prototype()
 	pAnimator->Add_Animations(L"../bin/resources/animations/Valkyrie/SKEL_Fiona_Attack.fbx");
 
 	//3. hit
-	pAnimator->Add_Animations(L"../bin/resources/animations/Valkyrie/SKEL_Fiona_HIT.fbx");
+	pAnimator->Add_Animations(L"../bin/resources/animations/Valkyrie/SKEL_Fiona_Hit.fbx");
 
 	//4. ETC
 	pAnimator->Add_Animations(L"../bin/resources/animations/Valkyrie/SKEL_Fiona_ETC.fbx");
@@ -632,7 +634,7 @@ HRESULT CUnit_Valkyrie::Start()
 		"0B_L_Chain02"
 	);
 
-	m_pModelCom->Set_RimLightFlag(RGB(255, 140, 42));
+	m_pModelCom->Set_RimLightFlag(RGB(50, 30, 0));
 
 
 

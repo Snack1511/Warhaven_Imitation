@@ -44,7 +44,7 @@ HRESULT CJump_Player_Fall_R::Initialize()
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
     m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-    //m_vecAdjState.push_back(STATE_SILDING);
+    m_vecAdjState.push_back(STATE_GLIDING);
     //m_vecAdjState.push_back(STATE_RUN);
     //m_vecAdjState.push_back(STATE_DASH);
     //m_vecAdjState.push_back(STATE_WALK);

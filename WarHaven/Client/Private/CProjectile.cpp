@@ -17,7 +17,8 @@
 #include "CTrailEffect.h"
 
 #include "CTrailBuffer.h"
-
+#include "Easing_Utillity.h"
+#include "CUI_UnitHUD.h"
 
 CProjectile::CProjectile()
 {
@@ -47,37 +48,65 @@ CProjectile::~CProjectile()
 
 void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
-	if (COL_REDPROJECTILECATCH == eOtherColType)
+	if (COL_REDPROJECTILECATCH == eOtherColType || COL_BLUEPROJECTILECATCH == eOtherColType)
 	{
-		////COL_PROJECTILECATCH
-		//if()
+		CUnit* pOtherUnit = dynamic_cast<CUnit*>(pOtherObj);
+		
+		if (m_pOwnerUnit == pOtherUnit && !pOtherUnit)
+			return;
 
-		//if (m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType() == eTEAM_TYPE::eRED)
-		//{
-		//	COL_GROUP_CLIENT eOtherColliderType = (COL_GROUP_CLIENT)eOtherColType;
+		m_pOwnerUnit = pOtherUnit;
+		m_bUseOwnerUnitLook = true;
 
-		//	switch ()
-		//	{
-		//	default:
-		//		break;
-		//	}
+		DISABLE_COMPONENT(m_pCollider);
+		pOtherUnit->Catch_ProjectileObject(this);
 
-		//	m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+		const char* pRightBoneName = m_szMainBoneName.c_str();
+		const char* pLeftBoneName = m_szSubBoneName.c_str();
 
-		//	switch (switch_on)
-		//	{
-		//	default:
-		//		break;
-		//	}
-		//}
-		//	
-		//else
-		//{
-		//	Set_ColliderType(m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType());
-		//}
-	}
-	else if (COL_BLUEPROJECTILECATCH == eOtherColType)
-	{
+		m_pLeftHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pLeftBoneName);
+		m_pRightHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pRightBoneName);
+		On_ChangePhase(eLOOP);
+
+		COL_GROUP_CLIENT eColType = (COL_GROUP_CLIENT)m_pCollider->Get_ColIndex();
+
+		if (eColType == COL_REDATTACK)
+			m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+		
+		else if (eColType == COL_BLUEATTACK)
+			m_pCollider->Set_ColIndex(COL_REDATTACK);
+
+
+
+		else if (eColType == COL_REDGUARDBREAK)
+			m_pCollider->Set_ColIndex(COL_BLUEGUARDBREAK);
+
+		else if (eColType == COL_BLUEGUARDBREAK)
+			m_pCollider->Set_ColIndex(COL_REDGUARDBREAK);
+
+
+
+		else if (eColType == COL_REDGROGGYATTACK)
+			m_pCollider->Set_ColIndex(COL_BLUEGROGGYATTACK);
+
+		else if (eColType == COL_BLUEGROGGYATTACK)
+			m_pCollider->Set_ColIndex(COL_REDGROGGYATTACK);
+
+
+
+		else if (eColType == COL_REDFLYATTACK)
+			m_pCollider->Set_ColIndex(COL_BLUEFLYATTACK);
+
+		else if (eColType == COL_BLUEFLYATTACK)
+			m_pCollider->Set_ColIndex(COL_REDFLYATTACK);
+
+
+
+		else if (eColType == COL_REDFLYATTACKGUARDBREAK)
+			m_pCollider->Set_ColIndex(COL_BLUEFLYATTACKGUARDBREAK);
+			
+		else if (eColType == COL_BLUEFLYATTACKGUARDBREAK)
+			m_pCollider->Set_ColIndex(COL_REDFLYATTACKGUARDBREAK);
 
 	}
 	else
@@ -108,8 +137,8 @@ void CProjectile::Reset(CGameObject* pGameObject)
 
 	m_pOwnerUnit = static_cast<CUnit*>(pGameObject);
 
-	const char* pLeftBoneName = m_szMainBoneName.c_str();
-	const char* pRightBoneName = m_szSubBoneName.c_str();
+	const char* pRightBoneName = m_szMainBoneName.c_str();
+	const char* pLeftBoneName = m_szSubBoneName.c_str();
 
 	m_pLeftHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pLeftBoneName);
 	m_pRightHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pRightBoneName);
@@ -126,6 +155,7 @@ void CProjectile::Reset(CGameObject* pGameObject)
 
 	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
 		m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+		//m_pCollider->Set_ColIndex(COL_REDATTACK);
 	else
 	{
 		Set_ColliderType(m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType());
@@ -221,7 +251,10 @@ void CProjectile::On_ShootProjectile()
 
 	PxRigidDynamic* pActor = nullptr;
 	pActor = GAMEINSTANCE->Create_DynamicActor(tTransform, PxConvexMeshGeometry(m_pConvexMesh), CPhysX_Manager::SCENE_CURRENT, 1.5f);
-	_float4 vDir = m_pTransform->Get_World(WORLD_RIGHT);
+
+	_float4 vDir = ZERO_VECTOR;
+	
+	vDir = m_pTransform->Get_World(WORLD_RIGHT);
 	vDir *= m_fMaxSpeed;
 	pActor->addForce(CUtility_PhysX::To_PxVec3(vDir));
 	m_pActor = pActor;
@@ -232,6 +265,11 @@ void CProjectile::On_ShootProjectile()
 
 void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 {
+	_float4x4 matOwner;
+	_float4 vOffset;
+	_float fRandom;
+	_float fRandomZ;
+
 	if (eNextPhase >= eEND)
 		return;
 
@@ -244,10 +282,44 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 		m_pCurStickBone = m_pLeftHandBone;
 		break;
 	case Client::CProjectile::eSHOOT:
+	case Client::CProjectile::eChase:
 		ENABLE_COMPONENT(m_pCollider);
 		m_pCurStickBone = nullptr;
 		break;
+
+	case Client::CProjectile::eRANDOM:
+		m_pCurStickBone = nullptr;
+		//m_vRandLook = _float4(frandom(-0.05f, 0.05f), frandom(0.05f, 0.2f), frandom(0.05f, 0.3f));
+		//m_vRandLook *= fDT(0) * m_fMaxSpeed * 2.f;
+		////m_pTransform->Set_World(WORLD_POS, m_pOwnerUnit->Get_Transform()->Get_World(WORLD_POS));
+		//m_fRandomPhaseMaxTime = frandom(0.3f, 0.7f);
+
+		matOwner = m_pOwnerUnit->Get_Transform()->Get_WorldMatrix();
+		fRandom = frandom(-1.f, 1.f);
+		fRandomZ = frandom(-1.f, 1.f);
+		vOffset = _float4(fRandom, 1.5f, fRandomZ);
+
+		vOffset = vOffset.MultiplyCoord(matOwner);
+		m_pTransform->Set_World(WORLD_POS, vOffset);
+
+
+		m_vTargetPos = _float4(0.f, 5.f, 3.f);
+		m_vTargetPos = m_vTargetPos.MultiplyCoord(matOwner);
+
+		m_vRight = m_pOwnerUnit->Get_Transform()->Get_World(WORLD_RIGHT).Normalize();
+
+		fRandom = random(0, 1);
+		m_fRandSpeed = frandom(2.f, 3.f);
+		m_fRandFrequency = frandom(1.f, 5.f);
+		m_fRandPower = frandom(3.f, 6.f);
+
+		if (0.5f > fRandom)
+			m_fRandFrequency *= -1.f;
+
+		break;
+
 	case Client::CProjectile::eHIT:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Hit", Get_ArrowHeadPos());
 		DISABLE_COMPONENT(m_pCollider);
 		if (m_pTrailEffect)
 		{
@@ -293,6 +365,15 @@ void CProjectile::SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _fl
 
 	m_pTrailEffect->TurnOn_TrailEffect(false);
 	m_pTrailEffect2->TurnOn_TrailEffect(false);
+}
+
+void CProjectile::Turn_Trail(_bool bOnOff)
+{
+	if (m_pTrailEffect)
+	{
+		m_pTrailEffect->TurnOn_TrailEffect(bOnOff);
+		m_pTrailEffect2->TurnOn_TrailEffect(bOnOff);
+	}
 }
 
 HRESULT CProjectile::SetUp_Projectile(wstring wstrModelFilePath)
@@ -395,6 +476,12 @@ void CProjectile::My_Tick()
 
 void CProjectile::My_LateTick()
 {
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	_float4 vLook;
+	_float fY, fX;
+	_float fSpeed;
+	_float fTimeDelta = fDT(0);
+	_float fRandom;
 
 	switch (m_eCurPhase)
 	{
@@ -409,6 +496,95 @@ void CProjectile::My_LateTick()
 			m_pTransform->Make_WorldMatrix();
 		}
 		break;
+	case Client::CProjectile::eRANDOM:
+	{
+		m_fRandomPhaseCurTime += fTimeDelta;
+		m_fTimeAcc += fTimeDelta;
+
+		vLook = m_vTargetPos - vPos;
+		vLook.Normalize();
+
+		m_pTransform->Set_LerpLook(vLook, 0.2f);
+		
+		vPos += vLook * m_fRandSpeed * fTimeDelta;
+
+		fSpeed = m_fRandFrequency * m_fTimeAcc;
+
+		fX = m_fRandPower * sinf(fSpeed * PI * 0.5f);
+
+		fY = m_fRandPower * cosf(-1.f * fSpeed * PI * 0.5f);
+			
+		vPos.x += fX * vLook.x * fTimeDelta;
+		vPos.y += fX * vLook.y * fTimeDelta;
+		vPos.z += fX * vLook.z * fTimeDelta;
+
+		vPos.x += fY * m_vRight.x * fTimeDelta;
+		vPos.y += fY * m_vRight.y * fTimeDelta;
+		vPos.z += fY * m_vRight.z * fTimeDelta;
+		
+		m_pTransform->Set_World(WORLD_POS, vPos);
+
+		if (1.5f < m_fTimeAcc)
+		{
+			On_ChangePhase(eChase);
+			m_fTimeAcc = 0.f;
+
+			fRandom = random(0, 1);
+			m_fRandSpeed = frandom(3.f, 5.f);
+			m_fRandFrequency = random(1, 10);
+			m_fRandPower = frandom(20.f, 30.f);
+
+			if (0.5f > fRandom)
+				m_fRandFrequency *= -1.f;
+		}
+		
+	}
+		break;
+	case Client::CProjectile::eChase:
+	{
+		m_fLoopTimeAcc += fTimeDelta;
+
+		if (!m_pTargetUnit)
+			assert(0);
+
+		_float4 vLook = m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
+
+		if (0.f >= m_pTargetUnit->Get_Status().fHP)
+		{
+			if (0.5f > vLook.Length())
+				DISABLE_GAMEOBJECT(this);		
+		}
+
+		vLook.Normalize();
+
+		m_pTransform->Set_LerpLook(vLook, 0.2f);
+
+		m_fRandSpeed = CEasing_Utillity::SinIn(m_fRandSpeed, 30.f, m_fLoopTimeAcc, 1.f);
+		//m_fPower = CEasing_Utillity::SinIn(m_fSpeed, 50.f, m_fLoopTimeAcc, 10.f);
+
+		vPos += vLook * m_fRandSpeed * fTimeDelta;
+
+		fSpeed = m_fRandFrequency * m_fLoopTimeAcc;
+
+		fX = m_fRandPower * sinf(fSpeed * PI * 0.5f);
+
+		fY = m_fRandPower * cosf(-1.f * fSpeed * PI * 0.5f);
+
+		vPos.x += fX * vLook.x * fTimeDelta;
+		vPos.y += fX * vLook.y * fTimeDelta;
+		vPos.z += fX * vLook.z * fTimeDelta;
+
+		vPos.x += fY * m_vRight.x * fTimeDelta;
+		vPos.y += fY * m_vRight.y * fTimeDelta;
+		vPos.z += fY * m_vRight.z * fTimeDelta;
+
+		m_pTransform->Set_World(WORLD_POS, vPos);
+	}
+
+	
+
+		break;
+
 	case Client::CProjectile::eSHOOT:
 	{
 		/* PhysX 따라가기 */
@@ -418,9 +594,9 @@ void CProjectile::My_LateTick()
 
 		m_pTransform->Make_WorldMatrix();
 
-		_float fPower = CUtility_PhysX::To_Vector(m_pActor->getLinearVelocity()).Length();
+		_float fPower = CUtility_PhysX::To_Vector(m_pActor->getLinearVelocity()).Length() * fDT(0);
 
-		if (fPower < 25.f)
+		if (fPower < 25.f * fDT(0))
 			On_ChangePhase(eHIT);
 
 		_float fLength = (m_vStartPosition - m_pTransform->Get_World(WORLD_POS)).Length();
@@ -479,6 +655,7 @@ void CProjectile::OnDisable()
 
 	Safe_release(m_pActor);
 	m_fLoopTimeAcc = 0.f;
+	m_bUseOwnerUnitLook = false;
 	if (m_pTrailEffect)
 	{
 		m_pTrailEffect->TurnOn_TrailEffect(false);
@@ -509,11 +686,10 @@ void CProjectile::Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos)
 	*((_float4*)&m_matHitOffset.m[1]) = ((_float4*)&m_matHitOffset.m[1])->Normalize();
 	*((_float4*)&m_matHitOffset.m[2]) = ((_float4*)&m_matHitOffset.m[2])->Normalize();*/
 
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Hit", vHitPos);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Blood", vHitPos);
 
 
-}
+} 
 
 void CProjectile::Set_ColliderType(eTEAM_TYPE eTeamType)
 {

@@ -67,13 +67,13 @@ void CUI_Skill::Set_SkillUI(_uint iClass)
 	/*if (m_iPrvClass == iClass)
 		return;*/
 
-	_float fPosX = m_pArrSkillUI[SU_BG][1]->Get_PosX();
+	m_iPrvIndex = m_iIndex;
 
 	switch (iClass)
 	{
 	case WARRIOR:
 
-		m_iIndex = 2;
+		m_iCurIndex = 2;
 		m_iSkillNum = 0;
 
 		Set_KeyIcon(0, 17);
@@ -83,7 +83,7 @@ void CUI_Skill::Set_SkillUI(_uint iClass)
 
 	case ARCHER:
 
-		m_iIndex = 3;
+		m_iCurIndex = 3;
 		m_iSkillNum = 5;
 
 		Set_KeyIcon(0, 57);
@@ -94,7 +94,7 @@ void CUI_Skill::Set_SkillUI(_uint iClass)
 
 	case PALADIN:
 
-		m_iIndex = 3;
+		m_iCurIndex = 3;
 		m_iSkillNum = 8;
 
 		Set_KeyIcon(0, 58);
@@ -104,9 +104,21 @@ void CUI_Skill::Set_SkillUI(_uint iClass)
 
 		break;
 
+	case PRIEST:
+
+		m_iCurIndex = 3;
+		m_iSkillNum = 11;
+
+		Set_KeyIcon(0, 54);
+		Set_KeyIcon(1, 17);
+		Set_KeyIcon(2, 29);
+
+
+		break;
+
 	case ENGINEER:
 
-		m_iIndex = 3;
+		m_iCurIndex = 3;
 		m_iSkillNum = 14;
 
 		Set_KeyIcon(0, 30);
@@ -116,17 +128,42 @@ void CUI_Skill::Set_SkillUI(_uint iClass)
 		break;
 
 	case FIONA:
-
-		m_iIndex = 3;
+	{
+		m_iCurIndex = 3;
 		m_iSkillNum = 17;
 
 		Set_KeyIcon(0, 0);
 		Set_KeyIcon(1, 17);
 		Set_KeyIcon(2, 29);
 
+		_float fPosX = m_pArrSkillUI[SU_BG][1]->Get_PosX();
 		m_pHeroKeySkillIcon->Set_PosX(fPosX - 10.f);
+	}
+	break;
 
-		break;
+	case QANDA:
+	{
+		m_iCurIndex = 2;
+		m_iSkillNum = 20;
+
+		Set_KeyIcon(0, 17);
+		Set_KeyIcon(1, 29);
+
+		_float fPosX = m_pArrSkillUI[SU_BG][0]->Get_PosX();
+		m_pHeroKeySkillIcon->Set_PosX(fPosX - 10.f);
+	}
+	break;
+
+	case LANCER:
+	{
+		m_iCurIndex = 1;
+		m_iSkillNum = 25;
+
+		Set_KeyIcon(0, 59);
+
+		m_pHeroKeySkillIcon->Set_PosX(30000.f);
+	}
+	break;
 	}
 }
 
@@ -342,6 +379,15 @@ void CUI_Skill::Disable_Outline()
 void CUI_Skill::Set_KeyIcon(_uint iIndex, _uint iNum)
 {
 	GET_COMPONENT_FROM(m_pArrSkillUI[SU_Key][iIndex], CTexture)->Set_CurTextureIndex(iNum);
+
+	if (iNum == 54)
+	{
+		m_pArrSkillUI[SU_Key][iIndex]->Set_Scale(25.f, 15.f);
+	}
+	else
+	{
+		m_pArrSkillUI[SU_Key][iIndex]->Set_Scale(15.f);
+	}
 }
 
 void CUI_Skill::Create_HeroKeySkillIcon()
@@ -444,6 +490,8 @@ void CUI_Skill::My_Tick()
 
 	if (m_bTickDisable)
 	{
+		m_iIndex = m_iPrvIndex;
+
 		SetActive_SkillUI(false);
 		SetActive_Outline(false);
 		SetActive_SkillCool(false);
@@ -460,7 +508,7 @@ void CUI_Skill::My_LateTick()
 
 	if (m_bLateTickEnable)
 	{
-		Set_SkillUI(m_iCurClass);
+		m_iIndex = m_iCurIndex;
 
 		SetActive_SkillUI(true);
 		SetActive_Outline(true);

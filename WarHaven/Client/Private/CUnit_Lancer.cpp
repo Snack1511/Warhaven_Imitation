@@ -14,6 +14,12 @@
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
 
+#include "CLancerNeedle.h"
+#include "CUnit_Lancer_Head.h"
+#include "CRectEffects.h"
+
+#include "CRectEffects.h"
+
 CUnit_Lancer::CUnit_Lancer()
 {
 }
@@ -45,21 +51,39 @@ CUnit_Lancer* CUnit_Lancer::Create(const UNIT_MODEL_DATA& tUnitModelData)
 
 void CUnit_Lancer::On_Die()
 {
-	__super::On_Die();
-	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
+	m_pOwnerPlayer->On_FinishHero();
+	m_pOwnerPlayer->Get_CurrentUnit()->On_Die();
+	m_bDie = false;
+	m_fDeadTimeAcc = 0.f;
+	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 
-	//_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
-	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS);
+}
 
-	_float4x4 matWeapon = m_pModelCom->Find_HierarchyNode("0B_R_WP1")->Get_BoneMatrix();
-	_float4 vBonePos = matWeapon.XMLoad().r[3];
-	ZeroMemory(&matWeapon.m[3], sizeof(_float4));
+void CUnit_Lancer::TurnOn_Trail(_bool bOn)
+{
+	if (!m_pTrail_R)
+		return;
+
+	m_pTrail_R->TurnOn_TrailEffect(bOn);
+	m_pTrail_R2->TurnOn_TrailEffect(bOn);
+	m_pTrail_L->TurnOn_TrailEffect(bOn);
+	m_pTrail_L2->TurnOn_TrailEffect(bOn);
 
 
-	Add_DeathStones(CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle_Death(L"DeadBody_Warrior", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
+	m_pLowerTrail_R->TurnOn_TrailEffect(bOn);
+	m_pLowerTrail_R2->TurnOn_TrailEffect(bOn);
+	m_pLowerTrail_L->TurnOn_TrailEffect(bOn);
+	m_pLowerTrail_L2->TurnOn_TrailEffect(bOn);
 
-	m_DeathStones.push_back(CEffects_Factory::Get_Instance()->Create_MeshParticle_Death(L"WarriorDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
+	m_pHorseTrail_R->TurnOn_TrailEffect(bOn);
+	m_pHorseTrail_R2->TurnOn_TrailEffect(bOn);
+	m_pHorseTrail_L->TurnOn_TrailEffect(bOn);
+	m_pHorseTrail_L2->TurnOn_TrailEffect(bOn);
 
+	m_pEyeTrail_R->TurnOn_TrailEffect(bOn);
+	m_pEyeTrail_R2->TurnOn_TrailEffect(bOn);
+	m_pEyeTrail_L->TurnOn_TrailEffect(bOn);
+	m_pEyeTrail_L2->TurnOn_TrailEffect(bOn);
 }
 
 void CUnit_Lancer::SetUp_Colliders(_bool bPlayer)
@@ -68,56 +92,42 @@ void CUnit_Lancer::SetUp_Colliders(_bool bPlayer)
 
 	COL_GROUP_CLIENT	eHitBoxBody = (bPlayer) ? COL_BLUEHITBOX_BODY : COL_REDHITBOX_BODY;
 	COL_GROUP_CLIENT	eHitBoxHead = (bPlayer) ? COL_BLUEHITBOX_HEAD : COL_REDHITBOX_HEAD;
-	COL_GROUP_CLIENT	eHitBoxGuard = (bPlayer) ? COL_BLUEGUARD : COL_REDGUARD;
 	COL_GROUP_CLIENT	eAttack = (bPlayer) ? COL_BLUEATTACK : COL_REDATTACK;
 	COL_GROUP_CLIENT	eGuardBreak = (bPlayer) ? COL_BLUEGUARDBREAK : COL_REDGUARDBREAK;
 	COL_GROUP_CLIENT	eFlyAttack = (bPlayer) ? COL_BLUEFLYATTACK : COL_REDFLYATTACK;
 
 
+	const _uint iBodySphereNum = 4;
 
-	//CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
-	//{
-	//	//Radius,	vOffsetPos.		eColType
-	//	{0.6f, _float4(0.f, 0.5f, 0.f),eHitBoxBody },
-	//	{0.6f, _float4(0.f, 1.f, 0.f),eHitBoxBody },
-	//};
-
-	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
+	CUnit::UNIT_COLLIDERDESC tUnitColDesc[iBodySphereNum] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.5f, 0.f),(_uint)eHitBoxBody },
-		{0.6f, _float4(0.f, 1.f, 0.f), (_uint)eHitBoxBody },
+		{0.6f, _float4(0.f, 1.4f, -0.7f),(_uint)eHitBoxBody },
+		{0.6f, _float4(0.f, 1.4f, 0.f),(_uint)eHitBoxBody },
+		{0.6f, _float4(0.f, 1.4f, 0.7f),(_uint)eHitBoxBody },
+		{0.6f, _float4(0.f, 1.9f, 0.f),(_uint)eHitBoxBody },
+		//{0.6f, _float4(0.f, 1.5f, 0.f), (_uint)eHitBoxBody },
 	};
 
-	//SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_COM"));
-	SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
-
-	CUnit::UNIT_COLLIDERDESC tGuardColDesc[2] =
-	{
-		//Radius,	vOffsetPos.		eColType
-		{0.7f, _float4(0.f, 0.5f, 0.f),(_uint)eHitBoxGuard },
-		{0.7f, _float4(0.f, 1.2f, 0.f),(_uint)eHitBoxGuard },
-	};
-
-	SetUp_UnitCollider(CUnit::GUARD, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false);
+	SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, iBodySphereNum);
 
 
 	tUnitColDesc[0].fRadius = 0.4f;
-	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
+	tUnitColDesc[0].vOffsetPos = _float4(0.f, 2.5f, 0.f, 0.f);
 	tUnitColDesc[0].eColType = (_uint)eHitBoxHead;
 
 
 	SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"));
 
 
-	const _uint iWeaponSphereNum = 6;
+	const _uint iWeaponSphereNum = 22;
 
 	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[iWeaponSphereNum];
 
 	for (_uint i = 0; i < iWeaponSphereNum; ++i)
 	{
 		tWeaponUnitColDesc[i].fRadius = 0.2f;
-		tWeaponUnitColDesc[i].vOffsetPos.z = -25.f * _float(i) - 40.f;
+		tWeaponUnitColDesc[i].vOffsetPos.z = -10.f * _float(i) - 10.f;
 		tWeaponUnitColDesc[i].eColType = (_uint)eAttack;
 	}
 
@@ -128,12 +138,6 @@ void CUnit_Lancer::SetUp_Colliders(_bool bPlayer)
 		tWeaponUnitColDesc[i].eColType = (_uint)eGuardBreak;
 
 	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
-
-	for (_uint i = 0; i < iWeaponSphereNum; ++i)
-		tWeaponUnitColDesc[i].eColType = (_uint)eFlyAttack;
-
-	SetUp_UnitCollider(CUnit::FLYATTACK, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
-
 
 
 }
@@ -148,34 +152,15 @@ void	CUnit_Lancer::SetUp_HitStates(UNIT_TYPE eUnitType)
 	switch (eUnitType)
 	{
 	case Client::CUnit::UNIT_TYPE::ePlayer:
-		m_tHitType.eHitState = STATE_HIT;
-		m_tHitType.eGuardState = STATE_GUARDHIT_WARRIOR;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_PLAYER;
-		m_tHitType.eGroggyState = STATE_GROGGYHIT_WARRIOR;
-		m_tHitType.eStingHitState = STATE_STINGHIT_WARRIOR;
-		m_tHitType.eFlyState = STATE_FLYHIT_WARRIOR;
-		m_tHitType.eBounce = STATE_BOUNCE_PLAYER_L;
+		m_tHitType.eHitState = STATE_HIT_LANCER;
+		m_tHitType.eGuardState = STATE_BOUNCE_LANCER;
+		m_tHitType.eGuardBreakState = STATE_BOUNCE_LANCER;
+		m_tHitType.eGroggyState = STATE_GROGGYHIT_LANCER;
+		m_tHitType.eStingHitState = STATE_GROGGYHIT_LANCER;
+		m_tHitType.eFlyState = STATE_FLYHIT_LANCER;
+		m_tHitType.eBounce = STATE_BOUNCE_LANCER;
 		break;
 
-	case Client::CUnit::UNIT_TYPE::eAI_TG:
-		m_tHitType.eHitState = AI_STATE_TG_HIT_WARRIOR;
-		m_tHitType.eGuardState = AI_STATE_TG_GUARDHIT_WARRIOR;
-		m_tHitType.eGuardBreakState = AI_STATE_GUARD_CANCEL_WARRIOR;
-		m_tHitType.eStingHitState = AI_STATE_TG_STINGHIT_WARRIOR;
-		m_tHitType.eGroggyState = AI_STATE_TG_GROGGYHIT_WARRIOR;
-		m_tHitType.eFlyState = AI_STATE_TG_FLYHIT_WARRIOR;
-		m_tHitType.eBounce = AI_STATE_BOUNE_WARRIOR_L;
-		break;
-
-	case Client::CUnit::UNIT_TYPE::eSandbag:
-		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
-		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
-		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
-		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
-		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.eBounce = STATE_BOUNCE_WARRIOR_L_AI_ENEMY;
-		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 		m_tHitType.eHitState = AI_STATE_COMMON_HIT_WARRIOR;
@@ -185,19 +170,6 @@ void	CUnit_Lancer::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_WARRIOR;
 		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_WARRIOR;
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_WARRIOR_L;
-		break;
-
-
-	case Client::CUnit::UNIT_TYPE::eAI_idiot:
-		m_tHitType.eHitState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGuardState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGuardBreakState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eStingHitState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGroggyState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eFlyState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eBounce = AI_STATE_COMMON_HIT_WARRIOR;
-		/*m_tUnitStatus.fMaxHP = 100000.f;
-		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;*/
 		break;
 
 		
@@ -218,8 +190,10 @@ void CUnit_Lancer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 	{
 	case Client::CUnit::UNIT_TYPE::ePlayer:
 
-		m_eDefaultState = STATE_IDLE_PLAYER_R;
-		m_eSprintEndState = STATE_SPRINT_END_PLAYER;
+		m_eDefaultState = STATE_IDLE_LANCER;
+		m_eSprintEndState = NO_PATTERN;
+		m_eBreezeBegin = STATE_ATTACK_BREEZE_BEGIN_LANCER;
+		m_eBreezeLoop = STATE_ATTACK_BREEZE_LOOP_LANCER;
 
 		break;
 
@@ -294,6 +268,34 @@ void CUnit_Lancer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		
 }
 
+void CUnit_Lancer::Turn_TransformParticle(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (m_TransformParticles.empty())
+			m_TransformParticles = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this, ZERO_VECTOR);
+
+		if (m_EyeFlares.empty())
+			m_EyeFlares = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Eye_Flare", this, ZERO_VECTOR);
+	}
+	else
+	{
+		if (!m_TransformParticles.empty())
+		{
+			for (auto& elem : m_TransformParticles)
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		}
+		m_TransformParticles.clear();
+
+		if (!m_EyeFlares.empty())
+		{
+			for (auto& elem : m_EyeFlares)
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		}
+		m_EyeFlares.clear();
+	}
+}
+
 void CUnit_Lancer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 {
 	__super::Effect_Hit(pOtherUnit, vHitPos);
@@ -361,6 +363,214 @@ void CUnit_Lancer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	}
 }
 
+void CUnit_Lancer::SetUp_Trail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pTrail_R = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pTrail_R2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pTrail_R)
+		return;
+
+	CREATE_GAMEOBJECT(m_pTrail_R, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_R, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pTrail_R2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_R2, CMesh))->Set_NoCurve();
+
+	m_pTrail_R->Set_EffectFlag(m_vTrailShader);
+	m_pTrail_R2->Set_EffectFlag(m_vTrailShader);
+
+	m_pTrail_R->TurnOn_TrailEffect(false);
+	m_pTrail_R2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Lancer::SetUp_Trail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pTrail_L = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pTrail_L2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pTrail_L)
+		return;
+
+	CREATE_GAMEOBJECT(m_pTrail_L, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_L, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pTrail_L2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_L2, CMesh))->Set_NoCurve();
+
+	m_pTrail_L->Set_EffectFlag(m_vTrailShader);
+	m_pTrail_L2->Set_EffectFlag(m_vTrailShader);
+
+	m_pTrail_L->TurnOn_TrailEffect(false);
+	m_pTrail_L2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Lancer::SetUp_LowerTrail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pLowerTrail_R = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pLowerTrail_R2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pLowerTrail_R)
+		return;
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_R, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_R, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_R2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_R2, CMesh))->Set_NoCurve();
+
+	m_pLowerTrail_R->Set_EffectFlag(m_vTrailShader);
+	m_pLowerTrail_R2->Set_EffectFlag(m_vTrailShader);
+
+	m_pLowerTrail_R->TurnOn_TrailEffect(false);
+	m_pLowerTrail_R2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Lancer::SetUp_LowerTrail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pLowerTrail_L = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pLowerTrail_L2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pLowerTrail_L)
+		return;
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_L, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_L, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_L2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_L2, CMesh))->Set_NoCurve();
+
+	m_pLowerTrail_L->Set_EffectFlag(m_vTrailShader);
+	m_pLowerTrail_L2->Set_EffectFlag(m_vTrailShader);
+
+	m_pLowerTrail_L->TurnOn_TrailEffect(false);
+	m_pLowerTrail_L2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Lancer::SetUp_HorseTrail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pHorseTrail_R = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pHorseTrail_R2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pHorseTrail_R)
+		return;
+
+	CREATE_GAMEOBJECT(m_pHorseTrail_R, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pHorseTrail_R, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pHorseTrail_R2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pHorseTrail_R2, CMesh))->Set_NoCurve();
+
+	m_pHorseTrail_R->Set_EffectFlag(m_vTrailShader);
+	m_pHorseTrail_R2->Set_EffectFlag(m_vTrailShader);
+
+	m_pHorseTrail_R->TurnOn_TrailEffect(false);
+	m_pHorseTrail_R2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Lancer::SetUp_HorseTrail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pHorseTrail_L = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pHorseTrail_L2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pHorseTrail_L)
+		return;
+
+	CREATE_GAMEOBJECT(m_pHorseTrail_L, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pHorseTrail_L, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pHorseTrail_L2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pHorseTrail_L2, CMesh))->Set_NoCurve();
+
+	m_pHorseTrail_L->Set_EffectFlag(m_vTrailShader);
+	m_pHorseTrail_L2->Set_EffectFlag(m_vTrailShader);
+
+	m_pHorseTrail_L->TurnOn_TrailEffect(false);
+	m_pHorseTrail_L2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Lancer::SetUp_EyeTrail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pEyeTrail_R = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pEyeTrail_R2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pEyeTrail_R)
+		return;
+
+	CREATE_GAMEOBJECT(m_pEyeTrail_R, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pEyeTrail_R, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pEyeTrail_R2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pEyeTrail_R2, CMesh))->Set_NoCurve();
+
+	m_pEyeTrail_R->Set_EffectFlag(m_vTrailShader);
+	m_pEyeTrail_R2->Set_EffectFlag(m_vTrailShader);
+
+	m_pEyeTrail_R->TurnOn_TrailEffect(false);
+	m_pEyeTrail_R2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Lancer::SetUp_EyeTrail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pEyeTrail_L = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pEyeTrail_L2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pEyeTrail_L)
+		return;
+
+	CREATE_GAMEOBJECT(m_pEyeTrail_L, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pEyeTrail_L, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pEyeTrail_L2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pEyeTrail_L2, CMesh))->Set_NoCurve();
+
+	m_pEyeTrail_L->Set_EffectFlag(m_vTrailShader);
+	m_pEyeTrail_L2->Set_EffectFlag(m_vTrailShader);
+
+	m_pEyeTrail_L->TurnOn_TrailEffect(false);
+	m_pEyeTrail_L2->TurnOn_TrailEffect(false);
+}
+
 HRESULT CUnit_Lancer::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
@@ -378,7 +588,7 @@ HRESULT CUnit_Lancer::Initialize_Prototype()
 
 	
 	//1. L_Base
-	pAnimator->Add_Animations(L"../bin/resources/animations/Lancer/SKEL_Lancer_Base_L.fbx");
+	pAnimator->Add_Animations(L"../bin/resources/animations/Lancer/SKEL_Lancer_Base_R.fbx");
 
 	//2. Attack
 	pAnimator->Add_Animations(L"../bin/resources/animations/Lancer/SKEL_Lancer_Attack.fbx");
@@ -404,9 +614,9 @@ HRESULT CUnit_Lancer::Initialize_Prototype()
 
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// Ä® ±æÀÌ
-	tDesc.fHeight = 0.9f;
+	tDesc.fHeight = 1.5f;
 	// Ä® µÎ²²
-	tDesc.fRadius = 0.2f;
+	tDesc.fRadius = 0.08f;
 	// Ä® ºÙÀÏ »À
 	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1");
 
@@ -424,10 +634,41 @@ HRESULT CUnit_Lancer::Initialize_Prototype()
 	m_fCoolAcc[SKILL2] = 0.f; 
 	m_fCoolAcc[SKILL3] = 0.f;
 
+	m_tUnitStatus.fSprintSpeed = 10.f;
+	m_tUnitStatus.fRunSpeed = m_tUnitStatus.fSprintSpeed;
+	m_tUnitStatus.fWalkSpeed = m_tUnitStatus.fSprintSpeed;
+	
 
-	m_tUnitStatus.eClass = WARRIOR;
 
 
+	m_tUnitStatus.eClass = LANCER;
+
+	m_pMyHead = CUnit_Lancer_Head::Create(L"../bin/resources/meshes/characters/Lancer/head/SK_Lancer0000_Face_A00_20.fbx",
+		GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"), this);
+
+	for (_int i = 0; i < eNeedle_Max; ++i)
+	{
+		m_pNeedle[i] = CLancerNeedle::Create(L"../bin/resources/meshes/Weapons/Needle/SM_MagicLancer_04.fbx",
+		GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Spine"), this, i);
+
+		if (!m_pNeedle[i])
+			return E_FAIL;
+
+		m_pNeedle[i]->Initialize();
+		
+	}
+
+	//m_pMyHead = CLancerNeedle::Create(L"../bin/resources/meshes/characters/Lancer/head/SK_Lancer0000_Face_A00_20.fbx",
+	//	GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"), this);
+
+	//CLancerNeedle::
+
+
+
+	if (!m_pMyHead)
+		return E_FAIL;
+
+	m_pMyHead->Initialize();
 
 	return S_OK;
 }
@@ -438,16 +679,31 @@ HRESULT CUnit_Lancer::Initialize()
 
 	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
 
-	Set_ShaderNoSpec(L"SK_Warrior_Helmet_Rabbit_50");
-
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
 
+
+	
 	return S_OK;
 }
 
 HRESULT CUnit_Lancer::Start()
 {
 	__super::Start();
+
+	if (m_pMyHead)
+	{
+		CREATE_GAMEOBJECT(m_pMyHead, GROUP_PLAYER);
+		//ENABLE_GAMEOBJECT(m_pMyHead);
+	}
+	
+
+	for (_int i = 0; i < eNeedle_Max; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pNeedle[i], GROUP_PLAYER);
+		DISABLE_GAMEOBJECT(m_pNeedle[i]);
+	}
+
+	
 
 	SetUp_TrailEffect(
 		_float4(0.f, 0.f, -165.f, 1.f),	//Weapon Low
@@ -459,7 +715,7 @@ HRESULT CUnit_Lancer::Start()
 		0.f,
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
-		20,
+		60,
 		"0B_R_WP1"
 	);
 	
@@ -475,9 +731,130 @@ HRESULT CUnit_Lancer::Start()
 		0.f,
 		L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_09_M.dds",
 		L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_09_M.dds",
-		20,
+		60,
 		"0B_R_WP1"
 	);
+
+	m_vTrailShader = SH_EFFECT_NONE;
+	wstring strMask = L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds";
+	_float fAlpha = 0.5f;
+	_float fUpperSize = 10.f;
+
+	SetUp_Trail_R(
+		_float4(0.f, 0.f, fUpperSize, 1.f),	//Weapon R
+		_float4(-0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		_float4(1.f, 0.8f, 0.5f, fAlpha), //vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		60,
+		"0B_R_ShoulderP1_01"
+	);
+
+	SetUp_Trail_L(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),	//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		_float4(1.f, 0.8f, 0.5f, fAlpha), //vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		60,
+		"0B_L_ShoulderP1_01"
+	);
+	//lower
+	fUpperSize *= 0.5f;
+
+	SetUp_LowerTrail_R(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.8f, 0.5f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		60,
+		"0B_R_Knee_02"
+	);
+	SetUp_LowerTrail_L(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.8f, 0.5f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		60,
+		"0B_L_Knee_02"
+	);
+
+	SetUp_HorseTrail_R(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.8f, 0.5f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		60,
+		"1B_R_Thigh2"
+	);
+	SetUp_HorseTrail_L(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.8f, 0.5f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		60,
+		"1B_L_Thigh2"
+	);
+
+	SetUp_EyeTrail_R(
+		_float4(10.f, -10.f, 25.f, 1.f),					//Weapon R
+		_float4(10.f, -10.f, 5.f, 1.f),					//Weapon R
+		_float4(-fUpperSize + 10.f, -10.f, 25.f, 1.f),					 //Left	L
+		_float4(fUpperSize + 10.f, -10.f, 5.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.f, 0.f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		20,
+		"1B_Jaw"
+	);
+	SetUp_EyeTrail_L(
+		_float4(10.f, -10.f, -25.f, 1.f),					//Weapon R
+		_float4(10.f, -10.f, -5.f, 1.f),					//Weapon R
+		_float4(-fUpperSize + 10.f, -10.f, -25.f, 1.f),					 //Left	L
+		_float4(fUpperSize + 10.f, -10.f, -5.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.f, 0.f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		20,
+		"1B_Jaw"
+	);
+
+	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
+	m_pModelCom->Set_RimLightFlag(RGB(50, 30, 0));
+
+	m_TransformParticles.clear();
 
 	return S_OK;
 }
@@ -485,29 +862,89 @@ HRESULT CUnit_Lancer::Start()
 void CUnit_Lancer::OnEnable()
 {
 	__super::OnEnable();
+
+	Turn_TransformParticle(true);
+	TurnOn_Trail(true);
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	vPos.y += 0.5f;
+
+	Create_Light(vPos, 5.f, 0.f, 0.f, 0.f, 1.5f, RGB(255, 140, 40),
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseIn,
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseOut);
+
+
+	ENABLE_GAMEOBJECT(m_pMyHead);
+	m_iNeedleNums = 0;
+	m_fTimeAcc = 0.f;
 }
 
 void CUnit_Lancer::OnDisable()
 {
 	__super::OnDisable();
+
+	Turn_TransformParticle(false);
+	TurnOn_Trail(false);
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	vPos.y += 0.5f;
+	Create_Light(vPos, 4.f, 0.f, 0.f, 0.f, 0.3f, RGB(255, 255, 255),
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseIn,
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseOut);
+
+	for (_int i = 0; i < eNeedle_Max; ++i)
+	{
+		if(m_pNeedle[i])
+			m_pNeedle[i]->Enable_Needle(false);
+	}
+
+	DISABLE_GAMEOBJECT(m_pMyHead);
 }
 
 void CUnit_Lancer::My_LateTick()
 {
 	__super::My_LateTick();
 
-	if (m_eCurState >= STATE_IDLE_WARRIOR_R_AI_ENEMY)
-		return;
+
+	if (Get_CurState() != m_eBreezeBegin &&
+		Get_CurState() != m_eBreezeLoop)
+	{
+		if (m_fCoolAcc[CUnit::SKILL1] <= 0.f)
+		{
+			if (m_iNeedleNums < eNeedle_Max)
+			{
+				CUser::Get_Instance()->Set_LancerGauge(m_iNeedleNums, m_fTimeAcc, m_fNeedleCreateTime);
+				m_fTimeAcc += fDT(0);
+
+				if (m_fTimeAcc > m_fNeedleCreateTime)
+				{
+					m_pNeedle[m_iNeedleNums]->Enable_Needle(true);
+					++m_iNeedleNums;
+					m_fTimeAcc = 0.f;
+
+				}
+			}
+
+			
+
+		}
+	}
+	else
+	{
+		m_fTimeAcc = 0.f;
+	}
+
+	//if (KEY(Q, TAP))
+	//{
+	//	for(_int i = 0 ; i < eNeedle_Max; ++i)
+	//		m_pNeedle[i]->Enable_Needle(true);
+
+	//	m_fTimeAcc = 0.f;
+	//	m_iNeedleNums = 0;
+	//}
 
 	if (KEY(NUM8, TAP))
 	{
 		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(0.f, 0.f, 0.f));
 		m_pTransform->Set_Look(_float4(0.f, 0.f, 1.f, 0.f));
 	}
-		//GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(50.f, 50.f, 50.f));
 
-	/*if (KEY(SPACE, TAP))
-	{
-		m_pPhysics->Set_Jump(7.f);
-	}*/
 }

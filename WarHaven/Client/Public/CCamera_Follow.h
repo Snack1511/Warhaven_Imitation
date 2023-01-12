@@ -22,6 +22,7 @@ public:
 	static CCamera_Follow* Create(CGameObject* pTarget, CCell* pStartCell);
 
 public:
+	void	Set_MainCam();
 	void	Start_ShakingCamera(_float fPower, _float fTime);
 
 public:

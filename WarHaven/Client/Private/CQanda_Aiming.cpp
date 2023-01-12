@@ -19,6 +19,9 @@
 #include "CProjectile.h"
 #include "CUnit_QANDA.h"
 
+#include "CRectEffects.h"
+#include "CAnimWeapon_Crow.h"
+
 CQanda_Aiming::CQanda_Aiming()
 {
 }
@@ -50,25 +53,29 @@ HRESULT CQanda_Aiming::Initialize()
     m_fAnimSpeed = 1.5f;
     m_iStateChangeKeyFrame = 999;
 
-
     return __super::Initialize();
 }
 
 void CQanda_Aiming::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-	__super::Enter_Aiming(pOwner, pAnimator, ePrevType, CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_ZOOM);
+	__super::Enter_Aiming(pOwner, pAnimator, ePrevType, CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_QANDA);
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+    static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->ChangeColor_Charge();
 
+    static_cast<CUnit_Qanda*>(pOwner)->Turn_FeatherEffect(false);
+    static_cast<CUnit_Qanda*>(pOwner)->Turn_SteamEffect(true);
 }
 
 STATE_TYPE CQanda_Aiming::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
   
-	if (KEY(LBUTTON, AWAY))
-		return STATE_ATTACK_SHOOT_QANDA;
-
-    if (KEY(RBUTTON, TAP))
-        return STATE_ATTACK_CANCEL_QANDA;
+    if (KEY(LBUTTON, AWAY) || KEY(RBUTTON, TAP))
+    {
+        static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->ChangeColor_Shoot();
+        m_bShoot = true;
+        return STATE_ATTACK_SHOOT_QANDA;
+    }
+	
 		
 	return __super::Tick(pOwner, pAnimator);
 }
@@ -77,6 +84,19 @@ void CQanda_Aiming::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {	
 	__super::Exit_Aiming(pOwner, pAnimator);
 	__super::Exit(pOwner, pAnimator);
+
+    if(!m_bShoot)
+        static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->ChangeColor_End();
+
+
+    if (!m_CrowSteam.empty())
+    {
+        for (auto& elem : m_CrowSteam)
+        {
+            static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+        }
+        m_CrowSteam.clear();
+    }
 }
 
 STATE_TYPE CQanda_Aiming::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

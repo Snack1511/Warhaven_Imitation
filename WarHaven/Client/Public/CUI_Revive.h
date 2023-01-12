@@ -21,6 +21,9 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	virtual void Set_Shader_RevivalGauge(CShader* pShader, const char* pConstName);
+
+public:
 	void Set_ReviveUnitTransform(CTransform* pReviveUnitTransform)
 	{
 		m_pReviveUnitTransform = pReviveUnitTransform;
@@ -28,6 +31,7 @@ public:
 
 	void Set_ReviveIcon(_uint iIconIndex);
 	void Set_ClassIcon(CPlayer* pDeadPlayer);
+	void Set_GaugeRatio(_float fCurTime, _float fMaxTime);
 
 private:
 	virtual void My_Tick() override;
@@ -41,12 +45,14 @@ private:
 private:
 	CUI_Object* m_pReviveIcon = nullptr;
 
-	enum ClassIcon { Class_BG, Class_Icon, Class_End };
+	enum ClassIcon { Class_BG, Class_Icon, Class_Gauge, Class_End };
 	CUI_Object* m_pClassIcon[Class_End];
 
 	_uint m_iIndex = 0;
 
 	CTransform* m_pReviveUnitTransform = nullptr;
+
+	_float m_fGaugeRatio = 0.5f;
 
 private:
 	void Create_ReviveIcon();

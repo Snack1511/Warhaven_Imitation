@@ -68,7 +68,6 @@ void CUnit_Archer::On_Die()
 
 
 	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_Archer", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
-	vPos.y += 1.f;
 	//CEffects_Factory::Get_Instance()->Create_MeshParticle(L"ArcherDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 
 }
@@ -181,13 +180,16 @@ void CUnit_Archer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_ARCHER_R;
 		m_eSprintEndState = STATE_SPRINT_END_ARCHER;
+		m_eSprintFallState = STATE_SPRINT_JUMPFALL_ARCHER;
+
 
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_ARCHER_R;
-		m_eSprintEndState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_ARCHER;
+		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_ARCHER;
 
 		break;
 
@@ -226,7 +228,7 @@ void CUnit_Archer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		break;
 	case eBehaviorType::ePathNavigation:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_ARCHER_R;
 		break;
 
 	case eBehaviorType::eResurrect:
@@ -357,7 +359,7 @@ void CUnit_Archer::Set_ColorController(_uint iMeshPartType)
 	tColorDesc.fFadeInTime = 0.1f;
 	tColorDesc.fFadeOutStartTime = 9999.f;
 	tColorDesc.fFadeOutTime = 0.1f;
-	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
+	tColorDesc.vTargetColor = RGBA(50, 30, 0, 0.1f);
 	//tColorDesc.vTargetColor *= 1.1f;
 	tColorDesc.iMeshPartType = iMeshPartType;
 
@@ -512,7 +514,7 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 
 	m_fCoolTime[SKILL1] = 3.f;
 	m_fCoolTime[SKILL2] = 5.f;
-	m_fCoolTime[SKILL3] = 3.f;
+	m_fCoolTime[SKILL3] = 60.f;
 
 	m_fCoolAcc[SKILL1] = 0.f;
 	m_fCoolAcc[SKILL2] = 0.f; 
@@ -611,6 +613,9 @@ void CUnit_Archer::OnDisable()
 	__super::OnDisable();
 	if (m_pCurArrow)
 		DISABLE_GAMEOBJECT(m_pCurArrow);
+
+	if (m_pUI_Trail)
+		DISABLE_GAMEOBJECT(m_pUI_Trail);
 }
 
 void CUnit_Archer::My_Tick()

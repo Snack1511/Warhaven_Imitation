@@ -32,6 +32,7 @@
 #include "CSquad.h"
 
 
+
 CUI_HUD::CUI_HUD()
 {
 }
@@ -59,6 +60,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	}
 	else
 	{
+		Create_RevivalUI();
 		Create_SquardInfo();
 	}
 
@@ -69,10 +71,10 @@ HRESULT CUI_HUD::Start()
 {
 	Bind_Shader();
 
-	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
-	{
-		SetActive_HUD(true);
+	SetActive_HUD(true);
 
+	if (m_eLoadLevel <= LEVEL_BOOTCAMP)
+	{
 		if (m_pClassChangeText)
 			m_pClassChangeText->SetActive(true);
 	}
@@ -104,6 +106,9 @@ void CUI_HUD::My_Tick()
 			m_pUI_EscMenu->SetActive(false);
 		}
 	}
+
+	m_bActivationKDA = KEY(TAB, HOLD) ? true : false;
+	CUser::Get_Instance()->SetActive_ScoreBoard(m_bActivationKDA);
 }
 
 CUI_Wrapper* CUI_HUD::Get_HUD(_uint eHUD)
@@ -122,6 +127,17 @@ void CUI_HUD::SetActive_HUD(_bool value)
 		else
 		{
 			DISABLE_GAMEOBJECT(m_pHUD[i]);
+		}
+	}
+
+	// CUser::Get_Instance()->Turn_HeroGaugeFire(value);
+
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < Squard_End; ++j)
+		{
+			if (m_pArrSquardInfo[i][j])
+				m_pArrSquardInfo[i][j]->SetActive(value);
 		}
 	}
 }
@@ -253,6 +269,11 @@ void CUI_HUD::SetActive_SquardInfo(_bool value)
 			m_pArrSquardInfo[iIdx][j]->SetActive(value);
 		}
 	}
+}
+
+void CUI_HUD::SetActive_RevivalUI(_bool value)
+{
+	m_pRevivalUI->SetActive(value);
 }
 
 void CUI_HUD::Set_Crosshair_Pos(_float4 vPosition)
@@ -475,6 +496,26 @@ void CUI_HUD::Create_HeroTransformUI()
 	GET_COMPONENT_FROM(m_pHeroTransformUI[HT_Bar], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HorizontalGauge);
 }
 
+void CUI_HUD::Create_RevivalUI()
+{
+	m_pRevivalUI = CUI_Object::Create();
+
+	m_pRevivalUI->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Revive/T_ReviveDeco.dds"));
+	m_pRevivalUI->Set_Sort(0.5f);
+	m_pRevivalUI->Set_PosY(-150.f);
+	m_pRevivalUI->Set_Scale(148.f);
+
+	m_pRevivalUI->Set_FontRender(true);
+	m_pRevivalUI->Set_FontStyle(true);
+	m_pRevivalUI->Set_FontCenter(true);
+	m_pRevivalUI->Set_FontOffset(5.f, 5.f);
+	m_pRevivalUI->Set_FontScale(0.4f);
+	m_pRevivalUI->Set_FontText(TEXT("¼Ò»ý Áß"));
+
+	CREATE_GAMEOBJECT(m_pRevivalUI, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pRevivalUI);
+}
+
 void CUI_HUD::Update_HeorTransformGauge()
 {
 	if (m_pHeroTransformUI[HT_Bar])
@@ -482,7 +523,7 @@ void CUI_HUD::Update_HeorTransformGauge()
 		if (m_pHeroTransformUI[HT_Bar]->Is_Valid())
 		{
 			m_fHeroTransformValue += fDT(0);
-			m_fHeroTransformGaugeRatio = m_fHeroTransformValue / m_fMaxHeroTransformValue;
+			m_fHeroTransformGaugeRatio = (m_fHeroTransformValue / m_fMaxHeroTransformValue);
 
 			if (m_fHeroTransformValue > m_fMaxHeroTransformValue)
 			{

@@ -13,6 +13,7 @@
 
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
+#include "CRectEffects.h"
 
 CUnit_Paladin::CUnit_Paladin()
 {
@@ -56,8 +57,7 @@ void CUnit_Paladin::On_Die()
 
 
 	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_Paladin", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
-	vPos.y += 1.f;
-	//CEffects_Factory::Get_Instance()->Create_MeshParticle(L"ArcherDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
+	CEffects_Factory::Get_Instance()->Create_MeshParticle(L"PaladinDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 
 }
 
@@ -188,8 +188,6 @@ void CUnit_Paladin::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eFlyState = STATE_FLYHIT_PALADIN;
 		m_tHitType.eBounce = STATE_BOUNCE_PALADIN_L;
 
-		m_eSprintEndState = STATE_SPRINT_END_PALADIN; 
-
 		break;
 
 	
@@ -204,8 +202,6 @@ void CUnit_Paladin::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eGuardBreakState = AI_STATE_COMBAT_GUARDCANCEL_PALADIN;
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_PALADIN_L;
 		
-
-		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 
 
 		break;
@@ -228,6 +224,7 @@ void CUnit_Paladin::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_PALADIN_R;
 		m_eSprintEndState = STATE_SPRINT_END_PALADIN;
+		m_eSprintFallState = STATE_SPRINT_JUMPFALL_PALADIN;
 
 		break;
 
@@ -235,6 +232,7 @@ void CUnit_Paladin::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_PALADIN;
+		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_PALADIN;
 
 		break;
 
@@ -293,6 +291,30 @@ void CUnit_Paladin::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	if (eNewState != STATE_END)
 		m_eReserveState = eNewState;
 
+}
+
+void CUnit_Paladin::Turn_RushEffect(_bool bOnOff)
+{
+
+	if (bOnOff)
+	{
+		if (m_RushEffects.empty())
+		{
+			m_RushEffects = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"ShieldCharge", this, ZERO_VECTOR);
+
+			Create_Light(m_RushEffects.front(), _float4(0.f, 0.f, 0.f), 3.f, 0.f, 0.05f, 0.f, 0.05f, RGB(100, 100, 100), true);
+		}
+	}
+	else
+	{
+		if (!m_RushEffects.empty())
+		{
+			for (auto& elem : m_RushEffects)
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut(0.05f);
+		}
+
+		m_RushEffects.clear();
+	}
 }
 
 void CUnit_Paladin::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
@@ -419,6 +441,8 @@ HRESULT CUnit_Paladin::Initialize()
 	Set_ShaderNoSpec(L"SK_Paladin_Helm_50");
 
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
+
+	m_RushEffects.clear();
 
 	return S_OK;
 }

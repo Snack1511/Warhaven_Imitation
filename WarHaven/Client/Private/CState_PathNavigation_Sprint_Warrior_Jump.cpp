@@ -64,7 +64,7 @@ STATE_TYPE CState_PathNavigation_Sprint_Warrior_Jump::Tick(CUnit* pOwner, CAnima
     if (!pOwner->Is_Air())
         return AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
 
-    return CState::Tick(pOwner, pAnimator);
+    return __super::Tick(pOwner, pAnimator);
 }
 
 void CState_PathNavigation_Sprint_Warrior_Jump::Exit(CUnit* pOwner, CAnimator* pAnimator)

@@ -60,7 +60,7 @@ HRESULT CState_PathNavigation_Jump_Fiona_R::Initialize()
 
 	iPlaceJumpAnimIndex = 4;
 
-    m_iAINextState = AI_STATE_COMMON_FALL_FIONA_R;
+    m_iAINextState = AI_STATE_PATHNAVIGATION_FALL_FIONA_R;
 
 
     return S_OK;

@@ -3,7 +3,7 @@
 
 /* This Manager has all Renderer Instances and execute all*/
 #define CUR_ENGINESHADER		4
-
+#define TmpRender
 
 BEGIN(Engine)
 
@@ -21,6 +21,9 @@ private:
 
 public:
 	HRESULT		Add_Renderer(RENDER_GROUP eGroup, CRenderer* pRenderer);
+
+public:
+	void	Set_SunUV(_float2 vSunUV);
 
 public:
 	class CShader* Get_DeferredShader();
@@ -41,7 +44,7 @@ public:
 	void	Start_MotionBlur(_float fTime);
 
 public:
-	void		Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 vCenterPos, _float fDistance);
+	void		Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 vCenterPos, _float fDistance, _float4 vSunLook, _bool bLensFlare);
 
 public:
 	HRESULT		Initialize();
@@ -50,6 +53,8 @@ public:
 	void		Release();
 
 	
+private:
+	CTexture* m_pNoiseTexture = nullptr;
 
 private:
 	list<CRenderer*>							m_Renderers[RENDER_END];
@@ -101,6 +106,11 @@ private:
 	_bool	m_bMotionBlur = false;
 	_float	m_fMotionBlurAcc = 0.f;
 
+private:
+	_bool	m_bLensFlare = true;
+	_float4 m_vSunWorldPos;
+	_float2 m_vSunUV = _float2(0.f, 0.f);
+
 #ifdef _DEBUG
 private:
 	_bool	m_bDebugRender = false;
@@ -122,6 +132,8 @@ private:
 	HRESULT	Render_RimLight();
 
 
+	HRESULT	Render_SSAO();
+
 	HRESULT	Render_ForwardBloom();
 	HRESULT	Render_ForwardBlend();
 	HRESULT	Render_BloomBlend();
@@ -139,6 +151,8 @@ private:
 	HRESULT	Render_PostEffect();
 	HRESULT	Render_SSD();
 	HRESULT	Render_FinalBlend();
+
+	HRESULT Render_LensFlare(const _tchar* pRenderTargetName);
 	HRESULT Render_MotionBlur(const _tchar* pRenderTargetName);
 	HRESULT	Render_RadialBlur(const _tchar* pRenderTargetName);
 	HRESULT	Render_ChromaticAberration(const _tchar* pRenderTargetName);
@@ -160,7 +174,20 @@ private:
 
 
 	HRESULT		SetUp_Cascade(_uint iShadowMapWidth, _uint iShadowMapHeight, _uint iArrayCount);
-	
+#ifdef _DEBUG
+public:
+	CDelegate<> Callback_DebugRender;
+	list<CShader*> m_DebuggingShaders_OutCreate;
+#else
+#ifdef TmpRender
+public:
+	CDelegate<> Callback_TmpRender;
+	list<class CShader*> m_TmpRnderShaders_OutCreate;
+#endif
+#endif
+
+
+
 };
 
 END

@@ -3,6 +3,9 @@
 #include "CUI_Object.h"
 #include "Texture.h"
 #include "CFader.h"
+#include "CUser.h"
+#include "Loading_Manager.h"
+
 CUI_Popup::CUI_Popup()
 {
 }
@@ -15,6 +18,7 @@ HRESULT CUI_Popup::Initialize_Prototype()
 {
 	Create_ConquestPopup();
 	Create_KillPopup();
+	Create_SkinPopup();
 
 	return S_OK;
 }
@@ -22,6 +26,12 @@ HRESULT CUI_Popup::Initialize_Prototype()
 HRESULT CUI_Popup::Start()
 {
 	__super::Start();
+
+	for (int i = 0; i < Skin_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pSKinPopup[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pSKinPopup[i]);
+	}
 
 	return S_OK;
 }
@@ -91,6 +101,68 @@ void CUI_Popup::Enable_KillPopup(wstring Text, _uint iIconIndex)
 	for (int i = 0; i < Kill_End; ++i)
 	{
 		Enable_Fade(m_pKillPopup[i], m_fFadeTime);
+	}
+}
+
+void CUI_Popup::Enable_SkinPopup(_uint iSkin)
+{
+	m_iSkinIdx = iSkin;
+	switch (m_iSkinIdx)
+	{
+	case 0:
+		m_pSKinPopup[Skin_Item]->Set_TextureIndex(iSkin);
+		m_pSKinPopup[Skin_Text0]->Set_FontText(TEXT("축하합니다."));
+		m_pSKinPopup[Skin_Text1]->Set_FontText(TEXT("훈련장을 완료하여 토끼탈을 드립니다."));
+		break;
+
+	case 1:
+		m_pSKinPopup[Skin_Item]->Set_TextureIndex(iSkin);
+		m_pSKinPopup[Skin_Text0]->Set_FontText(TEXT("축하합니다."));
+		m_pSKinPopup[Skin_Text1]->Set_FontText(TEXT("점령전을 완료하여 영웅 갑옷을 드립니다."));
+		break;
+	}
+
+	SetActive_SkinPopup(true);
+
+	m_bEnableSkinPopup = true;
+}
+
+void CUI_Popup::My_Tick()
+{
+	__super::My_Tick();
+
+	if (m_bEnableSkinPopup)
+	{
+		m_fAccTime += fDT(0);
+		if (m_fAccTime > 1.f)
+		{
+			m_fAccTime = 0.f;
+
+			m_bEnableSkinPopup = false;
+			m_bFadePopup = true;
+		}
+	}
+
+	if (m_bFadePopup)
+	{
+		if (KEY(SPACE, TAP))
+		{
+			m_bFadePopup = false;
+
+			switch (m_iSkinIdx)
+			{
+			case 0:
+				CUser::Get_Instance()->Unlock_RabbitHat();
+				break;
+
+			case 1:
+				CUser::Get_Instance()->Unlock_EpicWarriorClothes();
+				CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_MAINMENU);
+				break;
+			}
+			SetActive_SkinPopup(false);
+			DISABLE_GAMEOBJECT(this);
+		}
 	}
 }
 
@@ -231,5 +303,108 @@ void CUI_Popup::Create_KillPopup()
 
 		CREATE_GAMEOBJECT(m_pKillPopup[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pKillPopup[i]);
+	}
+}
+
+void CUI_Popup::Create_SkinPopup()
+{
+	for (int i = 0; i < Skin_End; ++i)
+	{
+		m_pSKinPopup[i] = CUI_Object::Create();
+
+		m_pSKinPopup[i]->Set_FadeDesc(m_fFadeTime, m_fFadeTime);
+
+		switch (i)
+		{
+		case Skin_PopupBG:
+			m_pSKinPopup[i]->Set_Sort(0.14f);
+			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/T_DecoBox.png"));
+			m_pSKinPopup[i]->Set_IsSlice(true);
+			m_pSKinPopup[i]->Set_SliceRatio(_float4(0.5f, 0.5f, 0.5f, 0.5f));
+			m_pSKinPopup[i]->Set_TextureSzie(_float2(50.f, 50.f));
+			m_pSKinPopup[i]->Set_Scale(550.f, 300.f);
+			break;
+		case Skin_Out:
+			m_pSKinPopup[i]->Set_Sort(0.13f);
+			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_MinimapFrame.dds"));
+			m_pSKinPopup[i]->Set_PosY(65.f);
+			m_pSKinPopup[i]->Set_Scale(130.f);
+			m_pSKinPopup[i]->Set_Color(RGB(0.5f, 0.5f, 0.5f));
+			break;
+		case Skin_BG:
+			m_pSKinPopup[i]->Set_Sort(0.13f);
+			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/Skin/T_ItemBG4.dds"));
+			m_pSKinPopup[i]->Set_PosY(65.f);
+			m_pSKinPopup[i]->Set_Scale(100.f);
+			break;
+		case Skin_Item:
+			m_pSKinPopup[i]->Set_Sort(0.12f);
+			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/Skin/Hat/T_SkinHatCommon1002.dds"));
+			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/Skin/Clothes/Clothes02.dds"));
+
+			m_pSKinPopup[i]->Set_PosY(65.f);
+			m_pSKinPopup[i]->Set_Scale(100.f);
+			break;
+		case Skin_Line0:
+			m_pSKinPopup[i]->Set_Sort(0.13f);
+			m_pSKinPopup[i]->Set_Scale(435.f, 1.f);
+			m_pSKinPopup[i]->Set_PosY(-20.f);
+			break;
+		case Skin_Line1:
+			m_pSKinPopup[i]->Set_Sort(0.13f);
+			m_pSKinPopup[i]->Set_Scale(435.f, 1.f);
+			m_pSKinPopup[i]->Set_PosY(-100.f);
+			break;
+		case Skin_Deco:
+			m_pSKinPopup[i]->Set_Sort(0.13f);
+			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/T_DecoLam03.png"));
+			m_pSKinPopup[i]->Set_Scale(70.f, 10.f);
+			m_pSKinPopup[i]->Set_PosY(-25.f);
+			break;
+		case Skin_Text0:
+			m_pSKinPopup[i]->Set_Sort(0.13f);
+			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
+			m_pSKinPopup[i]->Set_PosY(-50.f);
+			m_pSKinPopup[i]->Set_FontRender(true);
+			m_pSKinPopup[i]->Set_FontCenter(true);
+			m_pSKinPopup[i]->Set_FontOffset(3.f, 3.f);
+
+			m_pSKinPopup[i]->Set_FontScale(0.3f);
+			break;
+		case Skin_Text1:
+			m_pSKinPopup[i]->Set_Sort(0.13f);
+			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
+			m_pSKinPopup[i]->Set_PosY(-80.f);
+			m_pSKinPopup[i]->Set_FontRender(true);
+			m_pSKinPopup[i]->Set_FontCenter(true);
+			m_pSKinPopup[i]->Set_FontOffset(3.f, 3.f);
+			m_pSKinPopup[i]->Set_FontScale(0.3f);
+			break;
+		case Skin_Esc:
+			m_pSKinPopup[i]->Set_Sort(0.13f);
+			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/White/T_WhiteSpaceKeyIcon.png"));
+			m_pSKinPopup[i]->Set_Pos(-41.f, -125.f);
+			m_pSKinPopup[i]->Set_Scale(24.f);
+			m_pSKinPopup[i]->Set_FontRender(true);
+			m_pSKinPopup[i]->Set_FontStyle(true);
+			m_pSKinPopup[i]->Set_FontOffset(15.f, -15.f);
+			m_pSKinPopup[i]->Set_FontScale(0.3f);
+			m_pSKinPopup[i]->Set_FontText(TEXT("창 닫기"));
+			break;
+		}
+	}
+}
+
+void CUI_Popup::SetActive_SkinPopup(_bool value)
+{
+	if (value == true)
+	{
+		for (int i = 0; i < Skin_End; ++i)
+			Enable_Fade(m_pSKinPopup[i], m_fFadeTime);
+	}
+	else
+	{
+		for (int i = 0; i < Skin_End; ++i)
+			Disable_Fade(m_pSKinPopup[i], m_fFadeTime);
 	}
 }

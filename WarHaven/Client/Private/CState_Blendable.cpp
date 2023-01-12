@@ -83,7 +83,7 @@ void CState_Blendable::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 	tColorDesc.fFadeInTime = 0.1f;
 	tColorDesc.fFadeOutStartTime = 1.f;
 	tColorDesc.fFadeOutTime = 0.1f;
-	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
+	tColorDesc.vTargetColor = RGBA(50, 30, 0, 0.1f);//RGBA(50, 30, 0, 0.1f);
 	//tColorDesc.vTargetColor *= 1.1f;
 	tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
 	tColorDesc.iStartKeyFrame = 2;
@@ -148,7 +148,8 @@ STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			break;
 		}
 
-		Follow_MouseLook_Turn(pOwner);
+		if(m_bCam)
+			Follow_MouseLook_Turn(pOwner);
 	}
 
 
@@ -186,14 +187,14 @@ STATE_TYPE CState_Blendable::Update_Walk(CUnit* pOwner, CAnimator* pAnimator)
 		
 	}
 
-	if (pAnimator->Is_ActionFinished())
+	if (pAnimator->Is_ActionFinished() && !m_bLoopAction)
 		return m_eWalkState;
 
 	if (pOwner->Is_Air())
 	{
 		On_EnumChange(Enum::eFALL, pAnimator);
 	}
-	else if (KEY(SPACE, TAP))
+	else if (KEY(SPACE, TAP) && m_bUseJump)
 	{
 		On_EnumChange(Enum::eJUMP, pAnimator);
 	}
@@ -233,16 +234,16 @@ STATE_TYPE CState_Blendable::Update_Run(CUnit* pOwner, CAnimator* pAnimator)
 		
 	}
 
-	if (pAnimator->Is_ActionFinished())
+	if (pAnimator->Is_ActionFinished() && !m_bLoopAction)
 		return m_eRunState;
 
 	if (pOwner->Is_Air())
 	{
 		On_EnumChange(Enum::eFALL, pAnimator);
 	}
-	else if (KEY(SPACE, TAP))
+	else if (KEY(SPACE, TAP) && m_bUseJump)
 	{
-		On_EnumChange(Enum::eJUMP, pAnimator);
+		On_EnumChange(Enum::eJUMP, pAnimator);	
 	}
 
 
@@ -256,7 +257,7 @@ STATE_TYPE CState_Blendable::Update_Jump(CUnit* pOwner, CAnimator* pAnimator)
 	else if (pAnimator->Is_CurAnimFinished())
 		On_EnumChange(Enum::eFALL, pAnimator);
 
-	if (pAnimator->Is_ActionFinished())
+	if (pAnimator->Is_ActionFinished() && !m_bLoopAction)
 		return m_eFallState;
 
 	return STATE_END;
@@ -274,7 +275,7 @@ STATE_TYPE CState_Blendable::Update_Fall(CUnit* pOwner, CAnimator* pAnimator)
 	if (!pOwner->Is_Air())
 		On_EnumChange(Enum::eLAND, pAnimator);
 
-	if (pAnimator->Is_ActionFinished())
+	if (pAnimator->Is_ActionFinished() && !m_bLoopAction)
 		return m_eFallState;
 
 	return STATE_END;
@@ -289,7 +290,7 @@ STATE_TYPE CState_Blendable::Update_Land(CUnit* pOwner, CAnimator* pAnimator)
 	if (pAnimator->Is_CurAnimFinished())
 		On_EnumChange(Enum::eIDLE, pAnimator);
 
-	if (pAnimator->Is_ActionFinished())
+	if (pAnimator->Is_ActionFinished() && !m_bLoopAction)
 		return m_eIdleState;
 
 
@@ -314,11 +315,11 @@ STATE_TYPE CState_Blendable::Update_Idle(CUnit* pOwner, CAnimator* pAnimator)
 			On_EnumChange(Enum::eRUN, pAnimator);
 		}
 	}
-	else if (KEY(SPACE, TAP))
+	else if (KEY(SPACE, TAP) && m_bUseJump)
 		On_EnumChange(Enum::eJUMP, pAnimator);
 	
 	else
-		if (pAnimator->Is_ActionFinished())
+		if (pAnimator->Is_ActionFinished() && !m_bLoopAction)
 			return m_eIdleState;
 
 
@@ -408,7 +409,7 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 		/* dash Front */
 		if (!pOwner->Is_Air())
 		{
-			pOwner->Set_DirAsLook();
+			pOwner->Set_DirAsLook();	
 			pOwner->Get_PhysicsCom()->Set_MaxSpeed(pOwner->Get_Status().fShortDashSpeed);
 			pOwner->Get_PhysicsCom()->Set_SpeedasMax();
 			pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.7f;
@@ -419,7 +420,11 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 
 		m_bBlendable = false;
 		if (m_eEnum == Enum::eWALK || m_eEnum == Enum::eRUN)
-		pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iIdle_Index);
+		{
+			if(m_bUseJump)
+				pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iIdle_Index);
+		}
+		
 
 		break;
 
@@ -431,10 +436,15 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 		pOwner->TurnOn_TrailEffect(false);
 
 		//m_bBlendable = true;
-		if (m_eAnimLeftorRight == ANIM_BASE_L)
-			m_eAnimLeftorRight = ANIM_BASE_R;
-		else
-			m_eAnimLeftorRight = ANIM_BASE_L;
+
+		if (m_bOnlyAnimBase_R)
+		{
+			if (m_eAnimLeftorRight == ANIM_BASE_L)
+				m_eAnimLeftorRight = ANIM_BASE_R;
+			else
+				m_eAnimLeftorRight = ANIM_BASE_L;
+		}
+
 
 
 		break;
@@ -501,6 +511,7 @@ void	CState_Blendable::BlendableTick_Loop(CUnit* pOwner, CAnimator* pAnimator, _
 void CState_Blendable::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 {
 	m_eEnum = eEnum;
+	m_iAnimIndex = m_iIdle_Index;
 	switch (eEnum)
 	{
 	case Client::CState_Blendable::Enum::eWALK:

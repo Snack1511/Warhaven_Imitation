@@ -38,9 +38,9 @@ HRESULT CQanda_Attack_Begin_Sniping::Initialize()
 	m_eStateType = STATE_ATTACK_BEGIN_SNIPING_QANDA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 	m_fInterPolationTime = 0.1f;
-	m_fAnimSpeed = 3.5f;
+	m_fAnimSpeed = 2.f;
 
-	m_vecAdjState.push_back(STATE_ATTACK_AIMING_SNIPING_QANDA);
+	m_vecAdjState.push_back(STATE_ATTACK_SHOOT_SNIPING_QANDA);
 
 
 	return S_OK;
@@ -48,6 +48,27 @@ HRESULT CQanda_Attack_Begin_Sniping::Initialize()
 
 void CQanda_Attack_Begin_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	/* ColorControl*/
+	CColorController::COLORDESC tColorDesc;
+	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+	tColorDesc.eFadeStyle = CColorController::TIME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.2f;
+	tColorDesc.fFadeOutStartTime = 1.f;
+	tColorDesc.fFadeOutTime = 0.2f;
+	tColorDesc.vTargetColor = _float4(1.f, 1.f, 1.f, 0.5f);
+
+	tColorDesc.iMeshPartType = MODEL_PART_BODY;
+	tColorDesc.iStartKeyFrame = 2;
+	tColorDesc.iEndKeyFrame = 45; // 프레임 맞춰놓음
+
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
+
+	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
+
+
 	pOwner->On_Use(CUnit::SKILL2);
 
 	m_fMyMaxLerp = 0.4f;

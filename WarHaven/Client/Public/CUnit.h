@@ -13,6 +13,7 @@ class CShader;
 class CBoneCollider;
 class CHierarchyNode;
 class CPhysXCharacter;
+class CNavigation;
 END
 
 BEGIN(Client)
@@ -24,6 +25,9 @@ class CCamera_Follow;
 class CPlayer;
 class CAnimWeapon;
 class CCannon;
+class CProjectile;
+class CUI_UnitHUD;
+class CGlider;
 
 class CUnit abstract : public CGameObject
 {
@@ -61,7 +65,7 @@ public:
 		_float fJumpPower = 4.5f;
 		_float fStoreSpeed = 4.f; // 저장할 스피트 값 입력
 
-
+		_float	fDamageMultiplier = 1.f;
 		_float	fAttackDamage = 50.f;
 	};
 	struct UNIT_MODEL_DATA
@@ -170,6 +174,8 @@ public:
 
 
 public:
+
+	CAnimWeapon* Get_AnimWeapon() { return m_pAnimWeapon; }
 	class CPath* Get_CurPath();
 
 	UNIT_STATUS& Get_Status() { return m_tUnitStatus; }
@@ -179,12 +185,14 @@ public:
 
 	STATE_TYPE	Get_CurState() { return m_eCurState; }
 	CState* Get_CurStateP() { return m_pCurState; }
+	CNavigation* Get_NaviCom() { return m_pNavigation; }
 
 	const STATE_TYPE& Get_DefaultState() { return m_eDefaultState; }
 	const STATE_TYPE& Get_SprintEndState() { return m_eSprintEndState; }
+	const STATE_TYPE& Get_SprintFallState() { return m_eSprintFallState; }
 
-	SKILL_TRIGGER& Get_SkillTrigger() { 
-		return m_tSkillTrigger; 
+	SKILL_TRIGGER& Get_SkillTrigger() {
+		return m_tSkillTrigger;
 	}
 
 	const STATE_HIT_TYPE& Get_HitType() { return m_tHitType; }
@@ -203,6 +211,9 @@ public:
 	_uint& Get_PreAnimIndex() { return m_iPreAnimIndex; } // 상하체 애니메이션 튀는것을 위한 함수
 
 public:
+	list<_float4>& Get_CurRoute();
+
+public:
 	void TurnOn_TrailEffect(_bool bOn);
 
 public:
@@ -217,6 +228,8 @@ public:
 
 	void	Set_Controlable() { m_bControlable = !m_bControlable; }
 
+public:
+	CUI_UnitHUD* Get_OwnerHUD();
 
 public:
 	struct UNIT_DESC
@@ -226,6 +239,9 @@ public:
 	//기준 : 같은 유닛이어도 각기 다른 설정이 필요한 건 다 여기서
 	//ex) 1. 모델 파츠별 조명 여부, 2. 충돌체 설정, 3. 시작 상태
 	HRESULT	MakeUp_Unit(const UNIT_DESC& tUnitDesc);
+
+public:
+	void		On_ChangeClass();
 
 
 public:
@@ -245,7 +261,7 @@ protected:
 	CBoneCollider* m_pWeaponCollider_L = nullptr;
 
 	//우리가 알던 그 충돌체
-	CCollider_Sphere* m_pUnitCollider[UNITCOLLIDER_END] = {};
+	CCollider_Sphere* m_pUnitCollider[UNITCOLLIDER_END] = { nullptr };
 	//CCollider_Sphere* m_pUnitWeaponCollider[WEAPONCOLLIDER_END] = {};
 
 public:
@@ -255,6 +271,10 @@ public:
 	void	Enable_GroggyCollider(_bool bEnable);
 	void	Enable_GuardBreakCollider(UNITCOLLIDER ePartType, _bool bEnable);
 	void	Enable_FlyAttackCollider(_bool bEnable);
+
+public:
+	void 	Enable_Glider(_bool bEnable);
+	void Set_GliderAnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);
 
 
 	struct UNIT_COLLIDERDESC
@@ -282,17 +302,48 @@ public:
 	virtual void SetUp_HitStates(UNIT_TYPE eUnitType);
 
 public:
+	void Reset_GlidingTime() { m_fGlidingTime = 0.5f; }
+	_float Get_GlidingTime() { return m_fGlidingTime; }
+
+public:
 	CPlayer* Get_RevivalPlayer() { return m_pAdjRevivalPlayer; }
 	CCannon* Get_AdjCannon() { return m_pAdjCannon; }
+	CGameObject* Get_CureObject() { return m_pNearCureObject; }
+	_bool		Get_SameNearObejct() { return m_bSameNearObject; }
+
+	const _float& Get_MaxDistance() const { return m_fMaxDistance; }
 
 public:
 	virtual void SetUp_ReserveState(UNIT_TYPE eUnitType) {};
+
+public:
+	void Catch_ProjectileObject(CProjectile* pProjectileObject) { m_pCatchObejct = pProjectileObject; }
+	CProjectile* Get_CatchProjectileObject() { return m_pCatchObejct; }
+
+	list<CGameObject*> Get_MultipleFrustumObject() const { return m_MultipleFrustumObject; }
+
+protected:
+	void Check_NearObject_IsInFrustum(CGameObject** pNearObject); // 절두체를 비교해 가까운 것이 있는지 확인하는 함수
+	void Check_MultipleObject_IsInFrustum();
 
 protected:
 	CPlayer* m_pOwnerPlayer = nullptr;
 	CPlayer* m_pAdjRevivalPlayer = nullptr;
 
 	CCannon* m_pAdjCannon = nullptr;
+
+
+protected:
+	CProjectile* m_pCatchObejct;
+
+	list<CGameObject*>  m_MultipleFrustumObject;
+
+	list<CGameObject*>	m_CureObjects;
+	CGameObject* m_pNearCureObject = nullptr;
+	_float				m_fMaxDistance = 5.f;
+
+	_bool				m_bForUseTeam = true;
+	_bool				m_bSameNearObject = false;
 
 protected:
 	// 얘가 max
@@ -301,6 +352,7 @@ protected:
 	_float	m_fCoolAcc[COOL_END] = {};
 
 	_float	m_fAttackDelay = 0.f;
+	_float	m_fGlidingTime = 0.f;
 
 protected:
 	UNIT_MODEL_DATA	m_tModelData;
@@ -312,14 +364,16 @@ protected:
 	CModel* m_pModelCom = nullptr;
 	CAnimator* m_pAnimator = nullptr;
 	CPhysics* m_pPhysics = nullptr;
+	CNavigation* m_pNavigation = nullptr;
 
 	UNIT_STATUS		m_tUnitStatus;
-	
+
 	STATE_TYPE		m_eCurState = STATE_END;
 	STATE_TYPE		m_eReserveState = STATE_END;
 
 	STATE_TYPE		m_eDefaultState = STATE_END;
 	STATE_TYPE		m_eSprintEndState = STATE_END;
+	STATE_TYPE		m_eSprintFallState = STATE_END;
 
 	CState* m_pCurState = nullptr;
 
@@ -349,9 +403,9 @@ protected:
 
 protected:
 	void SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
-			_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
 	void SetUp_DistortionTrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
-	_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
 	virtual	HRESULT	SetUp_Model(const UNIT_MODEL_DATA& tData);
 	virtual	HRESULT	SetUp_Navigation(CCell* pStartCell);
 
@@ -395,14 +449,19 @@ public:
 	virtual void On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc);
 	virtual void On_FinishGame(_bool bWin);
 
+public:
+	CGlider* Get_Glider() { return m_pGlider; }
+
+
 protected:
 	CAnimWeapon* m_pAnimWeapon = nullptr;
+	CGlider* m_pGlider = nullptr;
 
 public:
 	void	Set_AnimWeaponIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);
 	void	Set_AnimWeaponFrame(_uint iChangeFrame);
 
-	_float4x4& Use_OwnerBoneOffset();
+	//_float4x4& Use_OwnerBoneOffset();
 
 
 	/* 상태 체크 함수 */
@@ -415,8 +474,6 @@ private:
 	/* 딱 체력 0된 시점에 호출되는 함수 */
 	void		On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos);
 	void		On_Bounce(void* pHitInfo);
-
-
 
 };
 END

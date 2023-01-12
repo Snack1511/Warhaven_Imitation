@@ -30,11 +30,16 @@ private:
 
 private:
 	CUI_Object* m_pInteractUI = nullptr;
-
 	CTransform* m_pTargetTransform = nullptr;
+
+	CUI_Object* m_pCircleEffect[3];
+
+	_bool m_bEnableCircleEffect = false;
+	_uint m_iCircleEffectIdx = 0;
 
 private:
 	void Create_InteractUI();
+	void Create_CircleEffect();
 };
 
 END

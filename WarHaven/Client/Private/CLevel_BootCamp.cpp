@@ -65,8 +65,11 @@ CLevel_BootCamp* CLevel_BootCamp::Create()
 
 HRESULT CLevel_BootCamp::Initialize()
 {
+	m_fDistance = 350.f;
 	m_vCenterPos = _float4(0.f, 0.f, -50.f);
-
+	m_vSunLook = _float4(-1.f, -1.7f, -1.f);
+	m_bLensFlare = false;
+	
 	return S_OK;
 }
 
@@ -105,7 +108,6 @@ HRESULT CLevel_BootCamp::Enter()
 	//CUser::Get_Instance()->Start_FadeDark(0.f, 0.1f, 0.3f);
 
 	GAMEINSTANCE->Stop_DarkScreen(1.5f);
-
 	return S_OK;
 }
 

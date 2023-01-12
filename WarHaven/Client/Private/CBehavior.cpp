@@ -200,6 +200,16 @@ void CBehavior::Add_OtherCondition(wstring strOtherConditionName)
     Callback_OtherCondition += m_pConditionTable->Find_OtherCondition(strOtherConditionName);
 }
 
+void CBehavior::Add_CallBack_Tick(wstring strCallbackTickName)
+{
+    if (nullptr == m_pConditionTable)
+        return;
+    if (strCallbackTickName == L"")
+        return;
+    m_strConditionName[_uint(eConditionType::eTick)].push_back(strCallbackTickName);
+    Callback_BehaviorTick += m_pConditionTable->Find_BehaviorTick(strCallbackTickName);
+}
+
 void CBehavior::Add_Condition(wstring strConditionName, eConditionType eType)
 {
     if (eType == eConditionType::eWhen)
@@ -209,6 +219,10 @@ void CBehavior::Add_Condition(wstring strConditionName, eConditionType eType)
     else if (eType == eConditionType::eWhat)
     {
         Add_WhatCondition(strConditionName);
+    }
+    else
+    {
+        Add_CallBack_Tick(strConditionName);
     }
 }
 
@@ -264,6 +278,21 @@ void CBehavior::Delete_OtherCondition(wstring strOtherConditionName)
     TmpVector.swap(m_strConditionName[_uint(eConditionType::eWhen)]);
 }
 
+void CBehavior::Delete_CallBack_Tick(wstring strBehaviorTickName)
+{
+    vector<wstring> TmpVector;
+    Callback_BehaviorTick.Clear();
+    for (auto& NameValue : m_strConditionName[_uint(eConditionType::eTick)])
+    {
+        if (strBehaviorTickName != NameValue)
+        {
+            Callback_BehaviorTick += m_pConditionTable->Find_BehaviorTick(NameValue);
+            TmpVector.push_back(NameValue);
+        }
+    }
+    TmpVector.swap(m_strConditionName[_uint(eConditionType::eTick)]);
+}
+
 void CBehavior::Delete_Condition(wstring strConditionName, eConditionType eType)
 {
     if (eType == eConditionType::eWhen)
@@ -273,20 +302,27 @@ void CBehavior::Delete_Condition(wstring strConditionName, eConditionType eType)
     else if (eType == eConditionType::eWhat)
     {
         Delete_WhatCondition(strConditionName);
+    }    
+    else
+    {
+        Delete_CallBack_Tick(strConditionName);
     }
 }
 
 void CBehavior::Clear_Condition(eConditionType eType)
 {
+    m_strConditionName[_uint(eType)].clear();
     if (eType == eConditionType::eWhen)
     {
-        m_strConditionName[_uint(eType)].clear();
         Callback_OtherCondition.Clear();
     }
     else if (eType == eConditionType::eWhat)
     {
-        m_strConditionName[_uint(eType)].clear();
         Callback_WhatCondition.Clear();
+    }
+    else
+    {
+        Callback_BehaviorTick.Clear();
     }
 }
 

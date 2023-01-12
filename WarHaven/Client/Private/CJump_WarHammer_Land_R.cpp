@@ -64,6 +64,7 @@ HRESULT CJump_WarHammer_Land_R::Initialize()
 
 void CJump_WarHammer_Land_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+
     pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.5f;
 
 
@@ -78,6 +79,9 @@ void CJump_WarHammer_Land_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TY
     default:
         break;
     }
+
+    if (ePrevType == STATE_GLIDING)
+        m_fInterPolationTime = 0.2f;
 
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

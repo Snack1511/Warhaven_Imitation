@@ -25,8 +25,10 @@ public:
 
 	void		Set_RenderGroup(RENDER_GROUP	eRenderGroup) { m_eRenderGroup = eRenderGroup; }
 	void		Set_Pass(const _uint& iCurPass) { m_iCurPass = iCurPass; }
+	void		Set_RectEffects() { m_bRectEffects = true; }
 
 	_float4				Get_WorldPosition();
+	void				Set_FinalPos(_float4 vPos) { m_vFinalPos = vPos; }
 	_float4				Get_FinalPos() { return m_vFinalPos; }
 	_float4				Get_OffsetPos() { return m_vOffsetPos; }
 	RENDER_GROUP		Get_RenderGroup() { return m_eRenderGroup; }
@@ -51,6 +53,9 @@ protected:
 	RENDER_GROUP				m_eRenderGroup;
 	_float4						m_vOffsetPos;
 	_float4						m_vFinalPos;
+
+	_bool						m_bRectEffects = false;
+	
 	
 	//_uint						m_iShaderFlags;
 

@@ -91,7 +91,7 @@ void CState_Combat_Attack_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pA
 
 STATE_TYPE CState_Combat_Attack_Paladin::Enter_RandomState(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
+	if (pAnimator->Is_CurAnimFinished())
 	{
 		if (Get_TargetLook_Length(pOwner) > 3.f)
 		{

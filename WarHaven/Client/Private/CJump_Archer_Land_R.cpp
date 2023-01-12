@@ -53,11 +53,15 @@ HRESULT CJump_Archer_Land_R::Initialize()
 
 void CJump_Archer_Land_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
-    Physics_Setting(m_fMaxSpeed, pOwner);
-
+    pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.5f;
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
-    pAnimator->Set_CurFrame(20);
+
+    _uint iKeyFrame = 20;
+
+    if(ePrevType != STATE_GLIDING_ARCHER)
+        pAnimator->Set_CurFrame(iKeyFrame);
+    else
+        m_iStateChangeKeyFrame = iKeyFrame;
 }
 
 STATE_TYPE CJump_Archer_Land_R::Tick(CUnit* pOwner, CAnimator* pAnimator)

@@ -59,7 +59,6 @@ CLevel_Stage::~CLevel_Stage()
 
 HRESULT CLevel_Stage::Initialize()
 {
-
 	return S_OK;
 }
 
@@ -107,11 +106,20 @@ void CLevel_Stage::Tick()
 
 			for (auto& elem : ObjList)
 			{
+				/*if (dynamic_cast<CDrawable_Terrain*>(elem))
+					continue;*/
+
 				m_StaticShadowObjects.push_back(elem);
 
 			}
+			m_vSunLook.w = 0.f;
 
-			GAMEINSTANCE->Bake_StaticShadow(m_StaticShadowObjects, m_vCenterPos, m_fDistance);
+			GAMEINSTANCE->Bake_StaticShadow(m_StaticShadowObjects, m_vCenterPos, m_fDistance, m_vSunLook, m_bLensFlare);
+			/*_float4 vLook = _float4(-1.f, -2.f, -1.f, 0.f).Normalize();
+
+			_float4 vSunPos = m_vCenterPos + (vLook * -1.f * 500.f);
+			CREATE_GAMEOBJECT(CDebugObject::Create(vSunPos, _float4(10.f, 10.f, 10.f)), GROUP_DEBUG);*/
+
 			m_bStaticShadowBake = true;
 			GAMEINSTANCE->Save_Memory();
 

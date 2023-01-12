@@ -7,6 +7,7 @@
 #define		EFFECT_REFBONE 0x004
 #define		EFFECT_COLLIDER 0x008
 #define		EFFECT_BILLBOARD 0x010
+#define		EFFECT_FOLLOWMATRIX 0x040
 #define		EFFECT_TEMP 0x020
 
 BEGIN(Engine)
@@ -134,6 +135,7 @@ protected:
 	CGameObject* m_pFollowTarget = nullptr;
 	_float4		m_vOffsetPos;
 	void	Update_FollowTarget();
+	void	Update_FollowMatrix();
 
 protected:
 	_float		m_fMoveSpeed = 0.f;
@@ -176,9 +178,11 @@ protected:
 	_bool m_bRotation = false;
 	_float4 m_vRotationDir = _float4(1.f, 0.f, 0.f, 0.f);
 	_float m_fAngle = 0.f;
+	_float m_fRimlightPower = 2.f;
 
 public:
-	void	Set_FadeOut() { m_eCurFadeType = FADEOUTREADY; m_fFadeTimeAcc = 999999.f; }
+	void	Set_FadeOut();
+	void	Set_TypeFadeOut() { m_eCurFadeType = FADEOUT; }
 
 protected:
 	virtual void My_Tick() override;

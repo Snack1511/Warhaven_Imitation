@@ -48,13 +48,13 @@ HRESULT CHit_WarHammer::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_iStateChangeKeyFrame = 50;
+    m_iStateChangeKeyFrame = 40;
     
     m_vecAdjState.push_back(STATE_WALK_WARHAMMER_R);
     m_vecAdjState.push_back(STATE_RUN_WARHAMMER_R);
-    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
-    m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_R);
-    m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L);
+    m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_L);
+    m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_L);
 
 
     m_fMyAccel = 1.f;

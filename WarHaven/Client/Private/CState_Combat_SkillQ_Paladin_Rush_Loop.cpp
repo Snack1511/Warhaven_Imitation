@@ -45,7 +45,7 @@ HRESULT CState_Combat_SkillQ_Paladin_Rush_Loop::Initialize()
 	m_iAnimIndex = 24;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = AI_STATE_COMBAT_RUSH_LOOP_PALADIN;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-	m_fMyMaxLerp = 0.8f;
+	m_fMyMaxLerp = 0.2f;
 	m_fMyAccel = 10.f;
 
 	m_fInterPolationTime = 0.f;
@@ -88,7 +88,7 @@ void CState_Combat_SkillQ_Paladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAn
 	tColorDesc.fFadeInTime = 0.1f;
 	tColorDesc.fFadeOutStartTime = 9999.f;
 	tColorDesc.fFadeOutTime = 0.1f;
-	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
+	tColorDesc.vTargetColor = RGBA(50, 30, 0, 0.1f);
 	//tColorDesc.vTargetColor *= 1.1f;
 	tColorDesc.iMeshPartType = MODEL_PART_WEAPON_L;
 
@@ -136,12 +136,15 @@ STATE_TYPE CState_Combat_SkillQ_Paladin_Rush_Loop::Tick(CUnit* pOwner, CAnimator
 		return AI_STATE_COMBAT_RUSH_END_PALADIN;
 
 	CTransform* pMyTransform = pOwner->Get_Transform();
-	CPhysics* m_pPhysics = pOwner->Get_PhysicsCom();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
 	pMyTransform->Set_LerpLook(m_vAIRandLook, m_fMyMaxLerp);
-	m_pPhysics->Set_Dir(m_vAIRandLook);
+	pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
 
-	DoMove_AI_NoTarget(pOwner, pAnimator);
+	if (!m_vAIRandLook.Is_Zero())
+		pMyPhysicsCom->Set_Dir(m_vAIRandLook);
+
+	pMyPhysicsCom->Set_Accel(m_fMyAccel);
 
 	return CState_Combat_SkillQ::Tick(pOwner, pAnimator);
 }

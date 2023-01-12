@@ -155,6 +155,7 @@ void CPhysXCollider::OnDisable()
 
 	if (m_pRigidStatic)
 	{
+		CPhysX_Manager::Get_Instance()->Erase_Static(m_pRigidStatic);
 		Safe_release(m_pRigidStatic);
 	}
 }

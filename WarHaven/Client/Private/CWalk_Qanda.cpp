@@ -5,6 +5,8 @@
 
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Qanda.h"
+#include "CAnimWeapon_Crow.h"
 
 #include "CUser.h"
 
@@ -84,7 +86,7 @@ HRESULT CWalk_Qanda::Initialize()
     m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
     m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
-
+    Init_CommonState_Hero_Player();
 
     return S_OK;
 }
@@ -93,6 +95,13 @@ void CWalk_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 {
     /* OwnerÀÇ Animator Set Idle·Î */
     m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
+
+    CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow();
+
+    if (pAnimCrow->Get_Phase() == CAnimWeapon_Crow::ePhyxState::eIDLE)
+    {
+        static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->Set_PhiysicsSpeed(m_fMaxSpeed);
+    }
     
 
 

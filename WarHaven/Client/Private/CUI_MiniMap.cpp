@@ -62,6 +62,9 @@ void CUI_MiniMap::SetActive_MiniMap(_bool value)
 		for (int j = 0; j < MP_End; ++j)
 		{
 			m_pArrMiniMapPoint[i][j]->SetActive(value);
+
+			if (m_eLoadLevel == LEVEL_HWARA)
+				m_pArrMiniMapPoint[Point_C][j]->SetActive(false);
 		}
 	}
 
@@ -74,19 +77,7 @@ void CUI_MiniMap::SetActive_MiniMap(_bool value)
 void CUI_MiniMap::Set_ConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime)
 {
 	_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
-
-	switch (iPointIdx)
-	{
-	case 0:
-		m_fConquestRatio[Point_A] = fConquestRatio;
-		break;
-	case 1:
-		m_fConquestRatio[Point_R] = fConquestRatio;
-		break;
-	case 2:
-		m_fConquestRatio[Point_C] = fConquestRatio;
-		break;
-	}
+	m_fConquestRatio[iPointIdx] = fConquestRatio;
 }
 
 void CUI_MiniMap::Set_GaugeColor(_bool IsMainTeam, _uint iPointIdx)
@@ -152,6 +143,12 @@ void CUI_MiniMap::Set_Player(CPlayer* pPlayer)
 	}
 }
 
+void CUI_MiniMap::Set_BattleIcon(_bool IsBattle)
+{
+	m_fAccTime = 0.f;
+	m_bIsBattle = IsBattle;
+}
+
 void CUI_MiniMap::My_Tick()
 {
 	__super::My_Tick();
@@ -165,19 +162,26 @@ void CUI_MiniMap::My_Tick()
 		}
 		else
 		{
-			if (m_pPlayers[i]->IsMainPlayer())
+			if (m_pPlayers[i]->IsBattle())
 			{
-				m_pPlayerIcon[i]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
+				m_pPlayerIcon[i]->Set_Color(_float4(1.f, 0.2f, 0.f, 1.f));
 			}
 			else
 			{
-				if (m_pPlayers[i]->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+				if (m_pPlayers[i]->IsMainPlayer())
 				{
-					m_pPlayerIcon[i]->Set_Color(m_vColorLightGreen);
+					m_pPlayerIcon[i]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
 				}
 				else
 				{
-					m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
+					if (m_pPlayers[i]->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+					{
+						m_pPlayerIcon[i]->Set_Color(m_vColorLightGreen);
+					}
+					else
+					{
+						m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
+					}
 				}
 			}
 		}
@@ -188,12 +192,30 @@ void CUI_MiniMap::My_LateTick()
 {
 	__super::My_LateTick();
 
-	for (int i = 0; i < 8; ++i)
+	switch (m_eLoadLevel)
 	{
-		_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS);
-		vPos.x += m_fIconOffsetX;
-		vPos.z += m_fIconOffsetY;
-		m_pPlayerIcon[i]->Set_Pos(vPos.z, -vPos.x);
+	case Client::LEVEL_PADEN:
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS);
+			vPos.x += m_fIconOffsetX;
+			vPos.z += m_fIconOffsetY;
+			m_pPlayerIcon[i]->Set_Pos(vPos.z, -vPos.x);
+		}
+	}
+	break;
+	case Client::LEVEL_HWARA:
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 0.8f;
+			vPos.x += m_fHwaraOffSetX;
+			vPos.z += m_fHwaraOffSetY;
+			m_pPlayerIcon[i]->Set_Pos(-vPos.x, vPos.z);
+		}
+	}
+	break;
 	}
 }
 
@@ -252,7 +274,7 @@ void CUI_MiniMap::Create_MiniMapPoint()
 
 		case MP_Gauge:
 
-			GET_COMPONENT_FROM(m_pMiniMapPoint[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_VerticalGauge);
+			GET_COMPONENT_FROM(m_pMiniMapPoint[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_CircleGauge);
 
 			GET_COMPONENT_FROM(m_pMiniMapPoint[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pMiniMapPoint[i], "/Paden", "Gauge");
@@ -306,15 +328,6 @@ void CUI_MiniMap::Create_PlayerIcon()
 		else
 		{
 			m_pPlayerIcon[i]->Set_Scale(15.f);
-
-			if (i < 4)
-			{
-				m_pPlayerIcon[i]->Set_Color(m_vColorLightGreen);
-			}
-			else
-			{
-				m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
-			}
 		}
 
 		CREATE_GAMEOBJECT(m_pPlayerIcon[i], GROUP_UI);
@@ -334,6 +347,9 @@ void CUI_MiniMap::Init_MiniMap()
 
 		break;
 	case Client::LEVEL_HWARA:
+		m_pMiniMap->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/MiniMap/T_MinimapDragonTempleConvoyBlack.dds"));
+		m_pMiniMap->Set_Pos(-500.f, 250.f);
+		m_pMiniMap->Set_Scale(250.f);
 		break;
 	}
 }
@@ -375,6 +391,36 @@ void CUI_MiniMap::Init_MiniMapPoint()
 		break;
 
 	case Client::LEVEL_HWARA:
+
+		for (int i = 0; i < MP_End; ++i)
+		{
+			for (int j = 0; j < Point_End; ++j)
+			{
+				m_pArrMiniMapPoint[j][i]->Set_PosX(-496);
+
+				if (j == Point_R)
+				{
+					GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Outline], CTexture)->Set_CurTextureIndex(1);
+				}
+				else
+				{
+					GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Outline], CTexture)->Set_CurTextureIndex(2);
+				}
+
+				GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Gauge], CTexture)->Set_CurTextureIndex(1);
+				GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Text], CTexture)->Set_CurTextureIndex(j);
+			}
+
+			if (i == MP_Text)
+			{
+				m_pArrMiniMapPoint[Point_A][i]->Set_PosY(245.f);
+				m_pArrMiniMapPoint[Point_R][i]->Set_PosY(277.f);
+				continue;
+			}
+
+			m_pArrMiniMapPoint[Point_A][i]->Set_PosY(246.f);
+			m_pArrMiniMapPoint[Point_R][i]->Set_PosY(278.f);
+		}
 		break;
 	}
 }

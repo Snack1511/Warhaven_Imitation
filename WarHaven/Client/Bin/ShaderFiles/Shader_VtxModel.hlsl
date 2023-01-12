@@ -4,6 +4,8 @@
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 texture2D	g_DiffuseTexture, g_BlendTexture, g_FilterTexture, g_NormalTexture, g_NoiseTexture, g_StaticShadowTexture;
+texture2D	g_PBRTexture;
+bool		g_bPBR;
 
 
 float		g_fRange = 1.f;
@@ -83,6 +85,8 @@ struct PS_OUT
 	vector		vFlag : SV_TARGET3;
 	vector		vOutLineFlag : SV_TARGET4;
 	vector		vRimLightFlag : SV_TARGET5;
+	vector	vPBR : SV_TARGET6;
+
 };
 
 struct PS_SHADOW_OUT
@@ -100,6 +104,7 @@ PS_SHADOW_OUT PS_SHADOW_MAIN(PS_IN In)
 		);
 
 	Out.vLightDepth.rgb = In.vProjPos.w / 1500.f;
+	Out.vLightDepth.g = Out.vLightDepth.r * Out.vLightDepth.r;
 
 	vector vStaticDesc = g_StaticShadowTexture.Sample(ShadowSampler, staticUV);
 
@@ -118,6 +123,7 @@ PS_SHADOW_OUT PS_STATICSHADOW_MAIN(PS_IN In)
 	PS_SHADOW_OUT		Out = (PS_SHADOW_OUT)0;
 
 	Out.vLightDepth.rgb = In.vProjPos.w / 1500.f;
+	Out.vLightDepth.g = Out.vLightDepth.r * Out.vLightDepth.r;
 
 	Out.vLightDepth.a = 1.f;
 
@@ -221,6 +227,8 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 
 		/* -1 ~ 1 */
 		vPixelNormal = normalize(vPixelNormal * 2.f - 1.f) * 1.f;
+		if (vPixelNormal.b < 0.1f)
+			vPixelNormal *= -1.f;
 
 		float3x3	WorldMatrix = float3x3(In.vTangent, In.vBinormal, In.vNormal);
 
@@ -236,7 +244,11 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 	Out.vFlag = g_vFlag;
 	Out.vOutLineFlag = g_vOutLineFlag;
 	Out.vRimLightFlag = g_vRimLightFlag;
-
+	if (g_bPBR)
+	{
+		Out.vPBR = g_PBRTexture.Sample(DefaultSampler, In.vTexUV);
+		Out.vPBR.a = 1.f;
+	}
 	
 
 	return Out;
@@ -290,7 +302,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 	pass CW
@@ -300,7 +312,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Sky);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 	pass None
@@ -310,7 +322,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_None);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 
@@ -321,7 +333,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 
@@ -332,7 +344,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 
@@ -343,7 +355,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 
@@ -354,7 +366,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_SAMPLE_MAIN();
 	}
 
@@ -365,7 +377,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_NORMAL();
 	}
 
@@ -377,7 +389,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_SHADOW_MAIN();
 	}
 
@@ -388,7 +400,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_GROUNDBREAK();
 	}
 
@@ -400,7 +412,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_STATICSHADOW_MAIN();
 	}
 }

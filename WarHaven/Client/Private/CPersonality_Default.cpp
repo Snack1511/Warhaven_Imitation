@@ -79,7 +79,7 @@ HRESULT CPersonality_Default::Initailize()
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Change"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_AbleHero"));
-	pBehavior->Add_OtherCondition(wstring(L"Check_AttackBehavior"));
+	pBehavior->Add_OtherCondition(wstring(L"Check_CombatBehavior"));
 	pBehavior->Add_WhatCondition(wstring(L"EmptyWhatCondition"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(4);

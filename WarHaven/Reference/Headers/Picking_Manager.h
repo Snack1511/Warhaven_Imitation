@@ -24,10 +24,13 @@ public:
 
 public:
 	_bool	Is_Picked(list<CGameObject*>& GameObjectList, _float4* pOut, _float4* pOutNormal = nullptr);
+	_bool	Is_Picked_OutObject(list<CGameObject*>& GameObjectList, _float4* pOut, _float4* pOutNormal, CGameObject** ppOut);
+	_bool	Is_Picked(list<CGameObject*>& GameObjectList, CGameObject** ppOut);
+
 	_bool	Is_Picked_Cubes(vector<CGameObject*>& GameObjectList, _float4* pOut, _uint* pOutIndex, _float4* pOutNormal = nullptr);
 	_bool	Is_Picked(CGameObject* pGameObject, _float4*	pOut, _float4* pOutNormal = nullptr);
 	_bool	Is_Picked_Mesh(CMesh* pRenderer, _uint3* pOutPickedIndex, _float4* pOut, _float4* pOutNormal = nullptr);
-
+	_bool	Is_Picked_FixedHeight(_float fHeight, _float4* pOut);
 
 	_bool	Is_Picked(CMesh* pRenderer, _float4*	pOut, _float4* pOutNormal = nullptr);
 	_bool	Is_Picked(CMesh* pRenderer, _uint3* pOutPickedIndex, _float4*	pOut,  _float4* pOutNormal = nullptr);

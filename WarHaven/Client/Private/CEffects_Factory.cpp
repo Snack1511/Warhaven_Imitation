@@ -696,6 +696,13 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"ShieldWall"), "ShieldWall")))
 		return E_FAIL;
 
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Wind_Attack"), "Wind_Attack")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Cure_Smoke"), "Cure_Smoke")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Cure_Particle"), "Cure_Particle")))
+		return E_FAIL;
+
 
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Cannon_Shoot"), "Cannon_Shoot")))
 		return E_FAIL;
@@ -778,11 +785,48 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"FionaParring"), Convert_ToHash(L"FionaParring_Mesh_0"))))
 		return E_FAIL;
 		/*Quanda*/
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Charge"), "Crow_Charge")))
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Charge_Test"), "Charge_Test")))
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Charge_Particle"), "Charge_Particle")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Charge_End"), "Charge_End")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Feathers"), "Crow_Feathers")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Steam"), "Crow_Steam")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Boom"), "Crow_Boom")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Meteo_Boom"), "Meteo_Boom")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Qanda_Sniping"), "Qanda_Sniping")))
+		return E_FAIL;
+	/*Dodge*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Dodge"), "Dodge")))
 		return E_FAIL;
+	/*Lancer*/
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Turn_Needle"), "Turn_Needle")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Needle_Mesh"), "Needle_Mesh")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Needle_Begin"), "Needle_Begin")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Needle_End"), "Needle_End")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Eye_Flare"), "Eye_Flare")))
+		return E_FAIL;
 
+	/*priest*/
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Catch_Particle"), "Catch_Particle")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Catch_Mesh"), "Catch_Mesh")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Catching"), "Catching")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Catch_Shoot"), "Catch_Shoot")))
+		return E_FAIL;
+	
+	
 	/*environment*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"TrainigRoomSmoke"), "TrainigRoomSmoke")))
 		return E_FAIL;
@@ -801,6 +845,10 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Paden_In"), "Paden_In")))
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"ash"), "ash")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Hwara_Pillar"), "Hwara_Pillar")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Hwara_Fire"), "Hwara_Fire")))
 		return E_FAIL;
 		
 
@@ -841,6 +889,25 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;																 
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Archer"), Convert_ToHash(L"ArcherDead_Slice3"))))
 		return E_FAIL;
+
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Priest"), Convert_ToHash(L"PriestDead_Slice0"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Priest"), Convert_ToHash(L"PriestDead_Slice1"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Priest"), Convert_ToHash(L"PriestDead_Slice2"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Priest"), Convert_ToHash(L"PriestDead_Slice3"))))
+		return E_FAIL;
+
+
+	//if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_q"), Convert_ToHash(L"ArcherDead_Slice0"))))
+	//	return E_FAIL;
+	//if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_q"), Convert_ToHash(L"ArcherDead_Slice1"))))
+	//	return E_FAIL;
+	//if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_q"), Convert_ToHash(L"ArcherDead_Slice2"))))
+	//	return E_FAIL;
+	//if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_q"), Convert_ToHash(L"ArcherDead_Slice3"))))
+	//	return E_FAIL;
 
 	/* Stone */
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeathStoneParticle"), Convert_ToHash(L"DeathStoneParticle_0"))))
@@ -1114,7 +1181,7 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice1.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
 		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
 		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
-		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice1.fbx"
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice1.fbx"
 
 	))))
 		return E_FAIL;
@@ -1124,7 +1191,7 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice2.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
 		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
 		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
-		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice2.fbx"
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice2.fbx"
 
 	))))
 		return E_FAIL;
@@ -1134,7 +1201,7 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice3.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
 		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
 		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
-		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice3.fbx"
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice3.fbx"
 
 	))))
 		return E_FAIL;
@@ -1157,7 +1224,7 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 		L"../bin/resources/meshes/characters/deadbody/SM_Paladin0004_Body_A00_Slice0.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
 		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
 		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
-		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice0.fbx"
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice2.fbx"
 
 	))))
 		return E_FAIL;
@@ -1167,7 +1234,7 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 		L"../bin/resources/meshes/characters/deadbody/SM_Paladin0004_Body_A00_Slice1.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
 		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
 		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
-		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice1.fbx"
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice2.fbx"
 
 	))))
 		return E_FAIL;
@@ -1177,7 +1244,7 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 		L"../bin/resources/meshes/characters/deadbody/SM_Paladin0004_Body_A00_Slice2.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
 		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
 		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
-		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice2.fbx"
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice2.fbx"
 
 	))))
 		return E_FAIL;
@@ -1187,14 +1254,14 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 		L"../bin/resources/meshes/characters/deadbody/SM_Paladin0004_Body_A00_Slice3.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
 		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
 		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
-		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice3.fbx"
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice2.fbx"
 
 	))))
 		return E_FAIL;
 
 	wstrName = L"PaladinDead_Weapon";
 	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
-		L"../bin/resources/meshes/weapons/hammer/SM_WP_WarHammer0001_A00.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime, wstring(), wstring(),
+		L"../bin/resources/meshes/weapons/KiteShield/SM_WP_KiteShield0001_A00.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime, wstring(), wstring(),
 		wstring(), XMMatrixScaling(0.01f, 0.01f, 0.01f)
 	))))
 		return E_FAIL;
@@ -1210,7 +1277,7 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 		L"../bin/resources/meshes/characters/deadbody/SM_Archer0010_Body_A00_Slice0.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
 		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
 		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
-		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice0.fbx"
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice2.fbx"
 
 	))))
 		return E_FAIL;
@@ -1220,7 +1287,7 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 		L"../bin/resources/meshes/characters/deadbody/SM_Archer0010_Body_A00_Slice1.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
 		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
 		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
-		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice1.fbx"
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice2.fbx"
 
 	))))
 		return E_FAIL;
@@ -1230,7 +1297,7 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 		L"../bin/resources/meshes/characters/deadbody/SM_Archer0010_Body_A00_Slice2.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
 		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
 		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
-		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice2.fbx"
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice2.fbx"
 
 	))))
 		return E_FAIL;
@@ -1240,22 +1307,74 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 		L"../bin/resources/meshes/characters/deadbody/SM_Archer0010_Body_A00_Slice3.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
 		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
 		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
-		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice3.fbx"
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice2.fbx"
 
 	))))
 		return E_FAIL;
 
-	wstrName = L"ArcherDead_Weapon";
-	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
-		L"../bin/resources/meshes/weapons/hammer/SM_WP_WarHammer0001_A00.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime, wstring(), wstring(),
-		wstring(), XMMatrixScaling(0.01f, 0.01f, 0.01f)
-	))))
-		return E_FAIL;
+	//wstrName = L"ArcherDead_Weapon";
+	//if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+	//	L"../bin/resources/meshes/weapons/Claw/SK_WP_Claw0001_A00.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime, wstring(), wstring(),
+	//	wstring(), XMMatrixScaling(0.01f, 0.01f, 0.01f)
+	//))))
+	//	return E_FAIL;
 
 
 	/* ========================================================================== */
 
 
+	/*===================== Archer =====================*/
+
+
+	wstrName = L"PriestDead_Slice0";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Priest0004_Body_A00_Slice0.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice2.fbx"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"PriestDead_Slice1";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Priest0004_Body_A00_Slice1.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice2.fbx"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"PriestDead_Slice2";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Priest0004_Body_A00_Slice2.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice2.fbx"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"PriestDead_Slice3";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Priest0004_Body_A00_Slice3.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice2.fbx"
+
+	))))
+		return E_FAIL;
+
+	//wstrName = L"PriestDead_Weapon";
+	//if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+	//	L"../bin/resources/meshes/weapons/hammer/SM_WP_WarHammer0001_A00.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime, wstring(), wstring(),
+	//	wstring(), XMMatrixScaling(0.01f, 0.01f, 0.01f)
+	//))))
+	//	return E_FAIL;
+
+
+	/* ========================================================================== */
 
 	return S_OK;
 }

@@ -14,6 +14,9 @@
 #include "CSquad.h"
 
 #include "CUnit.h"
+#include "Transform.h"
+#include "Functor.h"
+
 CUI_Oper::CUI_Oper()
 {
 }
@@ -45,6 +48,11 @@ HRESULT CUI_Oper::Initialize_Prototype()
 	Create_BlackImg();
 	Create_PointInfo();
 
+	Create_SelectEffect();
+	Create_ConquestBlur();
+
+	Create_PlayerIcon();
+
 	return S_OK;
 }
 
@@ -60,6 +68,8 @@ HRESULT CUI_Oper::Start()
 	Init_StrongHoldUI();
 	Init_StrongHoldEffect();
 	Init_PointInfo();
+	Init_SelectEffect();
+	Init_ConquestBlur();
 
 	SetActive_BG(true);
 
@@ -92,8 +102,18 @@ void CUI_Oper::On_PointDown_SelectBG(const _uint& iEventNum)
 	for (int i = 0; i < CP_End; ++i)
 	{
 		m_pArrCharacterPort[i][m_iPrvSelectEventNum]->DoScale(-10.f, 0.1f);
+		Fade_Out(m_pArrCharacterPort[CP_SelectBG][m_iPrvSelectEventNum]);
+
+
+		Fade_In(m_pArrCharacterPort[CP_SelectBG][iEventNum]);
 		m_pArrCharacterPort[i][iEventNum]->DoScale(10.f, 0.1f);
 	}
+
+	m_pArrSelectEffect[m_iPrvSelectEventNum]->DoScale(-10.f, 0.1f);
+	Disable_Fade(m_pArrSelectEffect[m_iPrvSelectEventNum], 0.1f);
+
+	m_pArrSelectEffect[iEventNum]->DoScale(10.f, 0.1f);
+	Enable_Fade(m_pArrSelectEffect[iEventNum], 0.1f);
 
 	CUser::Get_Instance()->Get_MainPlayerInfo()->Set_ChosenClass((CLASS_TYPE)iEventNum);
 }
@@ -119,8 +139,6 @@ void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 
 	// a, r, c
 	PLAYER->Get_OwnerPlayer()->Set_MainPlayerStartPath(iEventNum);
-
-
 }
 
 void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
@@ -157,6 +175,70 @@ void CUI_Oper::My_Tick()
 	}
 
 	Progress_Oper();
+
+	if (m_bIsRespawn)
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			_float fHP = m_pPlayers[i]->Get_CurrentUnit()->Get_Status().fHP;
+			if (fHP <= 0.f)
+			{
+				if (m_pPlayers[i]->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+				{
+					m_pPlayerIcon[i]->Set_TextureIndex(i + 3);
+				}
+				else
+				{
+					m_pPlayerIcon[i]->Set_Color(_float4(0.5f, 0.5f, 0.5f, 1.f));
+				}
+			}
+			else
+			{
+				if (m_pPlayers[i]->IsBattle())
+				{
+					if (m_pPlayers[i]->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+					{
+						m_pPlayerIcon[i]->Set_TextureIndex(i + 6);
+					}
+					else
+					{
+						m_pPlayerIcon[i]->Set_Color(_float4(1.f, 0.2f, 0.f, 1.f));
+					}
+				}
+				else
+				{
+					if (!m_pPlayers[i]->IsMainPlayer())
+					{
+						if (m_pPlayers[i]->Get_OutlineType() != CPlayer::eSQUADMEMBER)
+						{
+							m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
+						}
+						else
+						{
+							m_pPlayerIcon[i]->Set_TextureIndex(i);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void CUI_Oper::My_LateTick()
+{
+	__super::My_LateTick();
+
+	if (m_bIsRespawn)
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 4.f;
+			m_pPlayerIcon[i]->Set_Pos(vPos.z, -vPos.x);
+
+			if (!m_pPlayerIcon[i]->Is_Valid())
+				m_pPlayerIcon[i]->SetActive(true);
+		}
+	}
 }
 
 void CUI_Oper::OnEnable()
@@ -183,12 +265,81 @@ void CUI_Oper::OnDisable()
 	}
 }
 
+void CUI_Oper::Set_PointColor(_bool IsMainTeam, _uint iPoinIdx)
+{
+	_float4 vColor;
+	vColor = IsMainTeam ? m_vColorBlue : m_vColorRed;
+
+	for (int i = 0; i < SP_TEXT; ++i)
+	{
+		m_pArrStrongHoldUI[i][iPoinIdx]->Set_Color(vColor);
+	}
+
+	m_pArrConquestBlur[iPoinIdx]->Set_Color(vColor);
+
+	if (m_pOperBG[OB_BG]->Is_Valid())
+	{
+		if (!m_pArrConquestBlur[iPoinIdx]->Is_Valid())
+		{
+			Enable_Fade(m_pArrConquestBlur[iPoinIdx], 0.3f);
+		}
+	}
+}
+
+void CUI_Oper::Set_Player(CPlayer* pPlayer)
+{
+	_bool isMainTeam = pPlayer->Get_Team()->IsMainPlayerTeam();
+	if (!isMainTeam)
+		return;
+
+	_bool isMainPlayer = pPlayer->IsMainPlayer();
+	if (isMainPlayer)
+	{
+		m_pPlayers[0] = pPlayer;
+		m_pPlayerTransform[0] = pPlayer->Get_Transform();
+	}
+	else
+	{
+		if (pPlayer->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+		{
+			if (m_iMainSquadIdx > m_iMainSquadMaxIdx)
+				return;
+
+			m_pPlayerIcon[m_iMainSquadIdx]->Set_TextureIndex(m_iMainSquadIdx);
+			m_pPlayers[m_iMainSquadIdx] = pPlayer;
+			m_pPlayerTransform[m_iMainSquadIdx] = pPlayer->Get_Transform();
+
+			m_iMainSquadIdx++;
+		}
+		else
+		{
+			if (m_iMainTeamIdx > m_iMainTeamMaxIdx)
+				return;
+
+			m_pPlayerIcon[m_iMainTeamIdx]->Set_TextureIndex(0);
+			m_pPlayers[m_iMainTeamIdx] = pPlayer;
+			m_pPlayerTransform[m_iMainTeamIdx] = pPlayer->Get_Transform();
+
+			m_iMainTeamIdx++;
+		}
+	}
+}
+
+void CUI_Oper::Set_BattlePlayer(_bool IsBattle)
+{
+	m_fBattleTime = 0.f;
+	m_bIsBattle = IsBattle;
+}
+
 void CUI_Oper::SetActive_BG(_bool value)
 {
-	m_pRealMap->SetActive(value);
+	if (m_pRealMap)
+		m_pRealMap->SetActive(value);
+
 	for (int i = 0; i < OB_End; ++i)
 	{
-		m_pOperBG[i]->SetActive(value);
+		if (m_pOperBG[i])
+			m_pOperBG[i]->SetActive(value);
 	}
 }
 
@@ -196,7 +347,8 @@ void CUI_Oper::SetActive_Profile(_bool value)
 {
 	for (int i = 0; i < 4; ++i)
 	{
-		m_pArrOperProfile[i]->SetActive(value);
+		if (m_pArrOperProfile[i])
+			m_pArrOperProfile[i]->SetActive(value);
 	}
 }
 
@@ -265,20 +417,40 @@ void CUI_Oper::Progress_Oper()
 			_float4 vPos0 = m_pArrCharacterSideBG[0]->Get_Pos();
 			vPos0.x += 50.f;
 			m_pArrCharacterSideBG[0]->DoMove(vPos0, fDuration, 0);
-			
+
 			_float4 vPos1 = m_pArrCharacterSideBG[1]->Get_Pos();
 			vPos1.x -= 50.f;
 			m_pArrCharacterSideBG[1]->DoMove(vPos1, fDuration, 0);
-			
+
 			for (int i = 0; i < CP_End; ++i)
 			{
 				for (int j = 0; j < 6; ++j)
 				{
-					Enable_Fade(m_pArrCharacterPort[i][j], fDuration);
+					m_pArrCharacterPort[i][j]->SetActive(true);
+
 					_float4 vPos = m_pArrCharacterPort[i][j]->Get_Pos();
 					vPos.x += 50.f;
 					m_pArrCharacterPort[i][j]->DoMove(vPos, fDuration, 0);
+
+					if (j > 0)
+					{
+						if (i == CP_SelectBG)
+							continue;
+					}
+
+					Fade_In(m_pArrCharacterPort[m_iCurSelectEventNum][j]);
 				}
+			}
+
+			for (int i = 0; i < 6; ++i)
+			{
+				Fade_Out(m_pArrSelectEffect[i]);
+
+				Enable_Fade(m_pArrSelectEffect[m_iCurSelectEventNum], 0.1f);
+
+				/*_float4 vEffectPos0 = m_pArrSelectEffect[i]->Get_Pos();
+				vEffectPos0.x += 50.f;
+				m_pArrSelectEffect[i]->DoMove(vEffectPos0, fDuration, 0);*/
 			}
 		}
 	}
@@ -374,7 +546,10 @@ void CUI_Oper::Progress_Oper()
 		{
 			m_iOperProgress++;
 
-			for (int i = 0; i < 3; ++i)
+			_uint iIndex;
+			iIndex = m_eLoadLevel == LEVEL_HWARA ? 2 : 3;
+
+			for (int i = 0; i < iIndex; ++i)
 			{
 				Enable_Fade(m_pArrStrongHoldEffect[i], 1.f);
 				m_pArrStrongHoldEffect[i]->DoScale(70.f, 1.f);
@@ -387,7 +562,10 @@ void CUI_Oper::Progress_Oper()
 				m_fAccTime = 0.f;
 				m_iOperProgress++;
 
-				for (int i = 3; i < 6; ++i)
+				_uint iIndex;
+				iIndex = m_eLoadLevel == LEVEL_HWARA ? 5 : 6;
+
+				for (int i = 3; i < iIndex; ++i)
 				{
 					Enable_Fade(m_pArrStrongHoldEffect[i], 1.f);
 					m_pArrStrongHoldEffect[i]->DoScale(70.f, 1.f);
@@ -419,10 +597,19 @@ void CUI_Oper::Progress_Oper()
 				{
 					for (int j = 0; j < 6; ++j)
 					{
-						Enable_Fade(m_pArrCharacterPort[i][j], fDuration);
+						m_pArrCharacterPort[i][j]->SetActive(true);
+
 						_float4 vPos = m_pArrCharacterPort[i][j]->Get_Pos();
 						vPos.x += 50.f;
 						m_pArrCharacterPort[i][j]->DoMove(vPos, fDuration, 0);
+
+						if (j > 0)
+						{
+							if (i == CP_SelectBG)
+								continue;
+						}
+
+						Fade_In(m_pArrCharacterPort[i][j]);
 					}
 				}
 
@@ -438,6 +625,11 @@ void CUI_Oper::Progress_Oper()
 
 						Enable_Fade(m_pArrLeftUI[i][j], fDuration);
 
+						if (i > 0)
+						{
+							m_pArrLeftUI[i][Left_SelectBG]->SetActive(false);
+						}
+
 						_float4 vPos = m_pArrLeftUI[i][j]->Get_Pos();
 						vPos.x -= 50.f;
 						m_pArrLeftUI[i][j]->DoMove(vPos, fDuration, 0);
@@ -450,6 +642,8 @@ void CUI_Oper::Progress_Oper()
 				{
 					m_pArrCharacterPort[i][0]->DoScale(10.f, fDuration);
 				}
+
+				m_pArrSelectEffect[0]->DoScale(10.f, fDuration);
 
 				Enable_Fade(m_pTextImg[Text_Oper2], fDuration);
 				Enable_Fade(m_pTextImg[Text_SelectPoint], fDuration);
@@ -466,6 +660,23 @@ void CUI_Oper::Progress_Oper()
 				{
 					Enable_Fade(m_pBriefingUI[i], fDuration);
 				}
+
+				for (int i = 0; i < 6; ++i)
+				{
+					Enable_Fade(m_pArrSelectEffect[i], 0.1f);
+
+					if (i > 0)
+						Fade_Out(m_pArrSelectEffect[i]);
+
+					_float4 vEffectPos0 = m_pArrSelectEffect[i]->Get_Pos();
+					vEffectPos0.x += 50.f;
+					m_pArrSelectEffect[i]->DoMove(vEffectPos0, fDuration, 0);
+				}
+
+				Enable_Fade(m_pArrSelectEffect[6], 0.1f);
+				_float4 vEffectPos1 = m_pArrSelectEffect[6]->Get_Pos();
+				vEffectPos1.x -= 50.f;
+				m_pArrSelectEffect[6]->DoMove(vEffectPos1, fDuration, 0);
 			}
 		}
 		else if (m_iOperProgress == 8)
@@ -509,7 +720,7 @@ void CUI_Oper::Progress_Oper()
 				case Client::LEVEL_HWARA:
 					CGameSystem::Get_Instance()->On_StartGame();
 					break;
-				}				
+				}
 
 				CUser::Get_Instance()->SetActive_PadenUI(true);
 				CUser::Get_Instance()->SetActive_HUD(true);
@@ -535,7 +746,17 @@ void CUI_Oper::Progress_Oper()
 
 				CUser::Get_Instance()->Set_FixCursor(true);
 				CUser::Get_Instance()->SetActive_Cursor(false);
+
 			}
+		}
+	}
+
+	for (int i = 0; i < 7; ++i)
+	{
+		if (m_pArrSelectEffect[i]->Is_Valid())
+		{
+			m_fSelectEffect_RotValue += fDT(0) * 0.5f;
+			m_pArrSelectEffect[i]->Set_RotationZ(m_fSelectEffect_RotValue);
 		}
 	}
 }
@@ -548,6 +769,12 @@ void CUI_Oper::Enable_StrongHoldUI()
 		m_pArrStrongHoldUI[SP_Outline][i]->Set_Scale(120.f);
 		m_pArrStrongHoldUI[SP_Icon][i]->Set_Scale(115.f);
 		m_pArrStrongHoldUI[SP_TEXT][i]->Set_Scale(140.f);
+
+		_float4 vColor = m_pArrStrongHoldUI[SP_BG][i]->Get_Color();
+		if (vColor == m_vColorRed || vColor == m_vColorBlue)
+		{
+			Enable_Fade(m_pArrConquestBlur[i], 0.3f);
+		}
 	}
 
 	for (int i = 0; i < SP_End; ++i)
@@ -568,6 +795,16 @@ void CUI_Oper::Enable_StrongHoldUI()
 			break;
 
 		case LEVEL_HWARA:
+
+			for (int j = 0; j < 2; ++j)
+			{
+				Enable_Fade(m_pArrStrongHoldUI[i][j], 0.3f);
+				m_pArrStrongHoldUI[i][j]->DoScale(-70.f, 0.3f);
+			}
+
+			DISABLE_GAMEOBJECT(m_pArrStrongHoldUI[SP_Icon][0]);
+			DISABLE_GAMEOBJECT(m_pArrStrongHoldUI[SP_Icon][2]);
+
 			break;
 		}
 	}
@@ -710,7 +947,6 @@ void CUI_Oper::Create_OperBG()
 				break;
 
 			case Client::LEVEL_HWARA:
-				m_pOperBG[i]->Set_PosY(205.f);
 				m_pOperBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapHwara.dds"));
 				break;
 			}
@@ -912,7 +1148,7 @@ void CUI_Oper::Create_CharacterSelect()
 	{
 		m_pCharacterPort[i] = CUI_Object::Create();
 
-		m_pCharacterPort[i]->Set_FadeDesc(0.3f);
+		m_pCharacterPort[i]->Set_FadeDesc(0.3f, (_uint)0);
 
 		switch (i)
 		{
@@ -1051,7 +1287,7 @@ void CUI_Oper::Create_LeftIcon()
 			m_pArrLeftUI[i][Left_Icon]->Set_Scale(32.f);
 
 			m_pArrLeftUI[i][Left_Icon]->Set_FontText(TEXT("지도"));
-			m_pArrLeftUI[i][Left_Icon]->Set_FontOffset(-75.f, 3.f);
+			m_pArrLeftUI[i][Left_Icon]->Set_FontOffset(-65.f, 3.f);
 
 			GET_COMPONENT_FROM(m_pArrLeftUI[i][Left_BG], CTexture)->Set_CurTextureIndex(0);
 			GET_COMPONENT_FROM(m_pArrLeftUI[i][Left_Icon], CTexture)->Set_CurTextureIndex(0);
@@ -1070,9 +1306,9 @@ void CUI_Oper::Init_CharacterSelect()
 	_float fMidPosY = 150.f;
 	_float fBotPosY = 50.f;
 
-	_float fTopPosXSelectBG = -480.f;
-	_float fMidPosXSelectBG = -515.f;
-	_float fBotPosXSelectBG = -530.f;
+	_float fTopPosXSelectBG = -465.f;
+	_float fMidPosXSelectBG = -500.f;
+	_float fBotPosXSelectBG = -515.f;
 
 	m_pArrCharacterPort[CP_SelectBG][0]->Set_Pos(fTopPosXSelectBG, fTopPosY);
 	m_pArrCharacterPort[CP_SelectBG][1]->Set_Pos(fMidPosXSelectBG, fMidPosY);
@@ -1099,9 +1335,9 @@ void CUI_Oper::Init_CharacterSelect()
 	m_pArrCharacterPort[CP_Port][4]->Set_Pos(fMidPosCharX, -fMidPosY);
 	m_pArrCharacterPort[CP_Port][5]->Set_Pos(fTopPosCharX, -fTopPosY);
 
-	_float fTopPosIconX = -505.f;
-	_float fMidPosIconX = -540.f;
-	_float fBotPosIconX = -555.f;
+	_float fTopPosIconX = -490.f;
+	_float fMidPosIconX = -525.f;
+	_float fBotPosIconX = -540.f;
 
 	m_pArrCharacterPort[CP_Class][0]->Set_FontText(TEXT("블레이드"));
 	m_pArrCharacterPort[CP_Class][0]->Set_Pos(fTopPosIconX, fTopPosY);
@@ -1218,6 +1454,12 @@ void CUI_Oper::Init_TeamIcon()
 
 			break;
 		case Client::LEVEL_HWARA:
+			GET_COMPONENT_FROM(m_pArrTeamIcon[i][0], CTexture)->Set_CurTextureIndex(1);
+			m_pArrTeamIcon[i][0]->Set_Pos(-325.f, -27.f);
+
+			GET_COMPONENT_FROM(m_pArrTeamIcon[i][1], CTexture)->Set_CurTextureIndex(0);
+			m_pArrTeamIcon[i][1]->Set_Pos(325.f, -27.f);
+
 			break;
 		}
 	}
@@ -1293,7 +1535,7 @@ void CUI_Oper::Create_StrongHoldEffect()
 	m_pStrongHoldEffect->Set_Sort(0.495f);
 	m_pStrongHoldEffect->Set_Color(_float4(1.f, 1.f, 1.f, 0.4f));
 
-	CREATE_GAMEOBJECT(m_pStrongHoldEffect, RENDER_UI);
+	CREATE_GAMEOBJECT(m_pStrongHoldEffect, GROUP_UI);
 	DELETE_GAMEOBJECT(m_pStrongHoldEffect);
 
 	for (int i = 0; i < 6; ++i)
@@ -1302,7 +1544,7 @@ void CUI_Oper::Create_StrongHoldEffect()
 
 		m_pOperList.push_back(m_pArrStrongHoldEffect[i]);
 
-		CREATE_GAMEOBJECT(m_pArrStrongHoldEffect[i], RENDER_UI);
+		CREATE_GAMEOBJECT(m_pArrStrongHoldEffect[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pArrStrongHoldEffect[i]);
 	}
 }
@@ -1338,6 +1580,39 @@ void CUI_Oper::Init_StrongHoldUI()
 		break;
 
 	case LEVEL_HWARA:
+
+		for (int i = 0; i < SP_End; ++i)
+		{
+			for (int j = 0; j < 3; ++j)
+			{
+				m_pArrStrongHoldUI[i][j]->Set_PosX(23.f);
+
+				if (j == 1)
+				{
+					GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(1);
+				}
+				else
+				{
+					if (i == SP_TEXT)
+					{
+						GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(0);
+						continue;
+					}
+
+					GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(2);
+				}
+			}
+		}
+
+		m_pArrStrongHoldUI[SP_BG][0]->Set_PosY(-22.f);
+		m_pArrStrongHoldUI[SP_Outline][0]->Set_PosY(-23.f);
+		m_pArrStrongHoldUI[SP_TEXT][0]->Set_PosY(-26.f);
+
+		m_pArrStrongHoldUI[SP_BG][1]->Set_PosY(155.f);
+		m_pArrStrongHoldUI[SP_Outline][1]->Set_PosY(155.f);
+		m_pArrStrongHoldUI[SP_Icon][1]->Set_PosY(155.f);
+		m_pArrStrongHoldUI[SP_TEXT][1]->Set_PosY(150.f);
+
 		break;
 	}
 }
@@ -1357,6 +1632,14 @@ void CUI_Oper::Init_StrongHoldEffect()
 		break;
 
 	case LEVEL_HWARA:
+		for (int i = 0; i < 6; ++i)
+			m_pArrStrongHoldEffect[i]->Set_PosX(23.f);
+
+		m_pArrStrongHoldEffect[0]->Set_PosY(-22.f);
+		m_pArrStrongHoldEffect[1]->Set_PosY(155.f);
+		m_pArrStrongHoldEffect[3]->Set_PosY(-22.f);
+		m_pArrStrongHoldEffect[4]->Set_PosY(155.f);
+
 		break;
 	}
 }
@@ -1419,7 +1702,7 @@ void CUI_Oper::Create_OperTimer()
 
 		m_pOperList.push_back(m_pTimer[i]);
 
-		CREATE_GAMEOBJECT(m_pTimer[i], RENDER_UI);
+		CREATE_GAMEOBJECT(m_pTimer[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pTimer[i]);
 	}
 }
@@ -1498,6 +1781,31 @@ void CUI_Oper::Init_PointInfo()
 
 	_float fInfoBGMag = 1.8f;
 
+
+
+	if (m_eLoadLevel == LEVEL_HWARA)
+	{
+		for (int i = 0; i < Info_End; ++i)
+		{
+			for (int j = 0; j < 3; ++j)
+				m_pArrPointInfo[j][i]->Set_PosX(23.f);
+
+			m_pArrPointInfo[0][i]->Set_PosY(-22.f - 40.f);
+			m_pArrPointInfo[1][i]->Set_PosY(155.f - 40.f);
+
+			m_pArrPointInfo[2][i]->Set_PosY(2200.f - 40.f);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < Info_End; ++i)
+		{
+			m_pArrPointInfo[0][i]->Set_PosY(-4.f - 40.f);
+			m_pArrPointInfo[1][i]->Set_PosY(-195.f - 40.f);
+			m_pArrPointInfo[2][i]->Set_PosY(220.f - 40.f);
+		}
+	}
+
 	for (int i = 0; i < 3; ++i)
 	{
 		GET_COMPONENT_FROM(m_pArrPointInfo[i][Info_Icon], CTexture)->Set_CurTextureIndex(i);
@@ -1505,7 +1813,14 @@ void CUI_Oper::Init_PointInfo()
 		switch (i)
 		{
 		case 0:
-			m_pArrPointInfo[i][Info_Icon]->Set_FontText(TEXT("적 군사력 감소"));
+			if (m_eLoadLevel == LEVEL_HWARA)
+			{
+				m_pArrPointInfo[i][Info_Icon]->Set_FontText(TEXT("적 거점 공격 가능"));
+			}
+			else
+			{
+				m_pArrPointInfo[i][Info_Icon]->Set_FontText(TEXT("적 군사력 감소"));
+			}
 			m_pArrPointInfo[i][Info_Icon]->Set_FontOffset(fOffsetX, fOffsetY);
 
 			fFontScaleX = m_pArrPointInfo[i][Info_Icon]->Get_Scale().x;
@@ -1513,7 +1828,14 @@ void CUI_Oper::Init_PointInfo()
 			fInfoBGSizeX = fFontSizeX + fFontScaleX + fOffsetX;
 
 			m_pArrPointInfo[i][Info_BG]->Set_ScaleX(fFontSizeX * fInfoBGMag);
-			m_pArrPointInfo[i][Info_Icon]->Set_PosX(-fFontSizeX * 0.5f);
+			if (m_eLoadLevel == LEVEL_HWARA)
+			{
+				m_pArrPointInfo[i][Info_Icon]->Set_PosX(23.f + -fFontSizeX * 0.5f);
+			}
+			else
+			{
+				m_pArrPointInfo[i][Info_Icon]->Set_PosX(-fFontSizeX * 0.5f);
+			}
 
 			break;
 
@@ -1526,7 +1848,14 @@ void CUI_Oper::Init_PointInfo()
 			fInfoBGSizeX = fFontSizeX + fFontScaleX + fOffsetX;
 
 			m_pArrPointInfo[i][Info_BG]->Set_ScaleX(fFontSizeX * fInfoBGMag);
-			m_pArrPointInfo[i][Info_Icon]->Set_PosX(-fFontSizeX * 0.5f);
+			if (m_eLoadLevel == LEVEL_HWARA)
+			{
+				m_pArrPointInfo[i][Info_Icon]->Set_PosX(23.f + -fFontSizeX * 0.5f);
+			}
+			else
+			{
+				m_pArrPointInfo[i][Info_Icon]->Set_PosX(-fFontSizeX * 0.5f);
+			}
 			break;
 
 		case 2:
@@ -1542,13 +1871,6 @@ void CUI_Oper::Init_PointInfo()
 			break;
 		}
 	}
-
-	for (int i = 0; i < Info_End; ++i)
-	{
-		m_pArrPointInfo[0][i]->Set_PosY(-4.f - 40.f);
-		m_pArrPointInfo[1][i]->Set_PosY(-195.f - 40.f);
-		m_pArrPointInfo[2][i]->Set_PosY(220.f - 40.f);
-	}
 }
 
 void CUI_Oper::Create_TargetPoint()
@@ -1563,7 +1885,6 @@ void CUI_Oper::Create_TargetPoint()
 
 	CREATE_GAMEOBJECT(m_pTargetPoint, GROUP_UI);
 	DELETE_GAMEOBJECT(m_pTargetPoint);
-
 
 	for (int i = 0; i < 2; ++i)
 	{
@@ -1590,6 +1911,28 @@ void CUI_Oper::Create_TargetPoint()
 
 		CREATE_GAMEOBJECT(m_pArrTargetPoint[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pArrTargetPoint[i]);
+	}
+}
+
+void CUI_Oper::Create_PlayerIcon()
+{
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pPlayerIcon[i] = CUI_Object::Create();
+
+		m_pPlayerIcon[i]->Set_Sort(0.4f);
+
+		GET_COMPONENT_FROM(m_pPlayerIcon[i], CTexture)->Remove_Texture(0);
+		Read_Texture(m_pPlayerIcon[i], "/MiniMap", "PlayerIcon");
+		Read_Texture(m_pPlayerIcon[i], "/MiniMap", "DeadIcon");
+		Read_Texture(m_pPlayerIcon[i], "/MiniMap", "BattleIcon");
+
+		m_pPlayerIcon[i]->Set_Scale(30.f);
+
+		m_pOperList.push_back(m_pPlayerIcon[i]);
+
+		CREATE_GAMEOBJECT(m_pPlayerIcon[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPlayerIcon[i]);
 	}
 }
 
@@ -1628,6 +1971,67 @@ void CUI_Oper::Create_BriefingUI()
 
 }
 
+void CUI_Oper::Create_SelectEffect()
+{
+	m_pSelectEffect = CUI_Object::Create();
+
+	m_pSelectEffect->Set_UIShaderFlag(SH_UI_HARDBLOOM);
+
+
+	GET_COMPONENT_FROM(m_pSelectEffect, CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_SelectEffect);
+
+	m_pSelectEffect->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_256CircleOutline4px.dds"));
+	m_pSelectEffect->SetTexture(TEXT("../Bin/Resources/Textures/UI/Oper/Effect/T_Pattern_53.dds"));
+
+	m_pSelectEffect->Set_Sort(0.45f);
+
+	m_pSelectEffect->Set_Color(_float4(0.6f, 0.55f, 0.4f, 0.3f));
+
+	CREATE_GAMEOBJECT(m_pSelectEffect, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pSelectEffect);
+
+	for (int i = 0; i < 7; ++i)
+	{
+		m_pArrSelectEffect[i] = m_pSelectEffect->Clone();
+
+		m_pArrSelectEffect[i]->Set_FadeDesc(0.3f, (_uint)0);
+
+		if (i > 5)
+		{
+			m_pArrSelectEffect[i]->Set_Scale(70.f);
+		}
+		else
+		{
+			m_pArrSelectEffect[i]->Set_Scale(65.f);
+		}
+
+		m_pOperList.push_back(m_pArrSelectEffect[i]);
+
+		CREATE_GAMEOBJECT(m_pArrSelectEffect[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pArrSelectEffect[i]);
+	}
+}
+
+void CUI_Oper::Init_SelectEffect()
+{
+	_float fTopPosY = 250.f;
+	_float fMidPosY = 150.f;
+	_float fBotPosY = 50.f;
+
+	_float fTopPosCharX = -555.f;
+	_float fMidPosCharX = -590.f;
+	_float fBotPosCharX = -605.f;
+
+	m_pArrSelectEffect[0]->Set_Pos(fTopPosCharX, fTopPosY);
+	m_pArrSelectEffect[1]->Set_Pos(fMidPosCharX, fMidPosY);
+	m_pArrSelectEffect[2]->Set_Pos(fBotPosCharX, fBotPosY);
+	m_pArrSelectEffect[3]->Set_Pos(fBotPosCharX, -fBotPosY);
+	m_pArrSelectEffect[4]->Set_Pos(fMidPosCharX, -fMidPosY);
+	m_pArrSelectEffect[5]->Set_Pos(fTopPosCharX, -fTopPosY);
+
+	m_pArrSelectEffect[6]->Set_Pos(-fMidPosCharX, fMidPosY);
+}
+
 void CUI_Oper::Bind_Shader()
 {
 	GET_COMPONENT_FROM(m_pOperBG[OB_Smoke], CShader)->CallBack_SetRawValues += bind(&CUI_Oper::Set_Shader_Smoke, this, placeholders::_1, "g_fValue");
@@ -1647,4 +2051,66 @@ void CUI_Oper::Bind_Btn()
 	}
 
 	m_pRespawnBtn->CallBack_PointDown += bind(&CUI_Oper::On_PointDown_RespawnBtn, this, 0);
+}
+
+void CUI_Oper::Create_ConquestBlur()
+{
+	m_pConquestBlur = CUI_Object::Create();
+
+	GET_COMPONENT_FROM(m_pConquestBlur, CTexture)->Remove_Texture(0);
+	Read_Texture(m_pConquestBlur, "/Oper/Effect", "Blur");
+
+	m_pConquestBlur->Set_FadeDesc(0.3f);
+	m_pConquestBlur->Set_Sort(0.5f);
+
+	CREATE_GAMEOBJECT(m_pConquestBlur, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pConquestBlur);
+
+	for (int i = 0; i < 3; ++i)
+	{
+		m_pArrConquestBlur[i] = m_pConquestBlur->Clone();
+
+		if (i == 0)
+		{
+			m_pArrConquestBlur[i]->Set_TextureIndex(0);
+			m_pArrConquestBlur[i]->Set_Scale(80.f);
+		}
+		else
+		{
+			m_pArrConquestBlur[i]->Set_TextureIndex(1);
+			m_pArrConquestBlur[i]->Set_Scale(150.f);
+		}
+
+		m_pOperList.push_back(m_pArrConquestBlur[i]);
+
+		CREATE_GAMEOBJECT(m_pArrConquestBlur[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pArrConquestBlur[i]);
+	}
+}
+
+void CUI_Oper::Init_ConquestBlur()
+{
+	switch (m_eLoadLevel)
+	{
+	case Client::LEVEL_PADEN:
+
+		for (int i = 0; i < 3; ++i)
+			m_pArrConquestBlur[i]->Set_PosX(0);
+
+		m_pArrConquestBlur[0]->Set_PosY(-4.f);
+		m_pArrConquestBlur[1]->Set_PosY(-195.f);
+		m_pArrConquestBlur[2]->Set_PosY(220.f);
+
+		break;
+	case Client::LEVEL_HWARA:
+
+		for (int i = 0; i < 3; ++i)
+			m_pArrConquestBlur[i]->Set_PosX(23.f);
+
+		m_pArrConquestBlur[0]->Set_PosY(-22.f);
+		m_pArrConquestBlur[1]->Set_PosY(155.f);
+
+		break;
+	}
+
 }

@@ -2,6 +2,7 @@
 #include "CShootAttack_Qanda.h"
 
 #include "UsefulHeaders.h"
+#include "CPhysXCharacter.h"
 
 #include "CAnimator.h"
 #include "CUnit.h"
@@ -15,6 +16,8 @@
 #include "CCamera_Follow.h"
 #include "CUnit_Qanda.h"
 #include "CAnimWeapon.h"
+#include "CAnimWeapon_Crow.h"
+
 
 CShootAttack_Qanda::CShootAttack_Qanda()
 {
@@ -55,7 +58,7 @@ HRESULT CShootAttack_Qanda::Initialize()
 	m_iStopIndex = 0;
 	m_iAttackEndIndex = 0;
 
-	Add_KeyFrame(32, 1);
+	//Add_KeyFrame(32, 1);
 
 	//Vertical은 전부 Land로 맞춤
 	/* Setting for Blendable */
@@ -154,27 +157,30 @@ HRESULT CShootAttack_Qanda::Initialize()
 void CShootAttack_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	if (pOwner->Get_Status().eChargeType == CUnit::UNIT_CHARGESTEP1)
-		m_fDamagePumping = 1.f;
+		m_fDamagePumping = 1.5f;
 	else if (pOwner->Get_Status().eChargeType == CUnit::UNIT_CHARGESTEP2)
-		m_fDamagePumping = 1.2f;
+		m_fDamagePumping = 2.f;
 	else if (pOwner->Get_Status().eChargeType == CUnit::UNIT_CHARGESTEP3)
 	{
-		m_fDamagePumping = 1.5f;
+		m_fDamagePumping =	4.f;
 		m_iAnimIndex = 8;
 	}
 
 	if (ePrevType == STATE_ATTACK_BEGIN_SNIPING_QANDA ||
 		ePrevType == STATE_ATTACK_BEGIN_QANDA)
-		m_fDamagePumping = 0.7f;
+		m_fDamagePumping = 1.f;
 
-	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLAUNCH, m_fInterPolationTime, m_fAnimSpeed);
+	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
+
+	static_cast<CUnit_Qanda*>(pOwner)->Set_CrowAnimIndex(16, m_fInterPolationTime, m_fAnimSpeed);
 
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed * 0.7f;
 	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed * 0.7f;
 
 	//static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
-	static_cast<CUnit_Qanda*>(pOwner)->Shoot_Crow();
+	//static_cast<CUnit_Qanda*>(pOwner)->Shoot_Crow();
 	//static_cast<CUnit_Qanda*>(pOwner)->Enable_AnimWeapon(false);
+	static_cast<CUnit_Qanda*>(pOwner)->Shoot_AnimCrow();
 
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_DEFAULT);
     
@@ -191,13 +197,9 @@ STATE_TYPE CShootAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CShootAttack_Qanda::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->Get_SkillTrigger().bSkillETrigger = false;
-	pOwner->Set_AnimWeaponIndex(0, m_fInterPolationTime, m_fAnimSpeed);
 
-	if (!m_bAttackTrigger)
-		static_cast<CUnit_Qanda*>(pOwner)->Create_Crow();
-
-	static_cast<CUnit_Qanda*>(pOwner)->Enable_AnimWeapon(true);
+	//if (!m_bAttackTrigger)
+	//	static_cast<CUnit_Qanda*>(pOwner)->Create_Crow();
 
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed;
@@ -227,7 +229,7 @@ void CShootAttack_Qanda::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator,
 	{
 
 	case 1:
-		static_cast<CUnit_Qanda*>(pOwner)->Create_Crow();
+		//static_cast<CUnit_Qanda*>(pOwner)->Create_Crow();
 		m_bAttackTrigger = true;
 		break;
 

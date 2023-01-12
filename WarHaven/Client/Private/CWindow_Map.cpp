@@ -752,6 +752,11 @@ void CWindow_Map::Save_MapData(string BasePath, string SaveName)
 {
     MAPDATA     tMapData;
     ofstream	writeFile;
+
+    static _uint g_iIndex = 0;
+
+    SaveName += to_string(g_iIndex++);
+
     if (FAILED(tMapData.SaveData(writeFile, BasePath, SaveName)))
     {
         Call_MsgBox(L"SSave ½ÇÆÐ ??!?!");
@@ -2005,7 +2010,7 @@ _bool CWindow_Map::Calculate_Pick()
         return bPicked;
     _float4x4 OwnerMat = m_PickTargetMesh->Get_Owner()->Get_Transform()->Get_WorldMatrix();
 
-    if (KEY(LBUTTON, TAP))
+    if ( KEY(LBUTTON, TAP) && KEY(R, NONE))
     {
         _float4 OutPos;
         _float4 OutNorm;
@@ -2022,6 +2027,26 @@ _bool CWindow_Map::Calculate_Pick()
             case PICK_CLONE:
                 m_pObjectController->Func_PickStart();
                 break;
+
+            case PICK_OBJECT:
+            case PICK_ANCHOR:
+                //Place_Object();
+                //Change_Object_UpDir();
+                m_pObjectController->Func_Picking();
+                break;
+                if (m_bTerrainPick) {
+            case PICK_TERRAINVERT:
+                Increase_Height();
+                break;
+            case PICK_TERRAINTEX:
+                Change_TileTexture();
+                break;
+            case PICK_INSTANCEOBJECT:
+                Make_InstanceObject();
+                break;
+                }
+
+
             }
 
         }
@@ -2038,8 +2063,6 @@ _bool CWindow_Map::Calculate_Pick()
             m_fDelayTimeAcc = 0.f;
 
         }
-
-
 
 
         _float4 OutPos;

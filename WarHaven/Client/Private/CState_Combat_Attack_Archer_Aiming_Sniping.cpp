@@ -58,7 +58,6 @@ void CState_Combat_Attack_Archer_Aiming_Sniping::Enter(CUnit* pOwner, CAnimator*
 {
 	__super::Enter_Aiming(pOwner, pAnimator, ePrevType);
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
-	GAMEINSTANCE->Start_RadialBlur(0.01f);
 
 }
 
@@ -71,7 +70,6 @@ void CState_Combat_Attack_Archer_Aiming_Sniping::Exit(CUnit* pOwner, CAnimator* 
 {
 	__super::Exit_Aiming(pOwner, pAnimator);
 	__super::Exit(pOwner, pAnimator);
-	GAMEINSTANCE->Stop_RadialBlur();
 
 }
 

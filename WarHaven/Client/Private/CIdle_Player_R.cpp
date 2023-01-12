@@ -110,8 +110,7 @@ void CIdle_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
         ePrevType == STATE_SPRINT_END_PLAYER
         )
         m_fInterPolationTime = 0.f;
-    
-
+   
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

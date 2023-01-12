@@ -27,6 +27,7 @@ class CUI_HeroGauge;
 class CUI_Crosshair;
 class CUI_Skill;
 
+class CUI_Info;
 class CUI_KillName;
 class CUI_KillLog;
 class CUI_Result;
@@ -36,10 +37,16 @@ class CUI_Paden;
 class CUI_Revive;
 class CUI_Interact;
 class CUI_MiniMap;
+class CUI_ScoreBoard;
+class CUI_ScoreInfo;
+class CUI_Cannon;
+class CUI_Main;
+class CUI_Barracks;
 
 class CTeamConnector;
 
 class CFadeDark;
+class CMainMenuPlayer;
 
 class CUser
 {
@@ -117,6 +124,8 @@ public:
 	void Set_HP(_float fCurValue, _float fMaxValue);
 	void Set_HeroGauge(_float fCurValue, _float fMaxValue);
 	void Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSkillMaxCoolTime);
+	void SetActive_HUD_RevivalUI(_bool value);
+	void SetActive_CannonCrosshair(_bool value);
 
 	void SetActive_Cursor(_bool value);
 
@@ -148,11 +157,17 @@ public:		// 파덴
 	void Set_Team(CTeamConnector* pAllyTeam, CTeamConnector* pEnemyTeam);
 
 	void SetActive_PadenUI(_bool value);
+	void SetActive_ScoreBoard(_bool value);
 
 public:		// 브리핑
 	void Set_Respawn(_bool value);
+	void Set_OperPointColor(_bool IsMainTeam, _uint iPoinIdx);
+	void Set_OperPlayer(CPlayer* pPlayer);
 	void SetActive_OperUI(_bool value);
 	_bool Get_SelectTargetPoint();
+
+	void Set_MainMenuUnit(_uint iUnitIdx);
+	void Change_ModelParts(_uint iClassType, MODEL_PART_TYPE eModelPartType);
 
 public:
 	void On_EnterLevel();
@@ -171,6 +186,7 @@ public:
 	void SetActive_TrainingPopup(_bool value, _uint iIndex);
 
 	void SetActive_MiniMap(_bool value);
+	void SetActive_InfoUI(_bool value);
 
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo);
 	void Toggle_DeadUI(_bool value, _bool isFall = false);
@@ -178,6 +194,7 @@ public:
 
 public:
 	void Enable_Popup(_uint iPopupType);
+	void Enable_SkinPopup(_uint iSkin);
 
 public:	// 킬로그
 	void Add_KillLog(CPlayer* attacker, CPlayer* victim);
@@ -194,6 +211,33 @@ public:	// 상호작용
 	void Set_InteractKey(_uint iKeyIndex);
 	void Set_InteractText(wstring wstrText);
 	void Set_InteractTarget(CGameObject* pInteractTarget);
+	void SetActive_CannonUI(_bool value);
+	void Set_CannonCoolTime(_float fTime, _float fMaxTime);
+	void SetActive_CannonCoolTime(_bool value);
+
+public: // 플레이어 KDA
+	void Get_ScoreInfo(CPlayer* pPlayer);
+	map<_uint, list<CUI_ScoreInfo*>> Get_ScoreInfoMap();
+
+	void Sort_ScoreInfo();
+	void Set_ScoreBoardConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime);
+	void Set_ScoreBoardGaugeColor(_bool IsMainTeam, _uint iPointIdx);
+	void Set_ScoreBoardPointColor(_bool IsMainTeam, _uint iPoinIdx);
+	void Set_ScoreBoardPlayer(CPlayer* pPlayer);
+
+public:	// 메인메뉴
+	void SetActive_MainTopBtn(_bool value);
+	void Set_TopBtnEffectPosX(_float fPosX);
+
+	void SetActive_Barracks(_bool value);
+	void Unlock_RabbitHat();
+	void Unlock_EpicWarriorClothes();
+	void SetActive_SkinPopup(_bool value);
+
+	void Set_BreezeTime(_float fCurTime, _float fMaxTime);
+	void SetActive_Gauge(_bool value);
+	void Disable_LancerGauge();
+	void Set_LancerGauge(_uint iGaugeIdx, _float fCurTime, _float fMaxTime);
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
@@ -206,12 +250,20 @@ private:
 	CUI_Popup* m_pUI_Popup = nullptr;
 	CUI_Result* m_pUI_Result = nullptr;
 
+	CUI_Main* m_pMainUI = nullptr;
+	CUI_Barracks* m_pBarracks = nullptr;
+
+	CMainMenuPlayer* m_pMainMenuPlayer = nullptr;
+
 private:	// 소생
 	CUI_Revive* m_pReviveUI[7];
 	_uint m_iReviveIdx = 0;
 
 private:	// 상호작용
 	CUI_Interact* m_pInteractUI = nullptr;
+	CUI_Cannon* m_pCannonUI = nullptr;
+
+	CUI_Info* m_pInfoUI = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;
@@ -225,6 +277,7 @@ private:
 	CUI_Dead* m_pUI_Dead = nullptr;
 
 	CUI_MiniMap* m_pMiniMap = nullptr;
+	CUI_ScoreBoard* m_pScoreBoard = nullptr;
 
 	CUI_Damage* m_pUI_Damage[5];
 	_uint m_iDamageFontIdx = 0;
@@ -238,7 +291,6 @@ private:
 	list<CUI_KillName*> m_pKillNameList;
 	CUI_KillName* m_pKillName[5];
 	_uint m_iKillNameIdx = 0;
-
 
 private:
 	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_TYPE_CLIENT::LEVEL_END;

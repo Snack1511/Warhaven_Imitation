@@ -5,6 +5,9 @@
 
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Qanda.h"
+
+#include "CAnimWeapon_Crow.h"
 
 #include "CUser.h"
 #include "CColorController.h"
@@ -88,6 +91,8 @@ HRESULT CRun_Qanda::Initialize()
    m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
    m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
+   Init_CommonState_Hero_Player();
+
     return S_OK;
 }
 
@@ -95,6 +100,12 @@ void CRun_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType
 {
     m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
+    CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow();
+
+    if (pAnimCrow->Get_Phase() == CAnimWeapon_Crow::ePhyxState::eIDLE)
+    {
+        static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->Set_PhiysicsSpeed(m_fMaxSpeed);
+    }
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -141,6 +152,7 @@ STATE_TYPE CRun_Qanda::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
         // 걸어간다.
         if (KEY(W, HOLD) ||
             KEY(A, HOLD) ||
+            KEY(S, HOLD) ||
             KEY(D, HOLD))
         {
 

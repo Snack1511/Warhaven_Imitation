@@ -26,7 +26,7 @@ HRESULT CState_Common_Fall_Fiona_R::Initialize()
 
     m_iAINextState = AI_STATE_COMMON_LAND_FIONA_R;
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 CState_Common_Fall_Fiona_R* CState_Common_Fall_Fiona_R::Create()

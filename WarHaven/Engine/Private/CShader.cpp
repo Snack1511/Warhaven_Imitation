@@ -247,8 +247,12 @@ HRESULT CShader::SetUp_Shader(const _tchar* pFilePath, const D3D11_INPUT_ELEMENT
 
 		PassDesc.pPass->GetDesc(&Pass);
 
-		if (FAILED(DEVICE->CreateInputLayout(pElements, iNumElement, Pass.pIAInputSignature, Pass.IAInputSignatureSize, &PassDesc.pInputLayout)))
+		HRESULT Result = DEVICE->CreateInputLayout(pElements, iNumElement, Pass.pIAInputSignature, Pass.IAInputSignatureSize, &PassDesc.pInputLayout);
+
+		if (FAILED(Result))
+		{
 			return E_FAIL;
+		}
 
 		m_Passes.push_back(PassDesc);
 	}

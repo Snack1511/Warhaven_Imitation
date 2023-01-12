@@ -5,7 +5,7 @@
 #include "CPositionTable.h"
 
 #include "CTrigger_BootCamp.h"
-#include "CTrigger_Paden.h"
+#include "CTrigger_Stage.h"
 
 #include "CPlayer.h"
 
@@ -35,12 +35,16 @@
 #include "CAIController.h"
 #pragma endregion AI 성향
 
+#pragma region 길찾기
+#include "CCellLayer.h"
+#pragma endregion 길찾기
+
 IMPLEMENT_SINGLETON(CGameSystem);
 
 
 #define READY_GAMEOBJECT(instance, grouptype) vecReadyObjects.push_back(make_pair(instance, grouptype))
 
-#define TRIGGER_PADEN(mapkey) static_cast<CTrigger_Paden*>(m_mapAllTriggers[Convert_ToHash(mapkey)])
+#define TRIGGER_STAGE(mapkey) static_cast<CTrigger_Stage*>(m_mapAllTriggers[Convert_ToHash(mapkey)])
 
 CGameSystem::CGameSystem()
 {
@@ -70,6 +74,12 @@ HRESULT CGameSystem::Initialize()
 		return E_FAIL;
 	}
 
+	if (FAILED(m_pPositionTable->Load_Position("Position_Hwara")))
+	{
+		Call_MsgBox(L"Failed to Load_Position : CGameSystem");
+		return E_FAIL;
+	}
+
 	if (FAILED(SetUp_AllPlayerInfos()))
 	{
 		Call_MsgBox(L"Failed to SetUp_AllPlayerInfos : CGameSystem");
@@ -82,6 +92,11 @@ HRESULT CGameSystem::Initialize()
 		return E_FAIL;
 	}
 
+	if (FAILED(SetUp_AllPersonality()))
+	{
+		Call_MsgBox(L"Failed to SetUp_AllPersonality : CGameSystem");
+		return E_FAIL;
+	}
 	return S_OK;
 }
 
@@ -113,6 +128,10 @@ void CGameSystem::Release()
 		m_mapAllPathes[i].clear();
 	}
 
+	Clear_CellLayer();
+
+	Clear_AllPersonality();
+
 }
 
 HRESULT CGameSystem::On_ExitLevel()
@@ -126,7 +145,7 @@ HRESULT CGameSystem::On_ExitLevel()
 		SAFE_DELETE(m_pTeamConnector[i]);
 
 	m_mapAllTriggers.clear();
-
+	Clear_CellLayer();
 	return S_OK;
 }
 
@@ -135,7 +154,6 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	_float4 vPlayerPos = _float4(10.f, 3.f, 10.f);
 
 	CPlayer* pUserPlayer = nullptr;
-
 
 	//pUserPlayer->Get_DefaultReserveStateIndex
 	pUserPlayer = SetUp_Player(HASHCODE(CPlayerInfo_Main));
@@ -148,11 +166,11 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 
 	for (_uint i = 0; i < 1; ++i)
 	{
-		vPlayerPos.z += 10.f;
+		vPlayerPos.z += 3.f;
 		vPlayerPos.x += 1.f;
 
 		CPlayer* pEnemy = nullptr;
-
+			
 		pEnemy = SetUp_Player(Convert_ToHash(L"TestEnemy"));
 		pEnemy->Set_OutlineType(CPlayer::eENEMY);
 		pEnemy->Set_Postion(vPlayerPos);
@@ -166,13 +184,19 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
 
 		// 테스트용 샌드백
-		pEnemy->Reserve_State(STATE_IDLE_WARRIOR_L_AI_ENEMY);
-		// AI 바보만드는 코드
+		//pEnemy->Reserve_State(STATE_IDLE_WARRIOR_L_AI_ENEMY);
+		// AI 바보만드는 코드 (체력 10만)
 		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_idiot);
 
 		// 궁수 테스트
 		pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_ARCHER_R);
-		
+		pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
+
+		// 힐러 테스트
+		//pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_PRIEST);
+		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
+
+
 
 		READY_GAMEOBJECT(pEnemy, GROUP_PLAYER);
 	}
@@ -192,6 +216,13 @@ HRESULT CGameSystem::On_EnterTest()
 HRESULT CGameSystem::On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
 	/* Player */
+
+	if (FAILED(SetUp_DefaultLight_BootCamp()))
+	{
+		Call_MsgBox(L"Failed to SetUp_DefaultLight_BootCamp : CGameSystem");
+		return E_FAIL;
+	}
+
 	if (FAILED(On_ReadyPlayers_BootCamp(vecReadyObjects)))
 	{
 		Call_MsgBox(L"Failed to On_ReadyPlayers_BootCamp : CGameSystem");
@@ -216,11 +247,6 @@ HRESULT CGameSystem::On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecRead
 		return E_FAIL;
 	}
 
-	if (FAILED(SetUp_DefaultLight_BootCamp()))
-	{
-		Call_MsgBox(L"Failed to SetUp_DefaultLight_BootCamp : CGameSystem");
-		return E_FAIL;
-	}
 
 	return S_OK;
 }
@@ -259,13 +285,13 @@ HRESULT CGameSystem::On_ReadyPlayers_BootCamp(vector<pair<CGameObject*, _uint>>&
 		case 1:
 			strKey = "EnemyTrio_2";
 			wstrInfoKey = L"EnemyTrio_1";
-			eEnemyState = STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY; // STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY  가드 테스트용
+			eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY; // STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY  가드 테스트용
 
 			break;
 		case 2:
 			strKey = "q";
 			wstrInfoKey = L"EnemyTrio_2";
-			eEnemyState = STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY; // STATE_IDLE_WARRIOR_R_AI_ENEMY
+			eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY; // STATE_IDLE_WARRIOR_R_AI_ENEMY
 			break;
 		case 3:
 			strKey = "EnemyHall";
@@ -668,7 +694,20 @@ HRESULT CGameSystem::On_ReadyPlayers_Stage(vector<pair<CGameObject*, _uint>>& ve
 		if (dynamic_cast<CPlayerInfo_SandBack*>(pInfo.second))
 			continue;
 
-		CPlayer* pPlayer = pInfo.second->Make_Player();
+		CPlayerInfo* pPlayerInfo = pInfo.second;
+
+		if (nullptr == pPlayerInfo)
+			continue;
+
+		if (m_mapPersonality.empty())
+			pPlayerInfo->Set_Personality(CAIPersonality::Create(L"Empty_Personality", m_pConditionTable));
+		else
+		{
+			//Personality 랜덤 할당
+			//Leader의 경우 특징적인 Personality할당
+		}
+
+		CPlayer* pPlayer = pPlayerInfo->Make_Player();
 		if (!pPlayer)
 			return E_FAIL;
 
@@ -787,7 +826,7 @@ HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& v
 	string  strTriggerName;
 
 #define ADD_TRIGGER(name, radius, enumtype)   strTriggerName = name;\
-    pTrigger = CTrigger_Paden::Create(strTriggerName, radius, enumtype);\
+    pTrigger = CTrigger_Stage::Create(strTriggerName, radius, enumtype);\
     if (!pTrigger)\
         return E_FAIL;\
     m_mapAllTriggers.emplace(Convert_ToHash(strTriggerName), pTrigger);\
@@ -795,34 +834,34 @@ HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& v
 
 	_float fTriggerSize = 6.f;
 
-	ADD_TRIGGER("Paden_RedTeam_StartTrigger", 2.f, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART);
-	ADD_TRIGGER("Paden_BlueTeam_StartTrigger", 2.f, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART);
+	ADD_TRIGGER("Paden_RedTeam_StartTrigger", 2.f, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eSTART);
+	ADD_TRIGGER("Paden_BlueTeam_StartTrigger", 2.f, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eSTART);
 
 	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Paden_BlueTeam_StartTrigger")]);
 	m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Paden_RedTeam_StartTrigger")]);
 
 	/*map에서 찾아다가 static cast 하는 매크로*/
-	/*TRIGGER_PADEN("Paden_RedTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->IsMainPlayerTeam());
-	TRIGGER_PADEN("Paden_BlueTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->IsMainPlayerTeam());*/
+	/*TRIGGER_STAGE("Paden_RedTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->IsMainPlayerTeam());
+	TRIGGER_STAGE("Paden_BlueTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->IsMainPlayerTeam());*/
 
 	//1. 메인 거점
-	ADD_TRIGGER("Paden_Trigger_A", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN);
+	ADD_TRIGGER("Paden_Trigger_A", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eMAIN);
 	CDominion_Effect* pDominionEffect_A = CDominion_Effect::Create(_float4(1.35f, 1.35f, 1.35f), _float4(-0.8f, 2.f, -0.3f),
-		(_uint)CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN);
+		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eMAIN);
 	READY_GAMEOBJECT(pDominionEffect_A, GROUP_EFFECT);
-	TRIGGER_PADEN("Paden_Trigger_A")->Set_DominionEffect(pDominionEffect_A);
+	TRIGGER_STAGE("Paden_Trigger_A")->Set_DominionEffect(pDominionEffect_A);
 
-	ADD_TRIGGER("Paden_Trigger_R", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN);
+	ADD_TRIGGER("Paden_Trigger_R", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN);
 	CDominion_Effect* pDominionEffect_R = CDominion_Effect::Create(_float4(0.8f, 0.8f, 0.8f), _float4(48.6f, 5.5f, -0.f),
-		(_uint)CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN);
+		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN);
 	READY_GAMEOBJECT(pDominionEffect_R, GROUP_EFFECT);
-	TRIGGER_PADEN("Paden_Trigger_R")->Set_DominionEffect(pDominionEffect_R);
+	TRIGGER_STAGE("Paden_Trigger_R")->Set_DominionEffect(pDominionEffect_R);
 
-	ADD_TRIGGER("Paden_Trigger_C", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON);
+	ADD_TRIGGER("Paden_Trigger_C", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eCANNON);
 	CDominion_Effect* pDominionEffect_C = CDominion_Effect::Create(_float4(1.f, 1.f, 1.f), _float4(-61.8f, 20.4f, 0.2f),
-		(_uint)CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON);
+		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eCANNON);
 	READY_GAMEOBJECT(pDominionEffect_C, GROUP_EFFECT);
-	TRIGGER_PADEN("Paden_Trigger_C")->Set_DominionEffect(pDominionEffect_C);
+	TRIGGER_STAGE("Paden_Trigger_C")->Set_DominionEffect(pDominionEffect_C);
 
 
 
@@ -1123,23 +1162,43 @@ void CGameSystem::On_StartGame()
 	_bool   bTemp = false;
 
 	/* 리더 먼저 */
+	_uint Index = 0;
 	for (auto& elem : m_mapAllPlayers)
 	{
 		/* Leader가 아니면 건너 뛰기 */
 		if (!dynamic_cast<CPlayerInfo_Leader*>(elem.second) && !dynamic_cast<CPlayerInfo_Main*>(elem.second))
 			continue;
 
+		if (elem.second->m_bIsMainPlayer)
+		{
+			_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
+			elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
+
+			continue;
+		}
+
+
+		/*static _uint g_iIndex = 0;
+
+		if (g_iIndex == 0)
+		{
+			g_iIndex++;
+			continue;
+		}
+
+		g_iIndex = 0;*/
+
 		/* ai들은 랜덤 선택 함수 호출 */
 		if (!elem.second->m_bIsMainPlayer)
 			elem.second->Choose_Character();
-
 
 		/* 자기 진영에서 포지션 가져오기 */
 		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
 		elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
 
+		Index++;
 	}
-
+	//여기..
 	/* Default 애덜 */
 #ifdef _DEBUG
 #else
@@ -1149,10 +1208,20 @@ void CGameSystem::On_StartGame()
 		if (!dynamic_cast<CPlayerInfo_Default*>(elem.second))
 			continue;
 
+		/*static _uint g_iIndex = 0;
+
+		if (g_iIndex == 0)
+		{
+			g_iIndex++;
+			continue;
+		}
+
+		g_iIndex = 0;*/
+
 		/* ai들은 랜덤 선택 함수 호출 */
 		elem.second->Choose_Character();
 
-		/* 자기 진영에서 포지션 가져오기 */
+	//	/* 자기 진영에서 포지션 가져오기 */
 		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
 		elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
 
@@ -1161,6 +1230,14 @@ void CGameSystem::On_StartGame()
 #endif // _DEBUG
 
 
+	if (m_eCurStageType == eSTAGE_HWARA)
+	{
+		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Red"));
+		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Blue"));
+
+		TRIGGER_STAGE("Hwara_Final_Red")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]);
+		TRIGGER_STAGE("Hwara_Final_Blue")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]);
+	}
 
 
 }
@@ -1187,6 +1264,137 @@ void CGameSystem::On_FinishGame(CTeamConnector* pTeamConnector)
 		// 승리
 		CUser::Get_Instance()->SetActive_Result(0, true);
 	}
+}
+
+HRESULT CGameSystem::On_ReadyHwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+	m_eCurStageType = eSTAGE_HWARA;
+
+	
+
+
+	/* 플레이어 모두 생성해서 분류까지 완료 */
+	if (FAILED(On_ReadyPlayers_Stage(vecReadyObjects)))
+		return E_FAIL;
+
+
+#ifdef _DEBUG
+	cout << "플레이어 생성 후 팀 분류 완료." << endl;
+#endif // _DEBUG
+
+	/* 플레이어 모두 생성해서 분류까지 완료 */
+	if (FAILED(On_ReadyTirggers_Hwara(vecReadyObjects)))
+		return E_FAIL;
+
+#ifdef _DEBUG
+	cout << "트리거 생성 완료." << endl;
+#endif // _DEBUG
+
+	if (FAILED(On_ReadyDestructible_Hwara(vecReadyObjects)))
+		return E_FAIL;
+
+
+
+	SetUp_DefaultLight_Hwara();
+
+	return S_OK;
+}
+
+HRESULT CGameSystem::On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+	//0. 양쪽 진영
+	CTrigger* pTrigger = nullptr;
+	string  strTriggerName;
+
+#define ADD_TRIGGER(name, radius, enumtype)   strTriggerName = name;\
+    pTrigger = CTrigger_Stage::Create(strTriggerName, radius, enumtype);\
+    if (!pTrigger)\
+        return E_FAIL;\
+    m_mapAllTriggers.emplace(Convert_ToHash(strTriggerName), pTrigger);\
+    READY_GAMEOBJECT(pTrigger, GROUP_TRIGGER);
+
+	_float fTriggerSize = 6.f;
+
+	ADD_TRIGGER("Hwara_RedTeam_Start", 2.f, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eSTART);
+	ADD_TRIGGER("Hwara_BlueTeam_Start", 2.f, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eSTART);
+
+	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_BlueTeam_Start")]);
+	m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_RedTeam_Start")]);
+
+
+	//1. 메인 거점
+	ADD_TRIGGER("Hwara_Center", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER);
+	CDominion_Effect* pDominionEffect_A = CDominion_Effect::Create(_float4(1.35f, 1.35f, 1.35f), Find_Position("Hwara_Center"),
+		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER);
+	READY_GAMEOBJECT(pDominionEffect_A, GROUP_EFFECT);
+	TRIGGER_STAGE("Hwara_Center")->Set_DominionEffect(pDominionEffect_A);
+
+	ADD_TRIGGER("Hwara_Respawn", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN);
+	CDominion_Effect* pDominionEffect_R = CDominion_Effect::Create(_float4(0.8f, 0.8f, 0.8f), Find_Position("Hwara_Respawn"),
+		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN);
+	READY_GAMEOBJECT(pDominionEffect_R, GROUP_EFFECT);
+	TRIGGER_STAGE("Hwara_Respawn")->Set_DominionEffect(pDominionEffect_R);
+
+
+	//1. final 거점
+	//blue : 블루팀의 최종 타겟
+	ADD_TRIGGER("Hwara_Final_Blue", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_FINAL);
+	CDominion_Effect* pDominionEffect_F = CDominion_Effect::Create(_float4(1.35f, 1.35f, 1.35f), Find_Position("Hwara_Final_Blue"),
+		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER);
+	
+	READY_GAMEOBJECT(pDominionEffect_F, GROUP_EFFECT);
+	TRIGGER_STAGE("Hwara_Final_Blue")->Set_DominionEffect(pDominionEffect_F);
+
+	ADD_TRIGGER("Hwara_Final_Red", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_FINAL);
+	pDominionEffect_F = CDominion_Effect::Create(_float4(1.35f, 1.35f, 1.35f), Find_Position("Hwara_Final_Red"),
+		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER);
+
+	READY_GAMEOBJECT(pDominionEffect_F, GROUP_EFFECT);
+	TRIGGER_STAGE("Hwara_Final_Red")->Set_DominionEffect(pDominionEffect_F);
+
+
+	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_Final_Blue")]);
+
+	m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_Final_Red")]);
+
+	return S_OK;
+}
+
+HRESULT CGameSystem::On_ReadyDestructible_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+	for (_uint i = 0; i < 8; ++i)
+	{
+		string strPosition = "Hwara_Destructible_";
+		strPosition += to_string(i);
+
+		CDestructible* pDestructible = CDestructible::Create(
+			L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
+			L"FishBarrelParticle",
+			L"WoodenHitParticle",
+			1
+		);
+		_float4 vPos = Find_Position(strPosition);
+		pDestructible->Set_Position(vPos);
+		pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
+		vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));
+	}
+	
+
+	return S_OK;
+}
+
+HRESULT CGameSystem::On_Update_Hwara()
+{
+	return S_OK;
+}
+
+HRESULT CGameSystem::Hwara_EnvironmentEffect()
+{
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Hwara_Pillar", _float4(0.f, 0.f, 0.f));
+
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Hwara_Fire", _float4(0.f, 0.f, 0.f));
+
+	return S_OK;
 }
 
 HRESULT CGameSystem::Load_Position(string strFileKey)
@@ -1291,6 +1499,81 @@ CPath* CGameSystem::Clone_RandomStartPath(CAIController* pOwnerController, eTEAM
 	return pClonePath;
 }
 
+CPath* CGameSystem::Clone_RandomRespawnPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType)
+{
+	if (!pOwnerController)
+		return nullptr;
+
+	string strPathName;
+
+
+	//1. paden이면 main으로 
+	if (m_eCurStageType == eSTAGE_PADEN)
+		strPathName = "Paden_RespawnToMain_0";
+
+	else 
+	{
+		//화라면 center 먹었는지 확인
+		if (m_pTeamConnector[(_uint)eTeamType]->Has_CenterTrigger())
+		{
+			switch (eTeamType)
+			{
+			case Client::eTEAM_TYPE::eRED:
+				strPathName = "Hwara_Respawn_ToBlue";
+				break;
+
+			case Client::eTEAM_TYPE::eBLUE:
+				strPathName = "Hwara_Respawn_ToRed";
+				break;
+
+			case Client::eTEAM_TYPE::eCOUNT:
+				break;
+			default:
+				break;
+			}
+
+		}
+		else
+			strPathName = "Hwara_Respawn_ToCenter";
+	}
+
+	CPath* pClonePath = Clone_Path(strPathName, pOwnerController);
+
+	pOwnerController->Set_NewPath(pClonePath);
+
+	return pClonePath;
+}
+
+CPath* CGameSystem::Clone_CenterPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType)
+{
+	if (!pOwnerController)
+		return nullptr;
+
+	string strPathName;
+
+	switch (eTeamType)
+	{
+	case Client::eTEAM_TYPE::eRED:
+		strPathName = "Hwara_Center_ToBlue_0";
+		break;
+
+	case Client::eTEAM_TYPE::eBLUE:
+		strPathName = "Hwara_Center_ToRed_0";
+		break;
+
+	case Client::eTEAM_TYPE::eCOUNT:
+		break;
+	default:
+		break;
+	}
+
+	CPath* pClonePath = Clone_Path(strPathName, pOwnerController);
+
+	pOwnerController->Set_NewPath(pClonePath);
+
+	return pClonePath;
+}
+
 CPath* CGameSystem::Get_NearPath(_float4 vPosition)
 {
 	CPath* pReturnPath = nullptr;
@@ -1327,6 +1610,21 @@ CTrigger* CGameSystem::Find_Trigger(string strTriggerKey)
 		return nullptr;
 
 	return iter->second;
+}
+
+void CGameSystem::Enable_HwaraFinalTrigger(eTEAM_TYPE eTeamType)
+{
+	if (eTeamType == eTEAM_TYPE::eBLUE)
+	{
+		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Red"));
+		ENABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Blue"));
+	}
+
+	else
+	{
+		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Blue"));
+		ENABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Red"));
+	}
 }
 
 CPlayerInfo* CGameSystem::Find_PlayerInfo(_hashcode hcCode)
@@ -1438,6 +1736,13 @@ HRESULT CGameSystem::SetUp_AllPathes()
 
 			if (iFindKey >= 0)
 				eType = eSTAGE_PADEN;
+			else
+			{
+
+				iFindKey = HashKey.find("Hwara");
+				eType = eSTAGE_HWARA;
+
+			}
 
 			if (eType == eSTAGE_CNT)
 			{
@@ -1453,6 +1758,120 @@ HRESULT CGameSystem::SetUp_AllPathes()
 
 	}
 	return S_OK;
+}
+
+HRESULT CGameSystem::SetUp_AllPersonality()
+{
+	for (filesystem::directory_iterator FileIter("../Bin/Data/GameSystem/Perosnality/");
+		FileIter != filesystem::end(FileIter); ++FileIter)
+	{
+		const filesystem::directory_entry& entry = *FileIter;
+
+		wstring wstrPath = entry.path().relative_path();
+		string strFullPath;
+		strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+		_int iFind = (_int)strFullPath.rfind("/") + 1;
+		string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
+
+
+		if (!entry.is_directory())
+		{
+			_int iFindExt = (int)strFileName.rfind(".");// +1;
+			//string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
+			string HashKey = strFileName.substr(0, iFindExt);
+
+			if (HashKey.find("Test") != -1)
+				continue;
+
+			//CPath* pPath = CPath::Create(HashKey);
+			CAIPersonality* pPersonality = nullptr;
+			pPersonality = Add_Personality(HashKey, wstrPath);
+
+			if (nullptr == pPersonality)
+				return E_FAIL;
+		}
+
+	}
+
+	//m_mapAllPlayers.emplace("Empty", CAIPersonality::Create(L"Empty_Personality", m_pConditionTable));
+
+	return S_OK;
+}
+
+HRESULT CGameSystem::Reload_AllPersonality()
+{
+	Clear_AllPersonality();
+	for (filesystem::directory_iterator FileIter("../Bin/Data/GameSystem/Perosnality/");
+		FileIter != filesystem::end(FileIter); ++FileIter)
+	{
+		const filesystem::directory_entry& entry = *FileIter;
+
+		wstring wstrPath = entry.path().relative_path();
+		string strFullPath;
+		strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+		_int iFind = (_int)strFullPath.rfind("/") + 1;
+		string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
+
+
+		if (!entry.is_directory())
+		{
+			_int iFindExt = (int)strFileName.rfind(".");// +1;
+			//string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
+			string HashKey = strFileName.substr(0, iFindExt);
+
+			if (HashKey.find("Test"))
+				continue;
+
+			//CPath* pPath = CPath::Create(HashKey);
+			CAIPersonality* pPersonality = nullptr;
+			pPersonality = Add_Personality(HashKey, wstrPath);
+
+			if (nullptr == pPersonality)
+				return E_FAIL;
+		}
+
+	}
+	return S_OK;
+}
+
+CAIPersonality* CGameSystem::Add_Personality(string strHashKey, wstring wstrPath)
+{
+	size_t HashCode = Convert_ToHash(strHashKey);
+	CAIPersonality* pPersonality = nullptr;
+	auto Iter = m_mapPersonality.find(HashCode);
+
+	if (m_mapPersonality.end() == Iter)
+	{
+		pPersonality = CAIPersonality::Create(wstrPath, m_pConditionTable);
+		m_mapPersonality.emplace(HashCode, pPersonality);
+	}
+	else
+	{
+		pPersonality = Iter->second;
+	}
+
+
+	return pPersonality;
+}
+
+CAIPersonality* CGameSystem::Find_Personality(string strHashKey)
+{
+	size_t HashCode = Convert_ToHash(strHashKey);
+	auto Iter = m_mapPersonality.find(HashCode);
+	if (m_mapPersonality.end() == Iter)
+		return nullptr;
+	else return Iter->second;
+}
+
+void CGameSystem::Clear_AllPersonality()
+{
+	for (auto Personality : m_mapPersonality)
+	{
+		SAFE_DELETE(Personality.second);
+	}
+	m_mapPersonality.clear();
 }
 
 
@@ -1473,10 +1892,10 @@ HRESULT CGameSystem::SetUp_DefaultLight_BootCamp()
 
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
 	LightDesc.vPosition = _float4(100.f, 200.f, 50.f, 1.f);
-	LightDesc.fRange = 1500.f;
-	LightDesc.vDiffuse = _float4(0.45f, 0.45f, 0.45f, 1.f);
-	LightDesc.vAmbient = _float4(0.15f, 0.15f, 0.15f, 1.f);
-	LightDesc.vSpecular = _float4(0.7f, 0.7f, 0.7f, 1.f);
+	LightDesc.fRange = 9999.f;
+	LightDesc.vDiffuse = _float4(0.38f, 0.38f, 0.38f, 1.f);
+	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
 		return E_FAIL;
@@ -1490,11 +1909,92 @@ HRESULT CGameSystem::SetUp_DefaultLight_Paden()
 	LIGHTDESC			LightDesc;
 
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
-	LightDesc.vPosition = _float4(100.f, 200.f, 100.f, 1.f);
-	LightDesc.fRange = 1500.f;
-	LightDesc.vDiffuse = _float4(0.7f, 0.4f, 0.2f, 1.f);
+	LightDesc.vPosition = _float4(100.f, 300.f, 200.f, 1.f);
+	LightDesc.fRange = 9999.f;
+	LightDesc.vDiffuse = _float4(0.35f, 0.25f, 0.2f, 1.f);
 	LightDesc.vAmbient = _float4(0.15f, 0.15f, 0.15f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 0.7f, 0.7f, 1.f);
+	LightDesc.vSpecular = _float4(0.7f, 0.7f, 0.7f, 1.f);
+
+	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CGameSystem::SetUp_CellLayer(wstring strFolderName)
+{
+	wstring strPath = L"../Bin/Data/GameSystem/CellData";
+	strPath += L"/";
+	strPath += strFolderName;
+	strPath += L"/";
+
+	for (filesystem::directory_iterator FileIter(strPath);
+		FileIter != filesystem::end(FileIter); ++FileIter)
+	{
+		const filesystem::directory_entry& entry = *FileIter;
+
+		wstring wstrPath = entry.path().relative_path();
+		//CellData/Map_Paden/Map_Paden_0
+		string strFullPath;
+		strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+		_int iFind = (_int)strFullPath.rfind("/");
+		string strFileName = strFullPath.substr(iFind + 1, strFullPath.length());
+		if (entry.is_directory())
+		{
+			//_int iFindExt = (int)strFileName.rfind(".") + 1;
+			//string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
+			//strFileName = strFileName.substr(0, iFindExt);
+
+			CCellLayer* pLayer = CCellLayer::Create(wstrPath, CFunctor::To_Wstring(strFileName));
+			//pLayer->Set_DebugName(CFunctor::To_Wstring(strFileName));
+
+			m_CellLayer.emplace(pLayer->Get_MinHeight(), pLayer);
+		}
+	}
+
+	for (auto& Layers : m_CellLayer)
+	{
+		Layers.second->SetUp_Neighbor(m_CellLayer);
+		//StairCellList따로 설정
+		Layers.second->SetUp_StairList(m_CellLayer);
+
+	}	
+	for (auto& Layers : m_CellLayer)
+	{
+		//위의 CellList기반으로 LayerRoute설정
+		Layers.second->SetUp_LayerRoute(m_CellLayer);
+		//노드 설정
+		Layers.second->SetUp_Nodes();
+		//가시성 설정
+		//Layers.second->SetUp_Visibility();
+		Layers.second->Load_Visibility();
+
+	}
+
+	return S_OK;
+}
+
+void CGameSystem::Clear_CellLayer()
+{
+	for (auto& Layers : m_CellLayer)
+	{
+		SAFE_DELETE(Layers.second);
+	}
+	m_CellLayer.clear();
+}
+
+HRESULT CGameSystem::SetUp_DefaultLight_Hwara()
+{
+	/* Default Light */
+	LIGHTDESC			LightDesc;
+
+	LightDesc.eType = tagLightDesc::TYPE_POINT;
+	LightDesc.vPosition = _float4(-100.f, 200.f, -100.f, 1.f);
+	LightDesc.fRange = 9999.f;
+	LightDesc.vDiffuse = _float4(0.25f, 0.25f, 0.25f, 1.f);
+	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.f);
+	LightDesc.vSpecular = _float4(0.8f, 0.8f, 0.8f, 1.f);
 
 	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
 		return E_FAIL;

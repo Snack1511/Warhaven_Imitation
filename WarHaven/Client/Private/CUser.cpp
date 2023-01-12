@@ -25,6 +25,7 @@
 #include "CCell.h"
 
 #include "CCamera_Free.h"
+#include "CPlayerInfo_Main.h"
 
 #include "CUI_HUD.h"
 #include "CUI_Portrait.h"
@@ -33,6 +34,8 @@
 #include "CUI_Skill.h"
 #include "CUI_CrossHair.h"
 
+
+#include "CMainMenuPlayer.h"
 #include "CBloodOverlay.h"
 #include "CUI_Damage.h"
 #include "CUI_Training.h"
@@ -47,6 +50,11 @@
 #include "CUI_UnitHUD.h"
 #include "CUI_Interact.h"
 #include "CUI_MiniMap.h"
+#include "CUI_ScoreBoard.h"
+#include "CUI_ScoreInfo.h"
+#include "CUI_Cannon.h"
+#include "CUI_Main.h"
+#include "CUI_Barracks.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -54,6 +62,7 @@
 
 #include "CGameSystem.h"
 #include "CUI_Result.h"
+#include "CUI_Info.h"
 
 IMPLEMENT_SINGLETON(CUser);
 
@@ -134,7 +143,7 @@ void CUser::KeyInput_FPSSetter()
 
 		if (dCurFPSLimit <= 0.)
 		{
-			dCurFPSLimit = 1. / 120.;
+			dCurFPSLimit = 1. / 90.;
 		}
 		else
 		{
@@ -288,7 +297,10 @@ void CUser::SetActive_SquardInfo(_bool value)
 
 void CUser::SetActive_Result(_uint iResult, _bool value)
 {
-	m_pUI_Result->SetActive_Result(iResult, value);
+	m_pUI_Result->Set_Result(iResult);
+	m_pUI_Result->SetActive(true);
+	/*if (m_pUI_Result->Is_Valid())
+		m_pUI_Result->SetActive_Result(iResult, value);*/
 }
 
 void CUser::SetActive_HUD(_bool value)
@@ -394,10 +406,30 @@ void CUser::SetActive_PadenUI(_bool value)
 		m_pUI_Paden->SetActive(value);
 }
 
+void CUser::SetActive_ScoreBoard(_bool value)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->SetActive(value);
+	}
+}
+
 void CUser::Set_Respawn(_bool value)
 {
 	if (m_pUI_Oper)
 		m_pUI_Oper->Set_Respawn(value);
+}
+
+void CUser::Set_OperPointColor(_bool IsMainTeam, _uint iPoinIdx)
+{
+	if (m_pUI_Oper)
+		m_pUI_Oper->Set_PointColor(IsMainTeam, iPoinIdx);
+}
+
+void CUser::Set_OperPlayer(CPlayer* pPlayer)
+{
+	if (m_pUI_Oper)
+		m_pUI_Oper->Set_Player(pPlayer);
 }
 
 void CUser::SetActive_OperUI(_bool value)
@@ -414,8 +446,45 @@ _bool CUser::Get_SelectTargetPoint()
 	return false;
 }
 
+void CUser::Set_MainMenuUnit(_uint iUnitIdx)
+{
+	m_pMainMenuPlayer->Set_CurClassType((CLASS_TYPE)iUnitIdx);
+}
+
+void CUser::Change_ModelParts(_uint iClassType, MODEL_PART_TYPE eModelPartType)
+{
+	m_pMainMenuPlayer->Change_ModelParts((CLASS_TYPE)iClassType, eModelPartType);
+}
+
 void CUser::On_EnterLevel()
 {
+	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
+	if (m_eLoadLevel == LEVEL_MAINMENU)
+	{
+		if (!m_pMainUI)
+		{
+			m_pMainUI = CUI_Main::Create();
+
+			CREATE_GAMEOBJECT(m_pMainUI, GROUP_UI);
+		}
+
+		if (!m_pBarracks)
+		{
+			m_pBarracks = CUI_Barracks::Create();
+
+			CREATE_GAMEOBJECT(m_pBarracks, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pBarracks);
+		}
+
+		if (!m_pMainMenuPlayer)
+		{
+			m_pMainMenuPlayer = CMainMenuPlayer::Create(CGameSystem::Get_Instance()->Find_PlayerInfo(HASHCODE(CPlayerInfo_Main)));
+
+			CREATE_GAMEOBJECT(m_pMainMenuPlayer, GROUP_UI);
+			// DISABLE_GAMEOBJECT(m_pMainMenuPlayer);
+		}
+	}
+
 	DISABLE_GAMEOBJECT(m_pCursor);
 	ENABLE_GAMEOBJECT(m_pCursor);
 }
@@ -429,6 +498,7 @@ void CUser::On_EnterStageLevel()
 {
 	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
 
+
 	if (!m_pUI_HUD)
 	{
 		m_pUI_HUD = CUI_HUD::Create();
@@ -439,6 +509,14 @@ void CUser::On_EnterStageLevel()
 		m_pUI_HeroGauge = static_cast<CUI_HeroGauge*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HeroGauge));
 		m_pUI_Skill = static_cast<CUI_Skill*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Skill));
 		m_pUI_Crosshair = static_cast<CUI_Crosshair*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Crosshair));
+	}
+
+	if (!m_pInteractUI)
+	{
+		m_pInteractUI = CUI_Interact::Create();
+
+		CREATE_GAMEOBJECT(m_pInteractUI, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pInteractUI);
 	}
 
 	if (!m_pUI_Damage[0])
@@ -492,8 +570,16 @@ void CUser::On_EnterStageLevel()
 		m_pKillLogList.clear();
 	}
 
-	if (m_eLoadLevel > LEVEL_BOOTCAMP)
+	if (m_eLoadLevel >= LEVEL_PADEN)
 	{
+		if (!m_pInfoUI)
+		{
+			m_pInfoUI = CUI_Info::Create();
+
+			CREATE_GAMEOBJECT(m_pInfoUI, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pInfoUI);
+		}
+
 		if (!m_pUI_Oper)
 		{
 			m_pUI_Oper = CUI_Oper::Create();
@@ -518,20 +604,28 @@ void CUser::On_EnterStageLevel()
 			DISABLE_GAMEOBJECT(m_pUI_Result);
 		}
 
-		if (!m_pInteractUI)
-		{
-			m_pInteractUI = CUI_Interact::Create();
-
-			CREATE_GAMEOBJECT(m_pInteractUI, GROUP_UI);
-			DISABLE_GAMEOBJECT(m_pInteractUI);
-		}
-
 		if (!m_pMiniMap)
 		{
 			m_pMiniMap = CUI_MiniMap::Create();
 
 			CREATE_GAMEOBJECT(m_pMiniMap, GROUP_UI);
 			// DISABLE_GAMEOBJECT(m_pMiniMap);
+		}
+
+		if (!m_pScoreBoard)
+		{
+			m_pScoreBoard = CUI_ScoreBoard::Create();
+
+			CREATE_GAMEOBJECT(m_pScoreBoard, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pScoreBoard);
+		}
+
+		if (!m_pCannonUI)
+		{
+			m_pCannonUI = CUI_Cannon::Create();
+
+			CREATE_GAMEOBJECT(m_pCannonUI, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pCannonUI);
 		}
 	}
 
@@ -542,6 +636,9 @@ void CUser::On_EnterStageLevel()
 void CUser::On_ExitStageLevel()
 {
 	m_pBloodOverlay = nullptr;
+
+	if (m_pMainMenuPlayer)
+		m_pMainMenuPlayer = nullptr;
 
 	if (m_pUI_HUD)
 		m_pUI_HUD = nullptr;
@@ -581,10 +678,23 @@ void CUser::On_ExitStageLevel()
 	if (m_pMiniMap)
 		m_pMiniMap = nullptr;
 
+	if (m_pCannonUI)
+		m_pCannonUI = nullptr;
+
+	if (m_pMainUI)
+		m_pMainUI = nullptr;
+
+	if (m_pBarracks)
+		m_pBarracks = nullptr;
+
+	if (m_pInfoUI)
+		m_pInfoUI = nullptr;
+
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
 	m_pUI_Popup = nullptr;
 	m_pUI_Result = nullptr;
+	m_pScoreBoard = nullptr;
 }
 
 void CUser::Set_HUD(CLASS_TYPE eClass)
@@ -613,6 +723,16 @@ void CUser::Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSk
 		return;
 
 	m_pUI_Skill->Set_SkillCoolTime(iSkillIdx, fSkillCoolTime, fSkillMaxCoolTime);
+}
+
+void CUser::SetActive_HUD_RevivalUI(_bool value)
+{
+	m_pUI_HUD->SetActive_RevivalUI(value);
+}
+
+void CUser::SetActive_CannonCrosshair(_bool value)
+{
+	m_pUI_Crosshair->SetActive_CannonCrosshair(value);
 }
 
 void CUser::SetActive_Cursor(_bool value)
@@ -706,7 +826,8 @@ void CUser::Set_ArcherPoint(_bool value)
 
 void CUser::SetActive_InteractUI(_bool value)
 {
-	m_pInteractUI->SetActive(value);
+	if (m_pInteractUI->Is_Valid() == !value)
+		m_pInteractUI->SetActive(value);
 }
 
 void CUser::Set_InteractKey(_uint iKeyIndex)
@@ -722,6 +843,135 @@ void CUser::Set_InteractText(wstring wstrText)
 void CUser::Set_InteractTarget(CGameObject* pInteractTarget)
 {
 	m_pInteractUI->Set_InteractTarget(pInteractTarget);
+}
+
+void CUser::SetActive_CannonUI(_bool value)
+{
+	if (m_pCannonUI)
+		m_pCannonUI->SetActive(value);
+}
+
+void CUser::Set_CannonCoolTime(_float fTime, _float fMaxTime)
+{
+	if (m_pCannonUI)
+		m_pCannonUI->Set_CoolTime(fTime, fMaxTime);
+}
+
+void CUser::SetActive_CannonCoolTime(_bool value)
+{
+	if (m_pCannonUI)
+		m_pCannonUI->SetActive_CoolTime(value);
+}
+
+void CUser::Get_ScoreInfo(CPlayer* pPlayer)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Get_ScoreInfo(pPlayer);
+	}
+}
+
+map<_uint, list<CUI_ScoreInfo*>> CUser::Get_ScoreInfoMap()
+{
+	return m_pScoreBoard->Get_ScoreInfoMap();
+}
+
+void CUser::Sort_ScoreInfo()
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Sort_ScoreInfo();
+	}
+}
+
+void CUser::Set_ScoreBoardConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Set_ConquestTime(iPointIdx, fConquestTime, fMaxConquestTime);
+	}
+}
+
+void CUser::Set_ScoreBoardGaugeColor(_bool IsMainTeam, _uint iPointIdx)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Set_GaugeColor(IsMainTeam, iPointIdx);
+	}
+}
+
+void CUser::Set_ScoreBoardPointColor(_bool IsMainTeam, _uint iPoinIdx)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Set_PointColor(IsMainTeam, iPoinIdx);
+	}
+}
+
+void CUser::Set_ScoreBoardPlayer(CPlayer* pPlayer)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Set_Player(pPlayer);
+	}
+}
+
+void CUser::SetActive_MainTopBtn(_bool value)
+{
+	if (m_pMainUI)
+		m_pMainUI->SetActive_TopBtn(value);
+}
+
+void CUser::Set_TopBtnEffectPosX(_float fPosX)
+{
+	if (m_pMainUI)
+		m_pMainUI->Set_TopBtnEffectPosX(fPosX);
+}
+
+void CUser::SetActive_Barracks(_bool value)
+{
+	if (m_pBarracks)
+		m_pBarracks->SetActive(value);
+}
+
+void CUser::Unlock_RabbitHat()
+{
+	if (m_pBarracks)
+		m_pBarracks->Unlock_RabbitHat();
+}
+
+void CUser::Unlock_EpicWarriorClothes()
+{
+	if (m_pBarracks)
+		m_pBarracks->Unlock_EpicWarriorClothes();
+}
+
+void CUser::SetActive_SkinPopup(_bool value)
+{
+	if (m_pUI_Popup)
+		m_pUI_Popup->SetActive_SkinPopup(value);
+}
+
+void CUser::Set_BreezeTime(_float fCurTime, _float fMaxTime)
+{
+	m_pUI_Crosshair->Set_BreezeTime(fCurTime, fMaxTime);
+}
+
+void CUser::SetActive_Gauge(_bool value)
+{
+	m_pUI_Crosshair->SetActive_Gauge(value);
+}
+
+void CUser::Disable_LancerGauge()
+{
+	if (m_pUI_Crosshair)
+		m_pUI_Crosshair->Disable_LacnerGauge();
+}
+
+void CUser::Set_LancerGauge(_uint iGaugeIdx, _float fCurTime, _float fMaxTime)
+{
+	if (m_pUI_Crosshair)
+		m_pUI_Crosshair->Set_LancerGauge(iGaugeIdx, fCurTime, fMaxTime);
 }
 
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
@@ -753,6 +1003,15 @@ void CUser::Enable_Popup(_uint iPopupType)
 		m_pUI_Popup->Enable_Popup((CUI_Popup::ePOPUP_TYPE)iPopupType);
 }
 
+void CUser::Enable_SkinPopup(_uint iSkin)
+{
+	if (m_pUI_Popup)
+	{
+		m_pUI_Popup->SetActive(true);
+		m_pUI_Popup->Enable_SkinPopup(iSkin);
+	}
+}
+
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)
 {
 	if (!m_pUI_Training)
@@ -773,4 +1032,11 @@ void CUser::SetActive_MiniMap(_bool value)
 	if (m_pMiniMap)
 		m_pMiniMap->SetActive_MiniMap(value);
 }
+
+void CUser::SetActive_InfoUI(_bool value)
+{
+	if (m_pInfoUI)
+		m_pInfoUI->SetActive(value);
+}
+
 

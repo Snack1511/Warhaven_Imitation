@@ -18,7 +18,7 @@ vector g_vFlag;
 vector g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
 
 float g_fValue;
-bool bFlip;
+bool g_bFlip;
 
 float g_fHpRatio;
 float g_fHeroGaugeRatio;
@@ -103,7 +103,7 @@ VS_TRAIL_OUT VS_TRAIL_MAIN(VS_IN In)
 
 VS_TRAIL_OUT VS_TRAIL_UI_MAIN(VS_IN In)
 {
-    VS_TRAIL_OUT Out = (VS_TRAIL_OUT)0;
+    VS_TRAIL_OUT Out = (VS_TRAIL_OUT) 0;
 
     matrix matWV, matWVP;
 
@@ -254,7 +254,7 @@ PS_OUT PS_COLOR(PS_IN In)
 
 PS_OUT PS_PROFILE(PS_IN In)
 {
-    PS_OUT Out = (PS_OUT)0;
+    PS_OUT Out = (PS_OUT) 0;
     Out.vFlag = g_vFlag;
 
     // 새로 부여할 UV
@@ -335,10 +335,10 @@ PS_OUT PS_PROFILE(PS_IN In)
 
     if (TexUV.y > 0.7f)
     {
-        float fRatio = ((1.f -TexUV.y) / 0.3f);
+        float fRatio = ((1.f - TexUV.y) / 0.3f);
 
        // 0~1을 0.3~1로 바꾸야함
-         fRatio *= 0.7f;
+        fRatio *= 0.7f;
         fRatio += 0.3f;
         Out.vColor *= (fRatio);
 
@@ -435,7 +435,7 @@ PS_OUT PS_HEROGAUGE(PS_IN In)
     In.vTexUV.x -= g_fValue;
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
     
-    Out.vColor.a *= vNoise.r;
+   //  Out.vColor.a *= vNoise.r;
     
     if (In.vTexUV.y < g_fHeroGaugeRatio)
         discard;
@@ -555,7 +555,7 @@ PS_OUT PS_HorizontalGauge(PS_IN In)
     Out.vColor *= g_vColor;
     Out.vColor.w *= g_fAlpha;
     
-    if (bFlip)
+    if (g_bFlip)
     {
         if (In.vTexUV.x < g_fValue)
             discard;
@@ -590,7 +590,7 @@ PS_OUT PS_GLOWLINE(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
     Out.vFlag = g_vFlag;
     
-    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);    
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
     
     Out.vColor = vColor;
@@ -598,6 +598,109 @@ PS_OUT PS_GLOWLINE(PS_IN In)
     if (vColor.r < 0.01f)
         discard;
 
+    return Out;
+}
+
+PS_OUT PS_CIRCLEGAUGE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
+    
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    float2 vPos = In.vTexUV - 0.5f;
+    float fAngle = degrees(atan2(vPos.x, vPos.y)) + 180.f;
+    
+    float fRadius = length(vPos.xy);
+    
+    float fa = radians(fAngle - g_fValue * 360.f) * fRadius + 1.f;
+    
+    Out.vColor *= g_vColor;
+    Out.vColor.w *= g_fAlpha;
+    
+    fa = saturate(fa);
+    if (fa < 1.f)
+        discard;
+    
+    return Out;
+}
+
+PS_OUT PS_SELECTEFFECT(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
+    
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    Out.vColor = vColor;
+    
+    if (Out.vColor.a < 0.1f)
+        discard;
+    
+    Out.vColor.a = vNoise.r;
+        
+    Out.vColor *= g_vColor;
+    Out.vColor.a *= g_fAlpha;
+        
+    if (Out.vColor.a < 0.1f)
+        discard;
+    
+    return Out;
+}
+
+PS_OUT PS_DISSOLVE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
+    
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+        
+    Out.vColor = vColor;
+    vColor.a = vNoise.r;
+            
+    if (vColor.a >= g_fValue)
+        discard;
+    
+    if (vColor.a >= g_fValue - 0.1f)
+        Out.vColor.rgb = 1.f;
+    
+    return Out;
+}
+
+PS_OUT PS_HWARA_ARROW(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
+    
+    In.vTexUV.x *= g_fUVPlusY;
+    In.vTexUV.x += g_fValue;
+        
+    if (g_bFlip)
+        In.vTexUV.x *= -1.f;
+    
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    Out.vColor = vColor;
+    vColor.a = g_fAlpha;
+    
+    return Out;
+}
+
+PS_OUT PS_HWARA_GLOWLINE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
+            
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    Out.vColor = vColor;
+    vColor.a = g_fAlpha;
+    
+    if (vColor.r < 0.1f)
+        discard;
+    
     return Out;
 }
 
@@ -889,7 +992,7 @@ PS_EFFECT_OUT PS_TRAIL_MAIN(VS_TRAIL_OUT In)
 
 PS_EFFECT_OUT PS_TRAIL_UI_MAIN(VS_TRAIL_OUT In)
 {
-    PS_EFFECT_OUT Out = (PS_EFFECT_OUT)0;
+    PS_EFFECT_OUT Out = (PS_EFFECT_OUT) 0;
 
     In.vTexUV.x += g_fUVPlusX;
     In.vTexUV.x = 1.f - In.vTexUV.x;
@@ -1079,7 +1182,7 @@ PS_DISTORTION_OUT PS_MAIN_DISTORTION(VS_TRAIL_OUT In)
 
 PS_OUT PS_UVFIRE(PS_IN In)
 {
-    PS_OUT Out = (PS_OUT)0;
+    PS_OUT Out = (PS_OUT) 0;
 
     //mask
     vector vMtrlDiffuse = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
@@ -1116,6 +1219,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
@@ -1127,6 +1232,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_COLOR();
     }
 
@@ -1138,6 +1245,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_LOADINGICON();
     }
 
@@ -1149,6 +1258,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_HealthGauge();
     }
 
@@ -1160,6 +1271,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_HPBAR();
     }
 
@@ -1171,6 +1284,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_HEROGAUGE();
     }
 
@@ -1182,6 +1297,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_RELIC();
     }
 
@@ -1193,6 +1310,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_PORTEFFECT();
     }
 
@@ -1204,6 +1323,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_PORTEFFECT();
     }
 
@@ -1215,6 +1336,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAINEFFECT();
     }
 
@@ -1226,6 +1349,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_LOBBYEFFECT();
     }
 
@@ -1237,6 +1362,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_VerticalGauge();
     }
 
@@ -1248,6 +1375,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_HorizontalGauge();
     }
 
@@ -1259,6 +1388,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_OPERSMOKE();
     }
 
@@ -1270,7 +1401,74 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_GLOWLINE();
+    }
+
+    pass UI_CircleGauge
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_CIRCLEGAUGE();
+    }
+
+    pass UI_SelectEffect
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_SELECTEFFECT();
+    }
+
+    pass UI_Dissolove
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_DISSOLVE();
+    }
+
+    pass UI_HwaraArrow
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_HWARA_ARROW();
+    }
+
+    pass UI_HwaraGlowLine
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_HWARA_GLOWLINE();
     }
 
     pass ALPHA
@@ -1281,6 +1479,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_UIColor_MAIN();
     }
 
@@ -1293,6 +1493,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_TRAIL_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_TRAIL_MAIN();
     }
 
@@ -1304,6 +1506,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_BLOODOVERLAY();
     }
 
@@ -1315,6 +1519,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_DEBUG();
     }
 
@@ -1326,6 +1532,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_UIFIRE();
     }
 
@@ -1337,6 +1545,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_TRAIL_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_DISTORTION();
     }
 
@@ -1348,6 +1558,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_UVFIRE();
     }
 
@@ -1359,6 +1571,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_PROFILE();
     }
 
@@ -1370,6 +1584,8 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_TRAIL_UI_MAIN();
         GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_TRAIL_UI_MAIN();
     }
     

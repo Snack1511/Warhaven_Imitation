@@ -24,6 +24,7 @@
 #include "CCollider_Sphere.h"
 #include "CRectEffects.h"
 #include "CUtility_Transform.h"
+#include "Easing_Utillity.h"
 
 
 
@@ -283,6 +284,7 @@ void CEffect::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 	pShader->Set_RawValue("g_fColorPower", &m_fColorPower, sizeof(_float));
 	pShader->Set_RawValue("g_vPlusColor", &m_vPlusColor, sizeof(_float4));
 	pShader->Set_RawValue("g_fDissolvePower", &m_fDissolvePower, sizeof(_float));
+	pShader->Set_RawValue("g_fRimlightPower", &m_fRimlightPower, sizeof(_float));
 }
 
 void CEffect::Set_ColliderOn(_float fRadius, COL_GROUP_CLIENT eColType)
@@ -386,6 +388,24 @@ void CEffect::Update_FollowTarget()
 	m_pTransform->Make_WorldMatrix();
 }
 
+void CEffect::Update_FollowMatrix()
+{
+	//_float4 vLook = m_pFollowTarget->Get_Transform()->Get_World(WORLD_LOOK);
+	_float4 vPos = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
+
+	_float4 vOffsetPos = m_vOffsetPos.MultiplyCoord(m_pFollowTarget->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS));
+	vPos += vOffsetPos;
+
+	m_pTransform->Set_MyMatrix(m_pFollowTarget->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS));
+	m_pTransform->Set_World(WORLD_POS, vPos);
+
+	/*if (m_fTurnAngle > 0.f)
+	{
+		CUtility_Transform::Turn_ByAngle(m_pTransform, vLook, m_fTurnAngle);
+	}*/
+	m_pTransform->Make_WorldMatrix();
+}
+
 void CEffect::Update_TargetPos()
 {
 	On_Target();
@@ -421,6 +441,12 @@ void CEffect::Stick_RefBone()
 	m_pTransform->Make_WorldMatrix();
 }
 
+void CEffect::Set_FadeOut()
+{
+	m_eCurFadeType = FADEOUTREADY;
+	m_fFadeTimeAcc = 999999.f;
+}
+
 void CEffect::My_Tick()
 {
 	if (m_bColliderOn)
@@ -438,6 +464,17 @@ void CEffect::My_Tick()
 	{
 		On_Target();
 	}
+
+	if (0 < m_fRimlightPower)
+	{
+		m_fRimlightPower -= 2.f * fDT(0);
+
+	}
+	else
+	{
+		m_fRimlightPower = 0.f;
+	}
+
 }
 
 void CEffect::My_LateTick()
@@ -456,6 +493,12 @@ void CEffect::My_LateTick()
 	{
 		Update_FollowTarget();
 	}
+
+	else if (m_bEffectFlag & EFFECT_FOLLOWMATRIX)
+	{
+		Update_FollowMatrix();
+	}
+
 
 	//UV
 	m_fCurUVPlusY += m_fUVSpeedY * fDT(0);
@@ -487,6 +530,7 @@ void CEffect::OnDisable()
 	m_fCurUVPlusY = 0.f;
 	m_fFadeTimeAcc = 0.f;
 	m_fTurnAngle = 0.f;
+	m_fRimlightPower = 2.f;
 
 	if (m_eDisableType == FADE)
 		m_fAlpha = 0.f;

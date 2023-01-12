@@ -24,7 +24,7 @@
 #include "CCannon.h"
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
-
+#include "Loading_Manager.h"
 #include "CMesh_Particle.h"
 
 #include "CScript_FollowCam.h"
@@ -54,6 +54,11 @@
 
 #include "CColorController.h"
 #include "CTeamConnector.h"
+
+#include "CUnit_Priest.h"
+#include "CUI_UnitHUD.h"
+
+#include "CGlider.h"
 
 #define PHYSX_ON
 
@@ -102,7 +107,27 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 			CUser::Get_Instance()->SetActive_InteractUI(true);
 		}
 	}
+	//else if (eMyColType == COL_BLUECURE || eMyColType == COL_REDCURE)
+	//{
+	//	if (pOtherObj)
+	//	{
+	//		m_CureObjects.push_back(pOtherObj);
 
+	//		//_float4 vCurLook = Get_Transform()->Get_World(WORLD_LOOK).Normalize();
+
+
+	//		////양수면 앞임.
+	//		//if (vCurLook.Dot(vOtherDir) > 0.f)
+	//		//	tOtherHitInfo.bFace = true;
+	//		//else
+	//		//	tOtherHitInfo.bFace = false;
+
+	//	}
+	//	return;
+	//}
+
+	//else if (eOtherColType == COL_BLUECURE || eOtherColType == COL_REDCURE)
+	//	return;
 
 	if (!pOtherObj)
 	{
@@ -146,7 +171,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	tOtherHitInfo.vDir.y = 0.f;
 	tOtherHitInfo.vDir.Normalize();
 	
-	//tOtherHitInfo.pOtherUnit = pOtherUnit;
+	tOtherHitInfo.pOtherUnit = pOtherUnit;
 
 	//상대 위치 계산
 	_float4 vOtherDir = pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
@@ -292,6 +317,7 @@ void CUnit::On_Respawn()
 	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 	m_bRespawn = true;
 
+
 	CColorController::COLORDESC tColorDesc;
 	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
 
@@ -300,7 +326,7 @@ void CUnit::On_Respawn()
 	tColorDesc.fFadeInTime = 0.3f;
 	tColorDesc.fFadeOutStartTime = 1.f;
 	tColorDesc.fFadeOutTime = 3.f;
-	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
+	tColorDesc.vTargetColor = RGBA(50, 30, 0, 0.1f);
 	tColorDesc.iMeshPartType = MODEL_PART_BODY;
 	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
 	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
@@ -324,6 +350,9 @@ void CUnit::On_Die()
 
 	m_bDie = false;
 	m_fDeadTimeAcc = 0.f;
+
+	if (m_pOwnerPlayer->Get_PlayerName() == TEXT("EnemyFinal"))
+		CUser::Get_Instance()->Enable_SkinPopup(0);
 
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
 	vPos.y += 1.f;
@@ -414,6 +443,8 @@ void CUnit::On_FallDamage(_float fFallPower)
 	/*착지 이펙트*/
 	Effect_Fall(fFallPower);
 
+	if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_TYPE_CLIENT::LEVEL_HWARA)
+		CUser::Get_Instance()->SetActive_InteractUI(false);
 
 
 	//-0.6~ -3의 fFallPower
@@ -466,6 +497,7 @@ void CUnit::On_Sliding(_float4 vHitNormal)
 		Enter_State(STATE_SLIDE_END_PLAYER);
 
 }
+
 
 void CUnit::On_Attack(CState* pState)
 {
@@ -559,12 +591,26 @@ _float4x4 CUnit::Get_HitMatrix()
 	return  m_pWeaponCollider_R->Get_HitMatrix();
 }
 
+CUI_UnitHUD* CUnit::Get_OwnerHUD()
+{
+	return m_pOwnerPlayer->Get_UnitHUD();
+}
+
 
 HRESULT CUnit::MakeUp_Unit(const UNIT_DESC& tUnitDesc)
 {
 
 
 	return S_OK;
+}
+
+void CUnit::On_ChangeClass()
+{
+	if (m_pCurState)
+	{
+		m_pCurState->Exit(this, m_pAnimator);
+		//SAFE_DELETE(m_pCurState);
+	}
 }
 
 HRESULT CUnit::Initialize_Prototype()
@@ -582,13 +628,16 @@ HRESULT CUnit::Initialize_Prototype()
 
 	Add_Component(CPhysics::Create(0));
 
+	CNavigation* pNavigation = CNavigation::Create(CP_AFTER_TRANSFORM, nullptr, nullptr);
+	Add_Component<CNavigation>(pNavigation);
+
 #ifdef PHYSX_ON
 
 	//PhysX캐릭터 : 캐릭터 본체
 	CPhysXCharacter::PHYSXCCTDESC tDesc;
 
 	tDesc.fRadius = 0.3f;
-	tDesc.fHeight = 1.5f;
+	tDesc.fHeight = 1.2f;
 
 	CPhysXCharacter* pPhysXCharacter = CPhysXCharacter::Create(CP_BEFORE_TRANSFORM, tDesc);
 	Add_Component(pPhysXCharacter);
@@ -603,7 +652,7 @@ HRESULT CUnit::Initialize()
 	m_pModelCom = GET_COMPONENT(CModel);
 	m_pAnimator = GET_COMPONENT(CAnimator);
 	m_pPhysics = GET_COMPONENT(CPhysics);
-
+	m_pNavigation = GET_COMPONENT(CNavigation);
 #ifdef PHYSX_ON
 	m_pPhysXCharacter = GET_COMPONENT(CPhysXCharacter);
 	if (!m_pPhysXCharacter)
@@ -620,11 +669,17 @@ HRESULT CUnit::Initialize()
 	if (!m_pPhysics)
 		return E_FAIL;
 
+	if (!m_pNavigation)
+		return E_FAIL;
 
 	if (FAILED(m_pModelCom->SetUp_AnimModel_LOD()))
 		return E_FAIL;
 
+	m_pGlider = CGlider::Create(L"../bin/resources/meshes/Riding/Glider_10.fbx",
+		L"../bin/resources/Animations/Common/A_Gliding_01.fbx", this, "0B_Spine1", 270.f, 180.f, 90.f);
 
+	CREATE_GAMEOBJECT(m_pGlider, GROUP_PLAYER);
+	DISABLE_GAMEOBJECT(m_pGlider);
 
 
 	return S_OK;
@@ -668,11 +723,12 @@ HRESULT CUnit::Start()
 	if (m_pUnitCollider[HEAD])
 		ENABLE_COMPONENT(m_pUnitCollider[HEAD]);
 
-
 	/* PASS */
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 	m_pModelCom->Set_ShaderPass(MODEL_PART_FACE, VTXANIM_PASS_FACE);
 
+	if(m_pGlider)
+		m_pGlider->SetUp_GliderTrail();	
 
 	return S_OK;
 }
@@ -687,11 +743,14 @@ void CUnit::OnEnable()
 
 	On_InitSetting();
 
+	for (_int i = 0; i < COOL_END; ++i)
+		m_fCoolAcc[i] = 0.f;
+
 	if (m_bRespawn)
 	{
 		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"ReSpawnLight_0"), this, m_pTransform->Get_World(WORLD_POS));
 		Create_Light(this, _float4(0.f, 0.5f, 0.f), 5.f, 0.f, 1.f, 1.f, 1.f, RGB(255, 160, 50), false);
-		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
+		//m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 	}
 
 	m_bRespawn = false;
@@ -779,11 +838,15 @@ void CUnit::Enable_GuardBreakCollider(UNITCOLLIDER ePartType, _bool bEnable)
 	{
 		if (bEnable)
 		{
+			ENABLE_COMPONENT(m_pUnitCollider[ePartType]);
+
 			if (m_pWeaponCollider_L)
 				ENABLE_COMPONENT(m_pWeaponCollider_L);
 		}
 		else
 		{
+			DISABLE_COMPONENT(m_pUnitCollider[ePartType]);
+
 			if (m_pWeaponCollider_L)
 				DISABLE_COMPONENT(m_pWeaponCollider_L);
 		}
@@ -853,6 +916,20 @@ void CUnit::Enable_GroggyCollider(_bool bEnable)
 	}
 }
 
+void CUnit::Enable_Glider(_bool bEnable)
+{
+	if (bEnable)
+		ENABLE_GAMEOBJECT(m_pGlider);
+	else
+		DISABLE_GAMEOBJECT(m_pGlider);
+}
+
+void CUnit::Set_GliderAnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed)
+{
+	m_pGlider->Set_AnimIndex(iAnimIndex, fInterpolateTime, fAnimSpeed);
+}
+
+
 void CUnit::SetUp_Colliders(_bool bBlueTeam)
 {
 	COL_GROUP_CLIENT	eTeam = (bBlueTeam) ? COL_BLUETEAM : COL_REDTEAM;
@@ -893,6 +970,162 @@ void CUnit::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
 }
 
+void CUnit::Check_NearObject_IsInFrustum(CGameObject** pNearObject)
+{
+	_float fPreLength = m_fMaxDistance + 1.f;
+
+	// 모든 플레이어 가져오기.
+	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
+
+	CGameObject* pPreObject = *pNearObject;
+
+	*pNearObject = nullptr;
+
+	for (auto& elem : listPlayers)
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(elem);
+		if (!pPlayer)
+			continue;
+
+		if (!pPlayer->Is_Valid())
+			continue;
+
+		// 테스트 레벨이 아니라면
+		if (CUser::Get_Instance()->Get_CurLevel() != LEVEL_TEST)
+		{
+			// 팀을 위해 사용할 것인가
+			if (m_bForUseTeam)
+			{
+				// 만약 발견한 플레이어가 다른 팀이라면
+				if (m_pOwnerPlayer->Get_Team()->Get_TeamType() != pPlayer->Get_Team()->Get_TeamType())
+					continue;
+
+			}
+			else
+			{
+				// 만약 발견한 플레이어가 같은 팀이라면 
+				if (m_pOwnerPlayer->Get_Team()->Get_TeamType() == pPlayer->Get_Team()->Get_TeamType())
+					continue;
+
+			}
+
+		}
+
+		CUnit* pUnit = pPlayer->Get_CurrentUnit();
+
+		if (!pUnit->Is_Valid())
+			continue;
+
+		if (pUnit == this)
+			continue;
+
+		if (pUnit->Get_Status().fHP <= 0.f)
+			continue;
+
+		// 절두체에 안들어왔다면
+		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), m_fMaxDistance / 5.f))
+			continue;
+
+		_float fMyLength = (elem->Get_Transform()->Get_World(WORLD_POS) - Get_Transform()->Get_World(WORLD_POS)).Length();
+
+		// 이전에 찾은 오브젝트보다 거리가 멀면
+		if (fPreLength < fMyLength)
+			continue;
+
+		*pNearObject = pUnit;
+		fPreLength = fMyLength;
+
+	}
+
+
+	if (pPreObject == *pNearObject)
+		m_bSameNearObject = true;
+	else
+		m_bSameNearObject = false;
+
+}
+
+void CUnit::Check_MultipleObject_IsInFrustum()
+{
+
+	// 모든 플레이어 가져오기.
+	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
+
+	for (auto& elem : listPlayers)
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(elem);
+		if (!pPlayer)
+			continue;
+
+		if (!pPlayer->Is_Valid())
+			continue;
+
+		// 테스트 레벨이 아니라면
+		if (CUser::Get_Instance()->Get_CurLevel() != LEVEL_TEST)
+		{
+			// 팀을 위해 사용할 것인가
+			if (m_bForUseTeam)
+			{
+				// 만약 발견한 플레이어가 다른 팀이라면
+				if (m_pOwnerPlayer->Get_Team()->Get_TeamType() != pPlayer->Get_Team()->Get_TeamType())
+					continue;
+
+			}
+			else
+			{
+				// 만약 발견한 플레이어가 같은 팀이라면 
+				if (m_pOwnerPlayer->Get_Team()->Get_TeamType() == pPlayer->Get_Team()->Get_TeamType())
+					continue;
+
+			}
+
+		}
+
+		CUnit* pUnit = pPlayer->Get_CurrentUnit();
+
+		if (!pUnit->Is_Valid())
+			continue;
+
+		if (pUnit == this)
+			continue;
+
+		_float fMyLength = (pUnit->Get_Transform()->Get_World(WORLD_POS) - Get_Transform()->Get_World(WORLD_POS)).Length();
+
+		_float fMaxDistance = 20.f;
+		if (fMyLength > fMaxDistance)
+			continue;
+
+		if (m_bForUseTeam == false)
+			int a = 0;
+
+		// 절두체에 안들어왔다면
+		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), 2.f))
+			continue;
+
+		// ray쏴서 장애물 판별
+		_float4 vOutPos;
+		_float fOutDist;
+		_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
+		_float4 vOtherPos = pUnit->Get_Transform()->Get_World(WORLD_POS);
+		vOtherPos.y += 0.8f;
+		_float4 vRayDir = vOtherPos - vCamPos;
+		_float fLength = vRayDir.Length();
+
+		if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vCamPos, vRayDir.Normalize(), fLength))
+			continue;
+
+		for (auto& FrustumObj : m_MultipleFrustumObject)
+		{
+			if (FrustumObj == pUnit)
+				return;
+		}
+
+		m_MultipleFrustumObject.push_back(pUnit);
+	}
+
+	
+}
+
 void CUnit::On_ChangeToHero(_uint iIndex)
 {
 	m_pOwnerPlayer->Change_UnitClass((CLASS_TYPE)iIndex);
@@ -921,6 +1154,11 @@ _float4 CUnit::Get_FollowCamRight()
 	return m_pFollowCam->Get_Transform()->Get_World(WORLD_RIGHT);
 }
 
+
+list<_float4>& CUnit::Get_CurRoute()
+{
+	return m_pOwnerPlayer->Get_CurRoute();
+}
 
 void CUnit::TurnOn_TrailEffect(_bool bOn)
 {
@@ -1034,7 +1272,6 @@ HRESULT CUnit::SetUp_Navigation(CCell* pStartCell)
 
 void CUnit::My_Tick()
 {
-
 	for (_int i = 0; i < COOL_END; ++i)
 	{
 		if (m_fCoolAcc[i] > 0.f)
@@ -1057,6 +1294,12 @@ void CUnit::My_Tick()
 		m_fAttackDelay -= fDT(0);
 	else
 		m_fAttackDelay = 0.f;
+	
+	if (m_fGlidingTime > 0.f)
+		m_fGlidingTime -= fDT(0);
+	else
+		m_fGlidingTime = 0.f;
+
 
 	if (!m_pCurState)
 	{
@@ -1080,7 +1323,7 @@ void CUnit::My_Tick()
 
 		}
 
-	}
+	}	
 
 	STATE_TYPE eNewState = STATE_END;
 	eNewState = m_pCurState->Tick(this, m_pAnimator);
@@ -1108,6 +1351,8 @@ void CUnit::My_LateTick()
 			On_Die();
 		}
 	}
+
+	m_CureObjects.clear();
 }
 
 void CUnit::Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _float fFadeInTime, _float fDuration, _float fFadeOutTime, _float4 Diffuse,
@@ -1142,6 +1387,7 @@ void CUnit::Create_Light(CGameObject* pOwner, _float4 vOffset, _float fRange, _f
 	LIGHTDESC			LightDesc;
 
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
+	LightDesc.eFadeType = tagLightDesc::FADEIN;
 
 	LightDesc.pOwner = pOwner;
 	LightDesc.vOffset = vOffset;
@@ -1156,6 +1402,8 @@ void CUnit::Create_Light(CGameObject* pOwner, _float4 vOffset, _float fRange, _f
 	LightDesc.vTargetAmbient = _float4(0.2f, 0.2f, 0.2f);
 	LightDesc.vTargetSpecular = _float4(1.f, 1.f, 1.f);
 
+	LightDesc.eInEasingType = tagLightDesc::EAS_Linear;
+	LightDesc.eOutEasingType = tagLightDesc::EAS_Linear;
 	LightDesc.bLoop = bLoop;
 
 	GAMEINSTANCE->Add_Light(LightDesc);
@@ -1299,15 +1547,15 @@ void CUnit::Set_AnimWeaponFrame(_uint iChangeFrame)
 	GET_COMPONENT_FROM(m_pAnimWeapon, CAnimator)->Set_CurFrame(iChangeFrame);
 }
 
-_float4x4& CUnit::Use_OwnerBoneOffset()
-{
-	_float4x4 vMatrix = XMMatrixIdentity();
-
-	if (!m_pAnimWeapon)
-		return vMatrix;
-
-	return m_pAnimWeapon->Use_OwnerBoneOffset();
-}
+//_float4x4& CUnit::Use_OwnerBoneOffset()
+//{
+//	_float4x4 vMatrix = XMMatrixIdentity();
+//
+//	if (!m_pAnimWeapon)
+//		return vMatrix;
+//
+//	return m_pAnimWeapon->Use_OwnerBoneOffset();
+//}
 
 
 
@@ -1316,13 +1564,17 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 	CState::HIT_INFO tInfo = *(CState::HIT_INFO*)(pHitInfo);
 	_float fDamage = pOtherUnit->Calculate_Damage(tInfo.bHeadShot, false);
 
-	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot, 2);
+	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot, 3);
+
+	Get_OwnerHUD()->SetActive_UnitHP(true);
 
 	/*블러드 오버레이*/
 	if (m_bIsMainPlayer)
 	{
 		CUser::Get_Instance()->Turn_BloodOverLay(m_tUnitStatus.fHP / m_tUnitStatus.fMaxHP);
 	}
+
+	m_pOwnerPlayer->Set_IsBattle(true);
 
 	if (!bDie)
 	{
@@ -1333,18 +1585,18 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 		}
 		else
 		{
-			//if (tInfo.bSting && m_tHitType.eHitState != m_tHitType.eStingHitState)
-			//{
-			//	Enter_State(m_tHitType.eStingHitState, pHitInfo);
-			//}
-			//else
-			//{
-			//	On_DieBegin(pOtherUnit, vHitPos);
-			//	Enter_State(m_tHitType.eHitState, pHitInfo);
-			//}
+			if (tInfo.bSting && m_tHitType.eHitState != m_tHitType.eStingHitState)
+			{
+				Enter_State(m_tHitType.eStingHitState, pHitInfo);
+			}
+			else
+			{
+				On_DieBegin(pOtherUnit, vHitPos);
+				Enter_State(m_tHitType.eHitState, pHitInfo);
+			}
 
-			On_DieBegin(pOtherUnit, vHitPos);
-			Enter_State(m_tHitType.eHitState, pHitInfo);
+			//On_DieBegin(pOtherUnit, vHitPos);
+			//Enter_State(m_tHitType.eHitState, pHitInfo);
 
 			return;
 
@@ -1474,7 +1726,11 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Hit_Particle", vHitPos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
 
 	// 데드에 넘겨주기	
-	pOtherUnit->Get_OwnerPlayer()->On_ScoreKDA_Kill(m_pOwnerPlayer);
+	if (CLoading_Manager::Get_Instance()->Get_LoadLevel() >= LEVEL_PADEN)
+	{
+		pOtherUnit->Get_OwnerPlayer()->On_ScoreKDA_Kill(m_pOwnerPlayer);
+		Get_OwnerPlayer()->On_ScoreKDA_Death();
+	}
 
 	CUser::Get_Instance()->Add_KillLog(pOtherUnit->Get_OwnerPlayer(), m_pOwnerPlayer);
 
@@ -1501,6 +1757,8 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 void CUnit::On_Bounce(void* pHitInfo)
 {
 	//Left인지 Right인지 판단
-	Enter_State(m_tHitType.eBounce, pHitInfo);
+
+	if(m_tHitType.eBounce != STATE_END)
+		Enter_State(m_tHitType.eBounce, pHitInfo);
 }
 

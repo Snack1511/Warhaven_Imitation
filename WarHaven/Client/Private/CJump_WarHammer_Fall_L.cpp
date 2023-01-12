@@ -47,7 +47,7 @@ HRESULT CJump_WarHammer_Fall_L::Initialize()
 
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L);
     m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_L);
-
+    m_vecAdjState.push_back(STATE_GLIDING);
 
     return S_OK;
 }

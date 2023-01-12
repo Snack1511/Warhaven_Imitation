@@ -28,6 +28,8 @@ public:
 
 	void Set_Player(CPlayer* pPlayer);
 
+	void Set_BattleIcon(_bool IsBattle);
+
 private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
@@ -61,6 +63,11 @@ private:
 
 	_float m_fIconOffsetX = -240.f;
 	_float m_fIconOffsetY = -500.f;
+
+	_float m_fHwaraOffSetX = 500.f;
+	_float m_fHwaraOffSetY = 230.f;
+
+	_bool m_bIsBattle = false;
 
 private:
 	_float m_fConquestTime[Point_End];

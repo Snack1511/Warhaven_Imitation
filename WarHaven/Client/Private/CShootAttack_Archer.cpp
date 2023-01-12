@@ -159,9 +159,12 @@ void CShootAttack_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 
 	if (ePrevType == STATE_ATTACK_BEGIN_POISION_ARCHER ||
-		ePrevType == STATE_ATTACK_BEGIN_SNIPING_ARCHER ||
 		ePrevType == STATE_ATTACK_BEGIN_ARCHER)
 		m_fDamagePumping = 0.7f;
+
+	if (ePrevType == STATE_ATTACK_BEGIN_SNIPING_ARCHER ||
+		ePrevType == STATE_ATTACK_AIMING_SNIPING_ARCHER)
+		m_fDamagePumping = 4.f;
 
 	_bool bBounce = false;
 
@@ -175,6 +178,7 @@ void CShootAttack_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed * 0.7f;
 	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed * 0.7f;
+	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
 
 	static_cast<CUnit_Archer*>(pOwner)->Shoot_Arrow();
 
@@ -199,6 +203,7 @@ STATE_TYPE CShootAttack_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CShootAttack_Archer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Get_SkillTrigger().bSkillQTrigger = false;
 	pOwner->Get_SkillTrigger().bSkillETrigger = false;
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
 

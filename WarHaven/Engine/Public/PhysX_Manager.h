@@ -65,6 +65,7 @@ public:
 
 	PxRigidStatic*	Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, Scene eScene
 		, PxMaterial* pMaterial = nullptr);
+	void	Erase_Static(PxRigidStatic* pStatic);
 	
 	void			Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut);
 	void			Create_ConvexMesh(_float3* pVertices, _uint iNumVertices,

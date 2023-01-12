@@ -26,5 +26,8 @@ public:
 	static _float	Lerp(_float fDest, _float fSour, _float fRatio);
 
 	//static void		Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float4 vPosition, _float fVolume = 1.f);
+
+public:
+	static string	Get_FileName(string strFilePath);
 };
 

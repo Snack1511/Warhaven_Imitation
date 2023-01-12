@@ -28,7 +28,21 @@ class CUI_UnitHUD;
 class CAIController;
 class CBehavior;
 class CPath;
+class CDebugObject;
+class CUI_ScoreInfo;
 
+
+/*
+길찾기 시 CNavigation필요
+Navigation에서 직접 이동 위치를 컨트롤 하는 것이 아니라, 이동할 위치리스트를 받아서 돌리는 식
+CNavigation의 Get_BestRoute(map<_float, CCellLayer*>&, _float4 vStart, _float4 vEnd)를 이용해 리스트를 받아서 저장한다.
+지금 당장은 불가능
+why?
+1. CellLayer가 제대로 만들어지지 않았다.
+2. CellLayer의 디버깅 렌더가 프래임 드랍이 심해 만들 수 없다 --> 인스턴싱쓰면 어케 될것 같음
+3. 위의 두가지 이유 때문에 길찾기 테스트를 시도 조차 못함 --> 대신 이론적으로는 마무리 지었음
+
+*/
 class CPlayer final : public CGameObject
 {
 	DECLARE_PROTOTYPE(CPlayer);
@@ -63,6 +77,12 @@ public:
 		eEnd
 	};
 
+	enum eTargetPlayerType
+	{
+		eEnemy,
+		eAllies,
+		eCNT
+	};
 public:
 
 private:
@@ -155,7 +175,7 @@ public:
 
 public:
 	void	Set_TargetPlayer(CPlayer* pTargetPlayer) { m_pTargetPlayer = pTargetPlayer; }
-	CPlayer* Get_TargetPlayer() { return m_pTargetPlayer; }
+	CPlayer* Get_TargetPlayer(eTargetPlayerType eType = eEnemy);
 
 public:
 	_bool& AbleHero() { return m_bAbleHero; }
@@ -177,6 +197,7 @@ public:
 	void On_FinishGame(CTeamConnector* pLoseTeam);
 
 	void On_ScoreKDA_Kill(CPlayer* pOtherPlayer);
+	void On_ScoreKDA_Death();
 
 
 public:
@@ -200,9 +221,16 @@ private:
 	_bool	m_bEnableOnStart = false;
 	_bool	m_bisDeadByHeadshot = false;
 
+public:
+	KDA_STAT Get_KDA() { return m_tKdaStat; }
+	CUI_ScoreInfo* Get_ScoreInfo() { return m_pScoreInfo; }
+
 private: /* 킬뎃과 플레이어 정보 */
 	KDA_STAT	m_tKdaStat;
 	CPlayerInfo* m_pMyPlayerInfo = nullptr;
+
+	CUI_ScoreInfo* m_pScoreInfo = nullptr;
+
 	CSquad* m_pMySquad = nullptr;
 	CTeamConnector* m_pMyTeam = nullptr;
 	_bool m_bIsMainPlayer = false;
@@ -297,7 +325,23 @@ private:
 
 private:
 	class CUI_Trail* m_pUI_Trail = nullptr;
-
+public:
+	void Make_BestRoute(_float4 vPosition);
+	list<_float4>& Get_CurRoute() { return m_CurRoute; }
+	list<_float4>& Get_CurNodeList() { return m_CurNodeList; }
+	void Set_IsFindRoute(_bool flag) { m_bFindRoute = flag; }
+	_bool Is_FindRoute() { return m_bFindRoute; }
+#ifdef _DEBUG
+	void Add_DebugObject(_float4 vPosition);
+	void Clear_DebugObject();
+#endif
+private:
+	list<_float4> m_CurRoute;
+	list<_float4> m_CurNodeList;
+	_bool m_bFindRoute = false;
+#ifdef _DEBUG
+	list<CDebugObject*> m_pRouteDebug;
+#endif
 
 private:
 	virtual void My_Tick() override;
@@ -315,6 +359,16 @@ private:
 	void Update_HeroGauge();
 	void Update_KDA();
 	void On_AbleHero();
+
+public:
+	_bool IsBattle() { return m_bIsBattle; }
+	void Set_IsBattle(_bool value) { m_bIsBattle = value; }
+
+private:
+	_bool m_bIsBattle = false;
+	_float m_fBattlAccTime = 0.f;
+	_float m_fMaxBattlTime = 0.3f;
+
 public: void On_FinishHero();
 
 private:
@@ -323,5 +377,15 @@ private:
 private:
 	void	Update_DieDelay();
 	void	Check_AbleRevival();
+
+public:
+	_float4 Get_TargetPos() { return m_vTargetPos; }
+	void Set_TargetPos(_float4 vPos) { m_vTargetPos = vPos; }
+private:
+	_float4 m_vTargetPos;
+public:
+	_bool Is_OpenCell();
+
+	_bool m_bIsInFrustum = false;
 };
 END

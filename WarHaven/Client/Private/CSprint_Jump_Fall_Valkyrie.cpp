@@ -42,7 +42,7 @@ HRESULT CSprint_Jump_Fall_Valkyrie::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.f;
 
-
+    m_vecAdjState.push_back(STATE_GLIDING);
     m_vecAdjState.push_back(STATE_JUMP_LAND_VALKYRIE_R);
     m_vecAdjState.push_back(STATE_SPRINT_END_VALKYRIE);
 
@@ -52,6 +52,9 @@ HRESULT CSprint_Jump_Fall_Valkyrie::Initialize()
 
 void CSprint_Jump_Fall_Valkyrie::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    if (ePrevType == STATE_GLIDING)
+        m_fInterPolationTime = 0.2f;
+
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 

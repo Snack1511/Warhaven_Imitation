@@ -173,10 +173,12 @@ void CLight_Manager::Update_Lights()
 		wstrTemp += to_wstring(m_Lights.back()->m_LightDesc.vPosition.y);
 		wstrTemp += L" B : ";
 		wstrTemp += to_wstring(m_Lights.back()->m_LightDesc.vPosition.z);
-		MessageBox(0, wstrTemp.c_str(), TEXT("DIFFUSE"), MB_OK);
+		MessageBox(0, wstrTemp.c_str(), TEXT("POSITION"), MB_OK);
 
-	}
+	}*/
+	/*
 	_float4 vPosition;
+	
 	if (!m_Lights.empty())
 	{
 		vPosition = m_Lights.back()->m_LightDesc.vPosition;
@@ -248,7 +250,7 @@ void CLight_Manager::Update_Lights()
 				{
 					pLight->m_LightDesc.fLightAcc = 0.f;
 
-					if (!pLight->m_LightDesc.bLoop)
+					if (!pLight->m_LightDesc.bLoop) 
 					{
 						SAFE_DELETE(pLight);
 						iter = m_Lights.erase(iter);
@@ -257,6 +259,13 @@ void CLight_Manager::Update_Lights()
 					else
 					{
 						pLight->m_LightDesc.eFadeType = LIGHTDESC::FADEIN;
+
+						if (!pLight->m_LightDesc.pOwner->Is_Valid()) //루프상태이나 followtarget이 null일때 삭제
+						{
+							SAFE_DELETE(pLight);
+							iter = m_Lights.erase(iter);
+							continue;
+						}
 					}
 				}
 				else
@@ -272,11 +281,13 @@ void CLight_Manager::Update_Lights()
 				break;
 			}
 
-			if (!pLight->m_LightDesc.pOwner->Is_Valid())
+			if ((!pLight->m_LightDesc.pOwner->Is_Valid()) && pLight->m_LightDesc.eFadeType != LIGHTDESC::FADEOUT)
 			{
-					SAFE_DELETE(pLight);
+				pLight->m_LightDesc.eFadeType = LIGHTDESC::FADEOUT;
+				pLight->m_LightDesc.fLightAcc = 0.f;
+					/*SAFE_DELETE(pLight);
 					iter = m_Lights.erase(iter);
-					continue;
+					continue;*/
 			}
 			else
 			{

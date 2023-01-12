@@ -1,4 +1,5 @@
 #define SHADOW_ON
+#define MATH_PI 3.141592
 
 matrix		g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 matrix		g_ProjMatrixInv, g_ViewMatrixInv, g_LightViewMatrix, g_LightVeiwProjMatrix;
@@ -43,12 +44,17 @@ texture2D	g_BloomOriginTexture;
 texture2D	g_DistortionTexture;
 texture2D	g_FogTexture;
 texture2D	g_RimLightTexture;
+texture2D	g_PBRTexture;
 
 bool		g_bBilateral;
+bool		g_bPBR;
 
 float		g_fWinCX = 1280.f;
 float		g_fWinCY = 720.f;
 float		g_fCoord[3] = { -1.f, 0.f, 1.f };
+
+float g_fUVPlusX;
+float g_fUVPlusY;
 
 
 float		g_fDarkScreen = 0.f;
@@ -72,8 +78,6 @@ sampler ShadowSampler = sampler_state
 	AddressV = clamp;
 };
 
-float g_fUVPlusX = 0.f;
-float g_fUVPlusY = 0.f;
 
 struct VS_IN
 {
@@ -186,14 +190,149 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 	return Out;
 }
 
+
+// GGX code from https://www.shadertoy.com/view/MlB3DV
+float G1V(float dotNV, float k) {
+	return 1.0 / (dotNV * (1.0 - k) + k);
+}
+float GGX(float3 N, float3 V, float3 L, float roughness, float F0) {
+	float alpha = roughness * roughness;
+	float3 H = normalize(V + L);
+
+	float dotNL = clamp(dot(N, L), 0.0, 1.0);
+	float dotNV = clamp(dot(N, V), 0.0, 1.0);
+	float dotNH = clamp(dot(N, H), 0.0, 1.0);
+	float dotLH = clamp(dot(L, H), 0.0, 1.0);
+
+	float D, vis;
+	float F;
+
+	// NDF : GGX
+	float alphaSqr = alpha * alpha;
+	float pi = 3.1415926535;
+	float denom = dotNH * dotNH * (alphaSqr - 1.0) + 1.0;
+	D = alphaSqr / (pi * denom * denom);
+
+	// Fresnel (Schlick)
+	float dotLH5 = pow(1.0 - dotLH, 5.0);
+	F = F0 + (1.0 - F0) * (dotLH5);
+
+	// Visibility term (G) : Smith with Schlick's approximation
+	float k = alpha / 2.0;
+	vis = G1V(dotNL, k) * G1V(dotNV, k);
+
+	return /*dotNL */ D * F * vis;
+}
+
+//float3 BRDF_Specular(float3 n, float3 l, float3 v, float roughness, float3 cspec, float3 clight)
+//{
+//	float3 BRDFSpec;
+//
+//	float3 h = normalize(l + v);
+//	float dot_n_h = max(abs(dot(n, h)), 0.001);
+//	float dot_n_v = max(abs(dot(n, v)), 0.001);
+//	float dot_n_l = max(abs(dot(n, l)), 0.001);
+//	float dot_h_v = max(abs(dot(h, v)), 0.001); // dot_h_v == dot_h_l
+//
+//
+//	float g = 2.0 * dot_n_h / dot_h_v;
+//	float G = min(min(dot_n_v, dot_n_l) * g, 1.0);
+//
+//
+//	float sq_nh = dot_n_h * dot_n_h;
+//	float sq_nh_m = sq_nh * (roughness * roughness);
+//	float D = exp((sq_nh - 1.0) / sq_nh_m) / (sq_nh * sq_nh_m);
+//
+//
+//	float3 Fspec = cspec + (1.0 - cspec) * pow(1.0 - dot_h_v, 5.0);
+//
+//	BRDFSpec = Fspec * D * G / (dot_n_v * dot_n_l * 4.0);
+//
+//	return BRDFSpec ;
+//}
+
+float DistributionGGX(float NdotH, float roughness)
+{
+	float a2 = roughness * roughness;
+	float NdotH2 = NdotH * NdotH;
+	float denom = NdotH2 * (a2 - 1) + 1;
+	return a2 / (3.141592 * denom * denom);
+}
+
+float VisibilitySmithJointGGX(float NdotV, float NdotL, float roughness)
+{
+	float a2 = roughness * roughness;
+	float visibility = NdotL / (NdotL + sqrt(NdotV * NdotV + a2 * (1 - NdotV * NdotV)));
+	return visibility * visibility;
+}
+
+float VisibilityTerm(float roughness, float ndotv, float ndotl)
+{
+	float a2 = roughness * roughness;
+	float G_V = ndotv + sqrt((ndotv - ndotv * a2) * ndotv + a2);
+	float G_L = ndotl + sqrt((ndotl - ndotl * a2) * ndotl + a2);
+	return rcp(G_V * G_L);
+}
+
+float DistributionTerm(float roughness, float ndoth)
+{
+	float r2 = roughness * roughness;
+	float d = (ndoth * r2 - ndoth) * ndoth + 1.0;
+	return r2 / (d * d * MATH_PI);
+}
+
+float3 FresnelTerm(float3 specularColor, float vdoth)
+{
+	float3 fresnel = specularColor + (1. - specularColor) * pow((1. - vdoth), 5.);
+	return fresnel;
+}
+
+
+void PBRShading(out float3 vShade, out float3 vSpecular, in float3 lightDir, float3 MRH, float3 pos, float3 normal, float3 viewDir, float3 refl)
+{
+	float metalness = MRH.r;
+	float roughness = MRH.g;
+
+	float3 lightColor = g_vLightDiffuse.xyz;
+
+	float3 baseColor = 1;
+	float3 diffuseColor = 1;
+	float3 specularColor = g_vLightSpecular.xyz;
+	float roughnessE = roughness * roughness;
+	float roughnessL = max(.01, roughnessE);
+
+
+	float3 diffuse = (0.);
+	float3 specular = (0.);
+
+	float3 halfVec = normalize(viewDir + lightDir);
+	float vdoth = saturate(dot(viewDir, halfVec));
+	float ndoth = saturate(dot(normal, halfVec));
+	float ndotv = saturate(dot(normal, viewDir));
+	float ndotl = saturate(dot(normal, lightDir));
+
+	diffuse += diffuseColor * lightColor * saturate(dot(normal, lightDir));
+
+	float3 lightF = FresnelTerm(specularColor, vdoth);
+	float lightD = DistributionTerm(roughnessL, ndoth);
+	float lightV = VisibilityTerm(roughnessL, ndotv, ndotl);
+
+	specular = specularColor * (lightF * lightD * lightV  / (4 * ndotl * ndotv));
+
+	//specular *= saturate(pow(ndotv, roughnessE) - 1.);
+
+	vShade = diffuse;
+	vSpecular = specular;
+}
+
+
 PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 {
 	PS_OUT_LIGHT		Out = (PS_OUT_LIGHT)1;
-	vector			vFlagDesc = g_FlagTexture.Sample(DefaultSampler, In.vTexUV);
+	//vector			vFlagDesc = g_FlagTexture.Sample(DefaultSampler, In.vTexUV);
 
-	if (vFlagDesc.r > 0.f)
+	//if (vFlagDesc.r > 0.f)
 	{
-
 		vector			vNormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
 		vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
 		float			fViewZ = vDepthDesc.y * 1500.f;
@@ -211,35 +350,83 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 
 		vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
 
-		vector			vLightDir = vWorldPos - g_vLightPos;
-
+		vector			vLightDir = g_vLightPos - vWorldPos;
 		float			fDistance = length(vLightDir);
-
 		float			fAtt = saturate((g_fRange - fDistance) / g_fRange);
+		vector			vLook = normalize(vWorldPos - g_vCamPosition);
 
-
-		float		fShade = saturate(saturate(dot(normalize(vLightDir) * -1.f, vNormal)));
+		
+		float		fShade = saturate(saturate(dot(normalize(vLightDir), vNormal)));
 
 		Out.vShade = g_vLightDiffuse * fShade * fAtt + (g_vLightAmbient * g_vMtrlAmbient) * fAtt;
 
-		//점조명이구, 최대거리보다 작은 범위내에 있으면
-		/*if (g_fRange < 100.f && g_fRange > fDistance)
-		{
-			Out.vShade.a = 0.95f;
-		}
-		else*/
 		Out.vShade.a = 1.f;
+		
+		
 
-		if (vFlagDesc.r > 0.99f)
+		//if (vFlagDesc.r > 0.99f)
 		{
-			vector			vReflect = reflect(normalize(vLightDir), vNormal);
-			vector			vLook = normalize(vWorldPos - g_vCamPosition);
+			if (g_bPBR)
+			{
+				vector			vPBRDesc = g_PBRTexture.Sample(DefaultSampler, In.vTexUV);
 
-			Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 30.f) * fAtt;
+				float metalness = vPBRDesc.r;
+				float roughness = vPBRDesc.g;
+
+				if (vPBRDesc.a < 0.1f)
+				{
+					Out.vSpecular = 0;
+					return Out;
+				}
+
+				vector			vReflect = reflect(-normalize(vLightDir), vNormal);
+
+				{
+					// Specular term
+					float3 R = normalize(vReflect.xyz);
+					float3 V = normalize(vLook.xyz);
+					float3 L = normalize(vLightDir.xyz);
+					float3 N = normalize(vNormal.xyz);
+
+					float3 H = normalize(V + L);
+					float NdotV = max(dot(N, V), 0);
+					float NdotL = max(dot(N, L), 0);
+					float NdotH = max(dot(N, H), 0);
+
+					// Fresnel term
+					float F0 = 1 - metalness;
+					F0 = pow(F0, 5);
+					float fresnel = F0 + (1 - F0) * pow(1 - NdotV, 5);
+
+					/*fShade = (1 - fresnel) * (1 - metalness);
+					Out.vShade = g_vLightDiffuse * fShade * fAtt + (g_vLightAmbient * g_vMtrlAmbient) * fAtt;
+
+					Out.vShade.a = 1.f;*/
+
+
+					float D = DistributionGGX(NdotH, roughness);
+					float Vis = VisibilitySmithJointGGX(NdotV, NdotL, roughness);
+					float specular = fresnel * D * Vis;
+
+
+
+					float3 specularColor = specular * (g_vLightSpecular * g_vMtrlSpecular);
+					Out.vSpecular.xyz = specularColor * fAtt;
+				}
+
+				
+			}
+			else
+			{
+				vector			vReflect = reflect(normalize(vLightDir), vNormal);
+				vector			vLook = normalize(vWorldPos - g_vCamPosition);
+
+				Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect), vLook)), 30.f) * fAtt;
+			}
+
 		}
 	}
 
-	//Out.vShade.xyz = 0.f;
 	Out.vSpecular.a = 0.f;
 
 	return Out;
@@ -247,44 +434,58 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 
 
 
+
 PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 {
 	PS_OUT			Out = (PS_OUT)Out;
-	vector			vFlagDesc = g_FlagTexture.Sample(DefaultSampler, In.vTexUV);
+	//vector			vFlagDesc = g_FlagTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
+	vector			vPBRDesc = g_PBRTexture.Sample(DefaultSampler, In.vTexUV);
 
+	float metalness = vPBRDesc.x;
 
 	vector			vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vShade = g_ShadeTexture.Sample(DefaultSampler, In.vTexUV);
+	vector			vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
 
-	Out.vColor = vDiffuse * vShade;
+	float4 diffuse = vDiffuse;
 
+	
 
+	Out.vColor = diffuse * vShade;
+
+	
+
+	/* 색 보정 */
+	//Out.vColor *= 2.2f;
 
 	//Shadow
 #ifdef SHADOW_ON
+
+
 	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vColor *= vShadowDesc;
+	Out.vColor.xyz *= vShadowDesc.xyz;
+	if (vShadowDesc.x > 0.7f)
+	{
+		/* Specular */
+		vector vSpecColor;
+		vSpecColor = vSpecular;
+
+		
+		Out.vColor.xyz += vSpecColor.xyz;
+
+
+
+	}
+	
 #endif
 
-	Out.vColor *= 2.2f;
+
 
 	//RimLight
 	vector			vRimLightDesc = g_RimLightTexture.Sample(DefaultSampler, In.vTexUV);
 	//if (vRimLightDesc.a > 0.1f)
 	Out.vColor.xyz += vRimLightDesc.xyz;
-
-
-
-	vector			vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-	if (vSpecular.r < 1.f)
-	{
-		if (dot((vDiffuse.xyz * vShadowDesc.xyz), float3(0.333f, 0.333f, 0.333f)) > 0.5f)
-			Out.vColor += vSpecular;
-
-	}
-
-
 
 	if (Out.vColor.a <= 0.f)
 	{
@@ -294,30 +495,6 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	}
 	
 	Out.vColor.a = 1.f;
-
-	//
-
-	////white
-	//Out.vColor.xyz += vFlagDesc.g;
-
-	
-
-	////Forward Fog
-	//In.vTexUV.x += g_fUVPlusX;
-	//In.vTexUV.y += g_fUVPlusY;
-
-	//vector			vFogColor = g_FogTexture.Sample(DefaultSampler, In.vTexUV * 0.3f);
-
-	//if (vFogColor.x < 0.2f)
-	//	return Out;
-
-	//vFogColor.xyz = float3(1.1f, 0.f, 0.f) * (vFogColor.x);
-
-	//float fDepthRatio = saturate(vDepthDesc.y / 0.01f);
-
-	////0~1을 0.5~1로 바꿔야함
-	//fDepthRatio = (fDepthRatio + 1.f) * 0.5f * g_fFogAlpha;
-	//Out.vColor.xyz = Out.vColor.xyz * (1.f - fDepthRatio) + vFogColor * fDepthRatio;
 
 	
 
@@ -347,21 +524,21 @@ PS_OUT PS_MAIN_BLOOMBLEND(PS_IN In)
 	{
 		/* 멀수록 Ratio가 강하게 */
 
-		//if (vDepthDesc.y < 0.9f)
-		//{
-		//	float		fMaxDepth = 0.15f;
+		if (vDepthDesc.y < 0.9f)
+		{
+			float		fMaxDepth = 0.15f;
 
-		//	float fRatio = saturate(vDepthDesc.y / fMaxDepth);
+			float fRatio = saturate(vDepthDesc.y / fMaxDepth);
 
 
-		//	//멀수록 강해짐
+			//멀수록 강해짐
 
-		//	vector			vBlurDesc = g_BlurTexture.Sample(DefaultSampler, In.vTexUV);
+			vector			vBlurDesc = g_BlurTexture.Sample(DefaultSampler, In.vTexUV);
 
-		//	Out.vColor = Out.vColor * (1.f - fRatio) + vBlurDesc * fRatio;
+			Out.vColor = Out.vColor * (1.f - fRatio) + vBlurDesc * fRatio;
 
-		//	//Out.vColor.xyz += (fRatio * 0.3f);
-		//}
+			Out.vColor.xyz += (fRatio * 0.2f);
+		}
 
 	}
 
@@ -564,7 +741,7 @@ PS_OUT PS_MAIN_POSTEFFECT(PS_IN In)
 
 	
 		 
-	if (g_bBilateral)
+	//if (g_bBilateral)
 	{
 		/*const float A = 2.51, B = 0.03, C = 2.43, D = 0.59, E = 0.14;
 		Out.vColor = saturate((Out.vColor * (A * Out.vColor + B)) / (Out.vColor * (C * Out.vColor + D) + E));
@@ -840,7 +1017,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_DEBUG();
 	}
 
@@ -851,7 +1028,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_LIGHT_DIRECTIONAL();
 	}
 
@@ -862,7 +1039,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_LIGHT_POINT();
 	}
 
@@ -873,7 +1050,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_FORWARDBLEND();
 	}
 
@@ -884,7 +1061,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_OUTLINE();
 	}
 
@@ -895,7 +1072,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_FINALBLEND();
 	}
 
@@ -906,7 +1083,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_POSTEFFECT();
 	}
 
@@ -917,7 +1094,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_BLOOMBLEND();
 	}
 
@@ -928,7 +1105,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_UIBLEND();
 	}
 
@@ -939,7 +1116,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_RIMLIGHT();
 	}
 

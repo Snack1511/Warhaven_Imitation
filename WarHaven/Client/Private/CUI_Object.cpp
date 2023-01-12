@@ -231,12 +231,21 @@ void CUI_Object::Fade_Font(_bool value, _float fDuration)
 	m_fDuration = fDuration;
 }
 
-void CUI_Object::Set_FadeDesc(_float fDuration)
+void CUI_Object::Set_FadeDesc(_float fDuration, _uint FadeOutType)
 {
 	FADEDESC tFadeDesc;
 	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
 
-	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
+	switch (FadeOutType)
+	{
+	case 0:
+		tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
+		break;
+	case 1:
+		tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
+		break;
+	}
+
 	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
 
 	tFadeDesc.bFadeInFlag = FADE_NONE;

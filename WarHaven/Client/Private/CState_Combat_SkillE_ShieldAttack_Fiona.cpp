@@ -60,7 +60,7 @@ void CState_Combat_SkillE_ShieldAttack_Fiona::Enter(CUnit* pOwner, CAnimator* pA
 {
 	pOwner->CallBack_CollisionEnter += bind(&CState_Combat_SkillE_ShieldAttack_Fiona::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
-	pOwner->On_Use(CUnit::SKILL2);
+	pOwner->On_Use(CUnit::SKILL3);
 
 	pOwner->Get_OwnerPlayer()->Get_Gauge() -= 15.f;
 
@@ -74,7 +74,7 @@ void CState_Combat_SkillE_ShieldAttack_Fiona::Enter(CUnit* pOwner, CAnimator* pA
 	tColorDesc.fFadeInTime = 0.1f;
 	tColorDesc.fFadeOutStartTime = 1.f;
 	tColorDesc.fFadeOutTime = 0.1f;
-	tColorDesc.vTargetColor = _float4((150.f / 255.f), (0.f / 255.f), (0.f / 255.f), 0.1f);
+	tColorDesc.vTargetColor = RGBA(80, 0, 0, 0.1f);
 	//tColorDesc.vTargetColor *= 1.1f;
 	tColorDesc.iMeshPartType = MODEL_PART_WEAPON_L;
 	tColorDesc.iStartKeyFrame = 2;

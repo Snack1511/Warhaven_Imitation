@@ -84,6 +84,9 @@ void CJump_Player_Land_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
         break;
     }
 
+    if (ePrevType == STATE_GLIDING)
+        m_fInterPolationTime = 0.2f;
+
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

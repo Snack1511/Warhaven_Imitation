@@ -21,11 +21,7 @@ HRESULT CState_Common_Fall_Fiona::Initialize()
 {
     __super::Initialize();
 
-    m_iStateChangeKeyFrame = 0;
-
-    m_fInterPolationTime = 0.15f;
-
-    m_fAnimSpeed = 2.5f;
+    m_iStateChangeKeyFrame = 99;
 
     return S_OK;
 }

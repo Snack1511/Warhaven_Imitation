@@ -44,14 +44,25 @@ HRESULT CState_Common_Bounce_Archer::Initialize()
 
 void CState_Common_Bounce_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    /* OwnerÀÇ Animator Set Idle·Î */
+    if (ePrevType == AI_STATE_COMBAT_ATTACK_SHOOT_ARCHER ||
+        ePrevType == AI_STATE_COMBAT_ATTACK_SHOOT_POISION_ARCHER ||
+        ePrevType == AI_STATE_COMBAT_ATTACK_SHOOT_SNIPING_ARCHER)
+    {
+        m_bShoot = true;
+        m_fInterPolationTime = 0.f;
+    }
+
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_Common_Bounce_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (m_bShoot)
+        return m_ePreStateType;
+
     if (pAnimator->Is_CurAnimFinished())
-        return AI_STATE_COMBAT_DEFAULT_PALADIN_R;
+        return AI_STATE_COMBAT_DEFAULT_ARCHER_R;
 
     return __super::Tick(pOwner, pAnimator);
 }

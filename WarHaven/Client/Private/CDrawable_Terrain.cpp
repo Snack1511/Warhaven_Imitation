@@ -99,27 +99,12 @@ HRESULT CDrawable_Terrain::Initialize_Prototype()
     pShader->Initialize();
     Add_Component(pShader);
 
-    //CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN);
-    //Add_Component(pRenderer);
-    //m_pRenderer = pRenderer;
-
-    CTerrain_Renderer* pRenderer = CTerrain_Renderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN);
+    CTerrain_Renderer* pRenderer = CTerrain_Renderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TEXTUREARRAY);
     Add_Component<CRenderer>(pRenderer);
     m_pRenderer = pRenderer;
 
-    //CTexture* pTexture = CTexture::Create(0, m_strTileTexturePath.c_str(), 1);
-    //Add_Component(pTexture);
-    //D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Bin\Resources\Textures\Terrain\LandScape\Ash
-    //wstring strTestBasePath = L"../bin/resources/Textures/Terrain/LandScape/";
-    //wstring strTestFirstTexturePath = strTestBasePath + L"Ash/T_Landscape_Ash_Ash01a_01a_B.dds";
-    //wstring strTestSecondTexturePath = strTestBasePath + L"Grass/T_Landscape_Grass_Grass03a_01b_B.dds";
-    //CTexture* pTexture = CTexture::Create(0, strTestFirstTexturePath.c_str(), 1);
-    //Add_Component(pTexture);
-
-    //pTexture = CTexture::Create(0, strTestSecondTexturePath.c_str(), 1);
-    //Add_Component(pTexture);
-
-    Change_ShaderPass(2);
+    Change_ShaderPass(VTXNOR_PASS_TESS);
+    //Change_ShaderPass(VTXNOR_PASS_TEXTUREARRAY);
     return S_OK;
 }
 
@@ -292,6 +277,7 @@ HRESULT CDrawable_Terrain::SetUp_TerrainInfo(ifstream& readFile, CMesh_Terrain* 
 {
     if (nullptr == pTerrain)
         assert(0);
+
     _uint iNumVertices = pTerrain->Get_NumVertices();
     _float3* pVerticesPos = pTerrain->Get_VerticesPos();
     _float4* pVerticesColor = pTerrain->Get_VerticesColor();

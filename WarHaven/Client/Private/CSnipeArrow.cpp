@@ -42,7 +42,7 @@ HRESULT CSnipeArrow::Start()
 	tColorDesc.fFadeInTime = 0.1f;
 	tColorDesc.fFadeOutStartTime = 9999.f;
 	tColorDesc.fFadeOutTime = 0.1f;
-	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
+	tColorDesc.vTargetColor = RGBA(50, 30, 0, 0.1f);
 	//tColorDesc.vTargetColor *= 1.1f;
 	tColorDesc.iMeshPartType = MODEL_PART_SKEL;
 
@@ -94,8 +94,47 @@ HRESULT CSnipeArrow::Initialize_Prototype()
     return CProjectile::Initialize_Prototype();
 }
 
+void CSnipeArrow::My_Tick()
+{
+	__super::My_Tick();
+
+}
+
+void CSnipeArrow::OnEnable()
+{
+	__super::OnEnable();
+
+	//Turn_Effect(true);
+}
+
 void CSnipeArrow::OnDisable()
 {
-	static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(m_hcCode, this);
+	if (m_bCollect)
+		static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(m_hcCode, this);
+	
+	//Turn_Effect(false);
+
 	__super::OnDisable();
+}
+
+void CSnipeArrow::Turn_Effect(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (m_Test.empty())
+		{
+			m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Qanda_Sniping", this, ZERO_VECTOR); //스나이핑 이펙트 추가할것
+		}
+	}
+	else
+	{
+		if (!m_Test.empty())
+		{
+			for (auto& elem : m_Test)
+			{
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+			}
+			m_Test.clear();
+		}
+	}
 }

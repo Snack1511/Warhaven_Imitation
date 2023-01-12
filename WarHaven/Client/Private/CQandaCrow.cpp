@@ -147,7 +147,9 @@ void CQandaCrow::OnEnable()
 }
 void CQandaCrow::OnDisable()
 {
-	static_cast<CUnit_Qanda*>(m_pOwnerUnit)->Collect_QandaProjectile(m_hcCode, this);
+	if (m_bCollect)
+		static_cast<CUnit_Qanda*>(m_pOwnerUnit)->Collect_QandaProjectile(m_hcCode, this);
+	
 	__super::OnDisable();
 }
 

@@ -4,11 +4,15 @@
 #include "UsefulHeaders.h"
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Qanda.h"
 
 #include "CUser.h"
 #include "CEffects_Factory.h"
 #include "CSword_Effect.h"
 #include "CColorController.h"
+#include "CProjectile.h"
+#include "CUI_UnitHUD.h"
+
 
 
 CQanda_Shoot_Sniping::CQanda_Shoot_Sniping()
@@ -58,29 +62,47 @@ HRESULT CQanda_Shoot_Sniping::Initialize()
 	m_vecAdjState.push_back(STATE_GUARD_QANDA);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_QANDA);
 
+	m_fDamagePumping = 7.f;
+
+	Add_KeyFrame(30, 0);
+	Add_KeyFrame(50, 1);
+
 	// return __super::Initialize();
 	return S_OK;
 }
 
-void CQanda_Shoot_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CQanda_Shoot_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+	m_SnipingTarget = pOwner->Get_MultipleFrustumObject();
+
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinParticle", pOwner->Get_Transform()->Get_World(WORLD_POS));
+
+
+	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
+
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.1f;
 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
 	Physics_Setting(pOwner->Get_Status().fRunSpeed, pOwner, false);
 
+	Enable_TargetUI();
+
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CQanda_Shoot_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
+	if (pAnimator->Is_CurAnimFinished())
+		return STATE_IDLE_QANDA;
+
 	if (pAnimator->Get_CurAnimFrame() > 50)
 		m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
 
 	_uint iDirection = Get_Direction();
 
-	if(iDirection != STATE_DIRECTION_END)
+	if (iDirection != STATE_DIRECTION_END)
 		DoMove(iDirection, pOwner);
 
 	return __super::Tick(pOwner, pAnimator);
@@ -88,7 +110,21 @@ STATE_TYPE CQanda_Shoot_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CQanda_Shoot_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->Enable_FlyAttackCollider(false);
+
+	//if (!m_bAttackTrigger)
+	//{
+	//	for (auto& elem : m_Mateors)
+	//		static_cast<CProjectile*>(elem)->On_ChangePhase(CProjectile::eChase);
+	//}
+
+	if (!m_SnipingTarget.empty())
+		m_SnipingTarget.clear();
+
+	if (!m_Mateors.empty())
+		m_Mateors.clear();
+
+	Disable_TargetUI();
+
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 }
 
@@ -108,25 +144,51 @@ void CQanda_Shoot_Sniping::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 	switch (iSequence)
 	{
 	case 0:
-		pOwner->Shake_Camera(pOwner->Get_Status().fCamPower , pOwner->Get_Status().fCamTime);
 		m_bAttackTrigger = true;
-		pOwner->Enable_FlyAttackCollider(true);
 		break;
-
 	case 1:
-		m_bAttackTrigger = false;
-		m_bKeyInputable = true;
-		pOwner->Enable_FlyAttackCollider(false);
+		Make_Meteo(pOwner);
 		break;
-
-
-
-	case 2:
-		
-		break;
-
 	default:
 		break;
 	}
 
+}
+
+void CQanda_Shoot_Sniping::Make_Meteo(CUnit* pOwner)
+{
+
+	for (auto& elem : m_SnipingTarget)
+	{
+		if (static_cast<CUnit*>(elem)->Is_Valid())
+		{
+			CGameObject* pProjectile = static_cast<CUnit_Qanda*>(pOwner)->Create_Meteor();
+			static_cast<CProjectile*>(pProjectile)->Set_TargetUnit(static_cast<CUnit*>(elem));
+			m_Mateors.push_back(pProjectile);
+		}
+	}
+}
+
+void CQanda_Shoot_Sniping::Enable_TargetUI()
+{
+	if (m_SnipingTarget.empty())
+		return;
+
+	auto iter = m_SnipingTarget.begin();
+	for (int i = 0; i < m_SnipingTarget.size(); ++i)
+	{
+		CUnit* m_pTargetUnit = static_cast<CUnit*>(*iter);
+		m_pTargetUnit->Get_OwnerHUD()->SetActive_TargetUI(i, true);
+
+		iter++;
+	}	
+}
+
+void CQanda_Shoot_Sniping::Disable_TargetUI()
+{
+	for (auto& iter : m_SnipingTarget)
+	{
+		CUnit* m_pTargetUnit = static_cast<CUnit*>(iter);
+		m_pTargetUnit->Get_OwnerHUD()->SetActive_TargetUI(0, false);
+	}
 }

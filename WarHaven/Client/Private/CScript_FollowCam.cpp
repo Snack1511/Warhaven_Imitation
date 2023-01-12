@@ -53,7 +53,8 @@ void CScript_FollowCam::Start_ShakingCamera(_float fPower, _float fTime)
 			return;
 	}
 
-	GAMEINSTANCE->Start_MotionBlur(fTime);
+	if (m_bIsMainPlayerCam)
+		GAMEINSTANCE->Start_MotionBlur(fTime);
 
 	m_fShakingPower = fPower;
 	m_fShakingTime = fTime;
@@ -102,6 +103,7 @@ void CScript_FollowCam::Start_LerpType(CAMERA_LERP_TYPE eType)
 	if (fRatio < 0.3f)
 		fRatio = 0.3f;
  	m_fCameraMoveLerpTime = m_arrLerpDesc[eType].fCameraDirectingLerpTime * fRatio;
+	//m_fCameraFOVLerpTime = m_arrLerpDesc[eType].fCameraFOVLerpTime;
 
 	//거리 차이의 max가 필요하다..
 	//거리가 1이상 차이나면 좀 빠르게
@@ -173,6 +175,29 @@ HRESULT CScript_FollowCam::Initialize()
 	m_arrLerpDesc[CAMERA_LERP_CANNON].fCameraDistanceLerpTime *= 0.1f;
 	m_arrLerpDesc[CAMERA_LERP_CANNON].fCameraOffsetLerpTime *= 0.1f;
 
+	m_arrLerpDesc[CAMERA_LERP_QANDA].fTargetDistance *= 0.6f;
+	m_arrLerpDesc[CAMERA_LERP_QANDA].fMaxDistance *= 0.4f;
+	m_arrLerpDesc[CAMERA_LERP_QANDA].fCameraDistanceLerpTime *= 0.5f;
+
+	m_arrLerpDesc[CAMERA_LERP_ZOOMOUT].fTargetDistance *= 1.2f;
+	m_arrLerpDesc[CAMERA_LERP_ZOOMOUT].fMaxDistance *= 1.2f;
+	m_arrLerpDesc[CAMERA_LERP_ZOOMOUT].fCameraDistanceLerpTime *= 0.5f;
+
+	m_arrLerpDesc[CAMERA_LERP_LANCER].fTargetDistance *= 1.25f;
+	m_arrLerpDesc[CAMERA_LERP_LANCER].fCameraDistanceLerpTime *= 0.5f;
+	m_arrLerpDesc[CAMERA_LERP_LANCER].vTargetOffset.y += 0.4f;
+	m_arrLerpDesc[CAMERA_LERP_LANCER].vTargetOffset.z += 0.2f;
+
+	m_arrLerpDesc[CAMERA_LERP_RUSH] = m_arrLerpDesc[CAMERA_LERP_LANCER];
+	m_arrLerpDesc[CAMERA_LERP_RUSH].fTargetDistance *= 1.5f;
+	m_arrLerpDesc[CAMERA_LERP_RUSH].fMaxDistance *= 2.f;
+	m_arrLerpDesc[CAMERA_LERP_RUSH].fCameraDistanceLerpTime *= 0.5f;
+	m_arrLerpDesc[CAMERA_LERP_RUSH].vTargetOffset.y -= 0.2f;
+
+	m_arrLerpDesc[CAMERA_LERP_BREEZE] = m_arrLerpDesc[CAMERA_LERP_LANCER];
+	m_arrLerpDesc[CAMERA_LERP_BREEZE].fTargetDistance *= 1.f;
+	m_arrLerpDesc[CAMERA_LERP_BREEZE].fMaxDistance *= 2.5f;
+	m_arrLerpDesc[CAMERA_LERP_BREEZE].vTargetOffset.x -= 0.2f;
 
 
 	return S_OK;

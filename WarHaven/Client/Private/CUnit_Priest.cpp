@@ -14,6 +14,16 @@
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
 
+#include "CAnimWeapon.h"
+#include "CProjectile.h"
+
+#include "CEffect.h"
+#include "CRectEffects.h"
+#include "CCure_Effect.h"
+
+#include "CUI_UnitHUD.h"
+#include "CUI_UnitHP.h"
+
 CUnit_Priest::CUnit_Priest()
 {
 }
@@ -46,6 +56,9 @@ CUnit_Priest* CUnit_Priest::Create(const UNIT_MODEL_DATA& tUnitModelData)
 void CUnit_Priest::On_Die()
 {
 	__super::On_Die();
+
+	TurnOff_AllEffect();
+
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
 
 	//_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
@@ -58,7 +71,7 @@ void CUnit_Priest::On_Die()
 
 	Add_DeathStones(CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle_Death(L"DeadBody_Warrior", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
 
-	m_DeathStones.push_back(CEffects_Factory::Get_Instance()->Create_MeshParticle_Death(L"WarriorDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
+	//m_DeathStones.push_back(CEffects_Factory::Get_Instance()->Create_MeshParticle_Death(L"WarriorDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
 
 }
 
@@ -70,8 +83,9 @@ void CUnit_Priest::SetUp_Colliders(_bool bPlayer)
 	COL_GROUP_CLIENT	eHitBoxHead = (bPlayer) ? COL_BLUEHITBOX_HEAD : COL_REDHITBOX_HEAD;
 	COL_GROUP_CLIENT	eHitBoxGuard = (bPlayer) ? COL_BLUEGUARD : COL_REDGUARD;
 	COL_GROUP_CLIENT	eAttack = (bPlayer) ? COL_BLUEATTACK : COL_REDATTACK;
-	COL_GROUP_CLIENT	eGuardBreak = (bPlayer) ? COL_BLUEGUARDBREAK : COL_REDGUARDBREAK;
-	COL_GROUP_CLIENT	eFlyAttack = (bPlayer) ? COL_BLUEFLYATTACK : COL_REDFLYATTACK;
+	COL_GROUP_CLIENT	eCure = (bPlayer) ? COL_BLUECURE : COL_REDCURE;
+	COL_GROUP_CLIENT	eCatch = (bPlayer) ? COL_BLUEPROJECTILECATCH  : COL_REDPROJECTILECATCH;
+	COL_GROUP_CLIENT	eGuardBreakFlyAttack = (bPlayer) ? COL_BLUEFLYATTACKGUARDBREAK : COL_REDFLYATTACKGUARDBREAK;
 
 
 
@@ -97,9 +111,10 @@ void CUnit_Priest::SetUp_Colliders(_bool bPlayer)
 		//Radius,	vOffsetPos.		eColType
 		{0.7f, _float4(0.f, 0.5f, 0.f),(_uint)eHitBoxGuard },
 		{0.7f, _float4(0.f, 1.2f, 0.f),(_uint)eHitBoxGuard },
+
 	};
 
-	SetUp_UnitCollider(CUnit::GUARD, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false);
+//	SetUp_UnitCollider(CUnit::GUARD, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false);
 
 
 	tUnitColDesc[0].fRadius = 0.4f;
@@ -110,35 +125,42 @@ void CUnit_Priest::SetUp_Colliders(_bool bPlayer)
 	SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"));
 
 
-	const _uint iWeaponSphereNum = 6;
+	const _uint iWeaponSphereNum = 5;
 
 	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[iWeaponSphereNum];
 
 	for (_uint i = 0; i < iWeaponSphereNum; ++i)
 	{
 		tWeaponUnitColDesc[i].fRadius = 0.2f;
-		tWeaponUnitColDesc[i].vOffsetPos.z = -25.f * _float(i) - 40.f;
+		tWeaponUnitColDesc[i].vOffsetPos.z = -25.f * _float(i) + 2.f;
 		tWeaponUnitColDesc[i].eColType = (_uint)eAttack;
 	}
 
 	SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 
 
-	for (_uint i = 0; i < iWeaponSphereNum; ++i)
-		tWeaponUnitColDesc[i].eColType = (_uint)eGuardBreak;
-
-	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
-
-	for (_uint i = 0; i < iWeaponSphereNum; ++i)
-		tWeaponUnitColDesc[i].eColType = (_uint)eFlyAttack;
-
-	SetUp_UnitCollider(CUnit::FLYATTACK, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
+	//tUnitColDesc[0].fRadius = 2.5f;
+	//tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, 0.f, 0.f);
+	//tUnitColDesc[0].eColType = (_uint)eCatch;
 
 
+	//SetUp_UnitCollider(CUnit::WEAPON_L, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true);
+
+	tUnitColDesc[0].fRadius = 1.5f;
+	tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, tUnitColDesc[0].fRadius * tUnitColDesc[0].fRadius, 0.f);
+	tUnitColDesc[0].eColType = (_uint)eGuardBreakFlyAttack;
+
+	SetUp_UnitCollider(CUnit::FLYATTACK, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1"));
+
+	tUnitColDesc[0].fRadius = 1.f;
+	tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, 1.f, 0.f);
+	tUnitColDesc[0].eColType = (_uint)eCatch;
+	
+	SetUp_UnitCollider(CUnit::GUARD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1"));
 
 }
 
-void	CUnit_Priest::SetUp_HitStates(UNIT_TYPE eUnitType)
+void CUnit_Priest::SetUp_HitStates(UNIT_TYPE eUnitType)
 {
 
 	/* 나중에 사망 후 부활 할 시 위치 저장할 때 사용해야 하므로 전체적으로 추가하도록 한다. */
@@ -147,57 +169,39 @@ void	CUnit_Priest::SetUp_HitStates(UNIT_TYPE eUnitType)
 
 	switch (eUnitType)
 	{
+
 	case Client::CUnit::UNIT_TYPE::ePlayer:
-		m_tHitType.eHitState = STATE_HIT;
-		m_tHitType.eGuardState = STATE_GUARDHIT_WARRIOR;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_PLAYER;
-		m_tHitType.eGroggyState = STATE_GROGGYHIT_WARRIOR;
-		m_tHitType.eStingHitState = STATE_STINGHIT_WARRIOR;
-		m_tHitType.eFlyState = STATE_FLYHIT_WARRIOR;
-		m_tHitType.eBounce = STATE_BOUNCE_PLAYER_L;
+		m_tHitType.eHitState = STATE_HIT_PRIEST;
+		m_tHitType.eGuardState = STATE_GUARDHIT_PRIEST;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_PLAYER; // 가드 캔슬 없음
+		m_tHitType.eGroggyState = STATE_GROGGYHIT_PRIEST;
+		m_tHitType.eStingHitState = STATE_STINGHIT_PRIEST;
+		m_tHitType.eFlyState = STATE_FLYHIT_PRIEST;
+		m_tHitType.eBounce = STATE_BOUNCE_PRIEST;
 		break;
 
-	case Client::CUnit::UNIT_TYPE::eAI_TG:
-		m_tHitType.eHitState = AI_STATE_TG_HIT_WARRIOR;
-		m_tHitType.eGuardState = AI_STATE_TG_GUARDHIT_WARRIOR;
-		m_tHitType.eGuardBreakState = AI_STATE_GUARD_CANCEL_WARRIOR;
-		m_tHitType.eStingHitState = AI_STATE_TG_STINGHIT_WARRIOR;
-		m_tHitType.eGroggyState = AI_STATE_TG_GROGGYHIT_WARRIOR;
-		m_tHitType.eFlyState = AI_STATE_TG_FLYHIT_WARRIOR;
-		m_tHitType.eBounce = AI_STATE_BOUNE_WARRIOR_L;
-		break;
-
-	case Client::CUnit::UNIT_TYPE::eSandbag:
-		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
-		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
-		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
-		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
-		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.eBounce = STATE_BOUNCE_WARRIOR_L_AI_ENEMY;
-		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
-		m_tHitType.eHitState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_WARRIOR;
-		m_tHitType.eGuardBreakState = AI_STATE_COMBAT_GUARDCANCEL_WARRIOR;
-		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_WARRIOR;
-		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_WARRIOR;
-		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_WARRIOR;
-		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_WARRIOR_L;
+		m_tHitType.eHitState = AI_STATE_COMMON_HIT_PRIEST;
+		m_tHitType.eGuardState = AI_STATE_COMMON_HIT_PRIEST;
+		m_tHitType.eGuardBreakState = AI_STATE_COMMON_HIT_PRIEST;
+		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_PRIEST;
+		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_PRIEST;
+		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_PRIEST;
+		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_PRIEST;
 		break;
 
 
 	case Client::CUnit::UNIT_TYPE::eAI_idiot:
-		m_tHitType.eHitState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGuardState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGuardBreakState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eStingHitState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGroggyState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eFlyState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eBounce = AI_STATE_COMMON_HIT_WARRIOR;
-		/*m_tUnitStatus.fMaxHP = 100000.f;
-		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;*/
+		m_tHitType.eHitState = AI_STATE_COMMON_HIT_PRIEST;
+		m_tHitType.eGuardState = AI_STATE_COMMON_HIT_PRIEST;
+		m_tHitType.eGuardBreakState = AI_STATE_COMMON_HIT_PRIEST;
+		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_PRIEST;
+		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_PRIEST;
+		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_PRIEST;
+		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_PRIEST;
+		m_tUnitStatus.fMaxHP = 100000.f;
+		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 		break;
 
 		
@@ -218,22 +222,29 @@ void CUnit_Priest::SetUp_ReserveState(UNIT_TYPE eUnitType)
 	{
 	case Client::CUnit::UNIT_TYPE::ePlayer:
 
-		m_eDefaultState = STATE_IDLE_PLAYER_R;
-		m_eSprintEndState = STATE_SPRINT_END_PLAYER;
+		m_eDefaultState = STATE_IDLE_PRIEST;
+		m_eSprintEndState = STATE_SPRINT_END_PRIEST;
+		m_eSprintFallState = STATE_SPRINT_JUMPFALL_PRIEST;
+
+		m_eCureBeginType = STATE_CURE_BEGIN_PRIEST;
+		m_eCureLoopType = STATE_CURE_LOOP_PRIEST;
+
 
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
-		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
-		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_PRIEST;
+		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_PRIEST;
+		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_PRIEST;
 
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_idiot:
 
-		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
-		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_PRIEST;
+		//m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+		//m_eSprintFallState = STATE_JUMP_LAND_PRIEST; // 수정
 
 		break;
 
@@ -260,19 +271,19 @@ void CUnit_Priest::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	{
 	case eBehaviorType::ePatrol:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEFAULT_WARRIOR_R;
+		eNewState = AI_STATE_PATROL_DEFAULT_PRIEST;
 		break;
 	case eBehaviorType::eFollow:
 		//상태변경
 		break;
 	case eBehaviorType::eAttack:
 		//상태변경
-		eNewState = AI_STATE_COMBAT_DEFAULT_WARRIOR_L;
+		eNewState = AI_STATE_COMBAT_DEFAULT_PRIEST;
 
 		break;
 	case eBehaviorType::ePathNavigation:
 		//상태변경
-		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_WARRIOR_R;
+		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_PRIEST;
 		break;
 
 	case eBehaviorType::eResurrect:
@@ -294,10 +305,70 @@ void CUnit_Priest::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		
 }
 
+void CUnit_Priest::SetUp_CureEffect()
+{
+	if(!m_pCureEffect)
+		m_pCureEffect = CCure_Effect::Create(this);
+
+	CREATE_GAMEOBJECT(m_pCureEffect, GROUP_EFFECT);
+
+	DISABLE_GAMEOBJECT(m_pCureEffect);
+}
+
+void CUnit_Priest::Turn_CatchEffet(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (m_CatchEffect.empty())
+			m_CatchEffect = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Catch_Particle", this, ZERO_VECTOR);
+
+		if (m_CatchMeshEffect.empty())
+			m_CatchMeshEffect = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Catch_Mesh", this, ZERO_VECTOR);
+
+	}
+	else
+	{
+		if (!m_CatchEffect.empty())
+		{
+			for (auto& elem : m_CatchEffect)
+			{
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+			}
+			m_CatchEffect.clear();
+		}
+
+		if (!m_CatchMeshEffect.empty())
+		{
+			for (auto& elem : m_CatchMeshEffect)
+			{
+				static_cast<CEffect*>(elem)->Set_FadeOut();
+			}
+			m_CatchMeshEffect.clear();
+		}
+		
+	}
+}
+
+void CUnit_Priest::TurnOn_CureEffect(_bool bOnOff)
+{
+	if (!m_pCureEffect)
+		return;
+
+	if (bOnOff)
+		ENABLE_GAMEOBJECT(m_pCureEffect);
+	else
+		DISABLE_GAMEOBJECT(m_pCureEffect);
+}
+
+void CUnit_Priest::TurnOff_AllEffect()
+{
+	Turn_CatchEffet(false);
+	TurnOn_CureEffect(false);
+}
+
 void CUnit_Priest::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 {
-	__super::Effect_Hit(pOtherUnit, vHitPos);
-
+	
 	/*_float fUnitDist = pUnit->Get_Transform()->Get_World(WORLD_POS)
 	_float fHitDist = m_pTransform->Get_World(WORLD_POS)*/
 
@@ -309,49 +380,9 @@ void CUnit_Priest::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 
 	switch (m_eCurState)
 	{
-	case STATE_ATTACK_HORIZONTALUP_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LU", vHitPos, matWorld);
-		break;
 
-	case STATE_ATTACK_HORIZONTALMIDDLE_L:
-	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY:
-	case AI_STATE_ATTACK_HORIZONTALMIDDLE_L:
-	case AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_HORIZONTALDOWN_L:
-	case STATE_SPRINTATTACK_PLAYER:
-	case AI_STATE_COMBAT_GUARDBREAK_WARRIOR:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", vHitPos, matWorld);
-		break;
-
-	case AI_STATE_COMBAT_OXEN_LOOPATTACK_WARRIOR:
-	case STATE_WARRIOR_OXEN_LOOPATTACK:
-	case STATE_ATTACK_HORIZONTALUP_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_HORIZONTALMIDDLE_R:
-	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY:
-	case AI_STATE_ATTACK_HORIZONTALMIDDLE_R:
-	case AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R:
-			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", vHitPos, matWorld);
-			break;
-
-	case STATE_ATTACK_HORIZONTALDOWN_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_VERTICALCUT:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_STING_PLAYER_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_STING_PLAYER_R:
+	case STATE_ATTACK_STING_PRIEST:
+		__super::Effect_Hit(pOtherUnit, vHitPos);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
 		break;
 
@@ -359,6 +390,7 @@ void CUnit_Priest::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 		break;
 
 	}
+
 }
 
 HRESULT CUnit_Priest::Initialize_Prototype()
@@ -403,7 +435,7 @@ HRESULT CUnit_Priest::Initialize_Prototype()
 
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// 칼 길이
-	tDesc.fHeight = 0.9f;
+	tDesc.fHeight = 1.f;
 	// 칼 두께
 	tDesc.fRadius = 0.2f;
 	// 칼 붙일 뼈
@@ -417,15 +449,28 @@ HRESULT CUnit_Priest::Initialize_Prototype()
 
 	m_fCoolTime[SKILL1] = 6.f;
 	m_fCoolTime[SKILL2] = 5.f;
-	m_fCoolTime[SKILL3] = 0.f;
+	m_fCoolTime[SKILL3] = 5.f;
 
 	m_fCoolAcc[SKILL1] = 0.f;
 	m_fCoolAcc[SKILL2] = 0.f; 
 	m_fCoolAcc[SKILL3] = 0.f;
 
 
-	m_tUnitStatus.eClass = WARRIOR;
+	m_tUnitStatus.eClass = PRIEST;
+	m_tUnitStatus.fDashAttackSpeed = 9.f;
+	m_tUnitStatus.fSprintAttackSpeed *= 0.95f;
+	m_tUnitStatus.fSprintJumpSpeed *= 0.9f;
+	m_tUnitStatus.fSprintSpeed *= 0.9f;
+	m_tUnitStatus.fRunSpeed *= 0.9f;
+	m_tUnitStatus.fWalkSpeed *= 0.9f;
+	m_tUnitStatus.fRunBeginSpeed *= 0.9f;
+	m_tUnitStatus.fJumpPower *= 0.95f;
+	m_fMaxDistance = 10.f;
 
+	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Staff/SK_WP_Staff0004.fbx",
+		L"", this, "0B_R_WP1", 90.f, 180.f, 180.f);
+
+	m_pAnimWeapon->Initialize();
 
 
 	return S_OK;
@@ -441,12 +486,19 @@ HRESULT CUnit_Priest::Initialize()
 
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
 
+	m_CatchEffect.clear();
+
+	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
+	DISABLE_GAMEOBJECT(m_pAnimWeapon);
+
 	return S_OK;
 }
 
 HRESULT CUnit_Priest::Start()
 {
 	__super::Start();
+
+	ENABLE_GAMEOBJECT(m_pAnimWeapon);
 
 	SetUp_TrailEffect(
 		_float4(0.f, 0.f, -165.f, 1.f),	//Weapon Low
@@ -477,36 +529,36 @@ HRESULT CUnit_Priest::Start()
 		20,
 		"0B_R_WP1"
 	);
+	
+	SetUp_CureEffect();
+		
 
 	return S_OK;
 }
 
 void CUnit_Priest::OnEnable()
 {
+	
 	__super::OnEnable();
 }
 
 void CUnit_Priest::OnDisable()
 {
 	__super::OnDisable();
+
+	TurnOff_AllEffect();
 }
 
+void CUnit_Priest::My_Tick()
+{
+	__super::My_Tick();
+
+	__super::Check_NearObject_IsInFrustum(&m_pNearCureObject);
+}
 void CUnit_Priest::My_LateTick()
 {
+	
+
+
 	__super::My_LateTick();
-
-	if (m_eCurState >= STATE_IDLE_WARRIOR_R_AI_ENEMY)
-		return;
-
-	if (KEY(NUM8, TAP))
-	{
-		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(0.f, 0.f, 0.f));
-		m_pTransform->Set_Look(_float4(0.f, 0.f, 1.f, 0.f));
-	}
-		//GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(50.f, 50.f, 50.f));
-
-	/*if (KEY(SPACE, TAP))
-	{
-		m_pPhysics->Set_Jump(7.f);
-	}*/
 }

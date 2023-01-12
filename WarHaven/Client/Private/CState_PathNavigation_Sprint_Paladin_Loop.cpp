@@ -71,12 +71,12 @@ STATE_TYPE CState_PathNavigation_Sprint_Paladin_Loop::Tick(CUnit* pOwner, CAnima
 
         case 3:
 
-            return AI_STATE_PATHNAVIGATION_SPRINTEND_PALADIN;
 
+            return AI_STATE_PATHNAVIGATION_SPRINTJUMP_PALADIN;
 
         case 4:
 
-            return AI_STATE_PATHNAVIGATION_SPRINTJUMP_PALADIN;
+            return AI_STATE_PATHNAVIGATION_SPRINTEND_PALADIN;
 
         default:
 

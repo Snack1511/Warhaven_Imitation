@@ -49,7 +49,8 @@ protected:
 private:
 	_bool				m_bHitEffect = false;
 
-
+	CHierarchyNode* m_pCoreBone = nullptr;
+	CGameObject*	m_pTargetObject = nullptr;
 
 private:
 	_bool		m_bAfterEffect = false;

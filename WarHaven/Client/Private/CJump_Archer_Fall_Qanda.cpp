@@ -27,7 +27,7 @@ HRESULT CJump_Archer_Fall_Qanda::Initialize()
     m_iStateChangeKeyFrame = 0;
 
     // 선형 보간 시간
-    m_fInterPolationTime = 0.15f;
+    m_fInterPolationTime = 0.f;
 
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.5f;
@@ -36,7 +36,7 @@ HRESULT CJump_Archer_Fall_Qanda::Initialize()
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     //m_vecAdjState.push_back(STATE_IDLE_ARCHER);
-
+    m_vecAdjState.push_back(STATE_GLIDING);
     m_vecAdjState.push_back(STATE_JUMP_LAND_QANDA);
     m_vecAdjState.push_back(STATE_ATTACK_BEGIN_QANDA);
 
@@ -71,6 +71,9 @@ void CJump_Archer_Fall_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 {
     if (ePrevType == STATE_JUMP_QANDA)
         m_fInterPolationTime = 0.05f;
+
+    if (ePrevType == STATE_GLIDING)
+        m_fInterPolationTime = 0.2f;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

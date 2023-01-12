@@ -196,8 +196,8 @@ void	CUnit_Warrior::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eGroggyState = AI_STATE_COMMON_HIT_WARRIOR;
 		m_tHitType.eFlyState = AI_STATE_COMMON_HIT_WARRIOR;
 		m_tHitType.eBounce = AI_STATE_COMMON_HIT_WARRIOR;
-		/*m_tUnitStatus.fMaxHP = 100000.f;
-		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;*/
+		m_tUnitStatus.fMaxHP = 100000.f;
+		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 		break;
 
 		
@@ -220,6 +220,7 @@ void CUnit_Warrior::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_PLAYER_R;
 		m_eSprintEndState = STATE_SPRINT_END_PLAYER;
+		m_eSprintFallState = STATE_SPRINT_JUMPFALL_PLAYER;
 
 		break;
 
@@ -227,6 +228,7 @@ void CUnit_Warrior::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_WARRIOR;
 
 		break;
 
@@ -485,6 +487,8 @@ HRESULT CUnit_Warrior::Start()
 void CUnit_Warrior::OnEnable()
 {
 	__super::OnEnable();
+
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Qanda_Sniping", this, ZERO_VECTOR);
 }
 
 void CUnit_Warrior::OnDisable()
@@ -499,11 +503,19 @@ void CUnit_Warrior::My_LateTick()
 	if (m_eCurState >= STATE_IDLE_WARRIOR_R_AI_ENEMY)
 		return;
 
-	if (KEY(NUM8, TAP))
+	if (KEY(CTRL, HOLD))
 	{
-		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(0.f, 0.f, 0.f));
-		m_pTransform->Set_Look(_float4(0.f, 0.f, 1.f, 0.f));
+		if (KEY(NUM8, TAP))
+		{
+			GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(0.f, 0.f, 0.f));
+			m_pTransform->Set_Look(_float4(0.f, 0.f, 1.f, 0.f));
+		}
+		if (KEY(NUM9, TAP))
+		{
+			DISABLE_COMPONENT(GET_COMPONENT(CPhysXCharacter));
+		}
 	}
+
 		//GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(50.f, 50.f, 50.f));
 
 	/*if (KEY(SPACE, TAP))

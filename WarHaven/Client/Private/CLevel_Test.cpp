@@ -52,6 +52,8 @@
 #include "CUI_EscMenu.h"
 #include "CUI_Result.h"
 
+#include "CTestObject.h"
+
 CLevel_Test::CLevel_Test()
 {
 }
@@ -71,6 +73,9 @@ CLevel_Test* CLevel_Test::Create()
 
 HRESULT CLevel_Test::Initialize()
 {
+	m_fDistance = 200.f;
+	m_vSunLook = _float4(-1.f, -1.f, -1.f);
+	m_bLensFlare = false;
 	return S_OK;
 }
 
@@ -97,8 +102,8 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	//CUI_Oper* pUI_Oper = CUI_Oper::Create();
 	//Ready_GameObject(pUI_Oper, GROUP_UI);
 
-	//CUI_Paden* pUI_Paden = CUI_Paden::Create();
-	//Ready_GameObject(pUI_Paden, GROUP_UI);
+	CUI_Paden* pUI_Paden = CUI_Paden::Create();
+	Ready_GameObject(pUI_Paden, GROUP_UI);
 
 	// CUI_Result* pUI_Result = CUI_Result::Create();
 	// Ready_GameObject(pUI_Result, GROUP_UI);
@@ -106,6 +111,9 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	/* GameSystem */
 	if (FAILED(CGameSystem::Get_Instance()->On_ReadyTest(m_vecGameObjects)))
 		return E_FAIL;
+
+
+	//Ready_GameObject(CTestObject::Create(), GROUP_DEFAULT);
 
 	m_fLoadingFinish = 1.f;
 

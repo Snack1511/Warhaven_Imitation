@@ -24,6 +24,7 @@ HRESULT CJump_Player::Initialize()
 	fOxenJumpPower = 1.3f;
 
 	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+	m_vecAdjState.push_back(STATE_GLIDING);
 
 
     return S_OK;
@@ -31,6 +32,8 @@ HRESULT CJump_Player::Initialize()
 
 void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+	m_ePreStateType = ePrevType;
+
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
 

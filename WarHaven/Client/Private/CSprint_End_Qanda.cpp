@@ -72,6 +72,9 @@ void CSprint_End_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
     else
         m_fInterPolationTime = 0.05f;
 
+    if (ePrevType == STATE_GLIDING)
+        m_fInterPolationTime = 0.2f;
+
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 

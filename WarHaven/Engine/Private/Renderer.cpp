@@ -22,6 +22,7 @@ CRenderer::CRenderer(const CRenderer& _origin)
 	, m_iCurPass(_origin.m_iCurPass)
 	, m_vOffsetPos(_origin.m_vOffsetPos)
 	, m_vFinalPos(_origin.m_vFinalPos)
+	, m_bRectEffects(_origin.m_bRectEffects)
 {
 }
 
@@ -51,15 +52,27 @@ CRenderer* CRenderer::Create(_uint iGroupID, const RENDER_GROUP& eRenderGroup, c
 
 _float4 CRenderer::Get_WorldPosition()
 {
+	if (m_bRectEffects)
+	{
+		if (m_vFinalPos.Is_Zero())
+			int i = 0;
+
+		return m_vFinalPos;
+
+	}
+
 	return m_pOwner->Get_Transform()->Get_World(WORLD_POS);
 }
 
 void CRenderer::Late_Tick()
 {
 	
-
-	m_vFinalPos = m_pOwner->Get_Transform()->Get_World(WORLD_POS);
-	m_vFinalPos += m_vOffsetPos.MultiplyCoord(m_pOwner->Get_Transform()->Get_WorldMatrix());
+	if (!m_bRectEffects)
+	{
+		m_vFinalPos = m_pOwner->Get_Transform()->Get_World(WORLD_POS);
+		m_vFinalPos += m_vOffsetPos.MultiplyCoord(m_pOwner->Get_Transform()->Get_WorldMatrix());
+	}
+	
 	CRender_Manager::Get_Instance()->Add_Renderer(m_eRenderGroup, this);
 }
 

@@ -106,6 +106,9 @@ void CModel_Renderer::Late_Tick()
 
 HRESULT CModel_Renderer::Render()
 {
+	if (!m_pModelCom->Is_InFrustum())
+		return S_OK;
+
 	m_pShaderCom->CallBack_SetRawValues(m_pShaderCom, "");
 
 	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
@@ -123,8 +126,17 @@ HRESULT CModel_Renderer::Render()
 			return E_FAIL;
 		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_MaskTexture", i, aiTextureType_REFLECTION)))
 			return E_FAIL;
+		
 		/*if (FAILED(m_pShaderCom->Begin(m_iCurPass)))
 			return E_FAIL;*/
+
+		_bool bPBR = m_pModelCom->Has_PBR();
+		if (bPBR)
+		{
+			if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_PBRTexture", i, aiTextureType_METALNESS)))
+				return E_FAIL;
+		}
+		m_pShaderCom->Set_RawValue("g_bPBR", &bPBR, sizeof(_bool));
 
 		if (FAILED(m_pModelCom->Render(i, m_pShaderCom, m_iCurPass, "g_Bones")))
 			return E_FAIL;
@@ -135,6 +147,9 @@ HRESULT CModel_Renderer::Render()
 
 HRESULT CModel_Renderer::Bake_Shadow(_float4x4 ViewMatrix)
 {
+	if (!m_pModelCom->Is_InFrustum())
+		return S_OK;
+
 	m_pOwner->Get_Transform()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
 
 	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();

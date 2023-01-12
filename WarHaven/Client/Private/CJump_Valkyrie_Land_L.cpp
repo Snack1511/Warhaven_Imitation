@@ -63,6 +63,10 @@ void CJump_Valkyrie_Land_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 {
     pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.5f;
 
+
+    if (ePrevType == STATE_GLIDING)
+        m_fInterPolationTime = 0.2f;
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

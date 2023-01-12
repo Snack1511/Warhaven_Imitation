@@ -376,126 +376,6 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\10. Stop\02. Left">
       <UniqueIdentifier>{101e84b2-4707-4dc5-baac-2eafb57eec2e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan">
-      <UniqueIdentifier>{05675d31-ece8-4e0a-a81b-123f62cc5d21}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\01. Idle">
-      <UniqueIdentifier>{17c850c4-edec-4ee2-aecc-7d63285fbb8a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\01. Idle\01. Right">
-      <UniqueIdentifier>{62831dbe-fa0e-44bc-aa6d-f613337bc9aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\01. Idle\02. Left">
-      <UniqueIdentifier>{9bccb74c-03be-4752-99c2-9afc6a5772e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\02. Walk">
-      <UniqueIdentifier>{269be91a-e374-48ac-8dd9-93134e78d989}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\02. Walk\01. Right">
-      <UniqueIdentifier>{e606da46-b022-48e7-a6f8-80002e4bc0c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\02. Walk\02. Left">
-      <UniqueIdentifier>{babb9a3d-4c8e-489b-a666-d9700435b464}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run">
-      <UniqueIdentifier>{ebfe669e-c791-42f7-bc4f-1a58fe09d167}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run\01. Begin">
-      <UniqueIdentifier>{898b37d6-e4d2-43fb-bfd5-29de80e89ea7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run\01. Begin\02. Left">
-      <UniqueIdentifier>{3da68f0f-b834-4b2c-b6fa-a3d7108bb7c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run\01. Begin\01. Right">
-      <UniqueIdentifier>{67142bad-7f76-4104-8588-f2b87c35e34a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run\02. Loop">
-      <UniqueIdentifier>{5b8fdb0c-73be-4f35-a0b8-91679862fa96}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run\02. Loop\01. Right">
-      <UniqueIdentifier>{fe0eb96e-6b4d-4a28-85b3-c4edacf74510}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run\02. Loop\02. Left">
-      <UniqueIdentifier>{21a313cd-f7d8-40d7-a56e-aa48e9308d04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack">
-      <UniqueIdentifier>{a3cc5fbe-fac8-4871-b1dc-d22bea00312e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\01. Default">
-      <UniqueIdentifier>{09cfb74b-76cf-433d-9cbc-a552495e7c10}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill">
-      <UniqueIdentifier>{a5d457b4-b63f-4ff7-80f1-1e0352ed2d29}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\01. Charge">
-      <UniqueIdentifier>{f3191d1d-4735-442d-a5c6-2eabb8859a21}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\02. GuardBreak">
-      <UniqueIdentifier>{a6147375-b8de-45a6-b119-ce6a6ec7222c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\03. SpecialGuard">
-      <UniqueIdentifier>{86257f82-1854-4c2c-8868-fdf28040d19d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\03. SpecialGuard\01. Guard">
-      <UniqueIdentifier>{31b1bf05-fcec-4e50-b35b-1e888cd32184}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\03. SpecialGuard\02. BackStep">
-      <UniqueIdentifier>{1b07f7ee-4d12-4f94-9bd8-f5e77fb1d8fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\03. Bounce">
-      <UniqueIdentifier>{e0ae0a38-d769-4e9b-8dcb-67cf4377609a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump">
-      <UniqueIdentifier>{cefb9d4e-55b4-4f02-9aae-a9a280e114df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\01. Begin">
-      <UniqueIdentifier>{3db71848-5c0d-493b-b6b8-67437382148d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\01. Begin\01. Right">
-      <UniqueIdentifier>{2ef542ca-9a1d-4ee6-9479-53b2a522a484}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\01. Begin\02. Left">
-      <UniqueIdentifier>{fe73bc1e-3f17-4495-8932-3ad2be96e048}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\02. Fall">
-      <UniqueIdentifier>{8c283ca0-60ba-4591-8e13-cbd0bccc303a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\02. Fall\01. Right">
-      <UniqueIdentifier>{b2acdae9-f921-4cb9-8846-838f16f46534}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\02. Fall\02. Left">
-      <UniqueIdentifier>{f6654b3b-c165-47c5-8884-919dac9c6177}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\03. Land">
-      <UniqueIdentifier>{c44286ce-aa68-4423-992f-cadc89af4b6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\03. Land\01. Right">
-      <UniqueIdentifier>{d5771973-bee2-405f-8e04-19f498cfe2ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\03. Land\02. Left">
-      <UniqueIdentifier>{d59008aa-d21d-488c-bc0b-1b1cd92b3a4d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\06. Sli">
-      <UniqueIdentifier>{dbce43fb-e6c7-4215-86c9-17263dfa0222}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\08. Guard">
-      <UniqueIdentifier>{8edf7d31-e47d-4f75-aba0-130a265e866a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\09. Hit">
-      <UniqueIdentifier>{6a3f87f0-361a-4e4a-9e20-298b9b323b32}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\10. Stop">
-      <UniqueIdentifier>{af99eb42-8995-4e4d-af4d-f47b791bbedb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\10. Stop\01. Right">
-      <UniqueIdentifier>{83828eab-11f3-4573-af42-42fdf9d5a3e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\10. Stop\02. Left">
-      <UniqueIdentifier>{5c0daa9a-1de9-4472-8a37-ffb9a3fcf7df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\07. Sprint">
-      <UniqueIdentifier>{82ddab37-c4ca-4d7e-8f3a-5b1d9a5cd74d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer">
       <UniqueIdentifier>{bcfc24eb-62c6-4f68-ae0c-2c15321c8b49}</UniqueIdentifier>
     </Filter>
@@ -1284,9 +1164,6 @@
     </Filter>
     <Filter Include="03. Instances\01. Level\04. Level_Stage\Paden">
       <UniqueIdentifier>{405c7fdf-7fb1-4b1e-bccd-455538fd7865}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden">
-      <UniqueIdentifier>{2d4e93d5-37bd-48d8-bf80-110ac1e1105b}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. Design\04. Game_Manager\HR">
       <UniqueIdentifier>{a6848b0f-39e3-42b0-a12d-ebf732b59733}</UniqueIdentifier>
@@ -3328,6 +3205,525 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\MiniMap">
       <UniqueIdentifier>{17007632-30ec-492f-9374-c162376a1669}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\00. Hit">
+      <UniqueIdentifier>{16cb9c6a-732b-43d2-a3d5-e8d08fec6bee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\01. GuardHit">
+      <UniqueIdentifier>{644b1dcb-af9b-44ee-adc6-026930e61c90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\02. Groggy">
+      <UniqueIdentifier>{46ba90a5-40a1-4923-a87c-41a05bbfaeb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\03. Sting">
+      <UniqueIdentifier>{154af658-335f-46ec-a59e-821676014bcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\04. GuardCancel">
+      <UniqueIdentifier>{1cd5b4b1-a4f5-427e-a94e-15169491d89e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\05. FlyHit">
+      <UniqueIdentifier>{0f65fc14-79ff-49d7-9a02-6e8b62a3b228}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\05. Jump\01. Begin">
+      <UniqueIdentifier>{0e5ad501-7aad-4d03-aee0-5f01372c0bf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\05. Jump\02. Fall">
+      <UniqueIdentifier>{efc08cf7-e85e-457f-815d-1185b5a6ddba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\05. Jump\03. Land">
+      <UniqueIdentifier>{748bf41c-5aa4-4cd0-9bfe-8962565486c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\01. Jump">
+      <UniqueIdentifier>{21bede1a-e1ab-4b5f-b5da-94a77173cebb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\01. Jump\01. Begin">
+      <UniqueIdentifier>{aaba3441-8ca4-49a5-9977-f21a18c0625c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\01. Jump\02. Fall">
+      <UniqueIdentifier>{a35541dd-c4ae-4866-bc22-75c05852ac26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\02. Attack">
+      <UniqueIdentifier>{a38722f1-7f91-493f-b96f-fb0de44b5d8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\02. Attack\01. Begin">
+      <UniqueIdentifier>{0a86ee0a-064c-4bbb-9488-e286f3c1b35b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\02. Attack\02. RealAttack">
+      <UniqueIdentifier>{b42c30e0-cae1-4e47-a626-8b0bd6d1079f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\03. Run">
+      <UniqueIdentifier>{f1596014-344f-4efa-a98f-221743a68382}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\03. Run\01. Begin">
+      <UniqueIdentifier>{6f82ee9c-82ef-42df-98e1-3ccc732dba56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\03. Run\02. Loop">
+      <UniqueIdentifier>{e84a8b93-e18e-4281-b63e-7e75be719656}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\03. Run\03. End">
+      <UniqueIdentifier>{2aed4def-9542-4df3-aa84-0092584cb403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\01. Default">
+      <UniqueIdentifier>{8c07945c-e304-48bf-a839-c41191f68ca1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\02. WindAttack">
+      <UniqueIdentifier>{93f99645-b161-4890-9921-364ab7a47df1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure">
+      <UniqueIdentifier>{f880a3ac-efe9-420f-b1aa-e11038573ab0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch">
+      <UniqueIdentifier>{ba4a6ed8-9b1f-4b6e-b921-4c7f9dba44a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\01. Begin">
+      <UniqueIdentifier>{a6049614-4e5e-4b3f-b5cc-fa651f7a4c56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\02. Loop">
+      <UniqueIdentifier>{c6858f10-2fb4-4cd4-a568-60b0e26f333e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\03. Catching">
+      <UniqueIdentifier>{03364ef6-b79c-4a50-b51d-990c636ed29d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\04. Shoot">
+      <UniqueIdentifier>{5e4c8a0d-5985-4534-a5e4-5d49f49da153}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\01. Begin">
+      <UniqueIdentifier>{5362f61b-f3ae-42cc-ab24-91478d330fd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\02. Loop">
+      <UniqueIdentifier>{ffaf1605-4f5b-486e-a4e8-0b4e2328df01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\03. End">
+      <UniqueIdentifier>{a7381607-40b6-4189-ba0d-fdc0f1e2fc15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\05. Jump\04. AirDash">
+      <UniqueIdentifier>{4673bb02-1693-4589-bbdf-8b6c91296306}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\01. Idle">
+      <UniqueIdentifier>{63213c13-1e2d-4739-9303-5936f90f0efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\02. Run">
+      <UniqueIdentifier>{2ef48feb-016b-421c-9008-081f51d73b8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack">
+      <UniqueIdentifier>{c0337f08-fb1b-47b1-ba73-c8935b45966a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump">
+      <UniqueIdentifier>{a021814e-587f-4c1a-9682-34624f055ab7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit">
+      <UniqueIdentifier>{7ff41aee-81f7-43ec-a0e7-926ebbde2d54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\06. Stop">
+      <UniqueIdentifier>{af5abcc3-0a55-4526-95f9-dbac7f761a60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\07. Bounce">
+      <UniqueIdentifier>{1b14d01c-332b-4e5d-b6c1-1d589adc42d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\01. Default">
+      <UniqueIdentifier>{1ebfc2e4-2f1e-40bb-b743-0c3878592c31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\02. Sting">
+      <UniqueIdentifier>{0fb48f56-8120-4d1e-81d6-035827935ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\03. Breeze">
+      <UniqueIdentifier>{2416ae57-e8a6-40d7-bbd9-2f85a8c4d779}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\03. Breeze\01. Begin">
+      <UniqueIdentifier>{5c537f2f-11a4-4034-b585-4409fd592364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\03. Breeze\02. Loop">
+      <UniqueIdentifier>{c5268b3e-9959-460f-ba50-fd963d72e293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\01. Begin">
+      <UniqueIdentifier>{1902b12f-c698-4d33-9f54-92c76cd2b949}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\02. Fall">
+      <UniqueIdentifier>{83ca954e-3473-491a-9360-a1774ce661b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\03. Land">
+      <UniqueIdentifier>{48f0cf01-6189-4e18-b1f1-6b782ed98509}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\CureEffect">
+      <UniqueIdentifier>{0c0b2568-ad56-4136-9aa2-96ed764c1fc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Summon">
+      <UniqueIdentifier>{07b11a8d-ecbe-411b-a965-e4fcbd8da96d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow">
+      <UniqueIdentifier>{c8e5813b-e1e8-42e0-9387-e361c6290ff7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow\CrowBoom">
+      <UniqueIdentifier>{06cf185f-90a0-4612-a070-f43f5fcce5f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard">
+      <UniqueIdentifier>{06810f3a-0c22-4462-9375-2cff6fe32d14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard\PlayerInfo">
+      <UniqueIdentifier>{f7b25645-598a-4122-998c-1b97e853e29f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Barracks">
+      <UniqueIdentifier>{6ae9b4f4-12a6-498c-b1a6-86079b0cf583}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Gliding">
+      <UniqueIdentifier>{d7b57bc2-d8ce-465a-9d27-78cf453fc326}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\13. Glider">
+      <UniqueIdentifier>{cf2b3421-90ea-487e-aee1-83a4483b4050}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Gliding\01. Archer">
+      <UniqueIdentifier>{5bba9895-468e-4acf-9c52-5460df32af9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Gliding\99. Other">
+      <UniqueIdentifier>{5c357b09-0f15-48a8-8be0-144813452331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\06. Priest">
+      <UniqueIdentifier>{6df89a35-64b6-4253-ac3b-087b4bbfbb66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\06. Priest">
+      <UniqueIdentifier>{36fee2e5-660c-420b-a9d5-b3fb0097b538}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\06. Priest">
+      <UniqueIdentifier>{ae8ae6f6-54e7-4e1f-81b3-46184f28bbae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\06. Priest">
+      <UniqueIdentifier>{bbb30f64-704f-4c72-b807-0fe82b86e459}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\06. Priest">
+      <UniqueIdentifier>{ec5c1a05-7507-464e-8043-b4b05e1d6293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\06. Priest">
+      <UniqueIdentifier>{e48ad41c-57ca-458a-aacb-f29e202087d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\06. Priest">
+      <UniqueIdentifier>{481d563c-daee-4274-a428-fe3c5b2288c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\06. Priest">
+      <UniqueIdentifier>{bb83b774-b7e9-48d8-abb8-f119306ab137}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\06. Priest">
+      <UniqueIdentifier>{98c33923-e354-4f06-b3a4-6becf0078d10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\06. Priest">
+      <UniqueIdentifier>{5e1058ec-06cf-47e7-98b6-df087170e9fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest">
+      <UniqueIdentifier>{6d94f494-da31-4b93-b597-bd253fe0930c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\06. Priest">
+      <UniqueIdentifier>{80837f1e-5ea7-4aad-910a-cc5d3fbb40bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\06. Priest">
+      <UniqueIdentifier>{65ec839a-db92-48ff-941e-d92dc4a41050}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\01. Jump">
+      <UniqueIdentifier>{947f2bd4-f146-4f2f-a38d-73ba5c6075d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\02. Run">
+      <UniqueIdentifier>{0a465aef-e876-4175-b5b4-8fa54051e95f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\03. End">
+      <UniqueIdentifier>{01e8bd2a-4974-4d4c-b01e-3572a60f8ebf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\01. Jump\01. Jump">
+      <UniqueIdentifier>{1b258914-7a11-4583-9379-e52e26fad74a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\01. Jump\02. Fall">
+      <UniqueIdentifier>{1cacd108-ed93-47e6-9e98-d4361f3902a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\02. Run\01. Begin">
+      <UniqueIdentifier>{691dc1a0-af54-435b-94f9-e7ece51235de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\02. Run\02. Loop">
+      <UniqueIdentifier>{f64d5c2e-ce9f-4caa-b642-56640c4833d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\06. Priest">
+      <UniqueIdentifier>{809ec03e-4828-46cc-8ea6-88e7fccdc03d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\06. Priest\03. End">
+      <UniqueIdentifier>{c0ac66c5-7371-4dbb-aa94-cef1845eda65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\06. Priest\01. Begin">
+      <UniqueIdentifier>{cca1357f-e973-41e2-aa27-ccf26abb7dc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\06. Priest\02. Loop">
+      <UniqueIdentifier>{1d0b20bd-4e72-4c05-bb09-9db4672b35a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\06. Priest">
+      <UniqueIdentifier>{6cc3aec1-0f1f-4330-92e9-740c9fd0b209}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\06. Priest">
+      <UniqueIdentifier>{9839532c-4d31-4886-9b91-ac1952febbec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\06. Priest">
+      <UniqueIdentifier>{a03f67f8-55d7-4c42-9511-141ee3edcc9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\06. Priest">
+      <UniqueIdentifier>{e19461b1-eb75-4f85-8646-ac24545abdd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\06. Priest">
+      <UniqueIdentifier>{a4fb9c16-a27e-401d-bfa4-b7a41caa1f8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others">
+      <UniqueIdentifier>{e748c390-141a-421f-af9e-9c49f6211288}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest">
+      <UniqueIdentifier>{0699f766-cc12-4628-906f-e338c7dd16dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\01. Begin">
+      <UniqueIdentifier>{25b45287-0752-478a-be5a-96e80920a24d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\02. Loop">
+      <UniqueIdentifier>{352092d3-ed3c-4c9c-a4e2-fe230a7f501a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\03. End">
+      <UniqueIdentifier>{19595b89-dc5d-4264-9813-72b3e5b2b004}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall">
+      <UniqueIdentifier>{0e8e9dfb-03ac-4b6c-bbe6-a6f17b8e3824}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior">
+      <UniqueIdentifier>{c4b9e591-c398-4bae-b701-7bd592a35277}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer">
+      <UniqueIdentifier>{4967f6c6-018b-471c-8b15-ce74e2747c57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona">
+      <UniqueIdentifier>{4916ff45-1e7d-470e-bd5e-6e909262350f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin">
+      <UniqueIdentifier>{7468b46a-0c11-4983-b700-feda9c13fc38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\06. Priest">
+      <UniqueIdentifier>{1e65e452-cb7f-4350-8f5b-61ee56619cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior\01. Right">
+      <UniqueIdentifier>{c11fc316-cc3b-4e36-adbb-27f774b86da8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer\01. Right">
+      <UniqueIdentifier>{281f2126-3412-47f2-af6f-be59235a62f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona\01. Right">
+      <UniqueIdentifier>{584cd39f-f084-41ab-93cc-c99a17774216}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin\01. Right">
+      <UniqueIdentifier>{0b35bafb-ee2f-4fed-9dba-37af651a9327}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin\02. Left">
+      <UniqueIdentifier>{25635de8-6cd7-4044-923f-15bcd5ba5736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona\02. Left">
+      <UniqueIdentifier>{57e0b3c6-504b-4467-a430-55b36f2e55c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer\02. Left">
+      <UniqueIdentifier>{08b9425f-6296-4a8a-8e85-80c1e75efe7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior\02. Left">
+      <UniqueIdentifier>{034fc999-bea5-427e-82d2-cf416263f167}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer">
+      <UniqueIdentifier>{a1c1650f-4ed4-49ae-8c46-93e9a43df033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer\01. Right">
+      <UniqueIdentifier>{7023c2dd-902c-4f62-b1ff-54a58acfc02b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer\02. Left">
+      <UniqueIdentifier>{0a664f11-a3a8-4573-93f5-0aec34c6ee3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Lancer\Head">
+      <UniqueIdentifier>{fcdc61bc-4277-4e08-b60f-5ad85bdc3be3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\06. LancerNeedle">
+      <UniqueIdentifier>{8be6c9e5-7519-4d2a-8600-8229095e2024}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\00. Hit">
+      <UniqueIdentifier>{a96a00c2-8e4c-4b14-a063-03facb9af48a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\02. Groggy">
+      <UniqueIdentifier>{a44f6908-2bff-4644-98f7-44c8161bc2ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\03. Fly">
+      <UniqueIdentifier>{ee399bca-ba6a-4ce6-9e3a-dc2a74586b60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\14. MainPlayer">
+      <UniqueIdentifier>{8f056594-e323-4bed-9828-3dc51c47aefd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan">
+      <UniqueIdentifier>{05675d31-ece8-4e0a-a81b-123f62cc5d21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\01. Idle">
+      <UniqueIdentifier>{17c850c4-edec-4ee2-aecc-7d63285fbb8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\01. Idle\01. Right">
+      <UniqueIdentifier>{62831dbe-fa0e-44bc-aa6d-f613337bc9aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\01. Idle\02. Left">
+      <UniqueIdentifier>{9bccb74c-03be-4752-99c2-9afc6a5772e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\02. Walk">
+      <UniqueIdentifier>{269be91a-e374-48ac-8dd9-93134e78d989}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\02. Walk\01. Right">
+      <UniqueIdentifier>{e606da46-b022-48e7-a6f8-80002e4bc0c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\02. Walk\02. Left">
+      <UniqueIdentifier>{babb9a3d-4c8e-489b-a666-d9700435b464}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run">
+      <UniqueIdentifier>{ebfe669e-c791-42f7-bc4f-1a58fe09d167}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run\01. Begin">
+      <UniqueIdentifier>{898b37d6-e4d2-43fb-bfd5-29de80e89ea7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run\01. Begin\02. Left">
+      <UniqueIdentifier>{3da68f0f-b834-4b2c-b6fa-a3d7108bb7c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run\01. Begin\01. Right">
+      <UniqueIdentifier>{67142bad-7f76-4104-8588-f2b87c35e34a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run\02. Loop">
+      <UniqueIdentifier>{5b8fdb0c-73be-4f35-a0b8-91679862fa96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run\02. Loop\01. Right">
+      <UniqueIdentifier>{fe0eb96e-6b4d-4a28-85b3-c4edacf74510}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run\02. Loop\02. Left">
+      <UniqueIdentifier>{21a313cd-f7d8-40d7-a56e-aa48e9308d04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack">
+      <UniqueIdentifier>{a3cc5fbe-fac8-4871-b1dc-d22bea00312e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\01. Default">
+      <UniqueIdentifier>{09cfb74b-76cf-433d-9cbc-a552495e7c10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill">
+      <UniqueIdentifier>{a5d457b4-b63f-4ff7-80f1-1e0352ed2d29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\01. Charge">
+      <UniqueIdentifier>{f3191d1d-4735-442d-a5c6-2eabb8859a21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\02. GuardBreak">
+      <UniqueIdentifier>{a6147375-b8de-45a6-b119-ce6a6ec7222c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\03. SpecialGuard">
+      <UniqueIdentifier>{86257f82-1854-4c2c-8868-fdf28040d19d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\03. SpecialGuard\01. Guard">
+      <UniqueIdentifier>{31b1bf05-fcec-4e50-b35b-1e888cd32184}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\03. SpecialGuard\02. BackStep">
+      <UniqueIdentifier>{1b07f7ee-4d12-4f94-9bd8-f5e77fb1d8fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\03. Bounce">
+      <UniqueIdentifier>{e0ae0a38-d769-4e9b-8dcb-67cf4377609a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump">
+      <UniqueIdentifier>{cefb9d4e-55b4-4f02-9aae-a9a280e114df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\01. Begin">
+      <UniqueIdentifier>{3db71848-5c0d-493b-b6b8-67437382148d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\01. Begin\01. Right">
+      <UniqueIdentifier>{2ef542ca-9a1d-4ee6-9479-53b2a522a484}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\01. Begin\02. Left">
+      <UniqueIdentifier>{fe73bc1e-3f17-4495-8932-3ad2be96e048}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\02. Fall">
+      <UniqueIdentifier>{8c283ca0-60ba-4591-8e13-cbd0bccc303a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\02. Fall\01. Right">
+      <UniqueIdentifier>{b2acdae9-f921-4cb9-8846-838f16f46534}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\02. Fall\02. Left">
+      <UniqueIdentifier>{f6654b3b-c165-47c5-8884-919dac9c6177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\03. Land">
+      <UniqueIdentifier>{c44286ce-aa68-4423-992f-cadc89af4b6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\03. Land\01. Right">
+      <UniqueIdentifier>{d5771973-bee2-405f-8e04-19f498cfe2ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump\03. Land\02. Left">
+      <UniqueIdentifier>{d59008aa-d21d-488c-bc0b-1b1cd92b3a4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\06. Sli">
+      <UniqueIdentifier>{dbce43fb-e6c7-4215-86c9-17263dfa0222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\08. Guard">
+      <UniqueIdentifier>{8edf7d31-e47d-4f75-aba0-130a265e866a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\09. Hit">
+      <UniqueIdentifier>{6a3f87f0-361a-4e4a-9e20-298b9b323b32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\10. Stop">
+      <UniqueIdentifier>{af99eb42-8995-4e4d-af4d-f47b791bbedb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\10. Stop\01. Right">
+      <UniqueIdentifier>{83828eab-11f3-4573-af42-42fdf9d5a3e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\10. Stop\02. Left">
+      <UniqueIdentifier>{5c0daa9a-1de9-4472-8a37-ffb9a3fcf7df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\07. Sprint">
+      <UniqueIdentifier>{82ddab37-c4ca-4d7e-8f3a-5b1d9a5cd74d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\01. GuardHit">
+      <UniqueIdentifier>{8c0ae09b-7920-4f5d-95f3-b9f8f2f600db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Info">
+      <UniqueIdentifier>{71372463-90c0-4ea4-a618-8c09be897d4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\06. LancerNeedle\NewFilter1">
+      <UniqueIdentifier>{3356f16e-71d1-4f9d-89e0-0b61154934d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer">
+      <UniqueIdentifier>{d45566ec-687f-4822-b257-35ed28622dbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer\01. Right">
+      <UniqueIdentifier>{36d31b51-96b0-4f9a-90c6-f7bc5dc0e5c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer\02. Left">
+      <UniqueIdentifier>{330d8735-e52c-4fa9-9909-cc3f547cd80c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer">
+      <UniqueIdentifier>{30ed35b1-ed94-471f-8749-cf239d2a50a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\01. Jump">
+      <UniqueIdentifier>{47936565-6e38-49e3-a214-90803603bdd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\02. Run">
+      <UniqueIdentifier>{2da6e8ac-f27c-428e-92c0-ad8042ab4a83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\03. End">
+      <UniqueIdentifier>{6870057d-f5b1-4d29-a674-739f7ef479ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\01. Jump\01. Jump">
+      <UniqueIdentifier>{98ddf8dd-0422-44aa-a11d-855d5381a141}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\01. Jump\02. Fall">
+      <UniqueIdentifier>{6cbefc06-a554-42a4-8e1e-4e2e7fb8748c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\02. Run\01. Begin">
+      <UniqueIdentifier>{77c379da-3e66-4a17-92cb-8181ce1db7f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\02. Run\02. Loop">
+      <UniqueIdentifier>{ddba663c-6f6a-43a2-85a5-5a48df9cb9ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer">
+      <UniqueIdentifier>{f9f115ec-3532-4fca-be16-648fd69807e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\01. Right">
+      <UniqueIdentifier>{2b61d658-0abd-42d2-be89-159c29aa9c30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\02. Left">
+      <UniqueIdentifier>{d3b4416d-ad0e-40fa-9f09-7b73c4bea6c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\11. Trigger\02. Trigger_Stage">
+      <UniqueIdentifier>{2d4e93d5-37bd-48d8-bf80-110ac1e1105b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility">
+      <UniqueIdentifier>{379a1bc2-1d0a-4b86-8054-aeb34be9c677}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -4464,8 +4860,8 @@
     <ClInclude Include="..\Public\CGame_Manager_HR.h">
       <Filter>02. Design\04. Game_Manager\HR</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CTrigger_Paden.h">
-      <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden</Filter>
+    <ClInclude Include="..\public\CTrigger_Stage.h">
+      <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Stage</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Animation.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Fire</Filter>
@@ -5958,6 +6354,357 @@
     <ClInclude Include="..\Public\CUI_MiniMap.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\MiniMap</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CHit_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\00. Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Fly_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\05. FlyHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Groggy_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\02. Groggy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_GuardHit_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\01. GuardHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Sting_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\03. Sting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CIdle_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\01. Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWalk_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\02. Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\03. Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Priest_Land.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\05. Jump\03. Land</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Priest_Fall.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\05. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\05. Jump\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Begin_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\03. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_End_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\03. Run\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Jump_Fall_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\01. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Jump_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\01. Jump\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Loop_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\03. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprintAttack_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\02. Attack\02. RealAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprintAttack_Priest_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\02. Attack\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStop_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\10. Stop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBounce_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\11. Bounce</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPriest_Attack_Sting.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\01. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPriest_WindAttack.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\02. WindAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CAirDash_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\05. Jump\04. AirDash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPriest_Cure_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPriest_Cure_End.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPriest_Cure_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPriest_Catch_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPriest_Catch_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPriest_Catching.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\03. Catching</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPriest_Catch_Shoot.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\04. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CIdle_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\01. Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStop_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\06. Stop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\02. Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLancer_Attack_Default.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\01. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLancer_Attack_Sting.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\02. Sting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLancer_Breeze_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\03. Breeze\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLancer_Breeze_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\03. Breeze\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Lancer_Fall.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Lancer_Land.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\03. Land</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBounce_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\07. Bounce</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CCure_Effect.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\CureEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CAnimWeapon_Crow.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CCrowBoom.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow\CrowBoom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_ScoreBoard.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_ScoreInfo.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard\PlayerInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_Barracks.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Barracks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGlider.h">
+      <Filter>03. Instances\02. GameObject\13. Glider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Gliding_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Gliding\01. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Gliding.h">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Gliding\99. Other</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Hit_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Groggy_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Sting_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_FlyHit_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Default_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Priest_Jump.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\01. Jump\01. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Priest_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\02. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Priest_End.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Priest_Fall.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\01. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Priest_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\02. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Cure_Begin_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\06. Priest\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Cure_Loop_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\06. Priest\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Cure_End_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\06. Priest\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillR_AirDash_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillE_Priest_WindAttack.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Sting_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Default_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Cure_End_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Cure_Begin_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Cure_Loop_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Paladin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Warrior_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Warrior_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Fiona_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Fiona_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Paladin_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Paladin_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUnit_Lancer_Head.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\Lancer\Head</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_Cannon.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLancerNeedle.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\06. LancerNeedle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Fly_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\03. Fly</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Groggy_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\02. Groggy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_GuardHit_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\01. GuardHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\00. Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CMainMenuPlayer.h">
+      <Filter>03. Instances\02. GameObject\14. MainPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_Info.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Info</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Archer_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\02. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Archer_End.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Archer_Fall.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\01. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Archer_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\02. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Archer_Jump.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\01. Jump\01. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CAI_MoveStateUtility.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -7078,8 +7825,8 @@
     <ClCompile Include="..\Private\CGame_Manager_HR.cpp">
       <Filter>02. Design\04. Game_Manager\HR</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CTrigger_Paden.cpp">
-      <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden</Filter>
+    <ClCompile Include="..\private\CTrigger_Stage.cpp">
+      <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Animation.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Fire</Filter>
@@ -8568,6 +9315,357 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_MiniMap.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\MiniMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\00. Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Fly_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\05. FlyHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Groggy_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\02. Groggy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_GuardHit_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\01. GuardHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Sting_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit\03. Sting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CIdle_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\01. Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWalk_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\02. Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\03. Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\05. Jump\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Priest_Fall.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\05. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Priest_Land.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\05. Jump\03. Land</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Begin_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\03. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_End_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\03. Run\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Jump_Fall_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\01. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Jump_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\01. Jump\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Loop_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\03. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprintAttack_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\02. Attack\02. RealAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprintAttack_Priest_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint\02. Attack\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStop_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\10. Stop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounce_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\11. Bounce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPriest_Attack_Sting.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\01. Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPriest_WindAttack.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\02. WindAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAirDash_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\05. Jump\04. AirDash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPriest_Cure_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPriest_Cure_End.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPriest_Cure_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPriest_Catch_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPriest_Catch_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPriest_Catching.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\03. Catching</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPriest_Catch_Shoot.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\04. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CIdle_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\01. Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStop_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\06. Stop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\02. Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLancer_Attack_Default.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\01. Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLancer_Attack_Sting.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\02. Sting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLancer_Breeze_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\03. Breeze\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLancer_Breeze_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\03. Breeze\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Lancer_Fall.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Lancer_Land.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\03. Land</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounce_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\07. Bounce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CCure_Effect.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\CureEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAnimWeapon_Crow.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CCrowBoom.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow\CrowBoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_ScoreBoard.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_ScoreInfo.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard\PlayerInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Barracks.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Barracks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGlider.cpp">
+      <Filter>03. Instances\02. GameObject\13. Glider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Gliding_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Gliding\01. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Gliding.cpp">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Gliding\99. Other</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Hit_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Groggy_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Sting_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_FlyHit_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Default_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Priest_Jump.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\01. Jump\01. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Priest_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\02. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Priest_End.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Priest_Fall.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\01. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Priest_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\06. Priest\02. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Cure_Begin_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\06. Priest\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Cure_End_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\06. Priest\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Cure_Loop_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\06. Priest\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillR_AirDash_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillE_Priest_WindAttack.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Sting_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Default_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Cure_End_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Cure_Begin_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Cure_Loop_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Paladin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Warrior_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Warrior_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Fiona_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Fiona_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Paladin_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Paladin_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUnit_Lancer_Head.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\Lancer\Head</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Cannon.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLancerNeedle.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\06. LancerNeedle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Fly_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\03. Fly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Groggy_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\02. Groggy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_GuardHit_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\01. GuardHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\00. Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CMainMenuPlayer.cpp">
+      <Filter>03. Instances\02. GameObject\14. MainPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Info.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Info</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Archer_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\02. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Archer_End.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Archer_Fall.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\01. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Archer_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\02. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Archer_Jump.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\01. Jump\01. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAI_MoveStateUtility.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

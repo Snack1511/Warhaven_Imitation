@@ -38,9 +38,12 @@ public:
 
 
 public:
-	enum ePROJECTILE_PHASE { eSTART, eLOOP, eSHOOT, eHIT, eSTICK, eEND };
+	enum ePROJECTILE_PHASE { eSTART, eLOOP, eRANDOM, eChase,eSHOOT, eHIT, eSTICK, eEND };
 	void		On_ShootProjectile();
-	void			On_ChangePhase(ePROJECTILE_PHASE eNextPhase);
+	void		On_ChangePhase(ePROJECTILE_PHASE eNextPhase);
+
+public:
+	void	Use_Collect(_bool bCollect) { m_bCollect = bCollect; }
 
 protected:
 	_hashcode	m_hcCode = 0;
@@ -61,6 +64,12 @@ protected:
 	// 100
 	_bool		m_bFrontPhysX = false;
 
+
+	_float	m_fRandomPhaseCurTime = 0.f;
+	_float	m_fRandomPhaseMaxTime = 0.f;
+	_float4 m_vRandLook = ZERO_VECTOR;
+
+
 protected:
 	_float	m_fMaxSpeed = 50.f;
 	_float	m_fLoopTimeAcc = 0.f;
@@ -72,6 +81,11 @@ protected:
 	string m_szMainBoneName = "0B_R_WP1";
 	string m_szSubBoneName = "0B_L_WP1";
 
+	_bool  m_bCollect = true;
+
+protected:
+	_bool  m_bUseOwnerUnitLook = false;
+
 protected:
 	ePROJECTILE_PHASE	m_eCurPhase = eSTART;
 
@@ -82,6 +96,7 @@ protected:
 protected:
 	void SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
 		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount);
+	void Turn_Trail(_bool bOnOff);
 	HRESULT	SetUp_Projectile(wstring wstrModelFilePath);
 	HRESULT	SetUp_Colliders(COL_GROUP_CLIENT eColType); 
 	HRESULT	SetUp_Collider(COL_GROUP_CLIENT eColType, _float fRadian);
@@ -100,6 +115,15 @@ private:
 	_bool	m_bCloned = false;
 	PxConvexMesh* m_pConvexMesh = nullptr;
 	PxRigidDynamic* m_pActor = nullptr;
+
+private:
+	_float m_fTimeAcc = 0.f;
+	_float m_fRandSpeed = 0.f;
+	_float m_fRandFrequency = 0.f;
+	_float m_fRandPower = 0.f;
+	_float4 m_vTargetPos;
+	_float4 m_vRight;
+	_float4 m_vLook;
 
 private:
 	virtual void Set_ColliderType(eTEAM_TYPE eTeamType);

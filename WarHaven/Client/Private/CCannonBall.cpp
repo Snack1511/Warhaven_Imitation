@@ -150,9 +150,9 @@ void CCannonBall::My_LateTick()
 
 	m_pTransform->Make_WorldMatrix();
 
-	_float fPower = CUtility_PhysX::To_Vector(m_pActor->getLinearVelocity()).Length();
+	_float fPower = CUtility_PhysX::To_Vector(m_pActor->getLinearVelocity()).Length() * fDT(0);
 
-	if (fPower < 15.f)
+	if (fPower < 15.f * fDT(0))
 		On_Boom();
 }
 
@@ -160,7 +160,7 @@ void CCannonBall::OnEnable()
 {
 	__super::OnEnable();
 	
-	Create_Light(this, ZERO_VECTOR, 20.f, 0.f, 1.f, 0.f, 15.f, RGB(255, 0, 0), true);
+	Create_Light(this, ZERO_VECTOR, 20.f, 0.f, 0.1f, 10.f, 0.1f, RGB(255, 0, 0), true);
 }
 
 void CCannonBall::OnDisable()
@@ -175,6 +175,7 @@ void CCannonBall::Create_Light(CGameObject* pOwner, _float4 vOffset, _float fRan
 	LIGHTDESC			LightDesc;
 
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
+	LightDesc.eFadeType = tagLightDesc::FADEIN;
 
 	LightDesc.pOwner = pOwner;
 	LightDesc.vOffset = vOffset;
@@ -188,6 +189,9 @@ void CCannonBall::Create_Light(CGameObject* pOwner, _float4 vOffset, _float fRan
 	LightDesc.vTargetDiffuse = Diffuse;
 	LightDesc.vTargetAmbient = _float4(0.2f, 0.2f, 0.2f);
 	LightDesc.vTargetSpecular = _float4(1.f, 1.f, 1.f);
+
+	LightDesc.eInEasingType = tagLightDesc::EAS_Linear;
+	LightDesc.eOutEasingType = tagLightDesc::EAS_Linear;
 
 	LightDesc.bLoop = bLoop;
 

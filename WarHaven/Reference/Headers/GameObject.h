@@ -42,6 +42,7 @@ public:/*Get, Set*/
 		return iter->second;
 	}
 
+
 	CGameObject*		Get_Parent() { return m_pParent; }
 	CGameObject*		Get_RootParent();
 	CTransform*			Get_Transform() { return m_pTransform; }

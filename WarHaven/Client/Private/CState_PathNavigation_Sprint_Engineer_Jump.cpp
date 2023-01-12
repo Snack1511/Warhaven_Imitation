@@ -66,7 +66,7 @@ STATE_TYPE CState_PathNavigation_Sprint_Engineer_Jump::Tick(CUnit* pOwner, CAnim
         return AI_STATE_PATHNAVIGATION_SPRINTEND_ENGINEER;
 
 
-    return CState::Tick(pOwner, pAnimator);
+    return __super::Tick(pOwner, pAnimator);
 }
 
 void CState_PathNavigation_Sprint_Engineer_Jump::Exit(CUnit* pOwner, CAnimator* pAnimator)

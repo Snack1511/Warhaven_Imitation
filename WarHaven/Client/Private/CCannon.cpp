@@ -130,7 +130,6 @@ HRESULT CCannon::Start()
 	GAMEINSTANCE->Add_Camera_Level(L"CannonCam", m_pCannonCam);
 	DISABLE_GAMEOBJECT(m_pCannonCam);
 
-
 	m_pAnimator->Set_CurAnimIndex(0, 0);
 	m_pAnimator->Set_InterpolationTime(0, 0, 0.1f);
 	m_pAnimator->Set_AnimSpeed(0, 0, 0.f);
@@ -147,8 +146,6 @@ _float4 CCannon::Get_ControlPos()
 	vPos -= m_pTransform->Get_World(WORLD_LOOK) * 1.4f;
 	vPos.y += 1.f;
 
-
-
 	return vPos;
 }
 
@@ -161,11 +158,17 @@ void CCannon::Control_Cannon(CPlayer* pPlayer)
 		GAMEINSTANCE->Change_Camera(L"CannonCam");
 	}
 
+	CUser::Get_Instance()->SetActive_CannonUI(true);
+	CUser::Get_Instance()->SetActive_CannonCrosshair(true);
+
 	ENABLE_GAMEOBJECT(m_pUI_Trail);
 }
 
 void CCannon::Exit_Cannon()
 {
+	CUser::Get_Instance()->SetActive_CannonUI(false);
+	CUser::Get_Instance()->SetActive_CannonCrosshair(false);
+
 	if (m_pCurOwnerPlayer->IsMainPlayer())
 	{
 		GAMEINSTANCE->Change_Camera(L"PlayerCam");
@@ -196,12 +199,12 @@ void CCannon::Shoot_Cannon()
 	_float4 vFirePos = BoneMatrix.XMLoad().r[3];
 	_float4 vBoneLook = BoneMatrix.XMLoad().r[0];
 	vFirePos += vBoneLook * 500.f;
-	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cannon_Shoot", vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cannon_Shoot", vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
+	/*CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Cannon_Shoot_4"), vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Cannon_Shoot_0"), vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Cannon_Shoot_1"), vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Cannon_Shoot_2"), vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
-	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Cannon_Shoot_3"), vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
-	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Cannon_Shoot_4"), vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Cannon_Shoot_3"), vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));*/
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cannon_Smoke", this, m_pTransform->Get_World(WORLD_POS));
 
 	m_pCannonBall->Shoot_Cannon(m_pCurOwnerPlayer, vFirePos, vBoneLook);
@@ -247,13 +250,18 @@ void CCannon::My_Tick()
 	if (m_fCannonCoolAcc > 0.f)
 		m_fCannonCoolAcc -= fDT(0);
 	else
+	{
 		m_fCannonCoolAcc = 0.f;
+		CUser::Get_Instance()->SetActive_CannonCoolTime(false);
+	}
 
-
+	CUser::Get_Instance()->Set_CannonCoolTime(m_fCannonCoolAcc, m_fCannonCoolTime);
 
 	if (KEY(LBUTTON, TAP))
 	{
 		Shoot_Cannon();
+
+		CUser::Get_Instance()->SetActive_CannonCoolTime(true);
 	}
 
 	if (m_pAnimator->Is_CurAnimFinished())

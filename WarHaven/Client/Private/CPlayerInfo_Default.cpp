@@ -55,8 +55,12 @@ HRESULT CPlayerInfo_Default::Initialize()
 #endif // WARRIOR_TH
 
 #ifdef ARCHER_TH
-	//m_vecPrefClassType.push_back(ARCHER);
+	m_vecPrefClassType.push_back(ARCHER);
 #endif // ARCHER_TH
+
+#ifdef PRIEST_TH
+	m_vecPrefClassType.push_back(PRIEST);
+#endif // PRIEST_TH
 
 	if (FAILED(SetUp_AIPersonality()))
 		return E_FAIL;

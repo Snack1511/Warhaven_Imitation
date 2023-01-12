@@ -94,7 +94,6 @@ void CIdle_WarHammer_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
         ePrevType == STATE_SPRINT_END_WARHAMMER
         )
         m_fInterPolationTime = 0.f;
-    
 
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

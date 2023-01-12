@@ -5,12 +5,18 @@
 #include "Physics.h"
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Qanda.h"
 #include "CPlayer.h"
 
 #include "Model.h"
 
 #include "CUser.h"
+#include "Renderer.h"
 #include "CColorController.h"
+
+#include "CEffects_Factory.h"
+#include "CRectEffects.h"
+#include "CAnimWeapon.h"
 
 CQanda_ShadowStep::CQanda_ShadowStep()
 {
@@ -96,18 +102,21 @@ HRESULT CQanda_ShadowStep::Initialize()
 
 void CQanda_ShadowStep::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    CModel* pModel = GET_COMPONENT_FROM(pOwner, CModel);
-
-    for(_int i = 0; i < MODEL_PART_WEAPON + 1; ++i)
-        pModel->Enable_ModelParts(i, false);
-
-    //DISABLE_COMPONENT(GET_COMPONENT_FROM(pOwner, CModel));
+   
+    DISABLE_COMPONENT(GET_COMPONENT_FROM(pOwner->Get_AnimWeapon(), CRenderer));
+    DISABLE_COMPONENT(GET_COMPONENT_FROM(pOwner, CRenderer));
     
     pOwner->Enable_HitBoxColliders(false);
 
+    m_EffectsList = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Dodge", pOwner, ZERO_VECTOR);
+    static_cast<CUnit_Qanda*>(pOwner)->Turn_TransformParticle(false);
+    static_cast<CUnit_Qanda*>(pOwner)->TurnOn_Trail(false);
 
     m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
+    m_fWalkSpeed = pOwner->Get_Status().fWalkSpeed; //기존 걷는 속도
+    pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fSprintSpeed;
+    //D3D11_RENDER_TARGET_BLEND_DESC
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -137,9 +146,6 @@ STATE_TYPE CQanda_ShadowStep::Tick(CUnit* pOwner, CAnimator* pAnimator)
         --pOwner->Get_OwnerPlayer()->Get_Gauge();
         m_fCurGuageMinusTime = 0.f;
     }
-
-
-
 
     //_uint iDirection = Move_Direction_Loop(pOwner, pAnimator, 0.05f);
 
@@ -175,14 +181,16 @@ STATE_TYPE CQanda_ShadowStep::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CQanda_ShadowStep::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    CModel* pModel = GET_COMPONENT_FROM(pOwner, CModel);
+   pOwner->Get_Status().fWalkSpeed = m_fWalkSpeed;
 
-    for (_int i = 0; i < MODEL_PART_WEAPON + 1; ++i)
-        pModel->Enable_ModelParts(i, true);
-    
-    pOwner->Enable_HitBoxColliders(true);
+   pOwner->Enable_HitBoxColliders(true);
+   ENABLE_COMPONENT(GET_COMPONENT_FROM(pOwner, CRenderer));
+   ENABLE_COMPONENT(GET_COMPONENT_FROM(pOwner->Get_AnimWeapon(), CRenderer));
 
-   //ENABLE_COMPONENT(GET_COMPONENT_FROM(pOwner, CModel));
+   
+   TurnOff_DodgeEffect(pOwner);
+   static_cast<CUnit_Qanda*>(pOwner)->Turn_TransformParticle(true);
+   static_cast<CUnit_Qanda*>(pOwner)->TurnOn_Trail(true);
 }
 
 STATE_TYPE CQanda_ShadowStep::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -191,4 +199,13 @@ STATE_TYPE CQanda_ShadowStep::Check_Condition(CUnit* pOwner, CAnimator* pAnimato
         return m_eStateType;
 
     return STATE_END;
+}
+
+void CQanda_ShadowStep::TurnOff_DodgeEffect(CUnit* pOwner)
+{
+    for (auto& elem : m_EffectsList)
+    {
+        static_cast<CRectEffects*>(elem)->Set_AllFadeOut(0.3f);
+    }
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Dodge_0"), pOwner, ZERO_VECTOR);
 }

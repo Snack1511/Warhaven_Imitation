@@ -56,6 +56,8 @@ HRESULT CState_Combat_SkillQ_Counter_Fiona::Initialize()
 
 void CState_Combat_SkillQ_Counter_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->On_Use(CUnit::SKILL1);
+
 	pOwner->Enable_GuardCollider(true);
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -72,8 +74,6 @@ STATE_TYPE CState_Combat_SkillQ_Counter_Fiona::Tick(CUnit* pOwner, CAnimator* pA
 void CState_Combat_SkillQ_Counter_Fiona::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
-
-	pOwner->On_Use(CUnit::SKILL3);
 	pOwner->Enable_GuardCollider(false);
 
 }

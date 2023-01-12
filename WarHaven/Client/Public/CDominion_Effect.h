@@ -10,7 +10,7 @@ END
 BEGIN(Client)
 
 class CTeamConnector;
-class CTrigger_Paden;
+class CTrigger_Stage;
 class CDominion_Effect final
 	: public CGameObject
 {

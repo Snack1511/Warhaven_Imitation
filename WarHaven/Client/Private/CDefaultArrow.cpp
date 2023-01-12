@@ -64,7 +64,10 @@ HRESULT CDefaultArrow::Initialize_Prototype()
 
 #else
 
-	if (FAILED(SetUp_Colliders(COL_BLUEATTACK)))
+	//if (FAILED(SetUp_Colliders(COL_BLUEATTACK)))
+	//	return E_FAIL;
+
+	if (FAILED(SetUp_Colliders(COL_REDATTACK)))
 		return E_FAIL;
 
 #endif // TESTLEVEL_AI_PROJECTILE
@@ -80,7 +83,9 @@ HRESULT CDefaultArrow::Initialize_Prototype()
 
 void CDefaultArrow::OnDisable()
 {
-	static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(m_hcCode, this);
+	if(m_bCollect)
+		static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(m_hcCode, this);
+	
 	__super::OnDisable();
 }
 

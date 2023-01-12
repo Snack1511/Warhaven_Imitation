@@ -55,7 +55,7 @@ HRESULT CState_Common_Hit_Warrior::Initialize()
 
     m_iStateChangeKeyFrame = 20;
 
-    m_fAnimSpeed = 2.f;
+    m_fAnimSpeed = 4.f;
     
     return S_OK;
 }

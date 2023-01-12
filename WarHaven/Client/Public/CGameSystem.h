@@ -5,6 +5,7 @@
 
 BEGIN(Engine)
 class CGameObject;
+class CCellLayer;
 END
 
 BEGIN(Client)
@@ -24,7 +25,7 @@ class CCannon;
 class CGameSystem
 {
 public:
-	enum eSTAGE_TYPE {eSTAGE_PADEN, eSTAGE_CNT};
+	enum eSTAGE_TYPE {eSTAGE_PADEN, eSTAGE_HWARA, eSTAGE_CNT};
 	DECLARE_SINGLETON(CGameSystem)
 
 private:
@@ -77,6 +78,14 @@ public:	// Paden
 
 	CTeamConnector* Get_Team(eTEAM_TYPE eEnum) { return m_pTeamConnector[(_uint)eEnum]; }
 
+public: /* Hwara */
+	HRESULT					On_ReadyHwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_ReadyDestructible_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_Update_Hwara();
+	HRESULT					Hwara_EnvironmentEffect();
+
+
 public: /* Position Table */
 	HRESULT					Load_Position(string strFileKey);
 	_float4					Find_Position(string strPositionKey);
@@ -91,9 +100,13 @@ public: /* Pathes */
 	CPath*			Clone_Path(string strPathKey, CAIController* pOwnerController);
 
 	CPath*			Clone_RandomStartPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType);
+	CPath*			Clone_RandomRespawnPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType);
+	CPath*			Clone_CenterPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType);
+
 	CPath* Get_NearPath(_float4 vPosition);
 public:	
 	CTrigger*					Find_Trigger(string strTriggerKey);
+	void						Enable_HwaraFinalTrigger(eTEAM_TYPE eTeamType);
 
 public:
 	CPlayerInfo* Find_PlayerInfo(_hashcode hcCode);
@@ -129,18 +142,37 @@ private:
 	/* Path들 map으로 들고 있기. */
 	map<_hashcode, CPath*>	m_mapAllPathes[eSTAGE_CNT];
 
+
 private:
 	HRESULT					SetUp_AllPlayerInfos();
 	HRESULT					SetUp_AllPathes();
+
+#pragma region Personality Functions
+private:
+	HRESULT					SetUp_AllPersonality();
+	HRESULT					Reload_AllPersonality();
+private:
+	CAIPersonality* Add_Personality(string strHashKey, wstring wstrPath);
+	CAIPersonality* Find_Personality(string strHashKey);
+	void			Clear_AllPersonality();
+	map<_hashcode, CAIPersonality*> m_mapPersonality;
+#pragma endregion Personality Functions
 
 private:
 	CPlayer*				SetUp_Player(_hashcode hcPlayerInfo);
 	HRESULT					SetUp_DefaultLight_BootCamp();
 	HRESULT					SetUp_DefaultLight_Paden();
 
+#pragma region CellLayer Functions
+public:
+	HRESULT					SetUp_CellLayer(wstring strFolderName);
+	void					Clear_CellLayer();
+	map<_float, CCellLayer*>& Get_CellLayer() { return m_CellLayer; }
+	HRESULT					SetUp_DefaultLight_Hwara();
+
 private:
-
-
+	map<_float, CCellLayer*> m_CellLayer;
+#pragma endregion CellLayer Functions
 
 };
 

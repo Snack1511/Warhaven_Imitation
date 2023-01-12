@@ -9,7 +9,9 @@
 #include "CGameSystem.h"
 #include "CTable_Conditions.h"
 #include "GameInstance.h"
-
+#include "CPath.h"
+#include "CDebugObject.h"
+#include "Transform.h"
 CWindow_AI::CWindow_AI()
 {
 }
@@ -59,6 +61,25 @@ HRESULT CWindow_AI::Initialize()
 
 void CWindow_AI::Tick()
 {
+    if (KEY(I, HOLD))
+    {
+        if (KEY(LBUTTON, TAP))
+        {
+            if (m_pCurSelectPlayer)
+            {
+                _float4 vPickPos;
+                _float4 vPickNorm;
+                CGameObject* pGameObject;
+
+                //충돌체 피킹 위치 물어보기
+                if (GAMEINSTANCE->Is_Picked_OutObject(GAMEINSTANCE->Get_ObjGroup(GROUP_DECORATION), &vPickPos, &vPickNorm, &pGameObject))
+                {
+                    m_pCurSelectPlayer->Make_BestRoute(vPickPos);
+                    Set_DebugRoute(m_pCurSelectPlayer->Get_CurRoute());
+                }
+            }
+        }
+    }
 }
 
 HRESULT CWindow_AI::Render()
@@ -161,7 +182,10 @@ void CWindow_AI::Func_AISetting()
         return;
 
     CBehavior* pBehavior = m_pCurSelectPlayer->Get_CurBehavior();
+    CPath* pPath = m_pCurSelectPlayer->Get_CurPath();
     string strBehaviorName;
+    string strPathName;
+
     if (pBehavior) {
         strBehaviorName = CFunctor::To_String(pBehavior->Get_BehaviorName());
     }
@@ -169,8 +193,60 @@ void CWindow_AI::Func_AISetting()
     {
         strBehaviorName = u8"행동 없음";
     }
+    if (pPath)
+    {
+        strPathName = pPath->Get_PathName();
+    }
     Display_Data(string(u8"현재 행동"), strBehaviorName.c_str());
+
+    Display_Data(string(u8"현재 패스"), strPathName.c_str());
     
+    if (ImGui::CollapsingHeader(u8"경로찾기 테스트"))
+    {
+        if (nullptr == m_pDebugDestination)
+        {
+            if (ImGui::Button(u8"도착지 보이기"))
+            {
+                Set_DebugDestination(pPath->Get_vecPositions()[0]);
+            }
+        }
+        else
+        {
+            if (ImGui::Button(u8"도착지 숨기기"))
+            {
+                Clear_DebugDestination();
+            }
+        }
+        if (m_listRouteDebug.empty())
+        {
+            if (ImGui::Button(u8"경로 보이기"))
+            {
+                Set_DebugRoute(m_pCurSelectPlayer->Get_CurRoute());
+            }
+        }
+        else
+        {
+            if (ImGui::Button(u8"경로 숨기기"))
+            {
+                Clear_DebugRoute();
+            }
+        }
+        if (m_listNodeDebug.empty())
+        {
+            if (ImGui::Button(u8"실제 노드 보이기"))
+            {
+                Set_DebugNode(m_pCurSelectPlayer->Get_CurRoute());
+            }
+        }
+        else
+        {
+            if (ImGui::Button(u8"실제 노드 숨기기"))
+            {
+                Clear_DebugNode();
+            }
+        }
+    }
+
     //행동 리스트 보기
     ImVec2 vBehaviorSize = ImVec2(m_vMainWndSize.x, 0.f);
     if (ImGui::CollapsingHeader(u8"행동 리스트")) 
@@ -549,6 +625,11 @@ void CWindow_AI::Func_ChangeBehaviorCondition()
             vBehaviorSize, m_pCurSelectBehavior,
             m_strCurSelectWhatCondition, 
             _uint(CBehavior::eConditionType::eWhat));
+
+        ListUp_BehaviorConditions("BehaviorTick", "##BehaviorTick",
+            vBehaviorSize, m_pCurSelectBehavior,
+            m_strCurSelectBehaviorTick,
+            _uint(CBehavior::eConditionType::eTick));
     }
 
 }
@@ -733,3 +814,89 @@ void CWindow_AI::Add_Condition(const ImGuiPayload* pPayload)
     pBehavior->Add_Condition(strConditionName, CBehavior::eConditionType(iConditionType));
 
 }
+
+
+
+void CWindow_AI::Set_DebugDestination(_float4 vPosition)
+{
+    PxTransform tTransform;
+    ZeroMemory(&tTransform, sizeof(PxTransform));
+    tTransform.p.x = vPosition.x;
+    tTransform.p.y = vPosition.y;
+    tTransform.p.z = vPosition.z;
+    m_pDebugDestination = CDebugObject::Create(tTransform);
+    CREATE_GAMEOBJECT(m_pDebugDestination, GROUP_PHYSX);
+}
+
+void CWindow_AI::Set_DebugRoute(list<_float4> vPosList)
+{
+    _float4 vPrevPos;
+    _float4 vCurPos;
+    _bool bFirst = true;
+    for (auto Pos : vPosList)
+    {
+        vCurPos = Pos;
+        if (bFirst)
+        {
+            vPrevPos = vCurPos;
+            bFirst = false;
+            continue;
+        }
+        _float4 vDir = (vCurPos - vPrevPos);
+        _float fLength = vDir.Length();
+        _float4 vLinePos = (vCurPos + vPrevPos) * 0.5f;
+
+        _float4 vScale = _float4(0.2f, 0.2f, fLength);
+
+        CDebugObject* pDebugLine = CDebugObject::Create(vLinePos, vScale);
+        pDebugLine->Initialize();
+        pDebugLine->Set_Blue();
+        pDebugLine->Get_Transform()->Set_Look(vDir);
+        CREATE_GAMEOBJECT(pDebugLine, GROUP_PROP);
+        m_listRouteDebug.push_back(pDebugLine);
+
+        vPrevPos = vCurPos;
+    }
+}
+
+void CWindow_AI::Set_DebugNode(list<_float4> vPosList)
+{
+    for (auto Pos : vPosList)
+    {
+        PxTransform tTransform;
+        ZeroMemory(&tTransform, sizeof(PxTransform));
+        tTransform.p.x = Pos.x;
+        tTransform.p.y = Pos.y;
+        tTransform.p.z = Pos.z;
+        m_listNodeDebug.push_back(
+            CDebugObject::Create(tTransform)
+        );
+        CREATE_GAMEOBJECT(m_listNodeDebug.back(), GROUP_PHYSX);
+    }
+}
+
+void CWindow_AI::Clear_DebugDestination()
+{
+    DELETE_GAMEOBJECT(m_pDebugDestination);
+    m_pDebugDestination = nullptr;
+}
+
+void CWindow_AI::Clear_DebugRoute()
+{
+    for (auto& Debug : m_listRouteDebug)
+    {
+        DELETE_GAMEOBJECT(Debug);
+    }
+    m_listRouteDebug.clear();
+}
+
+void CWindow_AI::Clear_DebugNode()
+{
+    for (auto& Debug : m_listNodeDebug)
+    {
+        DELETE_GAMEOBJECT(Debug);
+    }
+    m_listNodeDebug.clear();
+}
+
+

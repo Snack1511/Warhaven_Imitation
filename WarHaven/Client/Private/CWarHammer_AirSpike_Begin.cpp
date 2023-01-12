@@ -69,7 +69,7 @@ void CWarHammer_AirSpike_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 	tColorDesc.fFadeInTime = 0.1f;
 	tColorDesc.fFadeOutStartTime = 1.f;
 	tColorDesc.fFadeOutTime = 0.1f;
-	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
+	tColorDesc.vTargetColor = RGBA(50, 30, 0, 0.1f);
 	//tColorDesc.vTargetColor *= 1.1f;
 	tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
 
@@ -91,6 +91,8 @@ void CWarHammer_AirSpike_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
 	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 
+	GAMEINSTANCE->Start_RadialBlur(0.015f);
+
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -104,7 +106,7 @@ STATE_TYPE CWarHammer_AirSpike_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CWarHammer_AirSpike_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-
+	GAMEINSTANCE->Stop_RadialBlur();
 }
 
 STATE_TYPE CWarHammer_AirSpike_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

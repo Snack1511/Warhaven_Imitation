@@ -52,6 +52,14 @@ HRESULT CRender_Manager::Add_Renderer(RENDER_GROUP eGroup, CRenderer* pRenderer)
 	return S_OK;
 }
 
+void CRender_Manager::Set_SunUV(_float2 vSunUV)
+{
+	if (KEY(LBUTTON, HOLD))
+	{
+		m_vSunUV = vSunUV;
+	}
+}
+
 CShader* CRender_Manager::Get_DeferredShader()
 {
 	return m_vecShader[SHADER_DEFERRED];
@@ -111,10 +119,10 @@ void CRender_Manager::Start_MotionBlur(_float fTime)
 	m_fMotionBlurAcc = fTime;
 }
 
-void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 vCenterPos, _float fDistance)
+void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 vCenterPos, _float fDistance, _float4 vSunLook, _bool bLensFlare)
 {
 	m_ShadowViewMatrix.Identity();
-	_float4 vLook = _float4(-1.f, -2.f, -1.f, 0.f).Normalize();
+	_float4 vLook = vSunLook.Normalize();
 
 	*((_float4*)&m_ShadowViewMatrix.m[2]) = vLook;
 
@@ -128,6 +136,22 @@ void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 v
 	vPos.w = 1.f;
 
 	*((_float4*)&m_ShadowViewMatrix.m[3]) = vPos;
+	//m_vSunWorldPos = vCenterPos + (vLook * -1.f * 500.f);
+
+	_float4 vSunDir = vSunLook;
+	vSunDir.y *= 0.3f;
+	vSunDir.Normalize();
+
+
+	m_vSunWorldPos = vCenterPos + vSunDir * 500.f * -1.f;
+	m_vSunWorldPos.w = 1.f;
+
+	if (CLight_Manager::Get_Instance()->Get_FirstLight())
+		CLight_Manager::Get_Instance()->Get_FirstLight()->Get_LightDesc_Modify().vPosition = m_vSunWorldPos;
+
+	if (!bLensFlare)
+		m_vSunWorldPos.y = -9000.f;
+
 	m_ShadowViewMatrix.Inverse();
 	m_ShadowViewMatrix.Transpose();
 
@@ -152,6 +176,8 @@ void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 v
 
 HRESULT CRender_Manager::Initialize()
 {
+	m_pNoiseTexture = CTexture::Create(0, L"../bin/resources/textures/effects/noise/T_EFF_PixelNoise.dds", 1);
+
 	m_pTarget_Manager = CTarget_Manager::Get_Instance();
 	m_pLight_Manager = CLight_Manager::Get_Instance();
 
@@ -169,7 +195,7 @@ HRESULT CRender_Manager::Initialize()
 	D3D11_TEXTURE2D_DESC	TextureDesc;
 	ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
 
-	TextureDesc.Width = 1280;
+	TextureDesc.Width = 8000;
 	//TextureDesc.Width = 1280;
 	_float fRatio = (_float)TextureDesc.Width / 1280.f;
 	TextureDesc.Height = (_uint)(ViewPortDesc.Height * fRatio);
@@ -241,6 +267,10 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_Diffuse"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.5f, 0.5f, 0.5f, 0.f))))
 		return E_FAIL;
 
+	/* For.Target_PBR */
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_PBR"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+
 	/* For.Target_Diffuse */
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_SkyBox"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.5f, 0.9f, 1.f, 0.f))))
 		return E_FAIL;
@@ -276,6 +306,8 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_ShadowBlur"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_ChromaticAberration"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_LensFlare"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
 
 	
@@ -371,9 +403,13 @@ HRESULT CRender_Manager::Initialize()
 	/* BLURS */
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_MotionBlur"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_SSAO"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_RadialBlur"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_GrayScale"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_HDR"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
 	/* SkyBox */
@@ -393,6 +429,8 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_OutlineFlag"))))
 		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_RimLightFlag"))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_PBR"))))
 		return E_FAIL;
 
 	/* For.MRT_Effect */
@@ -438,7 +476,10 @@ HRESULT CRender_Manager::Initialize()
 	/*For RimLight*/
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_RimLightAcc"), TEXT("Target_RimLight"))))
 		return E_FAIL;
+
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_ChromaticAberrationAcc"), TEXT("Target_ChromaticAberration"))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_LensFlareAcc"), TEXT("Target_LensFlare"))))
 		return E_FAIL;
 
 	/*For Shadow*/
@@ -449,6 +490,8 @@ HRESULT CRender_Manager::Initialize()
 
 	/*For Forward*/
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_ForwardAcc"), TEXT("Target_Forward"))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_HDRAcc"), TEXT("Target_HDR"))))
 		return E_FAIL;
 
 	/*For Bloom*/
@@ -484,6 +527,9 @@ HRESULT CRender_Manager::Initialize()
 
 	/*For MotionBlur*/
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_MotionBlurAcc"), TEXT("Target_MotionBlur"))))
+		return E_FAIL;
+	
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_SSAOAcc"), TEXT("Target_SSAO"))))
 		return E_FAIL;
 
 	/*For Decal*/
@@ -762,7 +808,6 @@ void CRender_Manager::Update()
 			m_fDarkScreenAcc -= fDT(0);
 		else
 			m_fDarkScreenAcc = 0.f;
-
 	}
 
 	if (m_bMotionBlur)
@@ -776,7 +821,38 @@ void CRender_Manager::Update()
 			m_bMotionBlur = false;
 		}
 	}
+
+
+	/* LENS FLARE */
+	_float4 vPos = m_vSunWorldPos;
+
+	if (!CFrustum_Manager::Get_Instance()->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f))
+	{
+		m_bLensFlare = false;
+		return;
+	}
+	else
+		m_bLensFlare = true;
+
+	/* ray 쏘기 */
+	_float4 vOutPos;
+	_float fMinDist;
+	_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
+	_float4 vDir = vPos - vCamPos;
+	if (CPhysX_Manager::Get_Instance()->Shoot_RaytoStaticActors(&vOutPos, &fMinDist,
+		vCamPos, vDir.Normalize(), 1500.f
+	))
+	{
+		m_bLensFlare = false;
+		return;
+	}
 	
+
+	_float4x4 matVP = GAMEINSTANCE->Get_CurViewMatrix() * GAMEINSTANCE->Get_CurProjMatrix();
+	vPos = vPos.MultiplyCoord(matVP);
+	m_vSunUV.x = vPos.x;
+	m_vSunUV.y = vPos.y;
+
 
 }
 
@@ -822,7 +898,6 @@ HRESULT CRender_Manager::Render()
 	if (FAILED(CCamera_Manager::Get_Instance()->SetUp_ShaderResources(true)))
 		return E_FAIL;
 
-
 	if (FAILED(Render_Lights()))
 		return E_FAIL;
 
@@ -838,7 +913,8 @@ HRESULT CRender_Manager::Render()
 	if (FAILED(Render_ForwardBlend()))
 		return E_FAIL;
 
-	
+	if (FAILED(Render_SSAO()))
+		return E_FAIL;
 
 	if (FAILED(Render_ForwardBloom()))
 		return E_FAIL;
@@ -899,6 +975,16 @@ HRESULT CRender_Manager::Render()
 
 	wstring wstrRenderTargetName = L"Target_PostEffect";
 
+
+
+	if (m_bLensFlare)
+	{
+		if (FAILED(Render_LensFlare(wstrRenderTargetName.c_str())))
+			return E_FAIL;
+
+		wstrRenderTargetName = L"Target_LensFlare";
+	}
+
 	if (m_bMotionBlur)
 	{
 		if (FAILED(Render_MotionBlur(wstrRenderTargetName.c_str())))
@@ -947,17 +1033,42 @@ HRESULT CRender_Manager::Render()
 #ifdef _DEBUG
 	if (FAILED(Render_Debug()))
 		return E_FAIL;
+#else
+#ifdef TmpRender
+	Callback_TmpRender();
+	Callback_TmpRender.Clear();
+
+#endif
 #endif // _DEBUG
+
+
 
 	return S_OK;
 }
 
 void CRender_Manager::Release()
 {
+#ifdef _DEBUG
+	for (auto& elem : m_DebuggingShaders_OutCreate)
+	{
+		SAFE_DELETE(elem);
+	}
+#else
+#ifdef TmpRender
+	for (auto& elem : m_TmpRnderShaders_OutCreate)
+	{
+		SAFE_DELETE(elem);
+	}
+	Callback_TmpRender.Clear();
+	
+#endif
+#endif
+
 	for (auto& elem : m_vecShader)
 		SAFE_DELETE(elem);
 	SAFE_DELETE(m_pMeshRect);
 	SAFE_DELETE(m_pBlackTexture);
+	SAFE_DELETE(m_pNoiseTexture);
 
 	m_pShadowDSV.Reset();
 
@@ -967,6 +1078,9 @@ void CRender_Manager::Release()
 
 HRESULT CRender_Manager::Render_Debug()
 {
+	Callback_DebugRender();
+	Callback_DebugRender.Clear();
+
 	if (nullptr == m_pTarget_Manager)
 		return E_FAIL;
 
@@ -995,7 +1109,7 @@ HRESULT CRender_Manager::Render_Debug()
 }
 void CRender_Manager::Tick_Debug()
 {
-	if (KEY(F7, TAP))
+	if (KEY(CTRL, HOLD) && KEY(F7, TAP))
 	{
 		m_bDebugRender = !m_bDebugRender;
 	}
@@ -1016,7 +1130,8 @@ HRESULT CRender_Manager::Render_Lights()
 		return E_FAIL;
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_FlagTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Flag")))))
 		return E_FAIL;
-
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_PBRTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_PBR")))))
+		return E_FAIL;
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
 
@@ -1029,7 +1144,14 @@ HRESULT CRender_Manager::Render_Lights()
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
 
 	_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
+	_float4 vCamLook = GAMEINSTANCE->Get_CurCamLook();
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_vCamPosition", &vCamPos, sizeof(_float4));
+	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_vCamLook", &vCamLook, sizeof(_float4));
+
+	static _bool	bPBR = false;
+	if (KEY(B, TAP))
+		bPBR = !bPBR;
+	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_bPBR", &bPBR, sizeof(_bool));
 
 	m_pLight_Manager->Render_Lights(m_vecShader[SHADER_DEFERRED], m_pMeshRect);
 
@@ -1069,7 +1191,7 @@ HRESULT CRender_Manager::Render_ShadowBlur()
 		return E_FAIL;
 
 	//블러
-	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_HorizonBlurAcc"))))
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_ShadowBlurAcc"))))
 		return E_FAIL;
 
 	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_DownScale")))))
@@ -1078,65 +1200,67 @@ HRESULT CRender_Manager::Render_ShadowBlur()
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
-	m_vecShader[SHADER_BLUR]->Begin(2);
+	m_vecShader[SHADER_BLUR]->Begin(12);
 
 	m_pMeshRect->Render();
-
-	//3. 수직
 	if (FAILED(m_pTarget_Manager->End_MRT()))
 		return E_FAIL;
 
-
-	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_ShadowBlurAcc"))))
-		return E_FAIL;
-	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_HorizonBlur")))))
-		return E_FAIL;
-	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-
-	m_vecShader[SHADER_BLUR]->Begin(1);
-
-	m_pMeshRect->Render();
-
-	if (FAILED(m_pTarget_Manager->End_MRT()))
-		return E_FAIL;
-
-	_uint iNumBlur = 0;
-	
-	for (_uint i = 0; i < iNumBlur; ++i)
-	{
-		//블러
-		if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_HorizonBlurAcc"))))
-			return E_FAIL;
-
-		if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_ShadowBlur")))))
-			return E_FAIL;
-
-		/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
-		m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-
-		m_vecShader[SHADER_BLUR]->Begin(2);
-
-		m_pMeshRect->Render();
-
-		//3. 수직
-		if (FAILED(m_pTarget_Manager->End_MRT()))
-			return E_FAIL;
+	////3. 수직
+	//if (FAILED(m_pTarget_Manager->End_MRT()))
+	//	return E_FAIL;
 
 
-		if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_ShadowBlurAcc"))))
-			return E_FAIL;
-		if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_HorizonBlur")))))
-			return E_FAIL;
-		m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	//if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_ShadowBlurAcc"))))
+	//	return E_FAIL;
+	//if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_HorizonBlur")))))
+	//	return E_FAIL;
+	//m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
-		m_vecShader[SHADER_BLUR]->Begin(1);
+	//m_vecShader[SHADER_BLUR]->Begin(1);
 
-		m_pMeshRect->Render();
+	//m_pMeshRect->Render();
 
-		if (FAILED(m_pTarget_Manager->End_MRT()))
-			return E_FAIL;
+	//if (FAILED(m_pTarget_Manager->End_MRT()))
+	//	return E_FAIL;
 
-	}
+	//_uint iNumBlur = 2;
+	//
+	//for (_uint i = 0; i < iNumBlur; ++i)
+	//{
+	//	//블러
+	//	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_HorizonBlurAcc"))))
+	//		return E_FAIL;
+
+	//	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_ShadowBlur")))))
+	//		return E_FAIL;
+
+	//	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
+	//	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_DownScaleWorldMatrix, sizeof(_float4x4));
+
+	//	m_vecShader[SHADER_BLUR]->Begin(2);
+
+	//	m_pMeshRect->Render();
+
+	//	//3. 수직
+	//	if (FAILED(m_pTarget_Manager->End_MRT()))
+	//		return E_FAIL;
+
+
+	//	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_ShadowBlurAcc"))))
+	//		return E_FAIL;
+	//	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_HorizonBlur")))))
+	//		return E_FAIL;
+	//	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_UpScaleWorldMatrix, sizeof(_float4x4));
+
+	//	m_vecShader[SHADER_BLUR]->Begin(1);
+
+	//	m_pMeshRect->Render();
+
+	//	if (FAILED(m_pTarget_Manager->End_MRT()))
+	//		return E_FAIL;
+
+	//}
 
 	
 
@@ -1185,13 +1309,74 @@ HRESULT CRender_Manager::Render_RimLight()
 
 	return S_OK;
 }
+HRESULT CRender_Manager::Render_SSAO()
+{
+	//HDR
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_HDRAcc"))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Forward")))))
+		return E_FAIL;
+
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	static _bool g_bHDR = true;
+	if (KEY(N, TAP))
+		g_bHDR = !g_bHDR;
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_bHDR", &g_bHDR, sizeof(_bool));
+	m_vecShader[SHADER_BLUR]->Begin(11);
+
+	m_pMeshRect->Render();
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
+
+	//SSAO
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_SSAOAcc"))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_DepthTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Depth")))))
+		return E_FAIL;
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_NormalTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Normal")))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(L"Target_HDR"))))
+		return E_FAIL;
+
+	_float4x4		ViewMatrixInv, ProjMatrixInv;
+
+	XMStoreFloat4x4(&ViewMatrixInv, XMMatrixTranspose(GAMEINSTANCE->Get_CurViewMatrix().Inverse().XMLoad()));
+	XMStoreFloat4x4(&ProjMatrixInv, XMMatrixTranspose(GAMEINSTANCE->Get_CurProjMatrix().Inverse().XMLoad()));
+
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
+
+
+	static _bool g_bSSAO = true;
+	if (KEY(M, TAP))
+	{
+		g_bSSAO = !g_bSSAO;
+	}
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_bSSAO", &g_bSSAO, sizeof(_bool));
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(10)))
+		return E_FAIL;
+
+	m_pMeshRect->Render();
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
+
+	return S_OK;
+}
 HRESULT CRender_Manager::Render_ForwardBloom()
 {
 	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_ForwardBloomAcc"))))
 		return E_FAIL;
 
 	//1. Bloom 대상 찾기
-	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Forward")))))
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_SSAO")))))
 		return E_FAIL;
 	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_FlagTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Flag")))))
 		return E_FAIL;
@@ -1329,6 +1514,8 @@ HRESULT CRender_Manager::Render_ForwardBlend()
 
 	
 
+	
+
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
@@ -1348,7 +1535,7 @@ HRESULT CRender_Manager::Render_BloomBlend()
 	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_BloomBlendAcc"))))
 		return E_FAIL;
 
-	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Forward")))))
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_SSAO")))))
 		return E_FAIL;
 
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_BloomTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_ForwardBloomBlur")))))
@@ -1460,7 +1647,7 @@ HRESULT CRender_Manager::Render_DOF()
 		return E_FAIL;
 
 	//1. 다운 샘플링
-	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Forward")))))
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_SSAO")))))
 		return E_FAIL;
 
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_DownScaleWorldMatrix, sizeof(_float4x4));
@@ -1535,12 +1722,16 @@ void CRender_Manager::Sort_AlphaList()
 
 		_float4 vMyPos = elem.second->Get_WorldPosition();
 
-		//카메라위치에서 내위치 뺸 벡터를
-		_float4 vVector;
-		vVector = (XMLoadFloat4(&vMyPos) - vCamPos.XMLoad());
 
-		//내적
-		_float fDist1 = vCamLook.Dot(vVector);
+		_float fDist1 = (vMyPos - vCamPos).Length();
+
+
+		//카메라위치에서 내위치 뺸 벡터를
+		//_float4 vVector;
+		//vVector = (XMLoadFloat4(&vMyPos) - vCamPos.XMLoad());
+
+		////내적
+		//_float fDist1 = vCamLook.Dot(vVector);
 
 		elem.first = fDist1;
 	}
@@ -1795,6 +1986,9 @@ HRESULT CRender_Manager::Render_EffectBlur()
 
 HRESULT CRender_Manager::Render_PostEffect()
 {
+	
+
+
 	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_PostEffectAcc"))))
 		return E_FAIL;
 
@@ -1825,7 +2019,6 @@ HRESULT CRender_Manager::Render_PostEffect()
 
 
 
-	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
 
 
@@ -1908,6 +2101,29 @@ HRESULT CRender_Manager::Render_FinalBlend()
 	if (FAILED(m_pTarget_Manager->End_MRT()))
 		return E_FAIL;
 
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_LensFlare(const _tchar* pRenderTargetName)
+{
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_LensFlareAcc"))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(pRenderTargetName))))
+		return E_FAIL;
+
+	
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_vSunPos", &m_vSunUV, sizeof(_float2));
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(9)))
+		return E_FAIL;
+
+	m_pMeshRect->Render();
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -1976,6 +2192,7 @@ HRESULT CRender_Manager::Render_RadialBlur(const _tchar* pRenderTargetName)
 		return E_FAIL;
 
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fShaderPower", &m_fRadialPower, sizeof(_float));
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
 	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(6)))
 		return E_FAIL;
@@ -1998,6 +2215,7 @@ HRESULT CRender_Manager::Render_ChromaticAberration(const _tchar* pRenderTargetN
 		return E_FAIL;
 
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fShaderPower", &m_fChromaticAberrationPower, sizeof(_float));
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
 	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(7)))
 		return E_FAIL;
@@ -2020,6 +2238,7 @@ HRESULT CRender_Manager::Render_GrayScale(const _tchar* pRenderTargetName)
 		return E_FAIL;
 
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fShaderPower", &m_fGrayScalePower, sizeof(_float));
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
 
 	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(8)))

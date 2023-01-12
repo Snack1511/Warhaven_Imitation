@@ -149,8 +149,6 @@ void CUnit_WarHammer::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eFlyState = STATE_FLYHIT_WARHAMMER;
 		m_tHitType.eBounce = STATE_BOUNCE_WARHAMMER_L;
 
-		m_eSprintEndState = STATE_SPRINT_END_WARHAMMER;
-
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_TG:
@@ -174,9 +172,6 @@ void CUnit_WarHammer::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_ENGINEER;
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_ENGINEER_L;
 
-		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
-		m_eSprintEndState = STATE_SPRINT_END_PLAYER;
-
 		break;
 
 	default:
@@ -192,6 +187,7 @@ void CUnit_WarHammer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_WARHAMMER_R;
 		m_eSprintEndState = STATE_SPRINT_END_WARHAMMER;
+		m_eSprintFallState = STATE_SPRINT_JUMPFALL_WARHAMMER;
 
 		break;
 
@@ -199,6 +195,7 @@ void CUnit_WarHammer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_ENGINEER;
+		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_ENGINEER;
 
 		break;
 
@@ -331,7 +328,7 @@ void CUnit_WarHammer::On_Die()
 
 	Add_DeathStones(CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle_Death(L"DeadBody_Engineer", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
 
-	//m_DeathStones.push_back(CEffects_Factory::Get_Instance()->Create_MeshParticle_Death(L"EngineerDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
+	m_DeathStones.push_back(CEffects_Factory::Get_Instance()->Create_MeshParticle_Death(L"EngineerDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
 }
 
 void CUnit_WarHammer::Set_BarricadeMatrix()
@@ -385,7 +382,7 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 	pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_Attack.fbx");
 
 	//3. hit
-	pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_HIT.fbx");
+	pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_Hit.fbx");
 
 	//4. ETCK
 	pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_ETC.fbx");

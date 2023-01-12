@@ -39,7 +39,9 @@ CLevel_Paden* CLevel_Paden::Create()
 HRESULT CLevel_Paden::Initialize()
 {
 	m_vCenterPos = ZERO_VECTOR;
-	m_fDistance = 600.f;
+	m_fDistance = 140.f;
+	m_vSunLook = _float4(-0.5f, -1.5f, 2.f);
+
 	return S_OK;
 }
 
@@ -53,25 +55,24 @@ HRESULT CLevel_Paden::SetUp_Prototypes()
 		return E_FAIL;
 
 	Ready_GameObject(pSkyBox, GROUP_DEFAULT);
-	//_float4x4 mat;
-	//mat.Identity();
-	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
-	//pDrawableTerrain->Initialize();
-	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
 	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Paden::Ready_GameObject, this, placeholders::_1, placeholders::_2);
 
 #ifdef _DEBUG
 		CMap_Loader::Load_Data(wstring(TEXT("Map_Paden_TerrainOnly")), Ready_Object);
-		// CMap_Loader::Load_Data(wstring(TEXT("Map_Paden")), Ready_Object);
 #else
+		//CMap_Loader::Load_Data(wstring(TEXT("Map_Paden_TerrainOnly")), Ready_Object);
 		CMap_Loader::Load_Data(wstring(TEXT("Map_Paden")), Ready_Object);
 
 #endif
 
+
 	m_fLoadingFinish = 0.5f;
 
 	/* GameSystem */
+	if (FAILED(CGameSystem::Get_Instance()->SetUp_CellLayer(wstring(TEXT("Map_Paden")))))
+		return E_FAIL;
+
 	if (FAILED(CGameSystem::Get_Instance()->On_ReadyPaden(m_vecGameObjects)))
 		return E_FAIL;
 

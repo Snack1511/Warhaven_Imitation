@@ -76,7 +76,7 @@ public:	// Lerp
 	void Fade_Font(_bool value, _float fDuration);
 
 public:
-	void Set_FadeDesc(_float fDuration);
+	void Set_FadeDesc(_float fDuration, _uint FadeOutType = 1);
 	void Set_FadeDesc(_float fFadeIn, _float fFadeOut, _bool bAutoFade = false);
 	void Set_FadeDesc(_float fFadeIn, _float fFadeOut, _float fDuration, _bool bAutoFade = false);
 

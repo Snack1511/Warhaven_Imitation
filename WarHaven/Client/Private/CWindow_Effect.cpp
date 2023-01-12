@@ -30,6 +30,8 @@
 #include "CRectEffects.h"
 #include "CGameSystem.h"
 
+#include "CUnit_Qanda.h"
+
 CWindow_Effect::CWindow_Effect()
 {
 }
@@ -441,7 +443,7 @@ void CWindow_Effect::Show_EffectTab()
 				GET_COMPONENT_FROM(pCurEffect, CRenderer)->Set_RenderGroup(RENDER_DISTORTION);
 				
 			}*/
-			if (ImGui::Selectable("DISSOLVE", &bSelect[VTXEFFECT_PASS_DISSOLVE]))
+			if (ImGui::Selectable("+RIM", &bSelect[VTXEFFECT_PASS_DISSOLVE]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_DISSOLVE;
 			if (ImGui::Selectable("CLAMP", &bSelect[VTXEFFECT_PASS_CLAMP]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_CLAMP;
@@ -451,6 +453,8 @@ void CWindow_Effect::Show_EffectTab()
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_LIGHTNING;
 			if (ImGui::Selectable("AURA", &bSelect[VTXEFFECT_PASS_AURA]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_AURA;
+			if (ImGui::Selectable("RIMINV", &bSelect[VTXEFFECT_PASS_INV]))
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_INV;
 
 			pModelCom->Set_ShaderPassToAll(pCurEffect->m_iPassType);
 
@@ -472,7 +476,7 @@ void CWindow_Effect::Show_EffectTab()
 		}
 		if (ImGui::CollapsingHeader(" - EFFECT TYPE FLAG -"))
 		{
-			const static _uint iFlagCnt = 4;
+			const static _uint iFlagCnt = 5;
 			_bool	bFlagSelect[iFlagCnt] = {};
 
 			if (pCurEffect->m_bEffectFlag & EFFECT_FOLLOWTARGET)
@@ -483,6 +487,8 @@ void CWindow_Effect::Show_EffectTab()
 				bFlagSelect[2] = true;
 			if (pCurEffect->m_bEffectFlag & EFFECT_BILLBOARD)
 				bFlagSelect[3] = true;
+			if (pCurEffect->m_bEffectFlag & EFFECT_FOLLOWMATRIX)
+				bFlagSelect[4] = true;
 
 			if (ImGui::Selectable("FOLLOW_TARGET", &bFlagSelect[0]))
 			{
@@ -529,6 +535,18 @@ void CWindow_Effect::Show_EffectTab()
 				else
 				{
 					pCurEffect->m_bEffectFlag |= EFFECT_BILLBOARD;
+				}
+			}
+
+			if (ImGui::Selectable("FOLLOWMATRIX", &bFlagSelect[4]))
+			{
+				if (pCurEffect->m_bEffectFlag & EFFECT_FOLLOWMATRIX)
+				{
+					pCurEffect->m_bEffectFlag &= ~EFFECT_FOLLOWMATRIX;
+				}
+				else
+				{
+					pCurEffect->m_bEffectFlag |= EFFECT_FOLLOWMATRIX;
 				}
 			}
 
@@ -582,7 +600,7 @@ void CWindow_Effect::Show_EffectTab()
 				bShFlagSelect[2] = true;
 			}
 
-			/*if (pCurEffect->m_vEffectFlag.z > 0.99f)
+		/*	if (pCurEffect->m_vEffectFlag.z > 0.99f)
 			{
 				bShFlagSelect[3] = true;
 			}
@@ -1377,6 +1395,10 @@ void CWindow_Effect::Show_ParticleTab()
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_CHARGE;
 			if (ImGui::Selectable("CANNON_BONE", &bCurveSelect[CANNON_BONE]))
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CANNON_BONE;
+			if (ImGui::Selectable("SHADOWSTEP", &bCurveSelect[SHADOWSTEP]))
+				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = SHADOWSTEP;
+			if (ImGui::Selectable("STICK_FOLLOW", &bCurveSelect[CURVE_CIRCLE]))
+				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_CIRCLE;
 
 
 			
@@ -1427,6 +1449,23 @@ void CWindow_Effect::Show_ParticleTab()
 				}
 			}
 
+			_bool bStickFollow = false;
+			if (static_cast<CRectEffects*>(pCurEffect)->m_bEffectFlag & EFFECT_FOLLOWTARGET)
+				bStickFollow = true;
+			if (ImGui::RadioButton("Stick Follow", bStickFollow))
+			{
+				if (static_cast<CRectEffects*>(pCurEffect)->m_bEffectFlag & EFFECT_FOLLOWTARGET)
+				{
+					static_cast<CRectEffects*>(pCurEffect)->m_bEffectFlag &= ~EFFECT_FOLLOWTARGET;
+					bStickFollow = false;
+				}
+				else
+				{
+					static_cast<CRectEffects*>(pCurEffect)->m_bEffectFlag |= EFFECT_FOLLOWTARGET;
+					bStickFollow = true;
+				}
+			}
+
 			if (bStickBone)
 			{
 
@@ -1445,13 +1484,19 @@ void CWindow_Effect::Show_ParticleTab()
 					CHierarchyNode* pNode = GET_COMPONENT_FROM(static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget,
 						CModel)->Find_HierarchyNode(m_szRefBoneName);
 					
+					//if (!pNode)
+					//{
+					//	static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget = CGameSystem::Get_Instance()->Get_Cannon();
+					//	pNode = GET_COMPONENT_FROM(static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget,
+					//		CModel)->Find_HierarchyNode(m_szRefBoneName);
+					//}
 					if (!pNode)
 					{
-						static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget = CGameSystem::Get_Instance()->Get_Cannon();
+						static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget = (CGameObject*)static_cast<CUnit_Qanda*>(PLAYER)->Get_Crow();
 						pNode = GET_COMPONENT_FROM(static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget,
 							CModel)->Find_HierarchyNode(m_szRefBoneName);
 					}
-					if(!pNode)
+					if (!pNode)
 						return;
 
 					static_cast<CRectEffects*>(pCurEffect)->m_pRefBone = pNode;
@@ -1748,7 +1793,7 @@ void CWindow_Effect::Load_SelectedPreset()
 	tItem.strName = strFileKey;
 
 	CREATE_GAMEOBJECT(pNewEffect, GROUP_EFFECT);
-	pNewEffect->m_pFollowTarget = PLAYER;
+	pNewEffect->m_pFollowTarget = nullptr;
 	m_vecEffects.push_back(tItem);
 }
 

@@ -184,6 +184,7 @@
     <ClCompile Include="..\private\CBoneCollider.cpp" />
     <ClCompile Include="..\private\CCameraCollider.cpp" />
     <ClCompile Include="..\private\CCell.cpp" />
+    <ClCompile Include="..\Private\CCellLayer.cpp" />
     <ClCompile Include="..\private\CCollider_Box.cpp" />
     <ClCompile Include="..\Private\CCollider_Sphere.cpp" />
     <ClCompile Include="..\private\CComponent_Manager.cpp" />
@@ -199,6 +200,7 @@
     <ClCompile Include="..\private\CMesh_Terrain.cpp" />
     <ClCompile Include="..\private\CModel_Renderer.cpp" />
     <ClCompile Include="..\private\CNavigation.cpp" />
+    <ClCompile Include="..\Private\CNode.cpp" />
     <ClCompile Include="..\Private\Collider.cpp" />
     <ClCompile Include="..\Private\Collision_Manager.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
@@ -216,6 +218,7 @@
     <ClCompile Include="..\private\CShader_Manager.cpp" />
     <ClCompile Include="..\private\CTarget_Manager.cpp" />
     <ClCompile Include="..\Private\CTerrain_Renderer.cpp" />
+    <ClCompile Include="..\Private\CThread_Manager.cpp" />
     <ClCompile Include="..\private\CTile.cpp" />
     <ClCompile Include="..\private\CTileLayer.cpp" />
     <ClCompile Include="..\private\CTile_Manager.cpp" />
@@ -223,6 +226,7 @@
     <ClCompile Include="..\private\CTri_Instance.cpp" />
     <ClCompile Include="..\Private\CUI_Renderer.cpp" />
     <ClCompile Include="..\Private\CustomFont.cpp" />
+    <ClCompile Include="..\Private\CUtility_Cell.cpp" />
     <ClCompile Include="..\private\CUtility_File.cpp" />
     <ClCompile Include="..\private\CUtility_PhysX.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
@@ -264,6 +268,7 @@
     <ClInclude Include="..\public\CBoneCollider.h" />
     <ClInclude Include="..\public\CCameraCollider.h" />
     <ClInclude Include="..\public\CCell.h" />
+    <ClInclude Include="..\Public\CCellLayer.h" />
     <ClInclude Include="..\public\CCollider_Box.h" />
     <ClInclude Include="..\public\CCollider_Sphere.h" />
     <ClInclude Include="..\public\CComponent_Manager.h" />
@@ -279,6 +284,7 @@
     <ClInclude Include="..\public\CMesh_Terrain.h" />
     <ClInclude Include="..\public\CModel_Renderer.h" />
     <ClInclude Include="..\public\CNavigation.h" />
+    <ClInclude Include="..\Public\CNode.h" />
     <ClInclude Include="..\Public\Collider.h" />
     <ClInclude Include="..\Public\Collision_Manager.h" />
     <ClInclude Include="..\Public\Component.h" />
@@ -296,6 +302,7 @@
     <ClInclude Include="..\public\CShader_Manager.h" />
     <ClInclude Include="..\public\CTarget_Manager.h" />
     <ClInclude Include="..\Public\CTerrain_Renderer.h" />
+    <ClInclude Include="..\Public\CThread_Manager.h" />
     <ClInclude Include="..\public\CTile.h" />
     <ClInclude Include="..\public\CTileLayer.h" />
     <ClInclude Include="..\public\CTile_Manager.h" />
@@ -303,6 +310,7 @@
     <ClInclude Include="..\public\CTri_Instance.h" />
     <ClInclude Include="..\Public\CUI_Renderer.h" />
     <ClInclude Include="..\Public\CustomFont.h" />
+    <ClInclude Include="..\Public\CUtility_Cell.h" />
     <ClInclude Include="..\public\CUtility_File.h" />
     <ClInclude Include="..\public\CUtility_PhysX.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
@@ -533,6 +541,14 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Blur.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Debugging.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </EntryPointName>
+    </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Glow.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Shadow.hlsl" />

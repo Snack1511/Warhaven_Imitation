@@ -4,8 +4,6 @@
 #include "UsefulHeaders.h"
 
 #include "CAnimator.h"
-#include "CColorController.h"
-
 #include "Camera.h"
 
 #include "CBoneCollider.h"
@@ -20,10 +18,14 @@
 #include "CQandaCrow.h"
 #include "CQandaMeteor.h"
 
+#include "CAnimWeapon_Crow.h"
+
 #include "CCollider_Sphere.h"
 #include "CColorController.h"
 
 #include "CUI_Trail.h"
+#include "CRectEffects.h"
+#include "CEffect.h"
 
 #include "CState.h"
 
@@ -58,20 +60,29 @@ CUnit_Qanda* CUnit_Qanda::Create(const UNIT_MODEL_DATA& tUnitModelData)
 
 void CUnit_Qanda::On_Die()
 {
-	__super::On_Die();
-	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
+	m_pOwnerPlayer->On_FinishHero();
+	m_pOwnerPlayer->Get_CurrentUnit()->On_Die();
+	m_bDie = false;
+	m_fDeadTimeAcc = 0.f;
+	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 
-	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
+}
 
-	_float4x4 matWeapon = m_pModelCom->Find_HierarchyNode("0B_L_WP1")->Get_BoneMatrix();
-	_float4 vBonePos = matWeapon.XMLoad().r[3];
-	ZeroMemory(&matWeapon.m[3], sizeof(_float4));
+void CUnit_Qanda::TurnOn_Trail(_bool bOn)
+{
+	if (!m_pTrail_R)
+		return;
+
+	m_pTrail_R->TurnOn_TrailEffect(bOn);
+	m_pTrail_R2->TurnOn_TrailEffect(bOn);
+	m_pTrail_L->TurnOn_TrailEffect(bOn);
+	m_pTrail_L2->TurnOn_TrailEffect(bOn);
 
 
-	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_QANDA", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
-	vPos.y += 1.f;
-	//CEffects_Factory::Get_Instance()->Create_MeshParticle(L"QANDADead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
-
+	m_pLowerTrail_R->TurnOn_TrailEffect(bOn);
+	m_pLowerTrail_R2->TurnOn_TrailEffect(bOn);
+	m_pLowerTrail_L->TurnOn_TrailEffect(bOn);
+	m_pLowerTrail_L2->TurnOn_TrailEffect(bOn);
 }
 
 void CUnit_Qanda::SetUp_Colliders(_bool bPlayer)
@@ -182,6 +193,8 @@ void CUnit_Qanda::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_QANDA;
 		m_eSprintEndState = STATE_SPRINT_END_QANDA;
+		m_eSprintFallState = STATE_SPRINT_JUMPFALL_QANDA;
+
 
 		break;
 
@@ -251,70 +264,24 @@ void CUnit_Qanda::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 void CUnit_Qanda::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 {
 	__super::Effect_Hit(pOtherUnit, vHitPos);
-
-	/*_float fUnitDist = pUnit->Get_Transform()->Get_World(WORLD_POS)
-	_float fHitDist = m_pTransform->Get_World(WORLD_POS)*/
-
-	//pOtherUnit : 맞은 쪽
-
-	//때리는 사람 기준으로 나와야함
-
-	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS);
-
-
-	switch (m_eCurState)
-	{
-	case STATE_ATTACK_HORIZONTALUP_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LU", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_HORIZONTALMIDDLE_L:
-	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY:
-	case AI_STATE_ATTACK_HORIZONTALMIDDLE_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_HORIZONTALDOWN_L:
-	case STATE_SPRINTATTACK_PLAYER:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", vHitPos, matWorld);
-		break;
-
-	case STATE_WARRIOR_OXEN_LOOPATTACK:
-	case STATE_ATTACK_HORIZONTALUP_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_HORIZONTALMIDDLE_R:
-	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY:
-	case AI_STATE_ATTACK_HORIZONTALMIDDLE_R:
-			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", vHitPos, matWorld);
-			break;
-
-
-	case STATE_ATTACK_VERTICALCUT:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_STING_PLAYER_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_STING_PLAYER_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
-		break;
-
-	default:
-		break;
-
-	}
 }
 
-void CUnit_Qanda::Enable_Crow(_bool bEnable)
+void CUnit_Qanda::Set_CrowAnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed)
 {
-	if (bEnable)
-		ENABLE_GAMEOBJECT(m_pCrow);
-	else
-		DISABLE_GAMEOBJECT(m_pCrow);
+	m_pAnimCrow->Set_AnimIndex(iAnimIndex, fInterpolateTime, fAnimSpeed);
+}
+
+void CUnit_Qanda::On_ChangePhase(_uint eCurPhase)
+{
+	m_pAnimCrow->On_ChangePhase(CAnimWeapon_Crow::ePhyxState(eCurPhase));
+}
+
+void CUnit_Qanda::Shoot_AnimCrow()
+{
+	_float4 vShootPos = m_pAnimCrow->Get_Transform()->Get_World(WORLD_POS);
+	_float4 vShootDir = Get_FollowCamLook();
+
+	m_pAnimCrow->Shoot_Crow(vShootPos, vShootDir);
 }
 
 void CUnit_Qanda::Enable_Trail(_bool bEnable)
@@ -327,14 +294,6 @@ void CUnit_Qanda::Enable_Trail(_bool bEnable)
 	else
 		DISABLE_GAMEOBJECT(m_pUI_Trail);
 }
-void CUnit_Qanda::Enable_AnimWeapon(_bool bEnable)
-{
-	if (bEnable)
-		ENABLE_GAMEOBJECT(m_pAnimWeapon);
-	else
-		DISABLE_GAMEOBJECT(m_pAnimWeapon);
-}
-
 
 void CUnit_Qanda::ReMap_Trail(_float4 vTargetPos)
 {
@@ -343,109 +302,248 @@ void CUnit_Qanda::ReMap_Trail(_float4 vTargetPos)
 
 	m_pUI_Trail->Clear_Nodes();
 
-	_float4 vHandPos = m_pModelCom->Get_BoneMatrix("0B_R_WP1").XMLoad().r[3];
+	_float4 vHandPos = m_pAnimCrow->Get_Transform()->Get_World(WORLD_POS);//m_pModelCom->Get_BoneMatrix("0B_R_WP1").XMLoad().r[3];
+	vHandPos.y += 0.05f;
 	m_pUI_Trail->Add_Node(vHandPos);
 	m_pUI_Trail->Add_Node(vTargetPos);
 	m_pUI_Trail->ReMap_TrailBuffers();
 
 }
 
-void CUnit_Qanda::Set_ColorController(_uint iMeshPartType)
+CGameObject* CUnit_Qanda::Create_Meteor()
 {
-	if (!m_pCrow)
-		return;
-
-	CColorController::COLORDESC tColorDesc;
-	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
-
-	tColorDesc.eFadeStyle = CColorController::TIME;
-	tColorDesc.fFadeInStartTime = 0.f;
-	tColorDesc.fFadeInTime = 0.1f;
-	tColorDesc.fFadeOutStartTime = 9999.f;
-	tColorDesc.fFadeOutTime = 0.1f;
-	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
-	//tColorDesc.vTargetColor *= 1.1f;
-	tColorDesc.iMeshPartType = iMeshPartType;
-
-	GET_COMPONENT_FROM(m_pCrow, CColorController)->Add_ColorControll(tColorDesc);
-}
-
-void CUnit_Qanda::Create_Crow()
-{
-	if (m_pCrow) 
-		DISABLE_GAMEOBJECT(m_pCrow);
+	/*if (m_pMeteor)
+		DISABLE_GAMEOBJECT(m_pMeteor);*/
 
 	CGameObject* pGameObject = nullptr;
 
-	if (m_mapProjectilePool[HASHCODE(CQandaCrow)].empty())
+	if (m_mapProjectilePool[HASHCODE(CQandaMeteor)].empty())
 	{
-		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CQandaCrow));
+		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CQandaMeteor));
 		//없으면 새로 집어넣음
 		pGameObject->Initialize();
 		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
 		static_cast<CProjectile*>(pGameObject)->Reset(this);
+		static_cast<CProjectile*>(pGameObject)->On_ChangePhase(CProjectile::eRANDOM);
 	}
 	else
 	{
-		CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CQandaCrow)].front();
+		CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CQandaMeteor)].front();
 		pEffect->Reset(this);
-		m_mapProjectilePool[HASHCODE(CQandaCrow)].pop_front();
+		pEffect->On_ChangePhase(CProjectile::eRANDOM);
+		m_mapProjectilePool[HASHCODE(CQandaMeteor)].pop_front();
 		pGameObject = pEffect;
 	}
 
-	m_pCrow = static_cast<CProjectile*>(pGameObject);
-}
+	return pGameObject;
 
-void CUnit_Qanda::Create_Meteor()
-{
-	//if (m_pMeteor)
-	//	DISABLE_GAMEOBJECT(m_pMeteor);
-
-	//CGameObject* pGameObject = nullptr;
-
-	//if (m_mapProjectilePool[HASHCODE(CQandaMeteor)].empty())
-	//{
-	//	pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CQandaMeteor));
-	//	//없으면 새로 집어넣음
-	//	pGameObject->Initialize();
-	//	CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
-	//	static_cast<CProjectile*>(pGameObject)->Reset(this);
-	//}
-	//else
-	//{
-	//	CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CQandaMeteor)].front();
-	//	pEffect->Reset(this);
-	//	m_mapProjectilePool[HASHCODE(CQandaMeteor)].pop_front();
-	//	pGameObject = pEffect;
-	//}
-
-	//m_pMeteor = static_cast<CProjectile*>(pGameObject);
+//	m_pMeteor = static_cast<CProjectile*>(pGameObject);
 }
 
 
-
-void CUnit_Qanda::Change_CrowPhase(_uint iPhase)
+void CUnit_Qanda::Turn_TransformParticle(_bool bOnOff)
 {
-	if (!m_pCrow)
-		return;
+	if (bOnOff)
+	{
+		if (m_TransformParticles.empty())
+			m_TransformParticles = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this, ZERO_VECTOR);
+	}
+	else
+	{
+		if (!m_TransformParticles.empty())
+		{
+			for (auto& elem : m_TransformParticles)
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		}
 
-	m_pCrow->On_ChangePhase(CProjectile::ePROJECTILE_PHASE(iPhase));
+		m_TransformParticles.clear();
+	}
 }
 
-void CUnit_Qanda::Shoot_Crow()
+void CUnit_Qanda::Turn_ChargeEffect(_bool bOnOff)
 {
-	if (!m_pCrow)
-		return;
+	if (bOnOff)
+	{
+		if (m_ChargeEffect.empty())
+			m_ChargeEffect = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Charge_Test", m_pAnimCrow, ZERO_VECTOR);
 
-	ENABLE_COMPONENT(GET_COMPONENT_FROM(m_pCrow, CModel));
-	m_pCrow->On_ShootProjectile();
-	m_pCrow->Get_Transform()->Set_World(WORLD_POS, Get_Transform()->Get_World(WORLD_POS));
-	m_pCrow = nullptr;
+		if (!m_pChargeParticle)
+			m_pChargeParticle = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Charge_Particle_0"),
+				m_pAnimCrow, ZERO_VECTOR);
+	}
+	else
+	{
+		if (!m_ChargeEffect.empty())
+		{
+			for (auto& elem : m_ChargeEffect)
+				static_cast<CEffect*>(elem)->Set_FadeOut();
+			m_ChargeEffect.clear();
+		}
+		if (m_pChargeParticle)
+		{
+			static_cast<CRectEffects*>(m_pChargeParticle)->Set_AllFadeOut();
+			m_pChargeParticle = nullptr;
+		}
+	}
+}
+
+void CUnit_Qanda::Turn_FeatherEffect(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (!m_pFeathers)
+			m_pFeathers = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Crow_Feathers_0"),
+			m_pAnimCrow, ZERO_VECTOR);
+	}
+	else
+	{
+		if (m_pFeathers)
+		{
+			static_cast<CRectEffects*>(m_pFeathers)->Set_AllFadeOut(0.5f);
+			m_pFeathers = nullptr;
+		}
+	}
+	
+}
+
+void CUnit_Qanda::Turn_SteamEffect(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (m_SteamEffect.empty())
+		{
+			m_SteamEffect = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Crow_Steam", m_pAnimCrow, ZERO_VECTOR);
+			//Create_Light(m_SteamEffect.back(), ZERO_VECTOR, 2.f, 0.f, 0.1f, 9999.f, 0.1f, RGB(255, 0, 0), false);
+		}
+	}
+	else
+	{
+		if (!m_SteamEffect.empty())
+		{
+			for (auto& elem : m_SteamEffect)
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut(0.5f);
+		}
+
+		m_SteamEffect.clear();
+	}
+}
+
+void CUnit_Qanda::TurnOff_AllEffect()
+{
+	Turn_TransformParticle(false);
+	Turn_ChargeEffect(false);
+	Turn_FeatherEffect(false);
+	Turn_SteamEffect(false);
+	TurnOn_Trail(false);
 }
 
 void CUnit_Qanda::Collect_QandaProjectile(_hashcode _hcCode, CProjectile* pEffect)
 {
 	m_mapProjectilePool[_hcCode].push_back(pEffect);
+}
+
+void CUnit_Qanda::SetUp_Trail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pTrail_R = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pTrail_R2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pTrail_R)
+		return;
+
+	CREATE_GAMEOBJECT(m_pTrail_R, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_R, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pTrail_R2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_R2, CMesh))->Set_NoCurve();
+
+	m_pTrail_R->Set_EffectFlag(m_vTrailShader);
+	m_pTrail_R2->Set_EffectFlag(m_vTrailShader);
+
+	m_pTrail_R->TurnOn_TrailEffect(false);
+	m_pTrail_R2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Qanda::SetUp_Trail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pTrail_L = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pTrail_L2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pTrail_L)
+		return;
+
+	CREATE_GAMEOBJECT(m_pTrail_L, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_L, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pTrail_L2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_L2, CMesh))->Set_NoCurve();
+
+	m_pTrail_L->Set_EffectFlag(m_vTrailShader);
+	m_pTrail_L2->Set_EffectFlag(m_vTrailShader);
+
+	m_pTrail_L->TurnOn_TrailEffect(false);
+	m_pTrail_L2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Qanda::SetUp_LowerTrail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pLowerTrail_R = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pLowerTrail_R2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pLowerTrail_R)
+		return;
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_R, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_R, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_R2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_R2, CMesh))->Set_NoCurve();
+
+	m_pLowerTrail_R->Set_EffectFlag(m_vTrailShader);
+	m_pLowerTrail_R2->Set_EffectFlag(m_vTrailShader);
+
+	m_pLowerTrail_R->TurnOn_TrailEffect(false);
+	m_pLowerTrail_R2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Qanda::SetUp_LowerTrail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pLowerTrail_L = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pLowerTrail_L2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pLowerTrail_L)
+		return;
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_L, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_L, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_L2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_L2, CMesh))->Set_NoCurve();
+
+	m_pLowerTrail_L->Set_EffectFlag(m_vTrailShader);
+	m_pLowerTrail_L2->Set_EffectFlag(m_vTrailShader);
+
+	m_pLowerTrail_L->TurnOn_TrailEffect(false);
+	m_pLowerTrail_L2->TurnOn_TrailEffect(false);
 }
 
 HRESULT CUnit_Qanda::Initialize_Prototype()
@@ -501,16 +599,28 @@ HRESULT CUnit_Qanda::Initialize_Prototype()
 
 	m_tUnitStatus.eClass = QANDA;
 
-	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_15.fbx",
-		L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_C_Hat_02");
+	_float3 vRadian = _float3(90.f, 180.f, 180.f);
 
-	//m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/longbow/SK_WP_LongBow0005_A00_30.fbx",
-	//	L"../bin/resources/meshes/weapons/longbow/LongBow_Anim2.fbx", this, "0B_L_WP1");
+
+
+	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Cane/Cane_60.fbx",
+		L"", this, "0B_R_WP1", vRadian.x, vRadian.y, vRadian.z);
+
+	vRadian = _float3(90.f, 180.f, 180.f);
+
 
 	if (!m_pAnimWeapon)
 		return E_FAIL;
 
 	m_pAnimWeapon->Initialize();
+
+	m_pAnimCrow = CAnimWeapon_Crow::Create(L"../bin/resources/meshes/weapons/Crow/Crow_40.fbx",
+		L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_Head", vRadian.x, vRadian.y, vRadian.z);
+	if (!m_pAnimCrow)
+		return E_FAIL;
+
+	m_pAnimCrow->Initialize();
+
 	m_tUnitStatus.fRunSpeed *= 0.95f;
 	
 
@@ -529,19 +639,24 @@ HRESULT CUnit_Qanda::Initialize()
 	/* UI_TRAIL */
 	if (m_pOwnerPlayer->IsMainPlayer())
 	{
-		//CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 2, 0.1f, -0.1f, 10.f, ZERO_VECTOR, _float4(1.f, 1.f, 1.f, 1.f),
-		//	L"../bin/resources/textures/effects/warhaven/texture/T_CrowUI_01_FX.dds",
-		//	L"../bin/resources/textures/White.png"
-		//);
+		CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 2, 0.1f, -0.1f, 10.f, ZERO_VECTOR, _float4(1.f, 1.f, 1.f, 1.f),
+			L"../bin/resources/textures/effects/warhaven/texture/T_ArrowUI_01_FX.dds",
+			L"../bin/resources/textures/White.png"
+		);
 
-		//if (!pUI_Trail)
-		//	return E_FAIL;
+		if (!pUI_Trail)
+			return E_FAIL;
 
-		//m_pUI_Trail = pUI_Trail;
+		m_pUI_Trail = pUI_Trail;
 	}
 
 	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
 	DISABLE_GAMEOBJECT(m_pAnimWeapon);
+	
+	CREATE_GAMEOBJECT(m_pAnimCrow, GROUP_PLAYER);
+	DISABLE_GAMEOBJECT(m_pAnimCrow);
+
+	m_bForUseTeam = false;
 
 	return S_OK;
 }
@@ -550,17 +665,85 @@ HRESULT CUnit_Qanda::Start()
 {
 	__super::Start();
 
-	ENABLE_GAMEOBJECT(m_pAnimWeapon);
+	if (m_pAnimWeapon)
+		ENABLE_GAMEOBJECT(m_pAnimWeapon);
 
-	//if (m_pUI_Trail)
-	//{
-	//	CREATE_GAMEOBJECT(m_pUI_Trail, GROUP_EFFECT);
-	//	DISABLE_GAMEOBJECT(m_pUI_Trail);
-	//}
+	if (m_pAnimCrow)
+		ENABLE_GAMEOBJECT(m_pAnimCrow);
+
+	if (m_pUI_Trail)
+	{
+		CREATE_GAMEOBJECT(m_pUI_Trail, GROUP_EFFECT);
+		DISABLE_GAMEOBJECT(m_pUI_Trail);
+	}
+
+	m_vTrailShader = SH_EFFECT_NONE;
+	wstring strMask = L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds";
+	_float fAlpha = 0.5f;
+	_float fUpperSize = 10.f;
 	
+	SetUp_Trail_R(
+		_float4(0.f, 0.f, fUpperSize, 1.f),	//Weapon R
+		_float4(-0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		_float4(1.f, 0.8f, 0.5f, fAlpha), //vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		20,
+		"0B_R_Hat_02"
+	);
+
+	SetUp_Trail_L(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),	//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		_float4(1.f, 0.8f, 0.5f, fAlpha), //vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		18,
+		"0B_L_Hat_02"
+	);
+	//lower
+	fUpperSize *= 0.5f;
+
+	SetUp_LowerTrail_R(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.8f, 0.5f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		12,
+		"0B_R_Skirt2_01"
+	);
+	SetUp_LowerTrail_L(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.8f, 0.5f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		14,
+		"0B_L_Skirt2_01"
+	);
 
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 
+	m_pModelCom->Set_RimLightFlag(RGB(50, 30, 0));
+
+	m_TransformParticles.clear();
 
 	return S_OK;
 }
@@ -568,31 +751,66 @@ HRESULT CUnit_Qanda::Start()
 void CUnit_Qanda::OnEnable()
 {
 	__super::OnEnable();
-	//Create_DefaultCrow();
 
+	Turn_TransformParticle(true);
+	TurnOn_Trail(true);
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	vPos.y += 0.5f;
+
+	Create_Light(vPos, 5.f, 0.f, 0.f, 0.f, 1.5f, RGB(255, 140, 40),
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseIn,
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseOut);
+
+
+	if (m_pAnimCrow)
+	{
+		ENABLE_GAMEOBJECT(m_pAnimCrow);
+		Turn_FeatherEffect(true);
+	}
+	//
 }
 
 void CUnit_Qanda::OnDisable()
 {
 	__super::OnDisable();
-	//if (m_pCrow)
-	//	DISABLE_GAMEOBJECT(m_pCrow);
+
+	Turn_TransformParticle(false);
+	Turn_ChargeEffect(false);
+	Turn_SteamEffect(false);
+	TurnOn_Trail(false);
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	vPos.y += 0.5f;
+	Create_Light(vPos, 4.f, 0.f, 0.f, 0.f, 0.3f, RGB(255, 255, 255),
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseIn,
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseOut);
+
+
+	if (m_pAnimCrow)
+	{
+		DISABLE_GAMEOBJECT(m_pAnimCrow);
+		Turn_FeatherEffect(false);
+	}
+
+	if (m_pUI_Trail)
+		DISABLE_GAMEOBJECT(m_pUI_Trail);
 }
 
 void CUnit_Qanda::My_Tick()
 {
-	CState::HIT_INFO tHitInfo;
-	ZeroMemory(&tHitInfo, sizeof(CState::HIT_INFO));
+	if (m_eCurState == STATE_ATTACK_BEGIN_SNIPING_QANDA ||
+		m_eCurState == STATE_ATTACK_AIMING_SNIPING_QANDA)
+	{
 
-	tHitInfo.eHitType = CState::HIT_TYPE::eUP;
-	tHitInfo.fKnockBackPower = 1.f;
-	tHitInfo.fJumpPower = 3.f;
-	tHitInfo.bFly = true;
-	tHitInfo.iLandKeyFrame = 60;
-	tHitInfo.bNoneHeadAttack = true;
+		__super::Check_MultipleObject_IsInFrustum();
 
-	m_pCurState->Get_HitInfo() = tHitInfo;
+	}
+	else
+	{
 
+		if(!m_MultipleFrustumObject.empty())
+			m_MultipleFrustumObject.clear();
+
+	}
 
 	__super::My_Tick();
 }

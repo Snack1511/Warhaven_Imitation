@@ -3,8 +3,7 @@
 
 #include "UsefulHeaders.h"
 
-
-#include "CSword_Effect.h"
+#include "CEffects_Factory.h"
 #include "CUnit_Qanda.h"
 
 #include "HIerarchyNode.h"
@@ -13,6 +12,7 @@
 #include "CPhysXCharacter.h"
 
 #include "CProjectile.h"
+#include "CAnimWeapon_Crow.h"
 
 CAttack_Qanda::CAttack_Qanda()
 {
@@ -150,6 +150,16 @@ void	CAttack_Qanda::OnCollisionStay(CGameObject* pOtherObject, const _uint& iOth
 
 void CAttack_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData)
 {
+	CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow();
+
+	m_AnimWeaponOffsetMatrix = pAnimCrow->Use_OwnerBoneOffset();
+
+	m_fOffSetLerp = _float3(1.f, 1.5f, 1.f);
+
+	pAnimCrow->Use_OwnerBoneOffset().m[3][0] = 0.f;
+	pAnimCrow->Use_OwnerBoneOffset().m[3][1] = 0.5f;
+	pAnimCrow->Use_OwnerBoneOffset().m[3][2] = 0.f;
+
 	m_fMaxTime = 3.f;
 
 	m_pCoreBone = GET_COMPONENT_FROM(pOwner, CModel)->Find_HierarchyNode("0B_Spine");
@@ -157,23 +167,34 @@ void CAttack_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevS
 	if (!m_pCoreBone)
 		assert(0);
 
-	if (!static_cast<CUnit_Qanda*>(pOwner)->Get_Crow())
-		static_cast<CUnit_Qanda*>(pOwner)->Create_Crow();
+	//if (!static_cast<CUnit_Qanda*>(pOwner)->Get_Crow())
+	//	static_cast<CUnit_Qanda*>(pOwner)->Create_Crow();
 
 	//DISABLE_COMPONENT(GET_COMPONENT_FROM(static_cast<CUnit_Qanda*>(pOwner)->Get_Crow(), CModel));
 
 
 	static_cast<CUnit_Qanda*>(pOwner)->Enable_Trail(true);
+	static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->On_ChangePhase(CAnimWeapon_Crow::eATTACKLOOP);
+	GAMEINSTANCE->Start_RadialBlur(0.01f);
+	
+
+	m_bCharge = true;
 
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
 }
 
 void CAttack_Qanda::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow();
+	static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->On_ChangePhase(CAnimWeapon_Crow::eIDLE);
+
+	pAnimCrow->Use_OwnerBoneOffset() = m_AnimWeaponOffsetMatrix;
+
 	pOwner->Get_PreAnimIndex() = pAnimator->Get_CurAnimFrame();
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 	static_cast<CUnit_Qanda*>(pOwner)->Enable_Trail(false);
+	GAMEINSTANCE->Stop_RadialBlur();
 
 }
 
@@ -185,12 +206,27 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		{
 			m_fTimeAcc += fDT(0);
 
+			// 첫번째
 			if (m_fTimeAcc > m_fMaxTime / 3.f)
-				pOwner->Get_Status().eChargeType = CUnit::UNIT_CHARGESTEP1;
+			{
+				if (m_bCharge)
+				{
+					CUnit_Qanda* pQanda = static_cast<CUnit_Qanda*>(m_pOwner);
 
+					CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Charge_End",
+						pQanda->Get_Crow(), ZERO_VECTOR);
+
+					pQanda->Turn_ChargeEffect(false);
+
+					m_bCharge = false;
+				}
+				pOwner->Get_Status().eChargeType = CUnit::UNIT_CHARGESTEP1;
+			}
+			// 두번째
 			else if (m_fTimeAcc > m_fMaxTime / 1.5f)
 				pOwner->Get_Status().eChargeType = CUnit::UNIT_CHARGESTEP2;
 		}
+		// 세번째
 		else
 			pOwner->Get_Status().eChargeType = CUnit::UNIT_CHARGESTEP3;
 
@@ -284,14 +320,17 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	/* =================================== */
 
 
-	/* 모든 스태틱 충돌체와 캐릭터에게 ray를 쏴서 충돌체크 */
-	_float4 vHitPos;
-	if (Check_ArrowRay(&vHitPos))
+		/* 모든 스태틱 충돌체와 캐릭터에게 ray를 쏴서 충돌체크 */
+	_float4 vTrailPos;
+	_float4 vAimPos;
+	if (pAnimator->Get_CurAnimFrame() >= 1)
 	{
-		_float4 vProjPos = CUtility_Transform::Get_ProjPos(vHitPos);
-		CUser::Get_Instance()->Set_CrossHairPos(vProjPos);
-		static_cast<CUnit_Qanda*>(pOwner)->ReMap_Trail(vHitPos);
-
+		if (CAttack_Qanda::Check_CrowRay(&vTrailPos, &vAimPos, pOwner))
+		{
+			_float4 vProjPos = CUtility_Transform::Get_ProjPos(vAimPos);
+			CUser::Get_Instance()->Set_CrossHairPos(vProjPos);
+			static_cast<CUnit_Qanda*>(pOwner)->ReMap_Trail(vTrailPos);
+		}
 	}
 
 	if (pAnimator->Get_CurAnimFrame() >= 160)
@@ -309,6 +348,8 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	//	//pAnimator->Set_CurFrame(iFrame);
 	//	//	return m_eStateType;
 	//}
+
+
 		
 
 	return __super::Tick(pOwner, pAnimator);
@@ -551,13 +592,13 @@ void CAttack_Qanda::Enter_Attack_Begin(CUnit* pOwner)
 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
-	pOwner->Set_AnimWeaponIndex(14, m_fInterPolationTime, m_fAnimSpeed);
+	static_cast<CUnit_Qanda*>(pOwner)->Set_CrowAnimIndex(14, m_fInterPolationTime, m_fAnimSpeed);
 
 	m_bMoveTrigger = false;
 
 	m_iMinCancelAnimIndex = 30;
 
-	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOM);
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_QANDA);
 
 }
 
@@ -572,7 +613,7 @@ void CAttack_Qanda::Enter_Aiming(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 	}
 
 
-	pOwner->Set_AnimWeaponIndex(16, 0.f, m_fAnimSpeed);
+	static_cast<CUnit_Qanda*>(pOwner)->Set_CrowAnimIndex(16, 0.f, m_fAnimSpeed);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_TYPE(eCamLerpType));
 }
 
@@ -633,25 +674,38 @@ void CAttack_Qanda::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 	}
 }
 
-_bool CAttack_Qanda::Check_ArrowRay(_float4* pOutPos)
+
+_bool CAttack_Qanda::Check_CrowRay(_float4* pTraillPos, _float4* pAimPos, CUnit* pOwner)
 {
-	if (!static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow())
+	CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow();
+
+	if (!pAnimCrow && m_pOwner != pOwner)
 		return false;
 
-	_float4 vStartPos = static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow()->Get_ArrowHeadPos();
-	_float4 vDir = static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow()->Get_Transform()->Get_World(WORLD_RIGHT);
-	_float fMaxDistance = static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow()->Get_MaxDistance();
+	_float4 vStartPos = pAnimCrow->Get_Transform()->Get_World(WORLD_POS);// pAnimCrow->Get_Transform()->Get_World(WORLD_POS);
+	_float4 vDir = pAnimCrow->Get_Transform()->Get_World(WORLD_LOOK) * -1.f;
+	_float fMaxDistance = pAnimCrow->Get_MaxDistance();
 
 	_float fMinDist;
 	_float4 vFinalHitPos;
+	
+	
+	//for (auto& elem : GAMEINSTANCE->Get_AllStaticActors())
+	//{
+
+	//}
+
 
 	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, &fMinDist, vStartPos, vDir, fMaxDistance))
-		*pOutPos = vFinalHitPos;
+		*pTraillPos = vFinalHitPos;
+	else
+		return false;
 
 	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
 	list<PxController*> listPxControllers;
 	for (auto& elem : listPlayers)
 	{
+
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(elem);
 		if (!pPlayer)
 			continue;
@@ -664,12 +718,15 @@ _bool CAttack_Qanda::Check_ArrowRay(_float4* pOutPos)
 		if (!pUnit->Is_Valid())
 			continue;
 
+		if (pUnit == pOwner)
+			continue;
+
 		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), 1.5f))
 			continue;
 
 		CPhysXCharacter* pPhysXCom = GET_COMPONENT_FROM(pUnit, CPhysXCharacter);
 
-		PxController* pController = pPhysXCom->Get_PxController(); 
+		PxController* pController = pPhysXCom->Get_PxController();
 
 		if (!pController)
 			continue;
@@ -679,16 +736,21 @@ _bool CAttack_Qanda::Check_ArrowRay(_float4* pOutPos)
 
 	if (GAMEINSTANCE->Shoot_RaytoControllers(listPxControllers, fMinDist, &vFinalHitPos, vStartPos, vDir, fMaxDistance))
 	{
-		if (*pOutPos != vFinalHitPos)
+		if (*pTraillPos != vFinalHitPos)
 		{
 			CUser::Get_Instance()->Set_ArcherPoint(true);
 		}
 		else
 		{
+			if (vFinalHitPos.x <= FLT_MIN &&
+				vFinalHitPos.x >= -FLT_MIN)
+				return false;
+
 			CUser::Get_Instance()->Set_ArcherPoint(false);
 		}
 
-		*pOutPos = vFinalHitPos;
+		*pAimPos = vFinalHitPos;
 	}
+
 	return true;
 }

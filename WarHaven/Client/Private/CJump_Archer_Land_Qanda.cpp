@@ -35,7 +35,7 @@ HRESULT CJump_Archer_Land_Qanda::Initialize()
     m_iStateChangeKeyFrame = 20;
 
     // 선형 보간 시간
-    m_fInterPolationTime = 0.15f;
+    m_fInterPolationTime = 0.f;
 
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.5f;
@@ -46,7 +46,7 @@ HRESULT CJump_Archer_Land_Qanda::Initialize()
 
 	m_vecAdjState.push_back(STATE_RUN_QANDA);
 
-    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_ARCHER);
+    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_QANDA);
 
     Init_CommonState_Player();
 
@@ -55,11 +55,13 @@ HRESULT CJump_Archer_Land_Qanda::Initialize()
 
 void CJump_Archer_Land_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
-    Physics_Setting(m_fMaxSpeed, pOwner);
+    if (ePrevType == STATE_GLIDING)
+        m_fInterPolationTime = 0.2f;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
-    pAnimator->Set_CurFrame(20);
+
+    if (ePrevType != STATE_GLIDING)
+        pAnimator->Set_CurFrame(20);
 }
 
 STATE_TYPE CJump_Archer_Land_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)

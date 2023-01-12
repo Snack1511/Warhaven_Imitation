@@ -29,6 +29,9 @@ public:
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 	
+
+private:
+	_bool m_bShoot = false;
 };
 
 END

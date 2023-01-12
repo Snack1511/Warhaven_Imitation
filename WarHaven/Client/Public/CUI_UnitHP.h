@@ -31,9 +31,11 @@ public:
 	void Set_UnitHPColor(_float4 vColor) { m_vHpColor = vColor; }
 
 	void SetActive_UnitHP(_bool value);
+	void SetActive_HealBlur(_bool value);
 
 private:
 	CUI_Object* m_pUnitHP[IT_END];
+	CUI_Object* m_pHealBlur = nullptr;
 
 	_bool m_bIsDecrease = false;
 	_float m_fGaugeRatio = 0.f;

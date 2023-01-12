@@ -403,6 +403,8 @@
 #include "CPaladin_Attack_ShieldSlam.h"
 
 #include "CState_Cannon_Player.h"
+#include "CState_Gliding.h"
+#include "CState_Gliding_Archer.h"
 
 #include "CGuard_Begin_Paladin.h"
 #include "CGuard_Loop_Paladin.h"
@@ -459,6 +461,73 @@
 #include "CHit_Sting_Qanda.h"
 #include "CHit_FlyHit_Qanda.h"
 
+
+
+
+#pragma endregion 
+
+#pragma region Priest
+
+#include "CIdle_Priest.h"
+#include "CWalk_Priest.h"
+#include "CRun_Priest.h"
+#include "CJump_Priest.h"
+#include "CJump_Priest_Fall.h"
+#include "CJump_Priest_Land.h"
+#include "CStop_Priest.h"
+#include "CBounce_Priest.h"
+
+#include "CSprint_Begin_Priest.h"
+#include "CSprint_Loop_Priest.h"
+#include "CSprint_End_Priest.h"
+
+#include "CSprint_Jump_Priest.h"
+#include "CSprint_Jump_Fall_Priest.h"
+#include "CSprintAttack_Priest_Begin.h"
+#include "CSprintAttack_Priest.h"
+
+#include "CPriest_Attack_Sting.h"
+#include "CPriest_WindAttack.h"
+#include "CAirDash_Priest.h"
+
+#include "CPriest_Cure_Begin.h"
+#include "CPriest_Cure_Loop.h"
+#include "CPriest_Cure_End.h"
+
+#include "CPriest_Catch_Begin.h"
+#include "CPriest_Catch_Loop.h"
+#include "CPriest_Catching.h"
+#include "CPriest_Catch_Shoot.h"
+  
+#include "CHit_Priest.h"
+#include "CHit_GuardHit_Priest.h"
+#include "CHit_Groggy_Priest.h"
+#include "CHit_Sting_Priest.h"
+#include "CHit_Fly_Priest.h"
+
+
+#pragma endregion 
+
+#pragma region Priest
+
+#include "CIdle_Lancer.h"
+#include "CRun_Lancer.h"
+#include "CStop_Lancer.h"
+#include "CBounce_Lancer.h"
+
+
+#include "CJump_Lancer.h"
+#include "CJump_Lancer_Fall.h"
+#include "CJump_Lancer_Land.h"
+
+#include "CLancer_Attack_Default.h"
+#include "CLancer_Attack_Sting.h"
+#include "CLancer_Breeze_Begin.h"
+#include "CLancer_Breeze_Loop.h"
+
+#include "CHit_Lancer.h"
+#include "CHit_Groggy_Lancer.h"
+#include "CHit_Fly_Lancer.h"
 
 
 
@@ -535,7 +604,6 @@
 #pragma endregion 
 
 
-
 #pragma region Patrol
 
 #include "CState_Patrol_Default_Warrior_L.h"
@@ -573,7 +641,11 @@
 #include "CState_Patrol_Walk_Archer_L.h"
 #include "CState_Patrol_Walk_Archer_R.h"
 
-
+#include "CState_Patrol_Walk_Priest.h"
+#include "CState_Patrol_Default_Priest.h"
+#include "CState_Patrol_Cure_Begin_Priest.h"
+#include "CState_Patrol_Cure_Loop_Priest.h"
+#include "CState_Patrol_Cure_End_Priest.h"
 
 
 #pragma endregion 
@@ -672,9 +744,13 @@
 #include "CState_Combat_Attack_Archer_Aiming_Sniping.h"
 #include "CState_Combat_Attack_Archer_Shoot_Sniping.h"
 
-
-
-
+#include "CState_Combat_Default_Priest.h"
+#include "CState_Combat_Cure_Begin_Priest.h"
+#include "CState_Combat_Cure_Loop_Priest.h"
+#include "CState_Combat_Cure_End_Priest.h"
+#include "CState_Combat_Attack_Sting_Priest.h"
+#include "CState_Combat_SkillR_AirDash_Priest.h"
+#include "CState_Combat_SkillE_Priest_WindAttack.h"
 
 
 #pragma endregion
@@ -692,7 +768,8 @@
 #include "CState_PathNavigation_Sprint_Warrior_Jump.h"
 #include "CState_PathNavigation_Jump_Warrior_L.h"
 #include "CState_PathNavigation_Jump_Warrior_R.h"
-
+#include "CState_PathNavigation_Fall_Warrior_L.h"
+#include "CState_PathNavigation_Fall_Warrior_R.h"
 
 #include "CState_PathNavigation_Run_Engineer_L.h"
 #include "CState_PathNavigation_Run_Engineer_R.h"
@@ -705,6 +782,8 @@
 #include "CState_PathNavigation_Sprint_Engineer_Jump.h"
 #include "CState_PathNavigation_Jump_Engineer_L.h"
 #include "CState_PathNavigation_Jump_Engineer_R.h"
+#include "CState_PathNavigation_Fall_Engineer_L.h"
+#include "CState_PathNavigation_Fall_Engineer_R.h"
 
 
 #include "CState_PathNavigation_Default_Fiona_L.h"
@@ -718,6 +797,23 @@
 #include "CState_PathNavigation_Sprint_Fiona_Jump.h"
 #include "CState_PathNavigation_Jump_Fiona_L.h"
 #include "CState_PathNavigation_Jump_Fiona_R.h"
+#include "CState_PathNavigation_Fall_Fiona_L.h"
+#include "CState_PathNavigation_Fall_Fiona_R.h"
+
+
+#include "CState_PathNavigation_Run_Archer_L.h"
+#include "CState_PathNavigation_Run_Archer_R.h"
+
+#include "CState_PathNavigation_Sprint_Archer_Begin.h"
+#include "CState_PathNavigation_Sprint_Archer_Loop.h"
+#include "CState_PathNavigation_Sprint_Archer_End.h"
+#include "CState_PathNavigation_Sprint_Archer_Jump.h"
+#include "CState_PathNavigation_Sprint_Archer_Fall.h"
+#include "CState_PathNavigation_Jump_Archer_L.h"
+#include "CState_PathNavigation_Jump_Archer_R.h"
+#include "CState_PathNavigation_Fall_Archer_L.h"
+#include "CState_PathNavigation_Fall_Archer_R.h"
+
 
 #include "CState_PathNavigation_Default_Paladin_L.h"
 #include "CState_PathNavigation_Default_Paladin_R.h"
@@ -730,6 +826,19 @@
 #include "CState_PathNavigation_Sprint_Paladin_Jump.h"
 #include "CState_PathNavigation_Jump_Paladin_L.h"
 #include "CState_PathNavigation_Jump_Paladin_R.h"
+#include "CState_PathNavigation_Fall_Paladin_L.h"
+#include "CState_PathNavigation_Fall_Paladin_R.h"
+
+
+#include "CState_PathNavigation_Default_Priest.h"
+#include "CState_PathNavigation_Sprint_Priest_Jump.h"
+#include "CState_PathNavigation_Sprint_Priest_Fall.h"
+#include "CState_PathNavigation_Sprint_Priest_Begin.h"
+#include "CState_PathNavigation_Sprint_Priest_Loop.h"
+#include "CState_PathNavigation_Sprint_Priest_End.h"
+#include "CState_PathNavigation_Jump_Priest.h"
+#include "CState_PathNavigation_Walk_Priest.h"
+#include "CState_PathNavigation_Fall_Priest.h"
 
 
 #pragma endregion
@@ -802,15 +911,18 @@
 #include "CState_Common_Bounce_Archer.h"
 
 
+#include "CState_Common_Fall_Priest.h"
+#include "CState_Common_Land_Priest.h"
+#include "CState_Common_Bounce_Priest.h"
+#include "CState_Common_Hit_Priest.h"
+#include "CState_Common_Groggy_Priest.h"
+#include "CState_Common_Sting_Priest.h"
+#include "CState_Common_FlyHit_Priest.h"
 
 #pragma endregion
 
-#pragma region Error
 
 #include "CState_NoPattern.h"
-
-#pragma endregion
-
 
 #pragma region ETC
 
@@ -852,6 +964,8 @@ HRESULT CState_Manager::Initialize()
 	m_arrStates[STATE_VICTORY] = CState_Victory::Create();
 	m_arrStates[STATE_DEFEAT] = CState_Defeat::Create();
 	m_arrStates[STATE_CANNON_PLAYER] = CState_Cannon_Player::Create();
+	m_arrStates[STATE_GLIDING] = CState_Gliding::Create();
+	m_arrStates[STATE_GLIDING_ARCHER] = CState_Gliding_Archer::Create();
 	m_arrStates[STATE_TRANSFORM] = CState_Victory::Create();
 
 
@@ -869,10 +983,12 @@ HRESULT CState_Manager::Initialize()
 	WarHammer_State();
 	Archer_State();
 	Paladin_State();
+	Priest_State();
 
 	// 영웅
 	Valkyrie_State();
 	Qanda_State();
+	Lancer_State();
 
 	// AI 기본
 	Warrior_SandBagState();
@@ -882,7 +998,8 @@ HRESULT CState_Manager::Initialize()
 	Valkyrie_State_AI();
 	Paladin_State_AI();
 	Archer_State_AI();
-
+	Priest_State_AI();
+	Lancer_State_AI();
 
 	for (_uint i = 0; i < STATE_END; ++i)
 	{
@@ -1311,9 +1428,6 @@ void CState_Manager::Paladin_State()
 
 
 
-
-
-
 	m_arrStates[STATE_HIT_PALADIN] = CHit_Paladin::Create();
 	m_arrStates[STATE_GUARDHIT_PALADIN] = CHit_GuardHit_Paladin::Create();
 	m_arrStates[STATE_GROGGYHIT_PALADIN] = CHit_Groggy_Paladin::Create();
@@ -1324,6 +1438,78 @@ void CState_Manager::Paladin_State()
 
 void CState_Manager::Priest_State()
 {
+	/*
+		CIdle_Priest
+		CWalk_Priest
+		CRun_Priest
+		CJump_Priest
+		CJump_Priest_Fall
+		CJump_Priest_Land 
+		CStop_Priest
+		CBounce_Priest
+		CSprint_Begin_Priest
+		CSprint_Loop_Priest
+		CSprint_End_Priest
+		CSprint_Jump_Fall_Priest
+		CSprint_Jump_Priest
+		CSprintAttack_Priest_Begin
+		CSprintAttack_Priest
+	*/
+
+	m_arrStates[STATE_IDLE_PRIEST] = CIdle_Priest::Create();
+	m_arrStates[STATE_WALK_PRIEST] = CWalk_Priest::Create();
+	m_arrStates[STATE_RUN_PRIEST] = CRun_Priest::Create();
+
+
+	m_arrStates[STATE_JUMP_PRIEST] = CJump_Priest::Create();
+	m_arrStates[STATE_JUMPFALL_PRIEST] = CJump_Priest_Fall::Create();
+	m_arrStates[STATE_JUMP_LAND_PRIEST] = CJump_Priest_Land::Create();
+
+	m_arrStates[STATE_STOP_PRIEST] = CStop_Priest::Create();
+
+
+	m_arrStates[STATE_BOUNCE_PRIEST] = CBounce_Priest::Create();
+
+
+	/* Sprint */
+	m_arrStates[STATE_SPRINT_BEGIN_PRIEST] = CSprint_Begin_Priest::Create();
+	m_arrStates[STATE_SPRINT_LOOP_PRIEST] = CSprint_Loop_Priest::Create();
+	m_arrStates[STATE_SPRINT_END_PRIEST] = CSprint_End_Priest::Create();
+
+
+	m_arrStates[STATE_SPRINT_JUMPFALL_PRIEST] = CSprint_Jump_Fall_Priest::Create();
+
+	m_arrStates[STATE_SPRINT_JUMP_PRIEST] = CSprint_Jump_Priest::Create();
+
+	m_arrStates[STATE_SPRINTATTACK_BEGIN_PRIEST] = CSprintAttack_Priest_Begin::Create();
+	m_arrStates[STATE_SPRINTATTACK_PRIEST] = CSprintAttack_Priest::Create();
+
+
+	m_arrStates[STATE_CURE_BEGIN_PRIEST] = CPriest_Cure_Begin::Create();
+	m_arrStates[STATE_CURE_LOOP_PRIEST] = CPriest_Cure_Loop::Create();
+	m_arrStates[STATE_CURE_END_PRIEST] = CPriest_Cure_End::Create();
+
+	
+	m_arrStates[STATE_WINDATTACK_PRIEST] = CPriest_WindAttack::Create();
+	m_arrStates[STATE_ATTACK_STING_PRIEST] = CPriest_Attack_Sting::Create();
+	m_arrStates[STATE_AIRDASH_PRIEST] = CAirDash_Priest::Create();
+
+	// 수정
+	m_arrStates[STATE_PROJECTILECATCH_BEGIN_PRIEST] = CPriest_Catch_Begin::Create();
+	m_arrStates[STATE_PROJECTILECATCH_LOOP_PRIEST] = CPriest_Catch_Loop::Create();
+	m_arrStates[STATE_PROJECTILECATCH_HIT_PRIEST] = CPriest_Catching::Create();
+	m_arrStates[STATE_PROJECTILECATCH_SHOOT_PRIEST] = CPriest_Catch_Shoot::Create();
+	//
+
+	m_arrStates[STATE_HIT_PRIEST] = CHit_Priest::Create();
+	m_arrStates[STATE_GUARDHIT_PRIEST] = CHit_GuardHit_Priest::Create();
+	m_arrStates[STATE_GROGGYHIT_PRIEST] = CHit_Groggy_Priest::Create();
+	m_arrStates[STATE_STINGHIT_PRIEST] = CHit_Sting_Priest::Create();
+	m_arrStates[STATE_FLYHIT_PRIEST] = CHit_Fly_Priest::Create();
+
+
+
+
 
 }
 
@@ -1481,9 +1667,35 @@ void CState_Manager::Qanda_State()
 
 void CState_Manager::Lancer_State()
 {
+	m_arrStates[STATE_IDLE_LANCER] = CIdle_Lancer::Create();
+	m_arrStates[STATE_RUN_LANCER] = CRun_Lancer::Create();
+
+	m_arrStates[STATE_JUMP_LANCER] = CJump_Lancer::Create();
+	m_arrStates[STATE_JUMPFALL_LANCER] = CJump_Lancer_Fall::Create();
+	m_arrStates[STATE_JUMP_LAND_LANCER] = CIdle_Lancer::Create();
+	//m_arrStates[STATE_JUMP_LAND_LANCER] = CJump_Lancer_Land::Create();
+
+	m_arrStates[STATE_STOP_LANCER] = CStop_Lancer::Create();
+	m_arrStates[STATE_BOUNCE_LANCER] = CBounce_Lancer::Create();
+	
+
+	m_arrStates[STATE_ATTACK_DEAFULT_LANCER] = CLancer_Attack_Default::Create();
+	m_arrStates[STATE_ATTACK_STING_LANCER] = CLancer_Attack_Sting::Create();
+
+	m_arrStates[STATE_ATTACK_BREEZE_BEGIN_LANCER] = CLancer_Breeze_Begin::Create();
+	m_arrStates[STATE_ATTACK_BREEZE_LOOP_LANCER] = CLancer_Breeze_Loop::Create();
+
+
+	// 수정 ㄱㄱ
+	m_arrStates[STATE_HIT_LANCER] = CHit_Lancer::Create();
+	m_arrStates[STATE_FLYHIT_LANCER] = CHit_Fly_Lancer::Create();
+	m_arrStates[STATE_GROGGYHIT_LANCER] = CHit_Groggy_Lancer::Create();
+	
+	/* 안 쓴다. */
+	m_arrStates[STATE_GUARDHIT_LANCER] = CRun_Lancer::Create();
+	m_arrStates[STATE_STINGHIT_LANCER] = CRun_Lancer::Create();
 
 }
-
 
 void CState_Manager::Warrior_SandBagState()
 {
@@ -1582,6 +1794,12 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_L] = CState_PathNavigation_Jump_Warrior_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_R] = CState_PathNavigation_Jump_Warrior_R::Create();
 
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_WARRIOR_L] = CState_PathNavigation_Fall_Warrior_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_WARRIOR_R] = CState_PathNavigation_Fall_Warrior_R::Create();
+
+
+
 #pragma endregion
 
 #pragma region Combat
@@ -1670,6 +1888,10 @@ void CState_Manager::WarHammer_State_AI()
 
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_ENGINEER_L] = CState_PathNavigation_Jump_Engineer_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_ENGINEER_R] = CState_PathNavigation_Jump_Engineer_R::Create();
+	
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_ENGINEER_L] = CState_PathNavigation_Fall_Engineer_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_ENGINEER_R] = CState_PathNavigation_Fall_Engineer_R::Create();
+
 
 #pragma endregion
 
@@ -1760,6 +1982,10 @@ void CState_Manager::Valkyrie_State_AI()
 
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_FIONA_L] = CState_PathNavigation_Jump_Fiona_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_FIONA_R] = CState_PathNavigation_Jump_Fiona_R::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_FIONA_L] = CState_PathNavigation_Fall_Fiona_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_FIONA_R] = CState_PathNavigation_Fall_Fiona_R::Create();
+
 
 #pragma endregion
 
@@ -1876,6 +2102,10 @@ void CState_Manager::Paladin_State_AI()
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_PALADIN_L] = CState_PathNavigation_Jump_Paladin_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_PALADIN_R] = CState_PathNavigation_Jump_Paladin_R::Create();
 
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_PALADIN_L] = CState_PathNavigation_Fall_Paladin_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_PALADIN_R] = CState_PathNavigation_Fall_Paladin_R::Create();
+
+
 #pragma endregion
 
 #pragma region Common
@@ -1912,6 +2142,26 @@ void CState_Manager::Archer_State_AI()
 	m_arrStates[AI_STATE_PATROL_WALK_ARCHER_R] = CState_Patrol_Walk_Archer_R::Create();
 
 #pragma endregion
+
+
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_ARCHER_L] = CState_PathNavigation_Run_Archer_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_ARCHER_R] = CState_PathNavigation_Run_Archer_R::Create();
+
+	// 수정 ㄱㄱ
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_ARCHER_L] = CState_PathNavigation_Run_Archer_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_ARCHER_R] = CState_PathNavigation_Run_Archer_R::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_ARCHER] = CState_PathNavigation_Sprint_Archer_Begin::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTLOOP_ARCHER] = CState_PathNavigation_Sprint_Archer_Loop::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTEND_ARCHER] = CState_PathNavigation_Sprint_Archer_End::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMP_ARCHER] = CState_PathNavigation_Sprint_Archer_Jump::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_ARCHER] = CState_PathNavigation_Sprint_Archer_Fall::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_ARCHER_L] = CState_PathNavigation_Jump_Archer_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_ARCHER_R] = CState_PathNavigation_Jump_Archer_R::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_ARCHER_L] = CState_PathNavigation_Run_Archer_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_ARCHER_R] = CState_PathNavigation_Run_Archer_R::Create();
 
 #pragma region Combat
 
@@ -1963,9 +2213,71 @@ void CState_Manager::Qanda_State_AI()
 
 }
 
+
 void CState_Manager::Priest_State_AI()
 {
 
+
+
+#pragma region Patrol
+
+	m_arrStates[AI_STATE_PATROL_DEFAULT_PRIEST] = CState_Patrol_Default_Priest::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_PRIEST] = CState_Patrol_Walk_Priest::Create();
+
+	m_arrStates[AI_STATE_PATROL_CURE_BEGIN_PRIEST] = CState_Patrol_Cure_Begin_Priest::Create();
+	m_arrStates[AI_STATE_PATROL_CURE_LOOP_PRIEST] = CState_Patrol_Cure_Loop_Priest::Create();
+	m_arrStates[AI_STATE_PATROL_CURE_END_PRIEST] = CState_Patrol_Cure_End_Priest::Create();
+
+
+#pragma endregion
+
+#pragma region Combat
+
+	m_arrStates[AI_STATE_COMBAT_DEFAULT_PRIEST] = CState_Combat_Default_Priest::Create();
+	m_arrStates[AI_STATE_COMBAT_STINGATTACK_PRIEST] = CState_Combat_Attack_Sting_Priest::Create();
+	m_arrStates[AI_STATE_COMBAT_AIRDASH_PRIEST] = CState_Combat_SkillR_AirDash_Priest::Create();
+
+	m_arrStates[AI_STATE_COMBAT_CURE_BEGIN_PRIEST] = CState_Combat_Cure_Begin_Priest::Create();
+	m_arrStates[AI_STATE_COMBAT_CURE_LOOP_PRIEST] = CState_Combat_Cure_Loop_Priest::Create();
+	m_arrStates[AI_STATE_COMBAT_CURE_END_PRIEST] = CState_Combat_Cure_End_Priest::Create();
+
+	m_arrStates[AI_STATE_COMBAT_WINDATTACK_PRIEST] = CState_Combat_SkillE_Priest_WindAttack::Create();
+
+#pragma endregion
+
+
+
+#pragma region PathNavigation
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_PRIEST] = CState_PathNavigation_Default_Priest::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_PRIEST] = CState_PathNavigation_Walk_Priest::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_PRIEST] = CState_PathNavigation_Sprint_Priest_Begin::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTLOOP_PRIEST] = CState_PathNavigation_Sprint_Priest_Loop::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTEND_PRIEST] = CState_PathNavigation_Sprint_Priest_End::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMP_PRIEST] = CState_PathNavigation_Sprint_Priest_Jump::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_PRIEST] = CState_PathNavigation_Sprint_Priest_Fall::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_PRIEST] = CState_PathNavigation_Jump_Priest::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_PRIEST] = CState_PathNavigation_Fall_Priest::Create();
+
+#pragma endregion
+
+#pragma region Common
+
+	m_arrStates[AI_STATE_COMMON_FALL_PRIEST] = CState_Common_Fall_Priest::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_PRIEST] = CState_Common_Land_Priest::Create();
+
+	m_arrStates[AI_STATE_COMMON_BOUNCE_PRIEST] = CState_Common_Bounce_Priest::Create();
+
+
+	m_arrStates[AI_STATE_COMMON_HIT_PRIEST] = CState_Common_Hit_Priest::Create();
+	m_arrStates[AI_STATE_COMMON_GROGGYHIT_PRIEST] = CState_Common_Groggy_Priest::Create();
+	m_arrStates[AI_STATE_COMMON_STINGHIT_PRIEST] = CState_Common_Sting_Priest::Create();
+	m_arrStates[AI_STATE_COMMON_FLYHIT_PRIEST] = CState_Common_FlyHit_Priest::Create();
+
+#pragma endregion
 }
 
 void CState_Manager::Lancer_State_AI()

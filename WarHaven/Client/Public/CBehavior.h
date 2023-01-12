@@ -22,6 +22,7 @@ public:
 	{
 		eWhen,
 		eWhat,
+		eTick,
 		eCount,
 	};
 protected:
@@ -45,6 +46,7 @@ public:
 public:
 	void Add_WhatCondition(wstring strWhatConditionName);
 	void Add_OtherCondition(wstring strOtherConditionName);
+	void Add_CallBack_Tick(wstring strCallbackTickName);
 	void Add_Condition(wstring strConditionName, eConditionType eType);
 	void Add_BehaviorTick(wstring strBehaviorTickName);
 	void Set_Priority(_int iPriorityScore);
@@ -52,6 +54,7 @@ public:
 
 	void Delete_WhatCondition(wstring strWhatConditionName);
 	void Delete_OtherCondition(wstring strOtherConditionName);
+	void Delete_CallBack_Tick(wstring strBehaviorTickName);
 	void Delete_Condition(wstring strConditionName, eConditionType eType);
 
 	void Clear_Condition(eConditionType eType);

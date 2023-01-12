@@ -115,12 +115,24 @@ HRESULT CStructure_Instance::SetUp_InstanceModel(wstring strMeshPath, wstring st
 
 HRESULT CStructure_Instance::SetUp_InstanceModel(wstring strMeshPath, _int iNumInstance, VTXINSTANCE* pInstanceVTX)
 {
-	//_float4x4 TransformMatrix =
-	//	XMMatrixIdentity();
+	if (strMeshPath.empty())
+	{
+		assert(0);
+		return E_FAIL;
+	}
+
+
 	m_DebugPath = strMeshPath;
 	CModel* pModel = CModel::Create(0, TYPE_NONANIM, strMeshPath, iNumInstance, pInstanceVTX, DEFAULT_MODEL_MATRIX);
 
+	if (!pModel)
+	{
+		assert(0);
+		return E_FAIL;
+	}
+
 	Add_Component(pModel);
+
 	return S_OK;
 }
 

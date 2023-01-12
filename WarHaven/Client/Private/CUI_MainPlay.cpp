@@ -54,6 +54,8 @@ void CUI_MainPlay::My_Tick()
 {
 	__super::My_Tick();
 
+	Late_Enable();
+
 	if (m_pBG->Is_Valid())
 	{
 		if (KEY(ESC, TAP))
@@ -80,6 +82,21 @@ void CUI_MainPlay::My_Tick()
 			DISABLE_GAMEOBJECT(m_pPlayBtnMouseEnterLineArr[1]);
 		}
 	}
+}
+
+void CUI_MainPlay::OnEnable()
+{
+	__super::OnEnable();
+
+	m_bIsEnable = true;
+}
+
+void CUI_MainPlay::OnDisable()
+{
+	__super::OnDisable();
+
+	for (auto& iter : m_pUIList)
+		Disable_Fade(iter, 0.3f);
 }
 
 void CUI_MainPlay::Set_Shader_StageHighlight(CShader* pShader, const char* pConstName)
@@ -393,12 +410,14 @@ void CUI_MainPlay::Create_PlayBtn()
 
 		GET_COMPONENT_FROM(m_pPlayBtnUI[i], CTexture)->Remove_Texture(0);
 		CREATE_GAMEOBJECT(m_pPlayBtnUI[i], GROUP_UI);
+
+		m_pUIList.push_back(m_pPlayBtnUI[i]);
 	}
 
 	m_pPlayBtnUI[0]->Set_Pos(-500.f, 180.f);
 
-	_float4 vOrigin0 = _float4(-500.f, 180.f,0.f);
-	_float4 vTarget0= _float4(-480.f, 180.f,0.f);
+	_float4 vOrigin0 = _float4(-500.f, 180.f, 0.f);
+	_float4 vTarget0 = _float4(-480.f, 180.f, 0.f);
 
 	m_pPlayBtnUI[0]->Set_LerpPos(vOrigin0, vTarget0);
 
@@ -558,7 +577,7 @@ void CUI_MainPlay::Create_LockImg()
 		CREATE_GAMEOBJECT(m_pLockBtn[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pLockBtn[i]);
 
-		m_pLockBtn[i]->Set_Sort(0.8f);
+		m_pLockBtn[i]->Set_Sort(0.3f);
 	}
 
 	m_pLockBtn[0]->Set_Pos(m_pStageSelectBtn[1]->Get_PosX(), m_pStageSelectBtn[1]->Get_PosY());
@@ -638,6 +657,8 @@ void CUI_MainPlay::Create_StageNameRect()
 	m_pStageNameRect->Set_FontText(m_wstrModeText);
 
 	CREATE_GAMEOBJECT(m_pStageNameRect, GROUP_UI);
+
+	m_pUIList.push_back(m_pStageNameRect);
 }
 
 void CUI_MainPlay::Crerate_PlayBtnMouseEnterLine()
@@ -686,4 +707,20 @@ void CUI_MainPlay::Create_SelectTextRect()
 
 	CREATE_GAMEOBJECT(m_pSelectTextRect, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pSelectTextRect);
+}
+
+void CUI_MainPlay::Late_Enable()
+{
+	if (m_bIsEnable)
+	{
+		m_fEnableTime += fDT(0);
+		if (m_fEnableTime > m_fEnableMaxTime)
+		{
+			m_fEnableTime = 0.f;
+			m_bIsEnable = false;
+
+			for (auto& iter : m_pUIList)
+				Enable_Fade(iter, 0.3f);
+		}
+	}
 }

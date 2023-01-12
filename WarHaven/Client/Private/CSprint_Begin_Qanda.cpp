@@ -5,6 +5,9 @@
 
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Qanda.h"
+
+#include "CAnimWeapon_Crow.h"
 
 #include "CUser.h"
 
@@ -35,7 +38,7 @@ HRESULT CSprint_Begin_Qanda::Initialize()
     m_eStateType = STATE_SPRINT_BEGIN_QANDA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 	m_fMyMaxLerp = 0.4f;
-	m_fMyAccel = 10.F;
+	m_fMyAccel = 8.f;
 
     m_iStateChangeKeyFrame = 20;
 
@@ -64,7 +67,17 @@ HRESULT CSprint_Begin_Qanda::Initialize()
 
 void CSprint_Begin_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	Physics_Setting(pOwner->Get_Status().fSprintSpeed * 0.8f, pOwner, false);
+    m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
+
+	Physics_Setting(pOwner->Get_Status().fSprintSpeed, pOwner, false);
+
+    CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow();
+
+    if (pAnimCrow->Get_Phase() == CAnimWeapon_Crow::ePhyxState::eIDLE)
+    {
+        static_cast<CUnit_Qanda*>(pOwner)->Set_CrowAnimIndex(4, 0.1f, m_fAnimSpeed);
+        static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->Set_PhiysicsSpeed(m_fMaxSpeed);
+    }
 
 
 	if (ePrevType == STATE_RUN_QANDA || ePrevType == STATE_RUN_QANDA)
@@ -146,6 +159,14 @@ STATE_TYPE CSprint_Begin_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CSprint_Begin_Qanda::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+ 
+    CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow();
+    if (pAnimCrow->Get_Phase() == CAnimWeapon_Crow::ePhyxState::eIDLE)
+    {
+        static_cast<CUnit_Qanda*>(pOwner)->Set_CrowAnimIndex(10, 0.1f, m_fAnimSpeed);
+        static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->Set_PhiysicsSpeed(m_fMaxSpeed);
+    }
+
 	//pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
     /* 할거없음 */
 }

@@ -77,7 +77,8 @@ void CRevive_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
         _float4 vDir = vPos - vMyPos;
         pOwner->Get_Transform()->Set_LerpLook(vDir.Normalize(), 0.4f);
     }
-   
+
+    CUser::Get_Instance()->SetActive_HUD_RevivalUI(true);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -138,6 +139,7 @@ STATE_TYPE CRevive_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CRevive_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* 할거없음 */
+    CUser::Get_Instance()->SetActive_HUD_RevivalUI(false);
 }
 
 STATE_TYPE CRevive_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

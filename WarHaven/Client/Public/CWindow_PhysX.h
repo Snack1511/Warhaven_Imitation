@@ -43,6 +43,7 @@ private:
 	void		Find_Terrain();
 	void		Update_CreateMode();
 	void		Update_SelectMode();
+	void		Update_ObjectControl(_uint iCurIndex);
 
 private:
 	void		Save_Data();

@@ -5,6 +5,8 @@ matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix, g_ViewMatrixInv, g_ProjMatrixI
 
 texture2D	g_DiffuseTexture, g_BlendTexture, g_FilterTexture, g_NormalTexture, g_NoiseTexture, g_StaticShadowTexture, g_MaskTexture;
 texture2D	g_DepthTexture;
+texture2D	g_PBRTexture;
+bool		g_bPBR;
 
 float		g_fRange = 1.f;
 
@@ -25,6 +27,8 @@ float		g_fDissolvePower = 1.f;
 
 vector		g_vCamPosition;
 float		g_fOutlinePower = 1.f;
+
+float		g_fRimlightPower;
 
 
 struct VS_IN
@@ -190,7 +194,7 @@ PS_OUT PS_MAIN_DISOLVE(PS_IN In)
 	Out.vDiffuse.xyz = vColor.xyz;
 	Out.vDiffuse.xyz += g_vPlusColor.xyz;
 	Out.vDiffuse.xyz *= g_fColorPower;
-
+	Out.vDiffuse.a = 0.5f;
 	Out.vEffectDiffuse = Out.vDiffuse;
 	Out.vGlowFlag = g_vGlowFlag;
 
@@ -374,6 +378,140 @@ PS_OUT PS_MAIN_AURA(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MAIN_RIMLIGHT(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vEffectFlag = g_vFlag;
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
+
+	//DiffuseTexture : Color
+	//g_MaskTexture : AlphaMap
+
+	vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	/*In.vTexUV.x += g_fUVPlusX;
+	In.vTexUV.y += g_fUVPlusY;*/
+
+	vector vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV);
+
+	Out.vDiffuse.a = vMask.r;
+
+	if (Out.vDiffuse.a <= 0.01f)
+		discard;
+
+	if (0.f < g_fRimlightPower)
+	{
+		Out.vDiffuse.a = (g_fAlpha * 0.7f);
+		
+	}
+	else
+	{
+		vector vDissolve = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_fDissolvePower);
+
+
+		if (vDissolve.r - (1.f - g_fAlpha) < 0.01f)
+			discard;
+	}
+	
+
+
+
+
+
+	Out.vDiffuse.xyz = vColor.xyz;
+	Out.vDiffuse.xyz += g_vPlusColor.xyz;
+	Out.vDiffuse.xyz *= g_fColorPower;
+
+	vector		vViewNormal = (g_vCamPosition - In.vWorldPos);
+	float		fShade = 1.f - saturate(saturate(dot(normalize(vViewNormal.xyz), normalize((In.vNormal.xyz * 2.f - 1.f)))));
+
+	//노말 벡터가 카메라로 향하면 1
+	//노말 벡터가 카메라를 안보면 0
+	/*if (fShade > 0.5f)
+		return Out;*/
+
+		//int iRimPower = (int)(vRimLightFlagDesc.a * 10.f);
+
+	float fRimPower = 0.1f * 10.f;
+	fShade = pow(fShade, fRimPower);
+
+	vector vRimColor = (1.f, 0.5f, 0.f);
+
+	Out.vDiffuse.xyz += (fShade * vRimColor);
+	if (0.f >= g_fRimlightPower)
+	{
+
+	Out.vDiffuse.a = 0.7f;
+	}
+	Out.vEffectDiffuse = Out.vDiffuse;
+	Out.vGlowFlag = g_vGlowFlag;
+
+
+	return Out;
+}
+
+
+PS_OUT PS_MAIN_RIMLIGHTINV(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vEffectFlag = g_vFlag;
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
+
+	//DiffuseTexture : Color
+	//g_MaskTexture : AlphaMap
+
+	vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	/*In.vTexUV.x += g_fUVPlusX;
+	In.vTexUV.y += g_fUVPlusY;*/
+
+	vector vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV);
+
+	Out.vDiffuse.a = vMask.r;
+
+	if (Out.vDiffuse.a <= 0.01f)
+		discard;
+
+	vector vDissolve = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_fDissolvePower);
+
+
+	if (vDissolve.r - (1.f - g_fAlpha) < 0.01f)
+		discard;
+
+
+
+
+
+	Out.vDiffuse.xyz = vColor.xyz;
+	Out.vDiffuse.xyz += g_vPlusColor.xyz;
+	Out.vDiffuse.xyz *= g_fColorPower;
+
+	vector		vViewNormal = (g_vCamPosition - In.vWorldPos);
+	float		fShade = 1.f - saturate(saturate(dot(normalize(vViewNormal.xyz), normalize(In.vNormal.xyz))));
+
+	//노말 벡터가 카메라로 향하면 1
+	//노말 벡터가 카메라를 안보면 0
+	/*if (fShade > 0.5f)
+		return Out;*/
+
+		//int iRimPower = (int)(vRimLightFlagDesc.a * 10.f);
+
+	float fRimPower = (1.f- g_fRimlightPower) * 10.f;
+	fShade = pow(fShade, fRimPower);
+
+	vector vRimColor = (1.f, 0.5f, 0.f);
+
+	Out.vDiffuse.xyz += (fShade * vRimColor);
+
+	Out.vDiffuse.a = 0.7f;
+	Out.vEffectDiffuse = Out.vDiffuse;
+	Out.vGlowFlag = g_vGlowFlag;
+
+
+	return Out;
+}
 technique11 DefaultTechnique
 {
 	pass Default
@@ -383,7 +521,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_None);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_DEFAULT();
 	}
 	pass DISTORTION
@@ -393,7 +531,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_None);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_DISTORTION();
 	}
 	pass DISOLVE
@@ -403,8 +541,8 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_None);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_DISOLVE();
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_RIMLIGHT();
 	}
 	pass CLAMP
 	{
@@ -413,7 +551,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_None);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_CLAMP();
 	}
 	pass BORDER
@@ -423,7 +561,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_None);
 		
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_BORDER();
 	}
 
@@ -434,7 +572,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_None);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_LIGHTNING();
 	}
 	
@@ -446,7 +584,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_None);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_DOMINION();
 	}
 
@@ -457,7 +595,18 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_None);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_AURA();
+	}
+
+	pass INVRIM
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_None);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL; HullShader = NULL; DomainShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_RIMLIGHTINV();
 	}
 }

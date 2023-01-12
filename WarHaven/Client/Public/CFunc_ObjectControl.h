@@ -122,6 +122,7 @@ public:
 public:
 	void Add_ObjectGroup(char* pMeshGroupName);
 	void Delete_ObjectGroup(char* pMeshGroupName);
+	void CleanUp_ObjectGroup(ObjectMap::iterator& ObjectMapIter, DataMap::iterator& DataMapIter);
 
 	CStructure* Add_ObjectNamingMap(string GroupName, string Meshpath, string ObjectName);
 	CStructure* Add_ObjectNamingMap(string GroupName, MTO_DATA& tData);
@@ -175,6 +176,7 @@ private:
 	void Scaling_Object();
 	void Rotate_Object();
 	void Position_Object();
+	void Position_Object_Mouse();
 	void Place_Object();
 	void Change_Object_UpDir();
 

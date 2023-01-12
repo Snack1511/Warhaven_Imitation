@@ -15,35 +15,46 @@ CTestObject::~CTestObject()
 
 HRESULT CTestObject::Initialize_Prototype()
 {
-	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXCUBETEX,
-		VTXCUBETEX_DECLARATION::Element, VTXCUBETEX_DECLARATION::iNumElements);
-
+	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXANIMMODEL,
+		VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 	pShader->Initialize();
 	Add_Component(pShader);
 
-	CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXCUBETEX_PASS_DEBUG
+	CModel_Renderer* pRenderer = CModel_Renderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXANIM_PASS_NORMAL
 		, _float4(0.f, 0.f, 0.f, 1.f));
+	pRenderer->Initialize();
 	Add_Component<CRenderer>(pRenderer);
-	Add_Component<CMesh>(CMesh_Cube::Create(0));
 
+	//CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, L"../bin/resources/meshes/testlancermesh_10_anim.fbx");
+	CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, L"../bin/resources/animations/lancer/SKEL_Lancer_Base_R.fbx");
+	pAnimator->Initialize();
 
-	CPhysXCollider::PHYSXCOLLIDERDESC		tPhysXColliderDesc;
-	ZeroMemory(&tPhysXColliderDesc, sizeof(CPhysXCollider::PHYSXCOLLIDERDESC));
+	if (!pAnimator)
+		return E_FAIL;
 
-	tPhysXColliderDesc.eShape = CPhysXCollider::COLLIDERSHAPE::BOX;
-	tPhysXColliderDesc.eType = CPhysXCollider::COLLIDERTYPE::DYNAMIC;
-	tPhysXColliderDesc.fDensity = 1.f;
-	tPhysXColliderDesc.vAngles = _float4(frandom(0, 360.f), frandom(0, 360.f), frandom(0, 360.f));
-
-	tPhysXColliderDesc.vPosition = PLAYER->Get_Transform()->Get_World(WORLD_POS);
-	tPhysXColliderDesc.vPosition += _float4(frandom(-10.f, 10.f), 10.f, frandom(-10.f, 10.f));
-	tPhysXColliderDesc.vScale = _float4(1.f, 1.f, 1.f, 1.f);
-	CPhysXCollider* pPhysXCollider = CPhysXCollider::Create(CP_BEFORE_TRANSFORM, tPhysXColliderDesc);
+	Add_Component(pAnimator);
 
 
 
+	_float4x4 matIdentity;
+	matIdentity.Identity();
 
-	Add_Component(pPhysXCollider);
+	wstring wstrFilePath = L"../bin/resources/meshes/characters/lancer/Lancer.fbx";
+
+	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_ANIM, wstrFilePath.c_str(),
+		DEFAULT_TRANS_MATRIX
+	);
+
+	//pModel->Add_Model(wstrFilePath.c_str(), 1);
+	//pModel->Add_Model(L"../bin/resources/meshes/testlancermesh_10.fbx", 1);
+	pModel->Add_Model(L"../bin/resources/meshes/characters/Lancer/body/SK_Lancer0001_Body_A00_10.fbx", 1);
+	//pModel->Add_Model(L"../bin/resources/meshes/characters/Lancer/head/SK_Lancer0000_Face_A00_20.fbx", 2);
+	pModel->Add_Model(L"../bin/resources/meshes/lancerhead.fbx", 2);
+	pModel->Initialize();
+	Add_Component(pModel);
+	pModel->Set_ShaderFlag(SH_LIGHT_BLOOM);
+	pModel->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
+
 
 	return S_OK;
 }
@@ -56,6 +67,10 @@ HRESULT CTestObject::Initialize()
 HRESULT CTestObject::Start()
 {
 	__super::Start();
+
+	GET_COMPONENT(CAnimator)->Set_CurAnimIndex(0, 9);
+	GET_COMPONENT(CAnimator)->Set_InterpolationTime(0, 9, 0.1f);
+	GET_COMPONENT(CAnimator)->Set_AnimSpeed(0, 9, 2.f);
 
 	return S_OK;
 }

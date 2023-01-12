@@ -52,7 +52,7 @@ HRESULT CAI_SandBack_Hit::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.f;
 
-    m_vecAdjState.push_back(STATE_IDLE_WARRIOR_L_AI_ENEMY);
+    //m_vecAdjState.push_back(STATE_IDLE_WARRIOR_L_AI_ENEMY);
     
 
     return S_OK;
@@ -79,11 +79,24 @@ void CAI_SandBack_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
     //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
 
 
+    if (m_iAnimIndex == m_iHitIndex[HIT_STATE_W] ||
+        m_iAnimIndex == m_iHitIndex[HIT_STATE_N])
+        m_HitLeft = true;
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CAI_SandBack_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+    {
+        if (m_HitLeft)
+            return STATE_IDLE_WARRIOR_L_AI_ENEMY;
+        else
+            return STATE_IDLE_WARRIOR_R_AI_ENEMY;
+
+    }
+
 
 	if (pAnimator->Get_CurAnimFrame() > 50)
 	{

@@ -32,7 +32,13 @@ public:
 	void Enable_ConquestPopup(wstring Text, _uint iIconIndex);
 	void Enable_KillPopup(wstring Text, _uint iIconIndex);
 
+	// 0 �䳢Ż
+	void Enable_SkinPopup(_uint iSkin);
+
+	void SetActive_SkinPopup(_bool value);
+
 private:
+	virtual void My_Tick() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
@@ -48,8 +54,25 @@ private:
 	_float m_fEnableTime = 2.f;
 
 private:
+	enum SkinPopup
+	{
+		Skin_PopupBG, Skin_Out, Skin_BG, Skin_Item,
+		Skin_Line0, Skin_Line1, Skin_Deco,
+		Skin_Text0, Skin_Text1, Skin_Esc,
+		Skin_End
+	};
+
+	CUI_Object* m_pSKinPopup[Skin_End];
+
+	_bool m_bEnableSkinPopup = false;
+	_bool m_bFadePopup = false;
+
+	_uint m_iSkinIdx = 0;
+
+private:
 	void Create_ConquestPopup();
 	void Create_KillPopup();
+	void Create_SkinPopup();
 };
 
 END

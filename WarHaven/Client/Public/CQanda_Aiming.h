@@ -31,6 +31,10 @@ private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 	virtual		void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
+private:
+	list<CGameObject*> m_CrowSteam;
+
+	_bool				m_bShoot = false;
 };
 
 END

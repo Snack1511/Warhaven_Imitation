@@ -13,6 +13,8 @@
 #include "CStructure_Instance.h"
 #include "ImGui_Manager.h"
 
+#include "Camera.h"
+
 CFunc_ObjectControl::CFunc_ObjectControl()
 {
 }
@@ -123,9 +125,17 @@ void CFunc_ObjectControl::Func_FBXList()
 
 void CFunc_ObjectControl::Func_ObjectList()
 {
+   
 
     if (ImGui::CollapsingHeader(u8"그룹핑된 리스트", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
+        if (m_pCurSelectGroupingNameArr && ((_uint)m_pCurSelectGroupingNameArr->size() > 10000))
+        {
+            m_pCurSelectGroupingNameArr = nullptr;
+            return;
+        }
+
+
         //해당 이름을 가진 탭
         if (ImGui::BeginTabBar("##AddObject TabBar"))
         {
@@ -185,8 +195,14 @@ void CFunc_ObjectControl::Func_ObjectList()
 
             ImGui::EndTabBar();
         }
+
+       
+
         if (nullptr != m_pCurSelectGroupingNameArr)
         {
+            
+
+
             if (!(*m_pCurSelectGroupingNameArr).empty())
             {
                 if((*m_pCurSelectGroupingNameArr).size() <= m_iCurSelectObjecNametIndex)
@@ -220,17 +236,8 @@ void CFunc_ObjectControl::Func_ObjectList()
         }
 
     }
-    //ImGui::SameLine();
-    //if (ImGui::Button("Clear MeshGroup"))
-    //{
-    //    m_pCurSelectObjectGroup = nullptr;
-    //    m_pCurSelectDataGroup = nullptr;
-    //    Clear_ObjectGroup(get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
-    //    m_iCurSelectObjecNametIndex = 0;
-    //    m_SelectObjectGroupIndex = 0;
-    //    Confirm_Data();
-    //}//그룹 삭제
-    //ImGui::Spacing();
+
+
 
     if (ImGui::CollapsingHeader(u8"그룹단위 복사"))
     {
@@ -518,6 +525,12 @@ void CFunc_ObjectControl::Func_SelectedObject_NameBase()
         {
             if (nullptr != m_pCurSelectObjectGroup)
             {
+                if (_uint(m_pCurSelectObjectGroup->size()) > 10000)
+                {
+                    m_pCurSelectObjectGroup = nullptr;
+                    return;
+                }
+
                 for (_uint i = 0; i < _uint(m_pCurSelectObjectGroup->size()); ++i)
                 {
                     if ((*m_pCurSelectObjectGroup)[i] != nullptr && (*m_pCurSelectObjectGroup)[i]->Is_Valid())
@@ -993,6 +1006,17 @@ void CFunc_ObjectControl::Tick_Function()
     //    Control_Object();
     Control_Object();
     Update_Data();
+
+
+    if (KEY(L, TAP))
+    {
+        Func_DeleteOBject();
+    }
+
+    if (m_bGroupControl)
+    {
+        Update_Group();
+    }
 }
 
 _bool CFunc_ObjectControl::Is_CurSelectObject()
@@ -1133,6 +1157,48 @@ void CFunc_ObjectControl::Delete_ObjectGroup(char* pObjectGroupName)
     }
     Confirm_Data();
 }
+
+void CFunc_ObjectControl::CleanUp_ObjectGroup(ObjectMap::iterator& ObjectMapIter, DataMap::iterator& DataMapIter)
+{
+    _uint LoopCnt = 0;
+    _bool AllClear = false;
+    if(m_DataNamingGroupMap.end() == DataMapIter)
+        return;
+    if (m_ObjectNamingGroupMap.end() == ObjectMapIter)
+        return;
+    if (!DataMapIter->second.empty()&&_uint(DataMapIter->second.size()) <= m_iCurSelectObjectIndex)
+    {
+        m_iCurSelectObjectIndex = _uint(DataMapIter->second.size())-1;
+    }
+    while (DataMapIter->second[m_iCurSelectObjectIndex].bIgnoreFlag)
+    {
+        if (LoopCnt >= _uint(DataMapIter->second.size()))
+        {
+            AllClear = true;
+            break;
+        }//모든 데이터가 Ignore상태라면 break
+        m_iCurSelectObjectIndex++;
+        LoopCnt++;
+        if (_uint(DataMapIter->second.size()) <= m_iCurSelectObjectIndex)
+        {
+            m_iCurSelectObjectIndex = 0;
+        }
+    }
+
+    if (AllClear)
+    {
+        DataMapIter->second.clear();
+        for (auto& Value : ObjectMapIter->second)
+        {
+            if(Value)
+                DELETE_GAMEOBJECT(Value);
+        }
+        ObjectMapIter->second.clear();
+        m_ObjectNamingGroupMap.erase(ObjectMapIter);
+        m_DataNamingGroupMap.erase(DataMapIter);
+    }
+}
+
 CStructure* CFunc_ObjectControl::Add_ObjectNamingMap(string GroupName, string Meshpath, string ObjectName)
 {
     size_t HashNum = 0;
@@ -1189,10 +1255,12 @@ CStructure* CFunc_ObjectControl::Add_ObjectNamingMap(string GroupName, string Me
     CStructure* pStructure = Add_Object(ObjectName, ObjMapIter->second, Meshpath);
     Add_Data(ObjectName, DataMapIter->second, Meshpath);
 
-    pIndexList->push_back(_int(ObjMapIter->second.size()) - 1);
+    _int ObjectIndex = (_int(ObjMapIter->second.size()) <= 1) ? 0 : _int(ObjMapIter->second.size()) - 1;
+
+    pIndexList->push_back(ObjectIndex);
     
     m_pCurSelectObjectGroup = &ObjMapIter->second;
-    m_iCurSelectObjectIndex = (_int(ObjMapIter->second.size()) <= 1) ? 0 : _int(ObjMapIter->second.size()) - 1;
+    m_iCurSelectObjectIndex = ObjectIndex;
     SetUp_CurSelectObject();
 
 
@@ -1436,6 +1504,13 @@ void CFunc_ObjectControl::Merge_All()
         }
 
         CStructure_Instance* pInstanceStructure = CStructure_Instance::Create(strMeshPath, InstanceCount, pInstance);
+
+        if (!pInstanceStructure)
+        {
+            Safe_Delete_Array(pInstance);
+            continue;
+        }
+
         pInstanceStructure->Initialize();
         CREATE_GAMEOBJECT(pInstanceStructure, GROUP_DECORATION);
         m_MergeMap.emplace(elem.first, pInstanceStructure);
@@ -1657,6 +1732,8 @@ void CFunc_ObjectControl::Func_AddObject()
 
 void CFunc_ObjectControl::Func_DeleteOBject()
 {
+    if (m_GroupingInfo.empty())
+        return;
     string strGroupName = get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]);
     size_t HashNum = Convert_ToHash( strGroupName);
     //그룹정보에서 제거
@@ -1710,7 +1787,10 @@ void CFunc_ObjectControl::Func_DeleteOBject()
 
     Delete_Object(ObjectMapIter->second, m_iCurSelectObjectIndex);
     Delete_Data(DataMapIter->second, m_iCurSelectObjectIndex);
-    m_iCurSelectObjectIndex = 0;
+
+    CleanUp_ObjectGroup(ObjectMapIter, DataMapIter);
+
+    SetUp_CurSelectObject();
 }
 
 
@@ -1788,6 +1868,7 @@ void CFunc_ObjectControl::Select_DataControlFlag()
 
 void CFunc_ObjectControl::Control_Object()
 {
+
     switch (m_eControlType)
     {
     case CONTROL_SCALING:
@@ -1800,6 +1881,9 @@ void CFunc_ObjectControl::Control_Object()
         Position_Object();
         break;
     }
+
+    Position_Object_Mouse();
+
 }
 
 //void CFunc_ObjectControl::Scaling_Group()
@@ -1930,11 +2014,14 @@ void CFunc_ObjectControl::Delete_ObjectNamingMap(string strSearchObejctName, lis
 
     Delete_Object(ObjectMapIter, IndexList);
     Delete_Data(DataMapIter, IndexList);
+    //CleanUp_ObjectGroup(ObjectMapIter, DataMapIter);
     //Delete_Collision(CollisionMapIter);
 }
 
 void CFunc_ObjectControl::Scaling_Object()
 {
+    if (nullptr == m_pCurSelectData)
+        return;
     if (nullptr == m_pObjTransform)
         return;
     _float4 ScaleValue = m_pObjTransform->Get_Scale();
@@ -1969,6 +2056,8 @@ void CFunc_ObjectControl::Scaling_Object()
     }
 
     m_pCurSelectGameObject->Get_Transform()->Set_Scale(ScaleValue);
+    Update_Data();
+
 }
 
 void CFunc_ObjectControl::Rotate_Object()
@@ -2016,6 +2105,7 @@ void CFunc_ObjectControl::Rotate_Object()
 
         CUtility_Transform::Turn_ByAngle(m_pObjTransform, Look, m_fTickPerRotSpeed * fDT(0));
     }
+    Update_Data();
 }
 
 void CFunc_ObjectControl::Delete_Object(map<size_t, vector<CGameObject*>>::iterator& ObjectIter, list<_int> IndexList)
@@ -2025,7 +2115,10 @@ void CFunc_ObjectControl::Delete_Object(map<size_t, vector<CGameObject*>>::itera
         for(list<_int>::value_type& Value : IndexList)
         {
             CGameObject* pGameObject = ObjectIter->second[Value];
-            DELETE_GAMEOBJECT(pGameObject);
+
+            if (pGameObject)
+                DELETE_GAMEOBJECT(pGameObject);
+
             ObjectIter->second[Value] = nullptr;
 
         }
@@ -2188,6 +2281,133 @@ void CFunc_ObjectControl::Position_Object()
     }
 
     m_pCurSelectGameObject->Get_Transform()->Set_World(WORLD_POS, PosValue);
+    Update_Data();
+}
+
+void CFunc_ObjectControl::Position_Object_Mouse()
+{
+    if (KEY(Q, HOLD) && KEY(LBUTTON, TAP))
+    {
+        list<CGameObject*> GameObjectList = GAMEINSTANCE->Get_ObjGroup(GROUP_DECORATION);
+
+        _float4 vPickedPos, vPickedNormal;
+
+        CGameObject* pPickedObject = nullptr;
+        if (GAMEINSTANCE->Is_Picked(GameObjectList, &pPickedObject))
+        {
+            if (!pPickedObject)
+                return;
+
+            m_strCurSelectObjectName = CFunctor::To_String(GET_COMPONENT_FROM(pPickedObject, CModel)->Get_ModelFilePath());
+            m_strCurSelectObjectName = CFunctor::Get_FileName(m_strCurSelectObjectName);
+
+            ObjectMap::iterator ObjectMapIter;
+            DataMap::iterator DataMapIter;
+            Find_ObjectDatas(m_strCurSelectObjectName, ObjectMapIter, DataMapIter);
+            if (m_ObjectNamingGroupMap.end() != ObjectMapIter)
+                m_pCurSelectObjectGroup = &(ObjectMapIter->second);
+            else
+                m_pCurSelectObjectGroup = nullptr;
+
+            if (m_DataNamingGroupMap.end() != DataMapIter)
+                m_pCurSelectDataGroup = &(DataMapIter->second);
+            else
+                m_pCurSelectDataGroup = nullptr;
+
+            //인덱스를 찾아야함
+            _hashcode hcCode = Convert_ToHash(m_strCurSelectObjectName);
+            _uint iIndex = 0;
+            _bool bFind = false;
+            for (auto& elem : m_ObjectNamingGroupMap[hcCode])
+            {
+                if (elem == pPickedObject)
+                {
+                    bFind = true;
+                    break;
+                }
+                else
+                    ++iIndex;
+            }
+
+            if (bFind)
+            {
+                m_iCurSelectObjectIndex = iIndex;
+
+                if (nullptr != m_pCurSelectDataGroup
+                    && _uint(m_pCurSelectDataGroup->size()) > m_iCurSelectObjectIndex)
+                    m_pCurSelectData = &((*m_pCurSelectDataGroup)[m_iCurSelectObjectIndex]);
+                else
+                    m_pCurSelectData = nullptr;
+            }
+            else
+            {
+                Confirm_Data();
+                return;
+            }
+
+
+
+            if (nullptr != m_pCurSelectGameObject) {
+                GET_COMPONENT_FROM(m_pCurSelectGameObject, CModel)->Set_RimLightFlag(_float4(1, 0, 0, 0));
+                GET_COMPONENT_FROM(m_pCurSelectGameObject, CModel)->Set_OutlineFlag(_float4(1, 0, 0, 0));
+            }
+            m_pCurSelectGameObject = pPickedObject;
+
+            if (nullptr != m_pCurSelectGameObject) {
+                GET_COMPONENT_FROM(m_pCurSelectGameObject, CModel)->Set_RimLightFlag(_float4(1, 0.2f, 0.2f, 0.5f));
+                GET_COMPONENT_FROM(m_pCurSelectGameObject, CModel)->Set_OutlineFlag(_float4(1, 0.1f, 0, 1));
+            }
+
+            m_pObjTransform = m_pCurSelectGameObject->Get_Transform();
+        }
+
+
+
+
+    }
+
+
+    if (nullptr == m_pObjTransform)
+        return;
+
+    _float4 PosValue = m_pObjTransform->Get_World(WORLD_POS);
+    if (KEY(LBUTTON, HOLD) && KEY(R, HOLD))
+    {
+        _float fMouseX = MOUSE_MOVE(MOUSEMOVE::MMS_X);
+        _float fMouseY = MOUSE_MOVE(MOUSEMOVE::MMS_Y) * -1.f;
+
+        _float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+        vDir.y = 0.f;
+        vDir.Normalize();
+
+        PosValue += vDir * fMouseX * fDT(0);
+
+
+        vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_UP);
+
+        if (vDir.y > 0.9f)
+            vDir = _float4(0.f, 1.f, 0.f, 0.f);
+        else
+            vDir.y = 0.f;
+
+        vDir.Normalize();
+
+        PosValue += vDir * fMouseY * fDT(0);
+    }
+
+    if (KEY(LBUTTON, HOLD) && KEY(T, HOLD))
+    {
+        _float fMouseY = MOUSE_MOVE(MOUSEMOVE::MMS_Y) * -1.f;
+
+        _float4 vDir = _float4(0.f, 1.f, 0.f, 0.f);
+
+        vDir.Normalize();
+
+        PosValue += vDir * fMouseY * fDT(0);
+    }
+
+    m_pCurSelectGameObject->Get_Transform()->Set_World(WORLD_POS, PosValue);
+    Update_Data();
 }
 
 void CFunc_ObjectControl::Place_Object()
@@ -2196,6 +2416,7 @@ void CFunc_ObjectControl::Place_Object()
         return;
     _float4 OutPos = get<CWindow_Map::PICK_OUTPOS>(m_pMapTool->Get_PickData());
     m_pObjTransform->Set_World(WORLD_POS, OutPos);
+    Update_Data();
 }
 
 void CFunc_ObjectControl::Change_Object_UpDir()
@@ -2230,16 +2451,6 @@ void CFunc_ObjectControl::Update_Data()
     {
         m_pCurSelectData->vScale = m_pCurSelectGameObject->Get_Transform()->Get_Scale();
         m_pCurSelectData->ObjectStateMatrix = m_pCurSelectGameObject->Get_Transform()->Get_WorldMatrix();
-    }
-
-    if (KEY(L, TAP))
-    {
-        Func_DeleteOBject();
-    }
-
-    if (m_bGroupControl)
-    {
-        Update_Group();
     }
 }
 
@@ -2423,6 +2634,11 @@ void CFunc_ObjectControl::Save_ObjectSplit(string BasePath, string SaveName)
             }
             Index++;
         }
+
+        if (ValidList.empty())
+            continue;
+
+
         string strName = CFunctor::To_String(DataArrValue.second[ValidList.front()].strObejctName);
         _int NameLength = _int(strName.length()) + 1;
         char ObjectName[MAXCHAR] = "";
@@ -2517,6 +2733,8 @@ void CFunc_ObjectControl::Save_ObjectMerge(string BasePath, string SaveName)
             }
             Index++;
         }
+        if (ValidList.empty())
+            continue;
         string strName = CFunctor::To_String(DataArrValue.second[ValidList.front()].strObejctName);
         _int NameLength = _int(strName.length()) + 1;
         char ObjectName[MAXCHAR] = "";
@@ -3056,7 +3274,8 @@ void CFunc_ObjectControl::Place_Clone()
 
     _float4 OutPos = get<CWindow_Map::PICK_OUTPOS>(m_pMapTool->Get_PickData());
     MTO_DATA tData = (*m_pCurSelectData);
-    Clone_Object(OutPos, m_vCompDir, tData);
+    if (!tData.bIgnoreFlag)
+        Clone_Object(OutPos, m_vCompDir, tData);
     //_matrix WorldMat = tData.ObjectStateMatrix.XMLoad();
     //WorldMat.r[3] = OutPos.XMLoad();
     //tData.ObjectStateMatrix = WorldMat;
@@ -3074,7 +3293,14 @@ void CFunc_ObjectControl::Clone_SamePosition()
     }
     _float4 ObjectPosition = m_pObjTransform->Get_World(WORLD_POS);
     MTO_DATA tData = (*m_pCurSelectData);
-    Clone_Object(ObjectPosition, _float4(0.f, 1.f, 0.f, 0.f), tData);
+
+    if(!tData.bIgnoreFlag)
+        Clone_Object(ObjectPosition, _float4(0.f, 1.f, 0.f, 0.f), tData);
+    else
+    {
+        int i = 0;
+    }
+
     //_matrix WorldMat = tData.ObjectStateMatrix.XMLoad();
     //WorldMat.r[3] = ObjectPosition.XMLoad();
     //tData.ObjectStateMatrix = WorldMat;
@@ -3118,6 +3344,8 @@ void CFunc_ObjectControl::Add_HLOD()
 
 void CFunc_ObjectControl::Load_Data(string FilePath)
 {
+    Confirm_Data();
+
     if(bTest)
         Load_ObjectGroup_Temp(FilePath);
     else
@@ -3153,13 +3381,29 @@ void CFunc_ObjectControl::Load_Data(string FilePath)
 
     for (auto& elem : Padding)
     {
-        vector<CGameObject*>& ObjArr = m_ObjectNamingGroupMap[elem.first];
-        vector<MTO_DATA>& DataArr = m_DataNamingGroupMap[elem.first];
+        ObjectMap::iterator ObjIter = m_ObjectNamingGroupMap.find(elem.first);
+        DataMap::iterator DataIter = m_DataNamingGroupMap.find(elem.first);
+        if (ObjIter == m_ObjectNamingGroupMap.end())
+            continue;
+        if (DataIter == m_DataNamingGroupMap.end())
+            continue;
+        ObjectArr& ObjArr = ObjIter->second;
+        DataArr& DataArr = DataIter->second;
 
-        vector<CGameObject*>::iterator ObjArrIter = m_ObjectNamingGroupMap[elem.first].begin();
-        vector<MTO_DATA>::iterator DataArrIter = m_DataNamingGroupMap[elem.first].begin();
+        ObjectArr::iterator ObjArrIter = ObjArr.begin();
+        DataArr::iterator DataArrIter = DataArr.begin();
+        
+        if (ObjArrIter == ObjArr.end())
+            continue;
+        if (DataArrIter == DataArr.end())
+            continue;
+        
         _int Index = 0;
         _bool bInsert = false;
+
+        if (elem.second.empty())
+            continue;
+
         for (list<_int>::iterator iter = elem.second.begin(); iter != elem.second.end(); ++iter)
         {
             if(bInsert)

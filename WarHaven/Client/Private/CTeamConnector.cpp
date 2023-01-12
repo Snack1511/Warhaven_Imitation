@@ -3,7 +3,7 @@
 #include "UsefulHeaders.h"
 #include "CSquad.h"
 
-#include "CTrigger_Paden.h"
+#include "CTrigger_Stage.h"
 
 CTeamConnector::CTeamConnector()
 {
@@ -107,9 +107,9 @@ void CTeamConnector::Add_Trigger(CTrigger* pTrigger)
 {
     m_OurTriggers.push_back(pTrigger);
 
-    CTrigger_Paden::ePADEN_TRIGGER_TYPE eType = static_cast<CTrigger_Paden*>(pTrigger)->Get_TriggerType();
+    CTrigger_Stage::eSTAGE_TRIGGER_TYPE eType = static_cast<CTrigger_Stage*>(pTrigger)->Get_TriggerType();
 
-    if (eType != CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART)
+    if (eType != CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eSTART)
     {
         m_bHasTrigger[(_uint)eType - 1] = true;
     }
@@ -120,13 +120,13 @@ void CTeamConnector::Erase_Trigger(string strTriggerKey)
 
     for (auto iter = m_OurTriggers.begin(); iter != m_OurTriggers.end();)
     {
-        if (static_cast<CTrigger_Paden*>(*iter)->Get_TriggerName() == strTriggerKey)
+        if (static_cast<CTrigger_Stage*>(*iter)->Get_TriggerName() == strTriggerKey)
         {
-            CTrigger_Paden::ePADEN_TRIGGER_TYPE eType = static_cast<CTrigger_Paden*>(*iter)->Get_TriggerType();
+            CTrigger_Stage::eSTAGE_TRIGGER_TYPE eType = static_cast<CTrigger_Stage*>(*iter)->Get_TriggerType();
 
-            if (eType != CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART)
+            if (eType != CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eSTART)
             {
-                m_bHasTrigger[(_uint)eType - 1] = true;
+                m_bHasTrigger[(_uint)eType - 1] = false;
             }
 
             iter = m_OurTriggers.erase(iter);
@@ -138,7 +138,7 @@ void CTeamConnector::Erase_Trigger(string strTriggerKey)
 
 _float4 CTeamConnector::Find_RespawnPosition_Start()
 {
-    return static_cast<CTrigger_Paden*>(m_OurTriggers.front())->Get_RespawnPosition();
+    return static_cast<CTrigger_Stage*>(m_OurTriggers.front())->Get_RespawnPosition();
 }
 
 _float4 CTeamConnector::Find_RespawnPosition(string strTriggerKey)
@@ -146,9 +146,9 @@ _float4 CTeamConnector::Find_RespawnPosition(string strTriggerKey)
     _float4 vPosition = ZERO_VECTOR;
     for (auto& elem : m_OurTriggers)
     {
-        if (static_cast<CTrigger_Paden*>(elem)->Get_TriggerName() == strTriggerKey)
+        if (static_cast<CTrigger_Stage*>(elem)->Get_TriggerName() == strTriggerKey)
         {
-            vPosition = static_cast<CTrigger_Paden*>(elem)->Get_RespawnPosition();
+            vPosition = static_cast<CTrigger_Stage*>(elem)->Get_RespawnPosition();
             break;
         }
     }

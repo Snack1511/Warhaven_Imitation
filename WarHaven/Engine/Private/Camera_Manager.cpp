@@ -45,6 +45,9 @@ _float4x4 CCamera_Manager::Get_BillBoard()
 
 _float4 CCamera_Manager::Get_ViewPos()
 {
+	if (!m_pCurCam)
+		return ZERO_VECTOR;
+
 	return m_pCurCam->Get_Transform()->Get_World(WORLD_POS);
 }
 
@@ -74,6 +77,9 @@ HRESULT CCamera_Manager::SetUp_ShaderResources(_bool Ortho)
 				return E_FAIL;
 
 			if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(9, "g_vCamPosition", &vCamPos, sizeof(_float4))))
+				return E_FAIL;
+
+			if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(12, "g_vCamPosition", &vCamPos, sizeof(_float4))))
 				return E_FAIL;
 		}
 		

@@ -11,6 +11,7 @@ END
 BEGIN(Client)
 
 class CUnit;
+class CUI_UnitHP;
 class CUI_Revive;
 
 class CUI_UnitHUD : public CUI_Wrapper
@@ -30,7 +31,8 @@ public:
 	virtual void My_LateTick() override;
 
 public:
-	CUI_Revive* Get_ReviveUI(); 
+	CUI_UnitHP* Get_UnitHP();
+	CUI_Revive* Get_ReviveUI();
 
 	void Set_ProjPos(CTransform* pTransform);
 	void Set_UnitStatus(CUnit::UNIT_STATUS tStatus) { m_tStatus = tStatus; }
@@ -40,8 +42,12 @@ public:
 
 	void Enable_RevivalUI();
 	void Disable_RevivalUI();
+	void Set_RevivalGauge(_float fCurTime, _float fMaxTime);
 
 	void Set_RevivalIcon(_uint iIconIdx);
+	void SetActive_UnitHP(_bool value);
+
+	void SetActive_TargetUI(_uint iIdx, _bool value);
 
 private:
 	CUI_Wrapper* m_pUnitUI[UI_End];
@@ -62,17 +68,34 @@ private:
 
 	CUI_Object* m_pUnitNameText = nullptr;
 
+	enum TargetUI { Target_Point, Target_Blink, Target_End };
+	CUI_Object* m_pTargetUI[Target_End];
+
 	_float4 m_vOffset;
 
 	_float m_fUnitDis = 0.f;
 
+	_bool m_bEnableTargetUI = false;
+	_float m_fEanbleTargetUITime = 0.f;
+	_float m_fMaxEanbleTargetUITime = 0.2f;
+	_float m_fTargetRotValue = 0.f;
+	_float m_fBlinkTime = 0.f;
+
+	_uint m_fPrvRatio = 0.f;
+	_uint m_fCurRatio = 0.f;
+
+	_float m_fEnableHpTime = 0.f;
+	_float m_fDisableHpTime = 5.f;
+
 private:
 	void Create_UnitHUD();
+	void Create_TargetUI();
 
 	void Init_UnitNameText();
 
 private:
-	void SetActive_UnitHP(_bool value);
+	void Tick_UnitHP();
+	void Tick_TargetUI();
 };
 
 END

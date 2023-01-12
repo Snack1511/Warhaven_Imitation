@@ -63,6 +63,10 @@ HRESULT CJump_Player_Land_L::Initialize()
 
 void CJump_Player_Land_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+    if (ePrevType == STATE_GLIDING)
+        m_fInterPolationTime = 0.2f;
+
+
     pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.5f;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

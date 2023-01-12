@@ -154,6 +154,8 @@ void CRectEffects::Self_Reset(CGameObject* pGameObject, _float4 vStartPos)
 		}
 	}
 
+
+
 	//if (m_bBillBoard)
 	//{
 	//	m_matTrans = pGameObject->Get_Transform()->Get_WorldMatrix(MATRIX_NOSCALE | MARTIX_NOTRANS);
@@ -195,15 +197,26 @@ void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantNam
 	__super::Set_ShaderResource(pShader, pConstantName);
 }
 
-void CRectEffects::Set_AllFadeOut()
+void CRectEffects::Set_AllFadeOut(_float fFadeTime)
 {
 	m_bLoopControl = false;
 
 	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
 	{
-		//m_pDatas[i].InstancingData.fFadeOutStartTime = 0.f;
+		//m_pDatas[i].InstancingData.fFadeInStartTime = 0.f;
 		m_pDatas[i].InstancingData.eCurFadeType = INSTANCING_DATA::FADEOUT;
-		m_pDatas[i].InstancingData.fFadeOutTime = 0.2f;
+
+		_float fTime = m_pDatas[i].InstancingData.fFadeOutTime - fFadeTime;
+		if (0.f > fTime)
+		{
+			m_pDatas[i].InstancingData.fTimeAcc = 0.f;
+		}
+		else
+		{
+			m_pDatas[i].InstancingData.fTimeAcc = fTime;
+		}
+
+		//m_pDatas[i].InstancingData.fFadeOutTime = fFadeTime;
 
 	}
 }
@@ -220,7 +233,7 @@ HRESULT CRectEffects::Initialize_Prototype()
 
 	CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_ALPHA, VTXRECTINSTANCE_PASS_DEFAULT
 		, _float4(0.f, 0.f, 0.f, 1.f));
-
+	pRenderer->Set_RectEffects();
 	Add_Component<CRenderer>(pRenderer);
 
 	Add_Component<CMesh>(CRect_Instance::Create(m_tCreateData.iNumInstance));
@@ -502,6 +515,7 @@ HRESULT CRectEffects::Initialize()
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
 	
+	Stick_FollowTarget();
 
 
 	return S_OK;
@@ -788,15 +802,29 @@ void CRectEffects::My_LateTick()
 		}
 	}
 
-	if (m_bEffectFlag & EFFECT_FOLLOWTARGET)
+	Stick_FollowTarget();
+
+
+	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
 	{
-		m_pTransform->Set_World(WORLD_POS, m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS));
-		m_pTransform->Make_WorldMatrix();
+		if (CURVE_CIRCLE == m_eCurveType)
+		{
+			if (m_pFollowTarget)
+			{
+				m_pDatas[i].RectInstance.vTranslation = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
+			}
+		}
 	}
 
 	static_cast<CRect_Instance*>(GET_COMPONENT(CMesh))->ReMap_Instances(m_pFinalRectInstances, iFinalIndex);
 
-	
+	_float4 vFinalPos = XMLoadFloat4(&((m_pFinalRectInstances + (iFinalIndex-1))->vTranslation));
+	vFinalPos = vFinalPos.MultiplyCoord(m_pTransform->Get_WorldMatrix());
+
+	if (vFinalPos.Is_Zero())
+		MessageBox(0, L"또 0", TEXT("System Error"), MB_OK);
+
+	GET_COMPONENT(CRenderer)->Set_FinalPos(vFinalPos);
 
 }
 
@@ -812,6 +840,10 @@ void CRectEffects::OnEnable()
 	//시작위치
 
 	Bone_Controll();
+
+	Stick_FollowTarget();
+
+
 
 	if (!m_pRefBone && m_bLoopControl && (0.f >= m_fLoopTime) && m_pFollowTarget)
 	{
@@ -1002,6 +1034,24 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 			m_pFollowTarget->
 		}*/
 
+	if (m_bEffectFlag & EFFECT_FOLLOWTARGET)
+	{
+		if (m_pFollowTarget)
+		{
+			m_matTrans.Identity();
+		}
+	}
+	else
+	{
+		if (!m_pRefBone)
+		{
+			if (m_pFollowTarget)
+			{
+				m_matTrans = m_pFollowTarget->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
+			}
+		}
+	}
+
 	vStartPos = vStartPos.MultiplyCoord(m_matTrans);
 	vStartDir = vStartDir.MultiplyNormal(m_matTrans).Normalize();
 	vStartRight = vStartRight.MultiplyNormal(m_matTrans).Normalize();
@@ -1012,14 +1062,19 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 	m_pDatas[iIndex].InstancingData.vDir = vStartDir;
 	m_pDatas[iIndex].InstancingData.vRight = vStartRight;
 
-
-	if ((CURVE_CHARGE == m_eCurveType) && m_pFollowTarget)
+	if ((CURVE_CHARGE == m_eCurveType))
 	{
-		_float4 vTargetPos = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
-
-		m_pDatas[iIndex].RectInstance.vTranslation = vTargetPos + vStartPos;
+		if (m_pRefBone)
+		{
+			_float4 vTargetPos = m_pRefBone->Get_BoneMatrix().XMLoad().r[3];
+			m_pDatas[iIndex].RectInstance.vTranslation = vTargetPos + vStartPos;
+		}
+		else if (m_pFollowTarget)
+		{
+			_float4 vTargetPos = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
+			m_pDatas[iIndex].RectInstance.vTranslation = vTargetPos + vStartPos;
+		}
 	}
-
 
 	//회전시켜놓기
 
@@ -1265,6 +1320,8 @@ void CRectEffects::Sort_Particle(_uint iFinalNumInstance)
 
 			return fDist1 > fDist2;
 		});
+
+	
 }
 
 void CRectEffects::Bone_Controll()
@@ -1273,7 +1330,7 @@ void CRectEffects::Bone_Controll()
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
-	else if(CANNON_BONE == m_eCurveType)
+	else if((CANNON_BONE == m_eCurveType) || CURVE_CHARGE == m_eCurveType)
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	else
 		Stick_RefBone();
@@ -1284,15 +1341,54 @@ void CRectEffects::Stick_RefBone()
 {
 	if (!m_pRefBone)
 		return;
+	if (CURVE_CHARGE == m_eCurveType)
+		return;
 
-	_float4 vPos = m_vOffsetPos;
+	_float4 vPos;
+	if (SHADOWSTEP == m_eCurveType)
+	{
+		vPos = ZERO_VECTOR;
+	}
+	else
+	{
+		vPos = m_vOffsetPos;
+	}
+	 
 	_float4x4 matBone = m_pRefBone->Get_BoneMatrix();
-
 
 	vPos = vPos.MultiplyCoord(matBone);
 	m_pTransform->Set_World(WORLD_POS, vPos);
 
 	m_pTransform->Make_WorldMatrix(); 
+
+	if (SHADOWSTEP == m_eCurveType)
+	{
+		vPos = m_pTransform->Get_World(WORLD_POS);
+
+		_float4 vCam = GAMEINSTANCE->Get_CurCamLook();
+		vPos += vCam * m_vOffsetPos;
+		m_pTransform->Set_World(WORLD_POS, vPos);
+
+		m_pTransform->Make_WorldMatrix();
+	}
+}
+
+void CRectEffects::Stick_FollowTarget()
+{
+	if (m_bEffectFlag & EFFECT_FOLLOWTARGET)
+	{
+		if (m_pFollowTarget)
+		{
+			_float4 vPos = m_vOffsetPos;
+
+			_float4x4 matFollow = m_pFollowTarget->Get_Transform()->Get_WorldMatrix(MATRIX_NOSCALE);
+
+			vPos = vPos.MultiplyCoord(matFollow);
+			m_pTransform->Set_World(WORLD_POS, vPos);
+
+			m_pTransform->Make_WorldMatrix();
+		}
+	}
 }
 
 
@@ -1430,7 +1526,15 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDel
 
 		break;
 	case Client::CURVE_CHARGE:
-		if (m_pFollowTarget)
+		if (m_pRefBone)
+		{
+			_float4x4 MatBone = m_pRefBone->Get_BoneMatrix();
+			_float4 vBone = MatBone.XMLoad().r[3];
+
+			_float4 vTarget = vBone - vPos;
+			m_pDatas[iIdx].InstancingData.vDir = vTarget;
+		}
+		else if (m_pFollowTarget)
 		{
 			//vPos = CEasing_Utillity::Linear(vPos, m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS), m_pDatas[iIdx].InstancingData.fMovingAcc,
 			//	m_pDatas[iIdx].InstancingData.fFadeInTime + m_pDatas[iIdx].InstancingData.fFadeOutStartTime + m_pDatas[iIdx].InstancingData.fFadeOutTime);
@@ -1442,6 +1546,7 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDel
 
 	case Client::CURVE_CIRCLE:
 
+		
 		//if (m_pFollowTarget)
 		//{
 		//	fX = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS).x + m_pDatas[iIdx].InstancingData.fCurvePower *

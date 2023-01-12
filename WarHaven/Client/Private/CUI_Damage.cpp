@@ -84,7 +84,7 @@ void CUI_Damage::OnEnable()
 		m_iDamageValue /= 10;
 	}
 
-	sort(m_vecDigitDmg.begin(), m_vecDigitDmg.end(), greater<_uint>());
+	reverse(m_vecDigitDmg.begin(), m_vecDigitDmg.end());
 
 	_float fRandPosX = (_float)random(0, 300);
 	_float fRandPosY = (_float)random(-300, 300);
@@ -98,9 +98,9 @@ void CUI_Damage::OnEnable()
 
 		Enable_Fade(m_pArrDmgNum[i], m_fFadeInTime);
 
+		m_pArrDmgNum[i]->Set_Color(m_vColorWhite);
 		m_pArrDmgNum[i]->Set_Scale(m_vFontScale);
 		m_pArrDmgNum[i]->DoScale(m_fScaleValue, m_fScaleUpTime);
-		m_pArrDmgNum[i]->Set_Color(m_vColorWhite);
 	}
 
 	if (m_eDamageIcon != Default)
@@ -111,9 +111,13 @@ void CUI_Damage::OnEnable()
 			{
 				m_pArrDmgNum[i]->Set_Color(m_vColorRed);
 			}
-			else
+			else if (m_eDamageIcon == Guard)
 			{
 				m_pArrDmgNum[i]->Set_Color(m_vColorGray);
+			}
+			else if (m_eDamageIcon == Heal)
+			{
+				m_pArrDmgNum[i]->Set_Color(m_vColorGreen);
 			}
 		}
 
@@ -121,7 +125,8 @@ void CUI_Damage::OnEnable()
 		m_pDmgIcon->Set_Scale(m_vHeadShotScale);
 		m_pDmgIcon->DoScale(m_fScaleValue, m_fScaleUpTime);
 
-		GET_COMPONENT_FROM(m_pDmgIcon, CTexture)->Set_CurTextureIndex(m_eDamageIcon);
+		if (m_eDamageIcon < Default)
+			GET_COMPONENT_FROM(m_pDmgIcon, CTexture)->Set_CurTextureIndex(m_eDamageIcon);
 
 		Enable_Fade(m_pDmgIcon, m_fFadeInTime);
 	}
@@ -134,7 +139,10 @@ void CUI_Damage::Enable_Damage(_uint eIcon, _float fDmg)
 	if (eIcon > Default)
 		return;
 
-	m_iDamageValue = (_uint)(fDmg * -1.f);
+	m_iDamageValue = eIcon == 2 ? (_uint)(fDmg) : (_uint)(fDmg * -1.f);
+	if (m_iDamageValue > 999)
+		m_iDamageValue = 999;
+
 	m_eDamageIcon = (DamageIcon)eIcon;
 
 	ENABLE_GAMEOBJECT(this);
@@ -144,6 +152,7 @@ void CUI_Damage::Init_HeadShot()
 {
 	m_pDmgIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_HeadshotIcon.dds"));
 	GET_COMPONENT_FROM(m_pDmgIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_IconGuardShield.dds"));
+	GET_COMPONENT_FROM(m_pDmgIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_HeartIcon.png"));
 
 	m_pDmgIcon->Set_Scale(100.f);
 
@@ -157,7 +166,7 @@ void CUI_Damage::Init_DmgNum()
 {
 	Read_Texture(m_pDmgNum, "/Number", "Num");
 
-	m_pDmgNum->Set_Scale(m_vFontScale); 
+	m_pDmgNum->Set_Scale(m_vFontScale);
 
 	Set_FadeDesc(m_pDmgNum);
 

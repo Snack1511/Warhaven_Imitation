@@ -46,7 +46,7 @@ HRESULT CPurpleArrow::Start()
 	tColorDesc.fFadeInTime = 0.1f;
 	tColorDesc.fFadeOutStartTime = 9999.f;
 	tColorDesc.fFadeOutTime = 0.1f;
-	tColorDesc.vTargetColor = _float4((255.f / 255.f), (42.f / 255.f), (42.f / 255.f), 0.1f);
+	tColorDesc.vTargetColor = _float4((200.f / 255.f), (20.f / 255.f), (20.f / 255.f), 0.1f);
 	//tColorDesc.vTargetColor *= 1.1f;
 	tColorDesc.iMeshPartType = MODEL_PART_SKEL;
 
@@ -100,7 +100,9 @@ void CPurpleArrow::OnEnable()
 
 void CPurpleArrow::OnDisable()
 {
-	static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(m_hcCode, this);
+	if (m_bCollect)
+		static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(m_hcCode, this);
+
 	__super::OnDisable();
 
 	Clear_Addiction();
@@ -141,11 +143,9 @@ void CPurpleArrow::My_Tick()
 
 	if (m_bPoison)
 	{
-		if (m_Test.empty())
-		{
-			m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"PoisonTest",
-				this, m_pTransform->Get_World(WORLD_POS)); //OnEnable 에서 생성시 마지막 위치에 이펙트가 보임
-		}
+		m_Test.clear();
+		m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"PoisonTest",
+			this, m_pTransform->Get_World(WORLD_POS)); //OnEnable 에서 생성시 마지막 위치에 이펙트가 보임
 		m_bPoison = false;
 	}
 	
@@ -161,13 +161,13 @@ void CPurpleArrow::My_Tick()
 			if (m_iTickCnt == m_iMaxTickCnt)
 			{
 				CState::HIT_INFO tHitInfo;
-				ZeroMemory(&tHitInfo, sizeof(CState::HIT_INFO));
+				//ZeroMemory(&tHitInfo, sizeof(CState::HIT_INFO));
 
 				tHitInfo.eHitType = CState::HIT_TYPE::eUP;
 				tHitInfo.fKnockBackPower = 3.f;
 				tHitInfo.fJumpPower = 0.f;
 
-				pUnit->On_PlusHp(m_fDamage * 5.f, m_pOwnerUnit, false);
+				pUnit->On_PlusHp(m_fDamage * 5.f, m_pOwnerUnit, false, 3);
 				pUnit->Enter_State(pUnit->Get_HitType().eGroggyState, &tHitInfo);
 				
 				if (pUnit->Get_Status().fHP <= 0.f)
@@ -215,11 +215,14 @@ void CPurpleArrow::AddictionEffect(CUnit* pUnit)
 
 	if (m_bAddiction)
 	{
-		for (auto& elem : m_Test)
+		if (!m_Test.empty())
 		{
-			static_cast<CRectEffects*>(elem)->Set_AllFadeOut(); //기존 독이펙트 제거 후
+			for (auto& elem : m_Test)
+			{
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut(); //기존 독이펙트 제거 후
+			}
+			m_Test.clear();
 		}
-		m_Test.clear();
 	
 
 		m_Addiction = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Addiction",
@@ -231,15 +234,21 @@ void CPurpleArrow::AddictionEffect(CUnit* pUnit)
 
 void CPurpleArrow::Clear_Addiction()
 {
-	for (auto& elem : m_Addiction)
+	if (!m_Addiction.empty())
 	{
-		static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		for (auto& elem : m_Addiction)
+		{
+			static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		}
+		m_Addiction.clear();
 	}
-	m_Addiction.clear();
 
-	for (auto& elem : m_Test)
+	if (!m_Test.empty())
 	{
-		static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		for (auto& elem : m_Test)
+		{
+			static_cast<CRectEffects*>(elem)->Set_AllFadeOut(); //기존 독이펙트 제거 후
+		}
+		m_Test.clear();
 	}
-	m_Test.clear();
 }

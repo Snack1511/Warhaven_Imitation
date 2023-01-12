@@ -25,6 +25,8 @@ public:
 		/* 내가 바라볼 방향 */
 		_float4 vLook = ZERO_VECTOR;
 
+		string  strStingBoneName = "0B_R_WP1";
+
 		_bool	bHeadShot = false;
 		_bool	bNoneHeadAttack = false;
 
@@ -39,6 +41,7 @@ public:
 		HIT_TYPE	eHitType = HIT_TYPE::eEND;
 
 		CUnit* pOtherUnit = nullptr;
+
 
 	};
 
@@ -102,6 +105,10 @@ protected:
 	void Init_CommonState_AI();
 	void Init_CommonState_Hero_AI();
 
+	void Init_AttackState_Priest();
+
+
+
 protected:
 	virtual void Hit_GroundEffect(CUnit* pOwner);
 
@@ -157,6 +164,8 @@ protected:
 
 	_int				m_iStateForcePushIndex = 0;
 
+protected:
+	_bool				m_bStraight = false;
 
 protected:
 	_float				m_fAIDelayTime = 0.f;

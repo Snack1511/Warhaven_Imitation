@@ -3,6 +3,8 @@
 
 BEGIN(Client)
 
+class CUnit_Lancer_Head;
+
 class CMainMenuUnit
 	: public CUnit
 {
@@ -13,7 +15,7 @@ private:
 	virtual ~CMainMenuUnit();
 
 public:
-	static	CMainMenuUnit* Create(const UNIT_MODEL_DATA& tUnitModelData);
+	static	CMainMenuUnit* Create(const UNIT_MODEL_DATA& tUnitModelData, CLASS_TYPE eClassType);
 
 public:
 	virtual void On_Die() override;
@@ -31,6 +33,19 @@ public:
 	virtual void OnDisable() override;
 	virtual void My_Tick() override;
 	virtual void My_LateTick()override;
+
+
+public:
+	void ReFresh_Animation();
+
+private:
+	ANIM_TYPE	m_eBaseType = ANIM_BASE_R;
+	_uint		m_iAnimIndex = 0;
+	_float		m_fAnimSpeed = 1.f;
+
+	CLASS_TYPE	m_eClassType = CLASS_END;
+
+	CUnit_Lancer_Head* m_pMyLancerHead = nullptr;
 };
 
 END

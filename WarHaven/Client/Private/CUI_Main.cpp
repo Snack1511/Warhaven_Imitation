@@ -7,6 +7,7 @@
 #include "CPlayerInfo_Main.h"
 
 #include "CUI_MainPlay.h"
+#include "CUI_Barracks.h"
 
 #include "CUI_Object.h"
 #include "CUser.h"
@@ -28,11 +29,6 @@ HRESULT CUI_Main::Initialize_Prototype()
 	Create_PlayerNameText();
 	Create_MainWindow();
 
-	return S_OK;
-}
-
-HRESULT CUI_Main::Initialize()
-{
 	return S_OK;
 }
 
@@ -81,6 +77,8 @@ void CUI_Main::On_PointDown_TopBtn(const _uint& iEventNum)
 	m_pTopBtnEffect->Set_Pos(vPos.x, vPos.y);
 
 	ENABLE_GAMEOBJECT(m_pTopBtnEffect);
+
+	SetActive_MainWindow((MainWindow)iEventNum);
 }
 
 void CUI_Main::Set_Shader_TopBtnEffect(CShader* pShader, const char* pConstName)
@@ -95,11 +93,13 @@ void CUI_Main::SetActive_TopBtn(_bool value)
 	{
 		if (value == true)
 		{
-			ENABLE_GAMEOBJECT(m_pArrTopBtn[i]);
+			//ENABLE_GAMEOBJECT(m_pArrTopBtn[i]);
+			Enable_Fade(m_pArrTopBtn[i], 0.3f);
 		}
 		else
 		{
-			DISABLE_GAMEOBJECT(m_pArrTopBtn[i]);
+			//DISABLE_GAMEOBJECT(m_pArrTopBtn[i]);
+			Disable_Fade(m_pArrTopBtn[i], 0.3f);
 		}
 	}
 }
@@ -123,12 +123,20 @@ void CUI_Main::SetActive_MainWindow(MainWindow eWindow)
 {
 	m_eWindow = eWindow;
 
-	for (int i = 0; i < MW_End; ++i)
+	for (int i = 0; i < MW_Barracks; ++i)
 	{
-		//DISABLE_GAMEOBJECT(m_pMainWindow[i]);
+		DISABLE_GAMEOBJECT(m_pMainWindow[i]);
+		CUser::Get_Instance()->SetActive_Barracks(false);
 	}
 
-	ENABLE_GAMEOBJECT(m_pMainWindow[m_eWindow]);
+	if (m_eWindow == MW_Play)
+	{
+		ENABLE_GAMEOBJECT(m_pMainWindow[m_eWindow]);
+	}
+	else
+	{
+		CUser::Get_Instance()->SetActive_Barracks(true);
+	}
 
 	switch (m_eWindow)
 	{
@@ -143,7 +151,24 @@ void CUI_Main::SetActive_MainWindow(MainWindow eWindow)
 		ENABLE_GAMEOBJECT(m_pTopBtnEffect);
 	}
 	break;
+
+	case MW_Barracks:
+	{
+		m_pArrTopBtn[TB_Barracks]->Set_IsClick(true);
+		m_pArrTopBtn[TB_Barracks]->Set_FontColor(m_vColorWhite);
+
+		_float4 vPos = m_pArrTopBtn[TB_Barracks]->Get_Pos();
+		m_pTopBtnEffect->Set_Pos(vPos.x, vPos.y);
+
+		ENABLE_GAMEOBJECT(m_pTopBtnEffect);
 	}
+	break;
+	}
+}
+
+void CUI_Main::Set_TopBtnEffectPosX(_float fPosX)
+{
+	m_pTopBtnEffect->Set_PosX(fPosX);
 }
 
 void CUI_Main::Create_TopBtn()
@@ -165,6 +190,7 @@ void CUI_Main::Create_TopBtn()
 		m_pArrTopBtn[i]->Set_FontStyle(true);
 		m_pArrTopBtn[i]->Set_FontCenter(true);
 		m_pArrTopBtn[i]->Set_FontScale(0.4f);
+		m_pArrTopBtn[i]->Set_FontOffset(4.f, 4.f);
 		m_pArrTopBtn[i]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
 
 		if (i == TB_Play)
@@ -245,9 +271,13 @@ void CUI_Main::Create_PlayerNameText()
 void CUI_Main::Create_MainWindow()
 {
 	m_pMainWindow[MW_Play] = CUI_MainPlay::Create();
+	m_pMainWindow[MW_Barracks] = CUI_Barracks::Create();
 
 	CREATE_GAMEOBJECT(m_pMainWindow[MW_Play], GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pMainWindow[MW_Play]);
+
+	CREATE_GAMEOBJECT(m_pMainWindow[MW_Barracks], GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pMainWindow[MW_Barracks]);
 }
 
 void CUI_Main::Bind_Btn()
