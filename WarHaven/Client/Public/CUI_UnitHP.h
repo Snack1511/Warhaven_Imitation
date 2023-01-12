@@ -28,10 +28,14 @@ public:
 public:
 	void Set_ProjPos(CTransform* pTransform);
 	void Set_GaugeRatio(_float fRatio) { m_fGaugeRatio = fRatio; }
+	void Set_UnitHP(_float fCurHP, _float fMaxHP);
 	void Set_UnitHPColor(_float4 vColor) { m_vHpColor = vColor; }
 
 	void SetActive_UnitHP(_bool value);
-	void SetActive_HealBlur(_bool value);
+
+	void Enable_HealBlur();
+	void Disable_HealBlur();
+	void Set_Heal() { m_bHeal = true; }
 
 private:
 	CUI_Object* m_pUnitHP[IT_END];
@@ -41,6 +45,9 @@ private:
 	_float m_fGaugeRatio = 0.f;
 
 	_float4 m_vHpColor;
+
+	_float m_fHealTime = 0.f;
+	_bool m_bHeal = false;
 
 private:
 	void Bind_Shader();

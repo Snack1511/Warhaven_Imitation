@@ -58,6 +58,10 @@ void CUI_Info::OnEnable()
 		break;
 
 	case Client::LEVEL_HWARA:
+
+		for (int i = 0; i < Text_End; ++i)
+			Enable_Fade(m_pInfoText[i], 0.3f);
+
 		break;
 	}
 }
@@ -166,18 +170,18 @@ void CUI_Info::Init_InfoText()
 
 		m_pInfoText[Text_0]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Text/Paden_MapInfo0.png"));
 		m_pInfoText[Text_0]->Set_Scale(129.f, 30.f);
-		m_pInfoText[Text_0]->Set_PosX(fPosX - 65.f);
+		m_pInfoText[Text_0]->Set_PosX(fPosX - 80.f);
 		m_pInfoText[Text_0]->Set_PosY(-25.f);
 		m_pInfoText[Text_0]->Set_Color(m_vColorGold);
 
 		m_pInfoText[Text_1]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Text/Paden_MapInfo1.png"));
 		m_pInfoText[Text_1]->Set_Scale(145.f, 30.f);
-		m_pInfoText[Text_1]->Set_PosX(fPosX + 55.f);
+		m_pInfoText[Text_1]->Set_PosX(fPosX + 30.f);
 		m_pInfoText[Text_1]->Set_PosY(-25.f);
 
 		m_pInfoText[Text_2]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Text/Paden_MapInfo2.png"));
 		m_pInfoText[Text_2]->Set_Scale(183.f, 30.f);
-		m_pInfoText[Text_2]->Set_PosX(fPosX - 37.f);
+		m_pInfoText[Text_2]->Set_PosX(fPosX - 55.f);
 		m_pInfoText[Text_2]->Set_PosY(-52.f);
 		m_pInfoText[Text_2]->Set_Color(m_vColorGold);
 
@@ -185,8 +189,22 @@ void CUI_Info::Init_InfoText()
 
 	case Client::LEVEL_HWARA:
 
-		m_pInfoText[Text_0]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Text/Text_Hwara.png"));
-		m_pInfoText[Text_1]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Text/Text_HwaraInfo.png"));
+		m_pInfoText[Text_0]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Text/Hwara_MapInfo0.png"));
+		m_pInfoText[Text_0]->Set_Scale(99.f, 30.f);
+		m_pInfoText[Text_0]->Set_PosX(fPosX - 85.f);
+		m_pInfoText[Text_0]->Set_PosY(-25.f);
+		m_pInfoText[Text_0]->Set_Color(m_vColorGold);
+
+		m_pInfoText[Text_1]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Text/Hwara_MapInfo1.png"));
+		m_pInfoText[Text_1]->Set_Scale(73, 30.f);
+		m_pInfoText[Text_1]->Set_PosX(fPosX - 15.f);
+		m_pInfoText[Text_1]->Set_PosY(-25.f);
+
+		m_pInfoText[Text_2]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Text/Hwara_MapInfo2.png"));
+		m_pInfoText[Text_2]->Set_Scale(171, 30.f);
+		m_pInfoText[Text_2]->Set_PosX(fPosX - 50.f);
+		m_pInfoText[Text_2]->Set_PosY(-52.f);
+		m_pInfoText[Text_2]->Set_Color(m_vColorGold);
 
 		break;
 	}

@@ -155,8 +155,6 @@ void CUI_UnitHUD::My_Tick()
 					m_pUnitNameText->Set_Color(m_vColorRed);
 				}
 			}
-
-			SetActive_UnitHP(false);
 		}
 	}
 	else
@@ -373,30 +371,25 @@ void CUI_UnitHUD::SetActive_UnitHP(_bool value)
 	}
 	else
 	{
-		if (m_pUnitUI[UI_Hp]->Is_Valid())
-		{
-			DISABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);
-		}
+		m_pUnitUI[UI_Hp]->SetActive(false);
 	}
 }
 
 void CUI_UnitHUD::Tick_UnitHP()
 {
 	if (m_pOwner->IsMainPlayer())
-		return;
+		DISABLE_GAMEOBJECT(this);
 
+	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHP(m_tStatus.fHP, m_tStatus.fMaxHP);
 	if (m_pUnitUI[UI_Hp]->Is_Valid())
 	{
-		_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
-		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_GaugeRatio(fHpGaugeRatio);
-
 		m_fEnableHpTime += fDT(0);
 		if (m_fEnableHpTime > m_fDisableHpTime)
 		{
 			m_fEnableHpTime = 0.f;
 			SetActive_UnitHP(false);
 		}
-		else if (fHpGaugeRatio <= 0.f)
+		else if (m_tStatus.fHP <= 0.01f)
 		{
 			SetActive_UnitHP(false);
 		}

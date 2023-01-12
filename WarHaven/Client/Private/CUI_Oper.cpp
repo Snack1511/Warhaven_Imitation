@@ -232,8 +232,16 @@ void CUI_Oper::My_LateTick()
 	{
 		for (int i = 0; i < 8; ++i)
 		{
-			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 4.f;
-			m_pPlayerIcon[i]->Set_Pos(vPos.z, -vPos.x);
+			if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_PADEN)
+			{
+				_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 4.f;
+				m_pPlayerIcon[i]->Set_Pos(vPos.z, -vPos.x);
+			}
+			else
+			{
+				_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 3.8f;
+				m_pPlayerIcon[i]->Set_Pos(-vPos.x + 5.f, vPos.z - 65.f);
+			}
 
 			if (!m_pPlayerIcon[i]->Is_Valid())
 				m_pPlayerIcon[i]->SetActive(true);
@@ -1595,7 +1603,7 @@ void CUI_Oper::Init_StrongHoldUI()
 				{
 					if (i == SP_TEXT)
 					{
-						GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(0);
+						GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(2);
 						continue;
 					}
 

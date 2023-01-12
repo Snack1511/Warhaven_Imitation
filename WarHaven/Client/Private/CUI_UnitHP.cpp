@@ -32,7 +32,7 @@ HRESULT CUI_UnitHP::Initialize_Prototype()
 	m_pHealBlur = CUI_Object::Create();
 
 	m_pHealBlur->Set_UIShaderFlag(SH_UI_HARDBLOOM);
-	m_pHealBlur->Set_FadeDesc(0.2f);
+	//m_pHealBlur->Set_FadeDesc(0.2f);
 	m_pHealBlur->Set_Texture(TEXT("../Bin/Resources/Textures/UI/UnitHUD/T_HealTarget.dds"));
 	m_pHealBlur->Set_Scale(107.f, 48.f);
 	m_pHealBlur->Set_Sort(0.61f);
@@ -72,9 +72,8 @@ void CUI_UnitHP::OnEnable()
 	m_pUnitHP[Gauge]->Set_Color(m_vHpColor);
 
 	for (int i = 0; i < IT_END; ++i)
-	{
 		ENABLE_GAMEOBJECT(m_pUnitHP[i]);
-	}
+
 }
 
 void CUI_UnitHP::OnDisable()
@@ -82,19 +81,17 @@ void CUI_UnitHP::OnDisable()
 	__super::OnDisable();
 
 	for (int i = 0; i < IT_END; ++i)
-	{
-		DISABLE_GAMEOBJECT(m_pUnitHP[i]);
-	}
+		m_pUnitHP[i]->SetActive(false);
 
-	DISABLE_GAMEOBJECT(m_pHealBlur);
+	m_pHealBlur->SetActive(false);
 }
 
 void CUI_UnitHP::My_Tick()
 {
 	__super::My_Tick();
 
-	if (m_pHealBlur->Is_Valid())
-		Disable_Fade(m_pHealBlur, 0.3f);
+	// 힐을 받으면 트루로 바뀜
+	// 트루 상태일 때
 }
 
 void CUI_UnitHP::My_LateTick()
@@ -126,6 +123,11 @@ void CUI_UnitHP::Set_ProjPos(CTransform* pTransform)
 	}
 }
 
+void CUI_UnitHP::Set_UnitHP(_float fCurHP, _float fMaxHP)
+{
+	m_fGaugeRatio = fCurHP / fMaxHP;
+}
+
 void CUI_UnitHP::SetActive_UnitHP(_bool value)
 {
 	for (int i = 0; i < IT_END; ++i)
@@ -134,25 +136,14 @@ void CUI_UnitHP::SetActive_UnitHP(_bool value)
 	}
 }
 
-void CUI_UnitHP::SetActive_HealBlur(_bool value)
+void CUI_UnitHP::Enable_HealBlur()
 {
-	if (!this->Is_Valid())
-		return;
+	m_pHealBlur->SetActive(true);
+}
 
-	if (value == true)
-	{
-		if (!m_pHealBlur->Is_Valid())
-		{
-			Enable_Fade(m_pHealBlur, 0.2f);
-		}
-	}
-	else
-	{
-		if (m_pHealBlur->Is_Valid())
-		{
-			Disable_Fade(m_pHealBlur, 0.2f);
-		}
-	}
+void CUI_UnitHP::Disable_HealBlur()
+{
+	m_pHealBlur->SetActive(false);
 }
 
 void CUI_UnitHP::Bind_Shader()

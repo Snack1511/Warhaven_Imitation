@@ -127,6 +127,7 @@ void CUI_Revive::Create_ReviveIcon()
 	m_pReviveIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Revive/T_SaviorIconSmall.png"));
 	GET_COMPONENT_FROM(m_pReviveIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/White/T_WhiteFKeyIcon.dds"));
 
+	m_pReviveIcon->Set_Sort(0.5f);
 	m_pReviveIcon->Set_Scale(20.f);
 
 	m_pReviveIcon->Set_FontRender(true);

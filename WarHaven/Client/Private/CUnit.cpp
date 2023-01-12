@@ -59,6 +59,7 @@
 #include "CUI_UnitHUD.h"
 
 #include "CGlider.h"
+#include "CUI_UnitHP.h"	
 
 #define PHYSX_ON
 
@@ -170,7 +171,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	tOtherHitInfo.vDir = (m_pTransform->Get_World(WORLD_POS) - vHitPos);
 	tOtherHitInfo.vDir.y = 0.f;
 	tOtherHitInfo.vDir.Normalize();
-	
+
 	tOtherHitInfo.pOtherUnit = pOtherUnit;
 
 	//상대 위치 계산
@@ -203,7 +204,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	case COL_BLUEHITBOX_HEAD:
 	case COL_REDHITBOX_HEAD:
-		if(!tOtherHitInfo.bNoneHeadAttack)
+		if (!tOtherHitInfo.bNoneHeadAttack)
 			tOtherHitInfo.bHeadShot = true;
 		else
 			tOtherHitInfo.bHeadShot = false;
@@ -727,8 +728,8 @@ HRESULT CUnit::Start()
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 	m_pModelCom->Set_ShaderPass(MODEL_PART_FACE, VTXANIM_PASS_FACE);
 
-	if(m_pGlider)
-		m_pGlider->SetUp_GliderTrail();	
+	if (m_pGlider)
+		m_pGlider->SetUp_GliderTrail();
 
 	return S_OK;
 }
@@ -1120,7 +1121,7 @@ void CUnit::Check_MultipleObject_IsInFrustum()
 		m_MultipleFrustumObject.push_back(pUnit);
 	}
 
-	
+
 }
 
 void CUnit::On_ChangeToHero(_uint iIndex)
@@ -1285,13 +1286,12 @@ void CUnit::My_Tick()
 			CUser::Get_Instance()->Set_SkillCoolTime(i, m_fCoolAcc[i], m_fCoolTime[i]);
 		}
 	}
-
-
+	
 	if (m_fAttackDelay > 0.f)
 		m_fAttackDelay -= fDT(0);
 	else
 		m_fAttackDelay = 0.f;
-	
+
 	if (m_fGlidingTime > 0.f)
 		m_fGlidingTime -= fDT(0);
 	else
@@ -1755,7 +1755,7 @@ void CUnit::On_Bounce(void* pHitInfo)
 {
 	//Left인지 Right인지 판단
 
-	if(m_tHitType.eBounce != STATE_END)
+	if (m_tHitType.eBounce != STATE_END)
 		Enter_State(m_tHitType.eBounce, pHitInfo);
 }
 

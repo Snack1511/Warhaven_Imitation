@@ -62,6 +62,7 @@ void CState_Combat_Cure_Loop_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, 
 		m_fInterPolationTime = 0.f;
 
 	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);
+	static_cast<CUnit_Priest*>(pOwner)->Get_OwnerHUD()->Get_UnitHP()->Enable_HealBlur();
 
 	pOwner->Get_Status().fStoreSpeed = pOwner->Get_Status().fRunSpeed;
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
@@ -73,10 +74,8 @@ void CState_Combat_Cure_Loop_Priest::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 
 	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
+	static_cast<CUnit_Priest*>(pOwner)->Get_OwnerHUD()->Get_UnitHP()->Disable_HealBlur();
 	
-	if(m_pTargetObject)
-		static_cast<CUnit*>(m_pTargetObject)->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
-
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
@@ -94,12 +93,14 @@ STATE_TYPE CState_Combat_Cure_Loop_Priest::Tick(CUnit* pOwner, CAnimator* pAnima
 		return AI_STATE_COMBAT_CURE_END_PRIEST;
 
 
-	if(!pOwner->Get_SameNearObejct())
+	if (!pOwner->Get_SameNearObejct())
+	{
 		static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);
+		static_cast<CUnit_Priest*>(pOwner)->Get_OwnerHUD()->Get_UnitHP()->Enable_HealBlur();
+	}
 
 
 	// Å¸°Ù À¯´ÖÀÌ ÈúÀ» ¹Þ°í ÀÖ´Â ´ë»ó
-	pTargetUnit->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(true);
 	m_pTargetObject = pTargetUnit;
 
 	_float fLength = (pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS)).Length();

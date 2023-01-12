@@ -224,6 +224,10 @@ void CPriest_Cure_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 void CPriest_Cure_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
+	static_cast<CUnit_Priest*>(pOwner)->Get_OwnerHUD()->Get_UnitHP()->Disable_HealBlur();
+
+	m_pTargetUnit = static_cast<CUnit*>(pOwner->Get_CureObject());
+	m_pTargetUnit->Get_OwnerHUD()->Get_UnitHP()->Disable_HealBlur();
 
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 	pAnimator->Stop_ActionAnim();
@@ -239,11 +243,13 @@ STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	if (pOwner->Get_SameNearObejct())
 	{
-		static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);	
+		static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);
+		static_cast<CUnit_Priest*>(pOwner)->Get_OwnerHUD()->Get_UnitHP()->Enable_HealBlur();
 	}
 	else
 	{
 		static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
+		static_cast<CUnit_Priest*>(pOwner)->Get_OwnerHUD()->Get_UnitHP()->Disable_HealBlur();
 	}
 
 
