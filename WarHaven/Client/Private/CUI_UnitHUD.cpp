@@ -379,19 +379,19 @@ void CUI_UnitHUD::SetActive_UnitHP(_bool value)
 
 void CUI_UnitHUD::Tick_UnitHP()
 {
-	/*if (m_pOwner->IsMainPlayer())
-		DISABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);*/
+	if (m_pOwner->IsMainPlayer())
+		DISABLE_GAMEOBJECT(this);
 
+	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHP(m_tStatus.fHP, m_tStatus.fMaxHP);
 	if (m_pUnitUI[UI_Hp]->Is_Valid())
 	{
-		_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
 		m_fEnableHpTime += fDT(0);
 		if (m_fEnableHpTime > m_fDisableHpTime)
 		{
 			m_fEnableHpTime = 0.f;
 			SetActive_UnitHP(false);
 		}
-		else if (fHpGaugeRatio <= 0.01f)
+		else if (m_tStatus.fHP <= 0.01f)
 		{
 			SetActive_UnitHP(false);
 		}

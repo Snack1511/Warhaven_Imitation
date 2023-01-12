@@ -72,9 +72,8 @@ void CUI_UnitHP::OnEnable()
 	m_pUnitHP[Gauge]->Set_Color(m_vHpColor);
 
 	for (int i = 0; i < IT_END; ++i)
-	{
 		ENABLE_GAMEOBJECT(m_pUnitHP[i]);
-	}
+
 }
 
 void CUI_UnitHP::OnDisable()
@@ -98,6 +97,9 @@ void CUI_UnitHP::My_Tick()
 void CUI_UnitHP::My_LateTick()
 {
 	__super::My_LateTick();
+
+	if (m_pHealBlur->Is_Valid())
+		Disable_Fade(m_pHealBlur, 0.3f);
 }
 
 void CUI_UnitHP::Set_Shader_HpGauge(CShader* pShader, const char* pConstName)

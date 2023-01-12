@@ -1286,8 +1286,6 @@ void CUnit::My_Tick()
 			CUser::Get_Instance()->Set_SkillCoolTime(i, m_fCoolAcc[i], m_fCoolTime[i]);
 		}
 	}
-
-	m_pOwnerPlayer->Get_UnitHUD()->Get_UnitHP()->Set_UnitHP(m_tUnitStatus.fHP, m_tUnitStatus.fMaxHP);
 	
 	if (m_fAttackDelay > 0.f)
 		m_fAttackDelay -= fDT(0);
