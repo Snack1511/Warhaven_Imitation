@@ -23,7 +23,10 @@ protected:
 
 
 private:
-	STATE_TYPE	Near_Enemy(CUnit* pOwner, _bool bUseAdjSkill);
+	STATE_TYPE	Near_Enemy(CUnit* pOwner, CAnimator* pAnimator);
+
+private:
+	_bool m_bNoShoot = false;
 
 
 };

@@ -1107,19 +1107,19 @@ HRESULT CGameSystem::On_Update_Paden()
 		}
 	}
 
-	if (pMinusScoreTeam)
-	{
-		m_fScoreAcc += fDT(0);
+	//if (pMinusScoreTeam)
+	//{
+	//	m_fScoreAcc += fDT(0);
 
-		if (m_fScoreAcc >= m_fScoreMinusTime)
-		{
-			m_fScoreAcc = 0.f;
+	//	if (m_fScoreAcc >= m_fScoreMinusTime)
+	//	{
+	//		m_fScoreAcc = 0.f;
 
-			if (!pMinusScoreTeam->Minus_Score())
-				On_FinishGame(pMinusScoreTeam);
+	//		if (!pMinusScoreTeam->Minus_Score())
+	//			On_FinishGame(pMinusScoreTeam);
 
-		}
-	}
+	//	}
+	//}
 
 
 	/* for (auto& elem : m_mapAllTriggers)

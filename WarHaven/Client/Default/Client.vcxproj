@@ -195,6 +195,8 @@
     <ClInclude Include="..\Public\CHit_GuardHit_Lancer.h" />
     <ClInclude Include="..\Public\CHit_Lancer.h" />
     <ClInclude Include="..\public\CMainMenuPlayer.h" />
+    <ClInclude Include="..\Public\CState_Combat_Guard_Archer.h" />
+    <ClInclude Include="..\Public\CState_Combat_SkillR_Archer_Swing.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Archer.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Archer_L.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Archer_R.h" />
@@ -1191,6 +1193,8 @@
     <ClCompile Include="..\Private\CHit_GuardHit_Lancer.cpp" />
     <ClCompile Include="..\Private\CHit_Lancer.cpp" />
     <ClCompile Include="..\private\CMainMenuPlayer.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_Guard_Archer.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_SkillR_Archer_Swing.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Archer.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Archer_L.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Archer_R.cpp" />

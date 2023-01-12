@@ -53,6 +53,7 @@ HRESULT CState_Combat_Attack_Archer_Begin_Sniping::Initialize()
 	Add_KeyFrame(31, 1);
 	Add_KeyFrame(90, 2);
 
+	m_fAIMyLength = 2.5f;
 
 	m_fDamagePumping = 4.f;
 
@@ -67,19 +68,14 @@ void CState_Combat_Attack_Archer_Begin_Sniping::Enter(CUnit* pOwner, CAnimator* 
 
 STATE_TYPE CState_Combat_Attack_Archer_Begin_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
 	if (m_bMoveTrigger)
 		return AI_STATE_COMBAT_ATTACK_AIMING_SNIPING_ARCHER;
 
-	if (m_bKeyInput)
-	{
-		if (pAnimator->Get_CurAnimFrame() > m_iMinCancelAnimIndex)
-		{
-			if (!m_bKeyInputable || m_bAttackTrigger)
-				return AI_STATE_COMBAT_ATTACK_SHOOT_SNIPING_ARCHER;
-			else
-				return AI_STATE_COMBAT_ATTACK_SHOOT_SNIPING_ARCHER;
-		}
-	}
+	if (m_bAttackTrigger)
+		return AI_STATE_COMBAT_ATTACK_SHOOT_SNIPING_ARCHER;
+
+
 	return __super::Tick(pOwner, pAnimator);
 }
 
@@ -106,7 +102,8 @@ void CState_Combat_Attack_Archer_Begin_Sniping::On_KeyFrameEvent(CUnit * pOwner,
 	{
 
 	case 1:
-		m_bAttackTrigger = true;
+		if (fabs(Get_TargetLook_Length(pOwner)) < m_fAIMyLength)
+			m_bAttackTrigger = true;
 		break;
 
 	case 2:

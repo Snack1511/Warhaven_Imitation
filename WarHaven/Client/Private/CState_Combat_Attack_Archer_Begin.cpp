@@ -50,6 +50,7 @@ HRESULT CState_Combat_Attack_Archer_Begin::Initialize()
     m_fAnimSpeed = 2.3f;
     m_iStateChangeKeyFrame = 99;
 
+	m_fAIMyLength = 2.5f;
 
 	Add_KeyFrame(31, 1);
 	Add_KeyFrame(90, 2);
@@ -69,16 +70,9 @@ STATE_TYPE CState_Combat_Attack_Archer_Begin::Tick(CUnit* pOwner, CAnimator* pAn
 	if (m_bMoveTrigger)
 		return AI_STATE_COMBAT_ATTACK_AIMING_ARCHER;
 
-	if (m_bKeyInput)
-	{
-		if (pAnimator->Get_CurAnimFrame() > m_iMinCancelAnimIndex)
-		{
-			if (!m_bKeyInputable || m_bAttackTrigger)
-				return AI_STATE_COMBAT_ATTACK_SHOOT_ARCHER;
-			else
-				return AI_STATE_COMBAT_ATTACK_SHOOT_ARCHER;
-		}
-	}
+
+	if (m_bAttackTrigger)
+		return AI_STATE_COMBAT_ATTACK_SHOOT_ARCHER;
 
     return __super::Tick(pOwner, pAnimator);
 }
@@ -102,7 +96,10 @@ void CState_Combat_Attack_Archer_Begin::On_KeyFrameEvent(CUnit * pOwner, CAnimat
 	switch (iSequence)
 	{
 	case 1:
-		m_bAttackTrigger = true;
+
+		if(fabs(Get_TargetLook_Length(pOwner)) < m_fAIMyLength)
+			m_bAttackTrigger = true;
+		
 		break;
 
 	case 2:

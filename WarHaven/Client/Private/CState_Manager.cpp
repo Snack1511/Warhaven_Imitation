@@ -743,6 +743,8 @@
 #include "CState_Combat_Attack_Archer_Begin_Sniping.h"
 #include "CState_Combat_Attack_Archer_Aiming_Sniping.h"
 #include "CState_Combat_Attack_Archer_Shoot_Sniping.h"
+#include "CState_Combat_Guard_Archer.h"
+#include "CState_Combat_SkillR_Archer_Swing.h"
 
 #include "CState_Combat_Default_Priest.h"
 #include "CState_Combat_Cure_Begin_Priest.h"
@@ -2148,7 +2150,6 @@ void CState_Manager::Archer_State_AI()
 	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_ARCHER_L] = CState_PathNavigation_Run_Archer_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_ARCHER_R] = CState_PathNavigation_Run_Archer_R::Create();
 
-	// ¼öÁ¤ ¤¡¤¡
 	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_ARCHER_L] = CState_PathNavigation_Run_Archer_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_ARCHER_R] = CState_PathNavigation_Run_Archer_R::Create();
 
@@ -2182,8 +2183,8 @@ void CState_Manager::Archer_State_AI()
 	m_arrStates[AI_STATE_COMBAT_ATTACK_AIMING_SNIPING_ARCHER] = CState_Combat_Attack_Archer_Aiming_Sniping::Create();
 	m_arrStates[AI_STATE_COMBAT_ATTACK_SHOOT_SNIPING_ARCHER] = CState_Combat_Attack_Archer_Shoot_Sniping::Create();
 
-	m_arrStates[AI_STATE_COMBAT_GUARDLOOP_ARCHER] = CState_Combat_Default_Archer_R::Create();
-	m_arrStates[AI_STATE_COMBAT_ATTACK_SWING_ARCHER] = CState_Combat_Default_Archer_R::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDLOOP_ARCHER] = CState_Combat_Guard_Archer::Create();
+	m_arrStates[AI_STATE_COMBAT_ATTACK_SWING_ARCHER] = CState_Combat_SkillR_Archer_Swing::Create();
 	m_arrStates[AI_STATE_COMBAT_STATE_SWAP_ARCHER] = CState_Combat_Default_Archer_R::Create();
 
 #pragma endregion
