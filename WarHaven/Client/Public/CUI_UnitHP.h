@@ -33,6 +33,10 @@ public:
 
 	void SetActive_UnitHP(_bool value);
 
+	void Enable_HealBlur();
+	void Disable_HealBlur();
+	void Set_Heal() { m_bHeal = true; }
+
 private:
 	CUI_Object* m_pUnitHP[IT_END];
 	CUI_Object* m_pHealBlur = nullptr;
@@ -41,6 +45,9 @@ private:
 	_float m_fGaugeRatio = 0.f;
 
 	_float4 m_vHpColor;
+
+	_float m_fHealTime = 0.f;
+	_bool m_bHeal = false;
 
 private:
 	void Bind_Shader();

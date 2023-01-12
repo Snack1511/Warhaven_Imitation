@@ -240,7 +240,7 @@ void CUI_Oper::My_LateTick()
 			else
 			{
 				_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 3.8f;
-				m_pPlayerIcon[i]->Set_Pos(-vPos.x, vPos.z - 60.f);
+				m_pPlayerIcon[i]->Set_Pos(-vPos.x + 5.f, vPos.z - 65.f);
 			}
 
 			if (!m_pPlayerIcon[i]->Is_Valid())
