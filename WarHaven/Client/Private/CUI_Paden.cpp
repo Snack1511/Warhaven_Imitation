@@ -211,7 +211,7 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(string strPadenPointKey, CTransf
 			m_pArrProjPointUI[Point_E][i]->SetActive(isInFrustum);
 			m_pArrProjPointUI[Point_E][i]->Set_Pos(vNewPos);
 		}
-		else if(strPadenPointKey == "Hwara_Final_Red")
+		else if (strPadenPointKey == "Hwara_Final_Red")
 		{
 			m_pArrProjPointUI[Point_A][i]->SetActive(isInFrustum);
 			m_pArrProjPointUI[Point_A][i]->Set_Pos(vNewPos);
@@ -276,7 +276,14 @@ void CUI_Paden::SetActive_PointUI(_bool value)
 			m_pArrProjPointUI[i][j]->SetActive(value);
 
 			if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_HWARA)
+			{
 				m_pArrPointUI[Point_R][j]->SetActive(false);
+			}
+			else
+			{
+				m_pArrPointUI[Point_E][j]->SetActive(false);
+				m_pArrProjPointUI[Point_E][j]->SetActive(false);
+			}
 		}
 	}
 }
@@ -332,7 +339,7 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 		{
 		case TS_Enter:
 
-			if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Center")
+			if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Final_Red")
 			{
 				m_pArrPointUI[Point_A][i]->DoScale(10.f, fDuration);
 
@@ -350,7 +357,7 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 				vPos.y = 200.f;
 				m_pArrPointUI[Point_R][i]->DoMove(vPos, fDuration, 0.f);
 			}
-			else if (strPadenPointKey == "Paden_Trigger_C")
+			else if (strPadenPointKey == "Paden_Trigger_C" || strPadenPointKey == "Hwara_Center")
 			{
 				m_pArrPointUI[Point_C][i]->DoScale(10.f, fDuration);
 
@@ -359,12 +366,21 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 				vPos.y = 200.f;
 				m_pArrPointUI[Point_C][i]->DoMove(vPos, fDuration, 0.f);
 			}
+			else if (strPadenPointKey == "Hwara_Final_Blue")
+			{
+				m_pArrPointUI[Point_E][i]->DoScale(10.f, fDuration);
+
+				_float4 vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
+				vPos.x = 0.f;
+				vPos.y = 200.f;
+				m_pArrPointUI[Point_E][i]->DoMove(vPos, fDuration, 0.f);
+			}
 
 			break;
 
 		case TS_Exit:
 
-			if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Center")
+			if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Final_Red")
 			{
 				m_pArrProjPointUI[Point_A][i]->SetActive(true);
 
@@ -387,7 +403,7 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 				m_pArrPointUI[Point_R][i]->DoMove(vPos, fDuration, 0);
 
 			}
-			else if (strPadenPointKey == "Paden_Trigger_C")
+			else if (strPadenPointKey == "Paden_Trigger_C" || strPadenPointKey == "Hwara_Center")
 			{
 				m_pArrProjPointUI[Point_C][i]->SetActive(true);
 
@@ -397,7 +413,17 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 				vPos.x += 50.f;
 				vPos.y = m_fPointUIPosY;
 				m_pArrPointUI[Point_C][i]->DoMove(vPos, fDuration, 0);
+			}
+			else if (strPadenPointKey == "Hwara_Final_Blue")
+			{
+				m_pArrProjPointUI[Point_E][i]->SetActive(true);
 
+				m_pArrPointUI[Point_E][i]->DoScale(-10.f, fDuration);
+
+				_float4 vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
+				vPos.x += 50.f;
+				vPos.y = m_fPointUIPosY;
+				m_pArrPointUI[Point_E][i]->DoMove(vPos, fDuration, 0);
 			}
 
 			break;
@@ -417,7 +443,7 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayerTeam, string strPadenPointKe
 
 	for (int i = 0; i < PU_End; ++i)
 	{
-		if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Center")
+		if (strPadenPointKey == "Paden_Trigger_A")
 		{
 			Set_PointGauge_Color(bIsMainPlayerTeam, Point_A);
 		}
@@ -425,7 +451,7 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayerTeam, string strPadenPointKe
 		{
 			Set_PointGauge_Color(bIsMainPlayerTeam, Point_R);
 		}
-		else if (strPadenPointKey == "Paden_Trigger_C")
+		else if (strPadenPointKey == "Paden_Trigger_C" || strPadenPointKey == "Hwara_Center")
 		{
 			Set_PointGauge_Color(bIsMainPlayerTeam, Point_C);
 		}
@@ -871,10 +897,13 @@ void CUI_Paden::Init_PointUI()
 	{
 		for (int i = 0; i < Point_End; ++i)
 		{
+			if (i >= Point_E)
+				return;
+
 			for (int j = 0; j < PU_End; ++j)
 			{
 				_float fPosX = -50.f + (j * 50.f);
-				m_pArrPointUI[i][j]->Set_PosX(fPosX);
+				m_pArrPointUI[j][i]->Set_PosX(fPosX);
 
 				if (i == Point_A)
 				{
@@ -917,6 +946,8 @@ void CUI_Paden::Init_PointUI()
 					{
 						GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
 						GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+
+						continue;
 					}
 
 					GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(2);

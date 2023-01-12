@@ -1288,7 +1288,7 @@ void CUnit::My_Tick()
 	}
 
 	m_pOwnerPlayer->Get_UnitHUD()->Get_UnitHP()->Set_UnitHP(m_tUnitStatus.fHP, m_tUnitStatus.fMaxHP);
-
+	
 	if (m_fAttackDelay > 0.f)
 		m_fAttackDelay -= fDT(0);
 	else

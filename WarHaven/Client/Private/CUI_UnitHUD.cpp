@@ -391,7 +391,7 @@ void CUI_UnitHUD::Tick_UnitHP()
 			m_fEnableHpTime = 0.f;
 			SetActive_UnitHP(false);
 		}
-		else if (fHpGaugeRatio <= 0.f)
+		else if (fHpGaugeRatio <= 0.01f)
 		{
 			SetActive_UnitHP(false);
 		}

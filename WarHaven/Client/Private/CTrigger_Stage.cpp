@@ -228,8 +228,8 @@ void CTrigger_Stage::Update_Conquered()
 			break;
 
 		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER:
-			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 0);
-			CUser::Get_Instance()->Set_ScoreBoardGaugeColor(bMainPlayerTeam, 0);
+			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 2);
+			CUser::Get_Instance()->Set_ScoreBoardGaugeColor(bMainPlayerTeam, 2);
 			break;
 		}
 
