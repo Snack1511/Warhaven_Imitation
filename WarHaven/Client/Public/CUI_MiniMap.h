@@ -43,7 +43,7 @@ private:
 
 	CUI_Object* m_pMiniMap = nullptr;
 
-	enum Point { Point_A, Point_R, Point_C, Point_End };
+	enum Point { Point_A, Point_R, Point_C, Point_E, Point_End };
 	enum MiniMapPoint { MP_Outline, MP_Gauge, MP_Text, MP_End };
 
 	CUI_Object* m_pMiniMapPoint[MP_End];

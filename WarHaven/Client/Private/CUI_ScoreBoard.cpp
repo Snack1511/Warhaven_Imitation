@@ -147,10 +147,10 @@ void CUI_ScoreBoard::OnEnable()
 		}
 	}
 
-	if (m_eLoadLevel == LEVEL_HWARA)
+	if (m_eLoadLevel == LEVEL_PADEN)
 	{
 		for (int i = 0; i < PU_End; ++i)
-			m_pArrPointUI[Point_C][i]->SetActive(false);
+			m_pArrPointUI[Point_E][i]->SetActive(false);
 	}
 }
 
@@ -516,11 +516,14 @@ void CUI_ScoreBoard::Init_PointUI()
 			for (int j = 0; j < PU_End; ++j)
 			{
 				m_pArrPointUI[i][j]->Set_PosX(-375.f);
+
+				m_pArrPointUI[Point_A][j]->Set_PosX(-465.f);
+				m_pArrPointUI[Point_E][j]->Set_PosX(-275.f);
 			}
 		}
 
-		m_pArrPointUI[Point_A][PU_Outline]->Set_TextureIndex(0);
-		m_pArrPointUI[Point_A][PU_Gauge]->Set_TextureIndex(0);
+		m_pArrPointUI[Point_A][PU_Outline]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_A][PU_Gauge]->Set_TextureIndex(1);
 		m_pArrPointUI[Point_A][PU_Text]->Set_TextureIndex(0);
 		m_pArrPointUI[Point_A][PU_Outline]->Set_PosY(-17.f);
 		m_pArrPointUI[Point_A][PU_Gauge]->Set_PosY(-17.f);
@@ -539,6 +542,13 @@ void CUI_ScoreBoard::Init_PointUI()
 		m_pArrPointUI[Point_C][PU_Outline]->Set_PosY(75.f);
 		m_pArrPointUI[Point_C][PU_Gauge]->Set_PosY(75.f);
 		m_pArrPointUI[Point_C][PU_Text]->Set_PosY(73.f);
+
+		m_pArrPointUI[Point_E][PU_Outline]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_E][PU_Gauge]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_E][PU_Text]->Set_TextureIndex(3);
+		m_pArrPointUI[Point_E][PU_Outline]->Set_PosY(75.f);
+		m_pArrPointUI[Point_E][PU_Gauge]->Set_PosY(75.f);
+		m_pArrPointUI[Point_E][PU_Text]->Set_PosY(73.f);
 
 		break;
 	case Client::LEVEL_HWARA:

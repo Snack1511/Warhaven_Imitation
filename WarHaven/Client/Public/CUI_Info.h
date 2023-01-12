@@ -27,7 +27,7 @@ private:
 
 	_float fPosX = 450.f;
 
-	_float4 m_vColorGold = _float4(0.773f, 0.714f, 0.596f, 1.f);
+	_float4 m_vColorGold = RGB(255, 207, 64);
 
 private:
 	enum Info { Info_BG, Info_Line, Info_Name, Info_Mode, Info_End };

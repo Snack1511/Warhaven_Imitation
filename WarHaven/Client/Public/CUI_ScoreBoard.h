@@ -58,7 +58,7 @@ private:
 	CUI_Object* m_pSquard[Squad_End];
 	CUI_Object* m_pArrSquard[4][Squad_End];
 
-	enum Point { Point_A, Point_R, Point_C, Point_End };
+	enum Point { Point_A, Point_R, Point_C, Point_E, Point_End };
 	enum PointUI { PU_Outline, PU_Gauge, PU_Text, PU_End };
 	CUI_Object* m_pPointUI[PU_End];
 	CUI_Object* m_pArrPointUI[Point_End][PU_End];

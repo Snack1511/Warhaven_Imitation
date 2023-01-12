@@ -63,15 +63,13 @@ void CUI_MiniMap::SetActive_MiniMap(_bool value)
 		{
 			m_pArrMiniMapPoint[i][j]->SetActive(value);
 
-			if (m_eLoadLevel == LEVEL_HWARA)
-				m_pArrMiniMapPoint[Point_C][j]->SetActive(false);
+			if (m_eLoadLevel == LEVEL_PADEN)
+				m_pArrMiniMapPoint[Point_E][j]->SetActive(false);
 		}
 	}
 
 	for (int i = 0; i < 8; ++i)
-	{
 		m_pPlayerIcon[i]->SetActive(value);
-	}
 }
 
 void CUI_MiniMap::Set_ConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime)
@@ -413,13 +411,23 @@ void CUI_MiniMap::Init_MiniMapPoint()
 
 			if (i == MP_Text)
 			{
+				m_pArrMiniMapPoint[Point_C][i]->Set_PosY(245.f);
 				m_pArrMiniMapPoint[Point_A][i]->Set_PosY(245.f);
+				m_pArrMiniMapPoint[Point_E][i]->Set_PosY(245.f);
 				m_pArrMiniMapPoint[Point_R][i]->Set_PosY(277.f);
+
+				m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-565.f);
+				m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-433.f);
 				continue;
 			}
 
+			m_pArrMiniMapPoint[Point_C][i]->Set_PosY(246.f);
 			m_pArrMiniMapPoint[Point_A][i]->Set_PosY(246.f);
+			m_pArrMiniMapPoint[Point_E][i]->Set_PosY(246.f);
 			m_pArrMiniMapPoint[Point_R][i]->Set_PosY(278.f);
+
+			m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-565.f);
+			m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-433.f);
 		}
 		break;
 	}

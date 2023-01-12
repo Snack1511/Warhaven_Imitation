@@ -127,7 +127,7 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 {
 	_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
 
-	if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Final_Blue")
+	if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Final_Red")
 	{
 		m_fConquestRatio[Point_A] = fConquestRatio;
 	}
@@ -139,7 +139,7 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 	{
 		m_fConquestRatio[Point_C] = fConquestRatio;
 	}
-	else if (strPadenPointKey == "Hwara_Final_Red")
+	else if (strPadenPointKey == "Hwara_Final_Blue")
 	{
 		m_fConquestRatio[Point_E] = fConquestRatio;
 	}
@@ -410,7 +410,6 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 				m_pArrPointUI[Point_C][i]->DoScale(-10.f, fDuration);
 
 				_float4 vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
-				vPos.x += 50.f;
 				vPos.y = m_fPointUIPosY;
 				m_pArrPointUI[Point_C][i]->DoMove(vPos, fDuration, 0);
 			}
