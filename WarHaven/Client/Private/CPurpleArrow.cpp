@@ -167,7 +167,7 @@ void CPurpleArrow::My_Tick()
 				tHitInfo.fKnockBackPower = 3.f;
 				tHitInfo.fJumpPower = 0.f;
 
-				pUnit->On_PlusHp(m_fDamage * 5.f, m_pOwnerUnit, false);
+				pUnit->On_PlusHp(m_fDamage * 5.f, m_pOwnerUnit, false, 3);
 				pUnit->Enter_State(pUnit->Get_HitType().eGroggyState, &tHitInfo);
 				
 				if (pUnit->Get_Status().fHP <= 0.f)

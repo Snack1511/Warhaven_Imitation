@@ -5,6 +5,9 @@
 #include "HIerarchyNode.h"
 #include "CUnit_Priest.h"
 #include "CUnit_Paladin.h"
+#include "Loading_Manager.h"
+#include "CCamera_Follow.h"
+
 CState_Hit::CState_Hit()
 {
 }
@@ -88,10 +91,52 @@ STATE_TYPE CState_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (m_tHitInfo.bSting && m_pStingBone)
     {
+        if (!m_bAttackTrigger)
+        {
+
+            CTransform* pMyTransform = pOwner->Get_Transform();
+            _float4 vMyPos = pMyTransform->Get_World(WORLD_POS);
+
+            // 데드에 넘겨주기	
+            if (CLoading_Manager::Get_Instance()->Get_LoadLevel() >= LEVEL_PADEN)
+            {
+                // 내가 창을 쓰고 있는 상태라면 킬로그를, 내가 창에 맞고 있다면 데스 로그를.
+                m_tHitInfo.pOtherUnit->Get_OwnerPlayer()->On_ScoreKDA_Kill(pOwner->Get_OwnerPlayer());
+                pOwner->Get_OwnerPlayer()->On_ScoreKDA_Death();
+            }
+
+
+            CUser::Get_Instance()->Add_KillLog(m_tHitInfo.pOtherUnit->Get_OwnerPlayer(), pOwner->Get_OwnerPlayer());
+
+            if (pOwner->Get_OwnerPlayer()->IsMainPlayer())
+            {
+                CUser::Get_Instance()->Turn_HeroGaugeFire(false);
+                CUser::Get_Instance()->SetActive_SquardInfo(false);
+                CUser::Get_Instance()->SetActive_HUD(false);
+                CUser::Get_Instance()->Set_TargetInfo(m_tHitInfo.pOtherUnit->Get_OwnerPlayer()->Get_PlayerInfo());
+                CUser::Get_Instance()->Toggle_DeadUI(true);
+
+                // Other(죽은) 유닛의 타겟은 죽인 유닛을 바라볼 수 있도록 설정
+                pOwner->Get_FollowCam()->Set_FollowTarget(m_tHitInfo.pOtherUnit);
+            }
+            else
+            {
+                // 맞은놈이 메인 플레이어 였다면? 처치 로그
+                if (m_tHitInfo.pOtherUnit->Get_OwnerPlayer()->IsMainPlayer())
+                {
+                    wstring wstrEnemyName = pOwner->Get_OwnerPlayer()->Get_PlayerName();
+                    CUser::Get_Instance()->Add_KillName(wstrEnemyName);
+                }
+            }
+
+            m_bAttackTrigger = true;
+        }
+
         m_fTimeAcc += fDT(0);
 
-        if(m_fTimeAcc > 1.5f)
+        if (m_fTimeAcc > 1.5f)
             pOwner->On_Die();
+            
  
     }
 
