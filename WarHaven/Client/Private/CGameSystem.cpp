@@ -1614,16 +1614,28 @@ CTrigger* CGameSystem::Find_Trigger(string strTriggerKey)
 
 void CGameSystem::Enable_HwaraFinalTrigger(eTEAM_TYPE eTeamType)
 {
+	_bool bConquestEnemy = false;
+
+	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+	auto iter = mapPlayers.begin();
+	eTEAM_TYPE eMainTeam = iter->second->Get_Team()->Get_TeamType();
+	bConquestEnemy = eMainTeam == eTeamType ? true : false;
+
 	if (eTeamType == eTEAM_TYPE::eBLUE)
 	{
 		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Red"));
 		ENABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Blue"));
-	}
 
+		if (!bConquestEnemy)
+			CUser::Get_Instance()->Enable_ConquestPopup(2);
+	}
 	else
 	{
 		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Blue"));
 		ENABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Red"));
+
+		if (!bConquestEnemy)
+			CUser::Get_Instance()->Enable_ConquestPopup(2);
 	}
 }
 

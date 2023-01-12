@@ -351,7 +351,7 @@ void CUI_MainPlay::SetActive_ModeWindow()
 			Enable_Fade(m_pStageSelectBtn[i], 0.3f);
 		}
 
-		for (int i = 0; i < 2; ++i)
+		for (int i = 1; i < 2; ++i)
 		{
 			Enable_Fade(m_pLockBtn[i], 0.3f);
 		}
@@ -534,6 +534,8 @@ void CUI_MainPlay::Create_StageBtn()
 			m_pStageSelectBtn[i]->Set_FontOffset(vFontOffset.x, vFontOffset.y);
 			m_pStageSelectBtn[i]->Set_FontScale(m_fFontSize);
 			m_pStageSelectBtn[i]->Set_FontText(TEXT("ÆÄ¶ó"));
+
+			GET_COMPONENT_FROM(m_pStageSelectBtn[i], CTexture)->Set_CurTextureIndex(i);
 		}
 
 		if (i == 2)

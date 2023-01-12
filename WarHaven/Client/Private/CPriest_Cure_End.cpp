@@ -11,6 +11,8 @@
 #include "CSword_Effect.h"
 #include "Transform.h"
 #include "CColorController.h"
+#include "CUI_UnitHUD.h"
+#include "CUI_UnitHP.h"
 
 
 CPriest_Cure_End::CPriest_Cure_End()

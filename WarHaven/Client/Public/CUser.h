@@ -142,8 +142,10 @@ public:		// 파덴
 
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
+	void Set_PointUI_ProjectionTransform(string strPadenPointKey, CTransform* pTransform, _bool isInFrustum);
 
 	void Set_MiniMapConquestTime(_uint iPoinIdx, _float fConquestTime, _float fMaxConquestTime);
+	void Set_MiniMapConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_MiniMapGaugeColor(_bool IsMainTeam, _uint iPointIdx);
 	void Set_MiniMapPointColor(_bool IsMainTeam, _uint iPointIdx);
 	void Set_MiniMapPlayer(CPlayer* pPlayer);
@@ -195,6 +197,7 @@ public:
 public:
 	void Enable_Popup(_uint iPopupType);
 	void Enable_SkinPopup(_uint iSkin);
+	void Enable_ConquestPopup(_uint iNum);
 
 public:	// 킬로그
 	void Add_KillLog(CPlayer* attacker, CPlayer* victim);
@@ -221,6 +224,7 @@ public: // 플레이어 KDA
 
 	void Sort_ScoreInfo();
 	void Set_ScoreBoardConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime);
+	void Set_ScoreBoardConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_ScoreBoardGaugeColor(_bool IsMainTeam, _uint iPointIdx);
 	void Set_ScoreBoardPointColor(_bool IsMainTeam, _uint iPoinIdx);
 	void Set_ScoreBoardPlayer(CPlayer* pPlayer);

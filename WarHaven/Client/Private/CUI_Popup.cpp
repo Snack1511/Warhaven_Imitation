@@ -117,6 +117,7 @@ void CUI_Popup::Enable_SkinPopup(_uint iSkin)
 
 	case 1:
 		m_pSKinPopup[Skin_Item]->Set_TextureIndex(iSkin);
+		m_pSKinPopup[Skin_BG]->Set_TextureIndex(iSkin);
 		m_pSKinPopup[Skin_Text0]->Set_FontText(TEXT("축하합니다."));
 		m_pSKinPopup[Skin_Text1]->Set_FontText(TEXT("점령전을 완료하여 영웅 갑옷을 드립니다."));
 		break;
@@ -334,6 +335,7 @@ void CUI_Popup::Create_SkinPopup()
 		case Skin_BG:
 			m_pSKinPopup[i]->Set_Sort(0.13f);
 			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/Skin/T_ItemBG4.dds"));
+			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/Skin/T_ItemBG3.dds"));
 			m_pSKinPopup[i]->Set_PosY(65.f);
 			m_pSKinPopup[i]->Set_Scale(100.f);
 			break;

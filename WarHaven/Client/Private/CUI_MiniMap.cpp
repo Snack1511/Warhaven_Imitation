@@ -14,6 +14,7 @@
 #include "CTeamConnector.h"
 #include "Functor.h"
 #include "CSquad.h"
+#include "CPlayerInfo.h"
 
 HRESULT CUI_MiniMap::Initialize_Prototype()
 {
@@ -53,6 +54,11 @@ void CUI_MiniMap::Set_Shader_Guage_PointC(CShader* pShader, const char* pConstNa
 	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_C], sizeof(_float));
 }
 
+void CUI_MiniMap::Set_Shader_Guage_PointE(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_E], sizeof(_float));
+}
+
 void CUI_MiniMap::SetActive_MiniMap(_bool value)
 {
 	m_pMiniMap->SetActive(value);
@@ -63,14 +69,45 @@ void CUI_MiniMap::SetActive_MiniMap(_bool value)
 		{
 			m_pArrMiniMapPoint[i][j]->SetActive(value);
 
-			if (m_eLoadLevel == LEVEL_HWARA)
-				m_pArrMiniMapPoint[Point_C][j]->SetActive(false);
+			if (m_eLoadLevel == LEVEL_PADEN)
+				m_pArrMiniMapPoint[Point_E][j]->SetActive(false);
 		}
 	}
 
 	for (int i = 0; i < 8; ++i)
-	{
 		m_pPlayerIcon[i]->SetActive(value);
+}
+
+void CUI_MiniMap::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
+{
+	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+	auto iter = mapPlayers.begin();
+	eTEAM_TYPE eTeam = iter->second->Get_Team()->Get_TeamType();
+	if (eTeam == eTEAM_TYPE::eBLUE)
+	{
+		if (strPadenPointKey == "Hwara_Final_Blue")
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_A] = fConquestRatio;
+		}
+		else
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_E] = fConquestRatio;
+		}
+	}
+	else
+	{
+		if (strPadenPointKey == "Hwara_Final_Blue")
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_E] = fConquestRatio;
+		}
+		else
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_A] = fConquestRatio;
+		}
 	}
 }
 
@@ -152,6 +189,28 @@ void CUI_MiniMap::Set_BattleIcon(_bool IsBattle)
 void CUI_MiniMap::My_Tick()
 {
 	__super::My_Tick();
+
+	if (m_iStartCount == 0)
+	{
+		m_iStartCount++;
+
+		map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+		auto iter = mapPlayers.begin();
+		eTEAM_TYPE eTeam = iter->second->Get_Team()->Get_TeamType();
+		for (int i = 0; i < MP_End; ++i)
+		{
+			if (eTeam == eTEAM_TYPE::eBLUE)
+			{
+				m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-565.f);
+				m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-433.f);
+			}
+			else
+			{
+				m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-433.f);
+				m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-565.f);
+			}
+		}
+	}
 
 	for (int i = 0; i < 8; ++i)
 	{
@@ -238,6 +297,7 @@ void CUI_MiniMap::Bind_Shader()
 	GET_COMPONENT_FROM(m_pArrMiniMapPoint[Point_A][MP_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_MiniMap::Set_Shader_Guage_PointA, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrMiniMapPoint[Point_R][MP_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_MiniMap::Set_Shader_Guage_PointR, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrMiniMapPoint[Point_C][MP_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_MiniMap::Set_Shader_Guage_PointC, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrMiniMapPoint[Point_E][MP_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_MiniMap::Set_Shader_Guage_PointE, this, placeholders::_1, "g_fValue");
 }
 
 void CUI_MiniMap::Create_MiniMap()
@@ -413,12 +473,19 @@ void CUI_MiniMap::Init_MiniMapPoint()
 
 			if (i == MP_Text)
 			{
+				m_pArrMiniMapPoint[Point_C][i]->Set_PosY(245.f);
 				m_pArrMiniMapPoint[Point_A][i]->Set_PosY(245.f);
+				m_pArrMiniMapPoint[Point_E][i]->Set_PosY(245.f);
 				m_pArrMiniMapPoint[Point_R][i]->Set_PosY(277.f);
+
+				m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-575.f);
+				m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-423.f);
 				continue;
 			}
 
+			m_pArrMiniMapPoint[Point_C][i]->Set_PosY(246.f);
 			m_pArrMiniMapPoint[Point_A][i]->Set_PosY(246.f);
+			m_pArrMiniMapPoint[Point_E][i]->Set_PosY(246.f);
 			m_pArrMiniMapPoint[Point_R][i]->Set_PosY(278.f);
 		}
 		break;
