@@ -125,7 +125,9 @@ private:
 	CGameObject* m_pTargetObject = nullptr;
 
 	CUnit* m_pTargetUnit = nullptr;
-	CUnit* m_pPreUnit = nullptr;
+
+	CUnit* m_pPrvUnit = nullptr;
+	CUnit* m_pCurUnit = nullptr;
 
 
 };

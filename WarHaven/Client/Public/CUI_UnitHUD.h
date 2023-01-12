@@ -49,6 +49,9 @@ public:
 
 	void SetActive_TargetUI(_uint iIdx, _bool value);
 
+	void Enable_HealBlur();
+	void Disable_HealBlur();
+
 private:
 	CUI_Wrapper* m_pUnitUI[UI_End];
 

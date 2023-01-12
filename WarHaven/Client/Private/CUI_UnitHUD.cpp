@@ -193,6 +193,9 @@ void CUI_UnitHUD::My_Tick()
 		}
 	}
 
+	if (m_pOwner->IsMainPlayer())
+		return;
+
 	Tick_UnitHP();
 	Tick_TargetUI();
 }
@@ -266,6 +269,17 @@ void CUI_UnitHUD::SetActive_TargetUI(_uint iIdx, _bool value)
 		m_fMaxEanbleTargetUITime = 0.1f * (iIdx + 1.f);
 		m_bEnableTargetUI = value;
 	}
+}
+
+void CUI_UnitHUD::Enable_HealBlur()
+{
+	SetActive_UnitHP(true);
+	static_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Enable_HealBlur();
+}
+
+void CUI_UnitHUD::Disable_HealBlur()
+{
+	static_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Disable_HealBlur();
 }
 
 void CUI_UnitHUD::Create_UnitHUD()
@@ -343,43 +357,31 @@ void CUI_UnitHUD::Init_UnitNameText()
 
 void CUI_UnitHUD::SetActive_UnitHP(_bool value)
 {
-	if (value == true)
+	if (m_pOwner->Get_Team())
 	{
-		if (!m_pUnitUI[UI_Hp]->Is_Valid())
+		if (m_pOwner->Get_Team()->IsMainPlayerTeam())
 		{
-			if (m_pOwner->Get_Team())
+			if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
 			{
-				if (m_pOwner->Get_Team()->IsMainPlayerTeam())
-				{
-					if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
-					{
-						dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorLightGreen);
-					}
-					else
-					{
-						dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorBlue);
-					}
-				}
-				else
-				{
-					dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorRed);
-				}
+				dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorLightGreen);
 			}
-
-			ENABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);
+			else
+			{
+				dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorBlue);
+			}
+		}
+		else
+		{
+			dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorRed);
 		}
 	}
-	else
-	{
-		m_pUnitUI[UI_Hp]->SetActive(false);
-	}
+
+	if (m_pUnitUI[UI_Hp]->Is_Valid() == !value)
+		m_pUnitUI[UI_Hp]->SetActive(value);
 }
 
 void CUI_UnitHUD::Tick_UnitHP()
 {
-	if (m_pOwner->IsMainPlayer())
-		DISABLE_GAMEOBJECT(this);
-
 	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHP(m_tStatus.fHP, m_tStatus.fMaxHP);
 	if (m_pUnitUI[UI_Hp]->Is_Valid())
 	{

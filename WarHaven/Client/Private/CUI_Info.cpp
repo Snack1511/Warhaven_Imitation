@@ -176,7 +176,7 @@ void CUI_Info::Init_InfoText()
 
 		m_pInfoText[Text_1]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Text/Paden_MapInfo1.png"));
 		m_pInfoText[Text_1]->Set_Scale(145.f, 30.f);
-		m_pInfoText[Text_1]->Set_PosX(fPosX + 30.f);
+		m_pInfoText[Text_1]->Set_PosX(fPosX + 35.f);
 		m_pInfoText[Text_1]->Set_PosY(-25.f);
 
 		m_pInfoText[Text_2]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Text/Paden_MapInfo2.png"));

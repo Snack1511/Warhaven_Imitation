@@ -73,7 +73,6 @@ void CUI_UnitHP::OnEnable()
 
 	for (int i = 0; i < IT_END; ++i)
 		ENABLE_GAMEOBJECT(m_pUnitHP[i]);
-
 }
 
 void CUI_UnitHP::OnDisable()
@@ -90,8 +89,7 @@ void CUI_UnitHP::My_Tick()
 {
 	__super::My_Tick();
 
-	// 힐을 받으면 트루로 바뀜
-	// 트루 상태일 때
+	m_pHealBlur->SetActive(false);
 }
 
 void CUI_UnitHP::My_LateTick()

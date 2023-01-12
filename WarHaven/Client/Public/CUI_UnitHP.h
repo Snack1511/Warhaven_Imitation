@@ -35,7 +35,6 @@ public:
 
 	void Enable_HealBlur();
 	void Disable_HealBlur();
-	void Set_Heal() { m_bHeal = true; }
 
 private:
 	CUI_Object* m_pUnitHP[IT_END];
@@ -46,8 +45,8 @@ private:
 
 	_float4 m_vHpColor;
 
-	_float m_fHealTime = 0.f;
-	_bool m_bHeal = false;
+	_bool m_bPrvHeal = false;
+	_bool m_bCurHeal = true;
 
 private:
 	void Bind_Shader();
