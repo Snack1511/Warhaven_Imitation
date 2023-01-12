@@ -110,7 +110,7 @@ void CQanda_ShadowStep::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 
     m_EffectsList = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Dodge", pOwner, ZERO_VECTOR);
     static_cast<CUnit_Qanda*>(pOwner)->Turn_TransformParticle(false);
-    static_cast<CUnit_Qanda*>(pOwner)->TurnOn_TrailEffect(false);
+    static_cast<CUnit_Qanda*>(pOwner)->TurnOn_Trail(false);
 
     m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
@@ -190,7 +190,7 @@ void CQanda_ShadowStep::Exit(CUnit* pOwner, CAnimator* pAnimator)
    
    TurnOff_DodgeEffect(pOwner);
    static_cast<CUnit_Qanda*>(pOwner)->Turn_TransformParticle(true);
-   static_cast<CUnit_Qanda*>(pOwner)->TurnOn_TrailEffect(true);
+   static_cast<CUnit_Qanda*>(pOwner)->TurnOn_Trail(true);
 }
 
 STATE_TYPE CQanda_ShadowStep::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
