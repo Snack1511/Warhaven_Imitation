@@ -83,7 +83,7 @@ HRESULT CPurpleArrow::Initialize_Prototype()
 	m_fMaxPoisonTime = 0.3f;
 	m_fDamage = -5.f;
 
-	m_fMaxSpeed = 40.f;
+	m_fMaxSpeed = 50.f;
 	m_fMaxDistance = 70.f;
 
 

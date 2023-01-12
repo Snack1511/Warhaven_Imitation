@@ -38,6 +38,7 @@ public:
 	string		Get_TriggerName() { return m_strTriggerName; }
 	eSTAGE_TRIGGER_TYPE	Get_TriggerType() { return m_eTriggerType; }
 	void	Set_TriggerType(eSTAGE_TRIGGER_TYPE eEnum) { m_eTriggerType = eEnum; }
+	void	Set_ConqueredTeam(CTeamConnector* pTeam) { m_pConqueredTeam = pTeam; }
 
 public:
 	virtual HRESULT	Initialize_Prototype() override;

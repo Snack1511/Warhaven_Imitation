@@ -944,8 +944,13 @@ _bool CPlayer::Is_AbleRevival()
 
 CPlayer* CPlayer::Get_TargetPlayer(eTargetPlayerType eType) 
 {
+	if (!m_pAIController)
+		return m_pTargetPlayer;
+
 	if (nullptr == m_pCurBehaviorDesc)
 		return nullptr;
+
+
 	switch (eType)
 	{
 	case eTargetPlayerType::eEnemy:
@@ -953,6 +958,9 @@ CPlayer* CPlayer::Get_TargetPlayer(eTargetPlayerType eType)
 	case eTargetPlayerType::eAllies:
 		return m_pCurBehaviorDesc->pAlliesPlayer;
 	}
+
+	return m_pTargetPlayer;
+
 }
 
 void CPlayer::On_RealDie()
@@ -1038,6 +1046,9 @@ void CPlayer::Start_Reborn()
 
 void CPlayer::On_PlusGauge(_float fGauge)
 {
+	if (m_bIsHero)
+		return;
+
 	m_fGauge += fGauge;
 
 	if (m_fGauge >= m_fMaxGauge)
@@ -1051,7 +1062,12 @@ void CPlayer::SetActive_UnitHUD(_bool value)
 
 void CPlayer::On_RealChangeBehavior()
 {
+	
+
 	m_pCurBehaviorDesc = m_pReserveBehaviorDesc;
+
+	if (!m_pCurBehaviorDesc)
+		return;
 
 	switch (m_pCurBehaviorDesc->eCurType)
 	{

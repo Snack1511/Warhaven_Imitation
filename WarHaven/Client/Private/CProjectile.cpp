@@ -666,6 +666,7 @@ void CProjectile::OnDisable()
 
 void CProjectile::Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos)
 {
+
 	_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
 	_float4 vDir = (Get_ArrowHeadPos() - vHitPos);
 	vCurPos -= vDir * 0.5f;
@@ -677,7 +678,10 @@ void CProjectile::Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos)
 	m_pHitUnit = pHitUnit;
 	On_ChangePhase(eSTICK);
 	m_pCurStickBone = GET_COMPONENT_FROM(pHitUnit, CModel)->Find_HierarchyNode("0B_COM");
-	
+
+	if (!m_pCurStickBone)
+		return;
+
 	//맞은 순간에 worldmat과 맞은 놈의 월드 inverse
 	_float4x4 matWorldInv = m_pCurStickBone->Get_BoneMatrix().Inverse();
 	m_matHitOffset = m_pTransform->Get_WorldMatrix() * matWorldInv;

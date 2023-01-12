@@ -96,17 +96,7 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	pDrawableTerrain->Initialize();
 	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
-	//CUI_EscMenu* pUI_Esc = CUI_EscMenu::Create();
-	//Ready_GameObject(pUI_Esc, GROUP_UI);
 
-	//CUI_Oper* pUI_Oper = CUI_Oper::Create();
-	//Ready_GameObject(pUI_Oper, GROUP_UI);
-
-	CUI_Paden* pUI_Paden = CUI_Paden::Create();
-	Ready_GameObject(pUI_Paden, GROUP_UI);
-
-	// CUI_Result* pUI_Result = CUI_Result::Create();
-	// Ready_GameObject(pUI_Result, GROUP_UI);
 
 	/* GameSystem */
 	if (FAILED(CGameSystem::Get_Instance()->On_ReadyTest(m_vecGameObjects)))
