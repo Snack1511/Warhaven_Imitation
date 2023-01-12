@@ -197,6 +197,7 @@ public:
 public:
 	void Enable_Popup(_uint iPopupType);
 	void Enable_SkinPopup(_uint iSkin);
+	void Enable_ConquestPopup(_uint iNum);
 
 public:	// Å³·Î±×
 	void Add_KillLog(CPlayer* attacker, CPlayer* victim);

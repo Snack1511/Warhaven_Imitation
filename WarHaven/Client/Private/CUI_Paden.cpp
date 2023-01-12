@@ -791,7 +791,15 @@ void CUI_Paden::Update_InGameTimer()
 				if (!m_bShowStartPopup)
 				{
 					m_bShowStartPopup = true;
-					Enable_Popup(0);
+
+					if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_PADEN)
+					{
+						Enable_Popup(0);
+					}
+					else
+					{
+						Enable_Popup(1);
+					}
 				}
 			}
 		}
@@ -1192,10 +1200,11 @@ void CUI_Paden::Create_HwaraGauge()
 			break;
 
 		case Hwara_Glow:
-			GET_COMPONENT_FROM(m_pHwaraGauge[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HwaraGlowLine);
+			//GET_COMPONENT_FROM(m_pHwaraGauge[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HwaraGlowLine);
 			m_pHwaraGauge[i]->Set_Scale(120.f, 40.f);
 			m_pHwaraGauge[i]->Set_RotationZ(90.f);
 			m_pHwaraGauge[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Paden/T_AdditiveGlow.dds"));
+			m_pHwaraGauge[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.f));
 			break;
 		}
 	}

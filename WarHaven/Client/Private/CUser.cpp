@@ -1032,6 +1032,11 @@ void CUser::Enable_SkinPopup(_uint iSkin)
 	}
 }
 
+void CUser::Enable_ConquestPopup(_uint iNum)
+{
+	m_pUI_Paden->Enable_Popup(iNum);
+}
+
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)
 {
 	if (!m_pUI_Training)
