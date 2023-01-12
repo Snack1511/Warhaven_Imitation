@@ -130,6 +130,8 @@ void CTrigger_Stage::My_Tick()
 		return;
 
 	CUser::Get_Instance()->Set_ConquestTime(m_strTriggerName, m_fConqueredTimeAcc, m_fConqueredTime);
+	CUser::Get_Instance()->Set_MiniMapConquestTime(m_strTriggerName, m_fConqueredTimeAcc, m_fConqueredTime);
+	CUser::Get_Instance()->Set_ScoreBoardConquestTime(m_strTriggerName, m_fConqueredTimeAcc, m_fConqueredTime);
 
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	_bool isIsFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
@@ -162,10 +164,6 @@ void CTrigger_Stage::My_Tick()
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(2, m_pTransform, isIsFrustum);
 		CUser::Get_Instance()->Set_MiniMapConquestTime(2, m_fConqueredTimeAcc, m_fConqueredTime);
 		CUser::Get_Instance()->Set_ScoreBoardConquestTime(2, m_fConqueredTimeAcc, m_fConqueredTime);
-		break;
-
-	case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_FINAL:
-
 		break;
 	}
 

@@ -22,6 +22,7 @@ public:
 	virtual void Set_Shader_PointGauge_A(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_PointGauge_R(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_PointGauge_C(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_PointGauge_E(CShader* pShader, const char* pConstName);
 
 	virtual void Set_Shader_SocreGauge_Red(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_SocreGauge_Blue(CShader* pShader, const char* pConstName);

@@ -365,6 +365,12 @@ void CUser::Set_MiniMapConquestTime(_uint iPoinIdx, _float fConquestTime, _float
 		m_pMiniMap->Set_ConquestTime(iPoinIdx, fConquestTime, fMaxConquestTime);
 }
 
+void CUser::Set_MiniMapConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
+{
+	if (m_pMiniMap)
+		m_pMiniMap->Set_ConquestTime(strPadenPointKey, fConquestTime, fMaxConquestTime);
+}
+
 void CUser::Set_MiniMapGaugeColor(_bool IsMainTeam, _uint iPointIdx)
 {
 	if (m_pMiniMap)
@@ -895,6 +901,14 @@ void CUser::Set_ScoreBoardConquestTime(_uint iPointIdx, _float fConquestTime, _f
 	if (m_pScoreBoard)
 	{
 		m_pScoreBoard->Set_ConquestTime(iPointIdx, fConquestTime, fMaxConquestTime);
+	}
+}
+
+void CUser::Set_ScoreBoardConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Set_ConquestTime(strPadenPointKey, fConquestTime, fMaxConquestTime);
 	}
 }
 

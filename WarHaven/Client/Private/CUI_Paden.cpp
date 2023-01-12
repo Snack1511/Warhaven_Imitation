@@ -11,6 +11,7 @@
 #include "CUnit.h"
 #include "CTeamConnector.h"
 #include "Transform.h"
+#include "CSquad.h"
 #include "Camera.h"
 
 HRESULT CUI_Paden::Initialize_Prototype()
@@ -72,6 +73,11 @@ void CUI_Paden::Set_Shader_PointGauge_R(CShader* pShader, const char* pConstName
 void CUI_Paden::Set_Shader_PointGauge_C(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_C], sizeof(_float));
+}
+
+void CUI_Paden::Set_Shader_PointGauge_E(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_E], sizeof(_float));
 }
 
 void CUI_Paden::Set_Shader_SocreGauge_Red(CShader* pShader, const char* pConstName)
@@ -204,17 +210,37 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(string strPadenPointKey, CTransf
 	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform);
 	vNewPos.y += 5.f;
 
+
 	for (int i = 0; i < PU_End; ++i)
 	{
-		if (strPadenPointKey == "Hwara_Final_Blue")
+		map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+		auto iter = mapPlayers.begin();
+		eTEAM_TYPE eTeam = iter->second->Get_Team()->Get_TeamType();
+		if (eTeam == eTEAM_TYPE::eBLUE)
 		{
-			m_pArrProjPointUI[Point_E][i]->SetActive(isInFrustum);
-			m_pArrProjPointUI[Point_E][i]->Set_Pos(vNewPos);
+			if (strPadenPointKey == "Hwara_Final_Blue")
+			{
+				m_pArrProjPointUI[Point_E][i]->SetActive(isInFrustum);
+				m_pArrProjPointUI[Point_E][i]->Set_Pos(vNewPos);
+			}
+			else if (strPadenPointKey == "Hwara_Final_Red")
+			{
+				m_pArrProjPointUI[Point_A][i]->SetActive(isInFrustum);
+				m_pArrProjPointUI[Point_A][i]->Set_Pos(vNewPos);
+			}
 		}
-		else if (strPadenPointKey == "Hwara_Final_Red")
+		else
 		{
-			m_pArrProjPointUI[Point_A][i]->SetActive(isInFrustum);
-			m_pArrProjPointUI[Point_A][i]->Set_Pos(vNewPos);
+			if (strPadenPointKey == "Hwara_Final_Blue")
+			{
+				m_pArrProjPointUI[Point_A][i]->SetActive(isInFrustum);
+				m_pArrProjPointUI[Point_A][i]->Set_Pos(vNewPos);
+			}
+			else if (strPadenPointKey == "Hwara_Final_Red")
+			{
+				m_pArrProjPointUI[Point_E][i]->SetActive(isInFrustum);
+				m_pArrProjPointUI[Point_E][i]->Set_Pos(vNewPos);
+			}
 		}
 	}
 }
@@ -311,7 +337,7 @@ void CUI_Paden::Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam)
 
 	for (int i = 0; i < PU_Text; ++i)
 	{
-		if (strPointName == "Paden_Trigger_A" || strPointName == "Hwara_Center")
+		if (strPointName == "Paden_Trigger_A" || strPointName == "Hwara_Final_Red")
 		{
 			m_pArrPointUI[Point_A][i]->Set_Color(vColor);
 			m_pArrProjPointUI[Point_A][i]->Set_Color(vColor);
@@ -321,10 +347,15 @@ void CUI_Paden::Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam)
 			m_pArrPointUI[Point_R][i]->Set_Color(vColor);
 			m_pArrProjPointUI[Point_R][i]->Set_Color(vColor);
 		}
-		else if (strPointName == "Paden_Trigger_C")
+		else if (strPointName == "Paden_Trigger_C" || strPointName == "Hwara_Center")
 		{
 			m_pArrPointUI[Point_C][i]->Set_Color(vColor);
 			m_pArrProjPointUI[Point_C][i]->Set_Color(vColor);
+		}
+		else if (strPointName == "Hwara_Final_Blue")
+		{
+			m_pArrPointUI[Point_E][i]->Set_Color(vColor);
+			m_pArrProjPointUI[Point_E][i]->Set_Color(vColor);
 		}
 	}
 }
@@ -442,7 +473,7 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayerTeam, string strPadenPointKe
 
 	for (int i = 0; i < PU_End; ++i)
 	{
-		if (strPadenPointKey == "Paden_Trigger_A")
+		if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Final_Red")
 		{
 			Set_PointGauge_Color(bIsMainPlayerTeam, Point_A);
 		}
@@ -453,6 +484,10 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayerTeam, string strPadenPointKe
 		else if (strPadenPointKey == "Paden_Trigger_C" || strPadenPointKey == "Hwara_Center")
 		{
 			Set_PointGauge_Color(bIsMainPlayerTeam, Point_C);
+		}
+		else if (strPadenPointKey == "Hwara_Final_Blue")
+		{
+			Set_PointGauge_Color(bIsMainPlayerTeam, Point_E);
 		}
 	}
 }
@@ -929,9 +964,20 @@ void CUI_Paden::Init_PointUI()
 		{
 			for (int j = 0; j < PU_End; ++j)
 			{
-				m_pArrPointUI[Point_A][j]->Set_PosX(-50.f);
+				map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+				auto iter = mapPlayers.begin();
+				eTEAM_TYPE eTeam = iter->second->Get_Team()->Get_TeamType();
+				if (eTeam == eTEAM_TYPE::eBLUE)
+				{
+					m_pArrPointUI[Point_A][j]->Set_PosX(-50.f);
+					m_pArrPointUI[Point_E][j]->Set_PosX(50.f);
+				}
+				else
+				{
+					m_pArrPointUI[Point_A][j]->Set_PosX(50.f);
+					m_pArrPointUI[Point_E][j]->Set_PosX(-50.f);
+				}
 				m_pArrPointUI[Point_C][j]->Set_PosX(0.f);
-				m_pArrPointUI[Point_E][j]->Set_PosX(50.f);
 
 				GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
 				GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
@@ -1006,6 +1052,9 @@ void CUI_Paden::Bind_Shader()
 	GET_COMPONENT_FROM(m_pArrPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrProjPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 
+	GET_COMPONENT_FROM(m_pArrPointUI[Point_E][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_E, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrProjPointUI[Point_E][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_E, this, placeholders::_1, "g_fValue");
+
 	GET_COMPONENT_FROM(m_pArrHwaraGauge[Team_Blue][Hwara_Arrow], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_HwaraArrow_Blue, this, placeholders::_1, "g_fUVPlusY");
 	GET_COMPONENT_FROM(m_pArrHwaraGauge[Team_Red][Hwara_Arrow], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_HwaraArrow_Red, this, placeholders::_1, "g_fUVPlusY");
 }
@@ -1039,8 +1088,8 @@ void CUI_Paden::Create_HwaraGauge()
 		switch (i)
 		{
 		case Hwara_BG:
-			GET_COMPONENT_FROM(m_pHwaraGauge[i], CTexture)->Remove_Texture(0);
-			Read_Texture(m_pHwaraGauge[i], "/Paden/TopGauge", "Bar");
+			// GET_COMPONENT_FROM(m_pHwaraGauge[i], CTexture)->Remove_Texture(0);
+			// Read_Texture(m_pHwaraGauge[i], "/Paden/TopGauge", "Bar");
 			m_pHwaraGauge[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.5f));
 			m_pHwaraGauge[i]->Set_ScaleY(30.f);
 			break;
@@ -1097,6 +1146,19 @@ void CUI_Paden::Init_HwaraGauge()
 		}
 	}
 
+	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+	auto iter = mapPlayers.begin();
+	eTEAM_TYPE eTeam = iter->second->Get_Team()->Get_TeamType();
+	if (eTeam == eTEAM_TYPE::eBLUE)
+	{
+		m_pArrHwaraGauge[Team_Red][Hwara_BG]->Set_Color(m_vColorBlue);
+		m_pArrHwaraGauge[Team_Blue][Hwara_BG]->Set_Color(m_vColorRed);
+	}
+	else
+	{
+		m_pArrHwaraGauge[Team_Red][Hwara_BG]->Set_Color(m_vColorRed);
+		m_pArrHwaraGauge[Team_Blue][Hwara_BG]->Set_Color(m_vColorBlue);
+	}
 }
 
 void CUI_Paden::Update_TargetPointPos()
