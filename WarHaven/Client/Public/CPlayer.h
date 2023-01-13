@@ -249,6 +249,7 @@ private: /*AI Ãß°¡¿ë*/
 
 public:
 	void Set_MainPlayerStartPath(_uint iTriggerType);
+	void SetStartPathEmpty() { m_strStartPath.clear(); };
 	CPath* Get_CurPath();
 	_float4 Get_LookDir();
 	_float4 Get_SquadDir();

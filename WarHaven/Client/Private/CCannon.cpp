@@ -14,6 +14,11 @@
 #include "CCannonBall.h"
 
 #include "CUI_Trail.h"
+#include "CUser.h"
+#include "CTeamConnector.h"
+#include "CSquad.h"
+#define AUTO_CANNON
+
 CCannon::CCannon()
 {
 }
@@ -107,6 +112,8 @@ HRESULT CCannon::Initialize()
 
 HRESULT CCannon::Start()
 {
+
+
 	__super::Start();
 
 	if (m_pUI_Trail)
@@ -241,6 +248,49 @@ _float CCannon::Lerp_Position(_float fCurPosition, _float fTargetPosition, _floa
 
 void CCannon::My_Tick()
 {
+#ifdef AUTO_CANNON
+	if (m_fCannonCoolAcc > 0.f)
+		m_fCannonCoolAcc -= fDT(0);
+	else
+	{
+		m_fCannonCoolAcc = 0.f;
+	}
+
+	if (m_pCurOwnerPlayer)
+		Shoot_Cannon();
+	else
+	{
+		CPlayer* pPlayer = CUser::Get_Instance()->Get_MainPlayerInfo()->Get_Player();
+
+		if (pPlayer)
+		{
+			CTeamConnector* pTeamConnector = pPlayer->Get_Team();
+
+			if (pTeamConnector)
+			{
+				eTEAM_TYPE	eType = pTeamConnector->Get_TeamType();
+				if (eType == eTEAM_TYPE::eBLUE)
+					eType = eTEAM_TYPE::eRED;
+				else
+					eType = eTEAM_TYPE::eBLUE;
+
+				pTeamConnector = CGameSystem::Get_Instance()->Get_Team(eType);
+
+				m_pCurOwnerPlayer = pTeamConnector->Get_SquadList().front()->Get_LeaderPlayer();
+
+			}
+
+		}
+	}
+
+	return;
+
+
+#endif
+
+
+
+
 	if (!m_pCurOwnerPlayer)
 		return;
 
@@ -279,6 +329,11 @@ void CCannon::My_Tick()
 
 void CCannon::My_LateTick()
 {
+#ifdef AUTO_CANNON
+	return;
+#endif // !AUTO_CANNON
+
+
 	if (!m_pCurOwnerPlayer)
 		return;
 

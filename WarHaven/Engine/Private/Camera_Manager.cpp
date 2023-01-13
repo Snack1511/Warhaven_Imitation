@@ -68,7 +68,7 @@ HRESULT CCamera_Manager::SetUp_ShaderResources(_bool Ortho)
 		if (!m_bOnceCheck)
 		{
 			m_bOnceCheck = true;
-			_float4 vCamPos = Get_ViewPos();
+			/*_float4 vCamPos = Get_ViewPos();
 
 			if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(7, "g_vCamPosition", &vCamPos, sizeof(_float4))))
 				return E_FAIL;
@@ -80,7 +80,7 @@ HRESULT CCamera_Manager::SetUp_ShaderResources(_bool Ortho)
 				return E_FAIL;
 
 			if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(12, "g_vCamPosition", &vCamPos, sizeof(_float4))))
-				return E_FAIL;
+				return E_FAIL;*/
 		}
 		
 	}

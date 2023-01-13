@@ -13,6 +13,7 @@
 #include "CColorController.h"
 
 #include "CProjectile.h"
+#include "CCannonBall.h"
 
 
 CPriest_Catch_Shoot::CPriest_Catch_Shoot()
@@ -66,7 +67,7 @@ HRESULT CPriest_Catch_Shoot::Initialize()
 	Init_AttackState_Priest();
 	Init_CommonState_Player();
 
-	Add_KeyFrame(12, 0);
+	Add_KeyFrame(8, 0);
 
 	/* Setting for Blendable */
 	m_eAnimLeftorRight = ANIM_BASE_R;
@@ -160,9 +161,20 @@ HRESULT CPriest_Catch_Shoot::Initialize()
 	return __super::Initialize();
 }
 
-void CPriest_Catch_Shoot::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CPriest_Catch_Shoot::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    CState::Enter(pOwner, pAnimator, ePrevType, pData);
+	CState::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	if (!pOwner->Get_CatchProjectileObject())
+		m_bCatchBall = true;
+
+	if (pOwner->Get_CatchedBall())
+	{
+		ENABLE_GAMEOBJECT(pOwner->Get_CatchedBall());
+		pOwner->Get_Status().fDamageMultiplier = 7.f;
+	}
+		
+ 
 }
 
 STATE_TYPE CPriest_Catch_Shoot::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -193,11 +205,20 @@ void CPriest_Catch_Shoot::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, 
 	switch (iSequence)
 	{
 	case 0:
-		pOwner->Get_CatchProjectileObject()->Get_Transform()->Set_Right(pOwner->Get_FollowCamLook());
-		pOwner->Get_CatchProjectileObject()->Get_Transform()->Make_WorldMatrix();
+		if (m_bCatchBall)
+		{
+			pOwner->Get_CatchedBall()->Shoot_CatchedCannon(GAMEINSTANCE->Get_CurCamLook());
+			pOwner->Catch_CannonBall(nullptr);
+		}
+		else
+		{
+			pOwner->Get_CatchProjectileObject()->Get_Transform()->Set_Right(pOwner->Get_FollowCamLook());
+			pOwner->Get_CatchProjectileObject()->Get_Transform()->Make_WorldMatrix();
 
-		pOwner->Get_CatchProjectileObject()->On_ShootProjectile();
-		pOwner->Catch_ProjectileObject(nullptr);
+			pOwner->Get_CatchProjectileObject()->On_ShootProjectile();
+			pOwner->Catch_ProjectileObject(nullptr);
+		}
+		
 		break;
 
 	case 111:

@@ -202,6 +202,7 @@ void CPriest_Attack_Sting::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 	{
 
 	case 0:
+		pOwner->Get_Status().fDamageMultiplier = 1.f;
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;

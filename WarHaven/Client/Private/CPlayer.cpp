@@ -467,37 +467,46 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 		//메인플레이어 path에다가 트레일 UI 깔아보기
 		if (m_pUI_Trail)
 		{
-
-			CPath* pPath = CGameSystem::Get_Instance()->Find_Path(m_strStartPath);
-
-
-			if (pPath)
+			if (m_strStartPath.empty())
 			{
-				m_pUI_Trail->Clear_Nodes();
-				vPos.y += 0.1f;
-				m_pUI_Trail->Add_Node(vPos);
-
-
-				vector<_float4>& vecPositions = pPath->Get_vecPositions();
-
-				_float4 vLook = vecPositions.front() - vPos;
-
-				m_pCurrentUnit->Get_Transform()->Set_Look(vLook);
-				m_pCurrentUnit->Get_Transform()->Make_WorldMatrix();
-				m_pFollowCam->Get_Transform()->Set_Look(vLook);
-				m_pFollowCam->Get_Transform()->Make_WorldMatrix();
-
-				for (auto& elem : vecPositions)
-				{
-					_float4 vNode = elem;
-					vNode.y += 0.1f;
-					m_pUI_Trail->Add_Node(vNode);
-
-				}
-
-				ENABLE_GAMEOBJECT(m_pUI_Trail);
-				m_pUI_Trail->ReMap_TrailBuffers();
+				DISABLE_GAMEOBJECT(m_pUI_Trail);
 			}
+			else
+			{
+				CPath* pPath = CGameSystem::Get_Instance()->Find_Path(m_strStartPath);
+
+
+				if (pPath)
+				{
+					m_pUI_Trail->Clear_Nodes();
+					vPos.y += 0.1f;
+					m_pUI_Trail->Add_Node(vPos);
+
+
+					vector<_float4>& vecPositions = pPath->Get_vecPositions();
+
+					_float4 vLook = vecPositions.front() - vPos;
+
+					m_pCurrentUnit->Get_Transform()->Set_Look(vLook);
+					m_pCurrentUnit->Get_Transform()->Make_WorldMatrix();
+					m_pFollowCam->Get_Transform()->Set_Look(vLook);
+					m_pFollowCam->Get_Transform()->Make_WorldMatrix();
+
+					for (auto& elem : vecPositions)
+					{
+						_float4 vNode = elem;
+						vNode.y += 0.1f;
+						m_pUI_Trail->Add_Node(vNode);
+
+					}
+
+					ENABLE_GAMEOBJECT(m_pUI_Trail);
+					m_pUI_Trail->ReMap_TrailBuffers();
+				}
+			}
+
+
+			
 
 		}
 	}
@@ -728,6 +737,8 @@ HRESULT CPlayer::Initialize_Prototype()
 	/* UI_TRAIL */
 	if (m_bIsMainPlayer)
 	{
+
+
 		CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 100, 0.35f, -0.05f, 100.f, ZERO_VECTOR, _float4(0.2f, 1.f, 0.2f, 1.f),
 			L"../bin/resources/textures/effects/warhaven/texture/T_ArrowUI_01_FX.dds",
 			L"../bin/resources/textures/White.png"

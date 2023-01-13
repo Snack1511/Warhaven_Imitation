@@ -180,6 +180,9 @@ STATE_TYPE CPriest_Catch_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	if (pOwner->Get_CatchProjectileObject())
 		return STATE_PROJECTILECATCH_HIT_PRIEST;
 
+	else if (pOwner->Get_CatchedBall())
+		return STATE_PROJECTILECATCH_HIT_PRIEST;
+
     return __super::Tick(pOwner, pAnimator);
 }
 

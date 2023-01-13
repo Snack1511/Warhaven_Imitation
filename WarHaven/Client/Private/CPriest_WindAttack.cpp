@@ -241,6 +241,7 @@ void CPriest_WindAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, c
 	{
 
 	case 0:
+		pOwner->Get_Status().fDamageMultiplier = 1.f;
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::FLYATTACK, true);
 

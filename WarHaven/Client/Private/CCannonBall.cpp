@@ -7,6 +7,11 @@
 #include "CColorController.h"
 
 #include "CCannonBoom.h"
+#include "CCollider_Sphere.h"
+
+#include "HIerarchyNode.h"
+
+#include "CTeamConnector.h"
 
 CCannonBall::CCannonBall()
 {
@@ -38,6 +43,66 @@ void CCannonBall::Shoot_Cannon(CPlayer* pOwnerPlayer, _float4 vShootPos, _float4
 	//pActor->addTorque(CUtility_PhysX::To_PxVec3(vDir));
 	m_pActor = pActor;
 
+	if (m_pOwnerPlayer->Get_Team()->Get_TeamType() == eTEAM_TYPE::eBLUE)
+		m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+	else
+		m_pCollider->Set_ColIndex(COL_REDATTACK);
+
+
+}
+
+void CCannonBall::Shoot_CatchedCannon(_float4 vShootDir)
+{
+	m_bCatched = false;
+
+	/* PhysX */
+	PxTransform tTransform;
+	ZeroMemory(&tTransform, sizeof(PxTransform));
+
+	_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
+	//memcpy(&vCurPos, m_pTargetBone->Get_BoneMatrix().m[3], sizeof(_float4));
+	
+	tTransform.p = CUtility_PhysX::To_PxVec3(vCurPos);
+	tTransform.q = CUtility_PhysX::To_PxQuat(m_pTransform->Get_Quaternion());
+
+	PxRigidDynamic* pActor = nullptr;
+	pActor = GAMEINSTANCE->Create_DynamicActor(tTransform, PxConvexMeshGeometry(m_pConvexMesh), CPhysX_Manager::SCENE_CURRENT, 25.f);
+	_float4 vDir = vShootDir.Normalize();
+	vDir *= m_fForcePower;
+	pActor->addForce(CUtility_PhysX::To_PxVec3(vDir));
+	//pActor->addTorque(CUtility_PhysX::To_PxVec3(vDir));
+	m_pActor = pActor;
+}
+
+void CCannonBall::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
+{
+	if (COL_REDPROJECTILECATCH == eOtherColType || COL_BLUEPROJECTILECATCH == eOtherColType)
+	{
+		if (m_bCatched)
+			return;
+
+		CUnit* pOtherUnit = dynamic_cast<CUnit*>(pOtherObj);
+
+		m_pOwnerPlayer = pOtherUnit->Get_OwnerPlayer();
+
+		DISABLE_COMPONENT(m_pCollider);
+
+		pOtherUnit->Catch_CannonBall(this);
+
+		m_pTargetBone = GET_COMPONENT_FROM(pOtherUnit, CModel)->Find_HierarchyNode("0B_L_WP1");
+		m_bCatched = true;
+
+		Safe_release(m_pActor);
+
+	}
+}
+
+void CCannonBall::Projectile_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
+{
+}
+
+void CCannonBall::Projectile_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
+{
 }
 
 HRESULT CCannonBall::Initialize_Prototype()
@@ -67,6 +132,8 @@ HRESULT CCannonBall::Initialize_Prototype()
 
 	Add_Component<CRenderer>(pRenderer);
 
+	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, 0.5f, COL_BLUEATTACK, ZERO_VECTOR, DEFAULT_TRANS_MATRIX);
+	Add_Component(pCollider);
 
 
 	/* PhysX */
@@ -112,6 +179,8 @@ HRESULT CCannonBall::Start()
 {
 	__super::Start();
 
+	m_pCollider = GET_COMPONENT(CCollider_Sphere);
+
 	if (m_pCannonBoom)
 	{
 		CREATE_GAMEOBJECT(m_pCannonBoom, GROUP_EFFECT);
@@ -133,17 +202,50 @@ HRESULT CCannonBall::Start()
 
 	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
 
+	CallBack_CollisionEnter += bind(&CCannonBall::Projectile_CollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+	CallBack_CollisionStay += bind(&CCannonBall::Projectile_CollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);
+	CallBack_CollisionExit += bind(&CCannonBall::Projectile_CollisionExit, this, placeholders::_1, placeholders::_2, placeholders::_3);
+
 
 	return S_OK;
 }
 
 void CCannonBall::My_Tick()
 {
+	if (!m_bCatched)
+		return;
+
+	if (!m_pTargetBone)
+		return;
+
+	_float4 vTargetPos;
+	memcpy(&vTargetPos, m_pTargetBone->Get_BoneMatrix().m[3], sizeof(_float4));
+
+	vTargetPos += m_pOwnerPlayer->Get_CurrentUnit()-> Get_Transform()->Get_World(WORLD_LOOK);
+
+	_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
+	
+	_float4 vDir = vTargetPos - vCurPos;
+	_float fLength = vDir.Length();
+
+	_float fSpeed = 4.f;
+
+	vCurPos += vDir * fSpeed * fDT(0);
+	
+	m_pTransform->Set_World(WORLD_POS, vCurPos);
+
+
 }
 
 void CCannonBall::My_LateTick()
 {
+	if (m_bCatched)
+		return;
+
 	/* PhysX 따라가기 */
+	if (!m_pActor)
+		return;
+
 	PxTransform tTransform = m_pActor->getGlobalPose();
 	_float4x4 matPhysX = CUtility_PhysX::To_Matrix(tTransform);
 	m_pTransform->Get_Transform().matMyWorld = matPhysX;
@@ -159,6 +261,7 @@ void CCannonBall::My_LateTick()
 void CCannonBall::OnEnable()
 {
 	__super::OnEnable();
+	m_bCatched = false;
 	
 	Create_Light(this, ZERO_VECTOR, 20.f, 0.f, 0.1f, 10.f, 0.1f, RGB(255, 0, 0), true);
 }

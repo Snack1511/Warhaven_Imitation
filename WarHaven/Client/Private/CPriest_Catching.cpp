@@ -16,7 +16,7 @@
 
 #include "CProjectile.h"
 #include "Easing_Utillity.h"
-
+#include "CCannonBall.h"
 CPriest_Catching::CPriest_Catching()
 {
 }
@@ -219,7 +219,13 @@ void CPriest_Catching::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	pOwner->Lerp_Camera(0);
 
 	pOwner->On_Use(CUnit::SKILL3);
-	pOwner->Get_CatchProjectileObject()->Use_Collect(false);
+
+	if (pOwner->Get_CatchProjectileObject())
+		pOwner->Get_CatchProjectileObject()->Use_Collect(false);
+
+	if (pOwner->Get_CatchedBall())
+		DISABLE_GAMEOBJECT(pOwner->Get_CatchedBall());
+
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;

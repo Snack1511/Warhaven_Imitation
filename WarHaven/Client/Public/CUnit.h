@@ -28,6 +28,7 @@ class CCannon;
 class CProjectile;
 class CUI_UnitHUD;
 class CGlider;
+class CCannonBall;
 
 class CUnit abstract : public CGameObject
 {
@@ -318,7 +319,10 @@ public:
 
 public:
 	void Catch_ProjectileObject(CProjectile* pProjectileObject) { m_pCatchObejct = pProjectileObject; }
+	void Catch_CannonBall(CCannonBall* pProjectileObject) { m_pCatchBall = pProjectileObject; }
+
 	CProjectile* Get_CatchProjectileObject() { return m_pCatchObejct; }
+	CCannonBall* Get_CatchedBall() { return m_pCatchBall; }
 
 	list<CGameObject*> Get_MultipleFrustumObject() const { return m_MultipleFrustumObject; }
 
@@ -334,7 +338,8 @@ protected:
 
 
 protected:
-	CProjectile* m_pCatchObejct;
+	CProjectile* m_pCatchObejct = nullptr;
+	CCannonBall* m_pCatchBall = nullptr;
 
 	list<CGameObject*>  m_MultipleFrustumObject;
 

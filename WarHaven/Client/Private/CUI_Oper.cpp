@@ -144,6 +144,8 @@ void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 	{
 		if (iEventNum == 1)
 			m_bRespawnTriggerClicked = true;
+		else
+			m_bRespawnTriggerClicked = false;
 	}
 }
 
@@ -172,6 +174,8 @@ void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
 			vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition("Paden_Trigger_R");
 		else
 			vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition("Hwara_Respawn");
+
+		pMainPlayer->SetStartPathEmpty();
 
 	}
 
