@@ -647,6 +647,12 @@
 #include "CState_Patrol_Cure_Loop_Priest.h"
 #include "CState_Patrol_Cure_End_Priest.h"
 
+#include "CState_Patrol_Default_Qanda.h"
+#include "CState_Patrol_Walk_Qanda.h"
+
+#include "CState_Patrol_Default_Lancer.h"
+#include "CState_Patrol_Walk_Lancer.h"
+
 
 #pragma endregion 
 
@@ -921,6 +927,27 @@
 #include "CState_Common_Sting_Priest.h"
 #include "CState_Common_FlyHit_Priest.h"
 
+
+#include "CState_Common_Fall_Qanda.h"
+#include "CState_Common_Land_Qanda.h"
+#include "CState_Common_Hit_Qanda.h"
+#include "CState_Common_GuardHit_Qanda.h"
+#include "CState_Common_Groggy_Qanda.h"
+#include "CState_Common_Sting_Qanda.h"
+#include "CState_Common_FlyHit_Qanda.h"
+
+
+#include "CState_Common_Bounce_Lancer.h"
+#include "CState_Common_Fall_Lancer.h"
+#include "CState_Common_Land_Lancer.h"
+#include "CState_Common_Hit_Lancer.h"
+#include "CState_Common_Groggy_Lancer.h"
+#include "CState_Common_FlyHit_Lancer.h"
+
+
+
+
+
 #pragma endregion
 
 
@@ -1005,14 +1032,16 @@ HRESULT CState_Manager::Initialize()
 	Paladin_State_AI();
 	Archer_State_AI();
 	Priest_State_AI();
+	Qanda_State_AI();
 	Lancer_State_AI();
+
 
 	for (_uint i = 0; i < STATE_END; ++i)
 	{
 		if (!m_arrStates[i])
 		{
-			STATE_TYPE iType = (STATE_TYPE)i;
-			Call_MsgBox(L"태호야 상태추가하랬지");
+			STATE_TYPE iType = (STATE_TYPE)0;
+			Call_MsgBox(L"enum 갱신 안한 State 객체 발견 (이 코드의 중단점을 걸어주십시오.)");
 			return E_FAIL;
 
 		}
@@ -2215,6 +2244,35 @@ void CState_Manager::Archer_State_AI()
 
 void CState_Manager::Qanda_State_AI()
 {
+#pragma region Patrol
+
+	m_arrStates[AI_STATE_PATROL_DEFAULT_QANDA] = CState_Patrol_Default_Qanda::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_QANDA] = CState_Patrol_Walk_Qanda::Create();
+
+#pragma endregion
+
+#pragma region Combat
+
+
+#pragma endregion
+
+
+#pragma region PathNavigation
+#pragma endregion
+
+#pragma region Common
+
+
+	m_arrStates[AI_STATE_COMMON_HIT_QANDA] = CState_Common_Hit_Qanda::Create();
+	m_arrStates[AI_STATE_COMMON_GUARDHIT_QANDA] = CState_Common_GuardHit_Qanda::Create();
+	m_arrStates[AI_STATE_COMMON_GROGGYHIT_QANDA] = CState_Common_Groggy_Qanda::Create();
+	m_arrStates[AI_STATE_COMMON_STINGHIT_QANDA] = CState_Common_Sting_Qanda::Create();
+	m_arrStates[AI_STATE_COMMON_FLYHIT_QANDA] = CState_Common_FlyHit_Qanda::Create();
+	m_arrStates[AI_STATE_COMMON_FALL_QANDA] = CState_Common_Fall_Qanda::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_QANDA] = CState_Common_Land_Qanda::Create();
+
+
+#pragma endregion
 
 }
 
@@ -2287,6 +2345,36 @@ void CState_Manager::Priest_State_AI()
 
 void CState_Manager::Lancer_State_AI()
 {
+
+#pragma region Patrol
+
+	m_arrStates[AI_STATE_PATROL_DEFAULT_LANCER] = CState_Patrol_Default_Lancer::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_LANCER] = CState_Patrol_Walk_Lancer::Create();
+	
+
+#pragma endregion
+
+#pragma region Combat
+
+
+#pragma endregion
+
+
+#pragma region PathNavigation
+#pragma endregion
+
+#pragma region Common
+
+	m_arrStates[AI_STATE_COMMON_BOUNCE_LANCER] = CState_Common_Bounce_Lancer::Create();
+
+	m_arrStates[AI_STATE_COMMON_FALL_LANCER] = CState_Common_Fall_Lancer::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_LANCER] = CState_Common_Land_Lancer::Create();
+
+	m_arrStates[AI_STATE_COMMON_HIT_LANCER] = CState_Common_Hit_Lancer::Create();
+	m_arrStates[AI_STATE_COMMON_GROGGYHIT_LANCER] = CState_Common_Groggy_Lancer::Create();
+	m_arrStates[AI_STATE_COMMON_FLYHIT_LANCER] = CState_Common_FlyHit_Lancer::Create();
+
+#pragma endregion
 
 }
 

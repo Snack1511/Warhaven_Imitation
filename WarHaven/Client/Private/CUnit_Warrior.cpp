@@ -501,7 +501,18 @@ void CUnit_Warrior::My_LateTick()
 	__super::My_LateTick();
 
 	if (m_eCurState >= STATE_IDLE_WARRIOR_R_AI_ENEMY)
+	{
+		if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_TEST)
+		{
+			if (KEY(J, TAP))
+			{
+				Enter_State(AI_STATE_COMMON_CHANGE_HERO, nullptr);
+			}
+		}
+
 		return;
+	}
+		
 
 	if (KEY(CTRL, HOLD))
 	{
@@ -518,8 +529,5 @@ void CUnit_Warrior::My_LateTick()
 
 		//GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(50.f, 50.f, 50.f));
 
-	/*if (KEY(SPACE, TAP))
-	{
-		m_pPhysics->Set_Jump(7.f);
-	}*/
+
 }

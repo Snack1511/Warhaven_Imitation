@@ -65,7 +65,7 @@ void	CLancerNeedle::Needle_CollisionEnter(CGameObject* pOtherObj, const _uint& e
 			return;
 
 		m_pStinedUnit = pOtherUnit;
-		DISABLE_COMPONENT(GET_COMPONENT_FROM(m_pStinedUnit, CCollider_Sphere));
+		m_pStinedUnit->Enable_HitBoxColliders(false);
 
 		if (m_pOwnerUnit->Is_MainPlayer())
 		{
@@ -741,7 +741,8 @@ void CLancerNeedle::Dragging_Unit()
 			break;
 
 		case Client::LANCER:
-
+			m_pStinedUnit->On_Die();
+			m_pStinedUnit = nullptr;
 			break;
 
 		default:

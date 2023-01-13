@@ -560,22 +560,24 @@ void CPlayer::SetUp_ReserveState()
 
 		m_iReserveStateDefault[WARRIOR] = STATE_IDLE_PLAYER_R;
 		m_iReserveStateDefault[ARCHER] = STATE_IDLE_ARCHER_R;
-		m_iReserveStateDefault[ENGINEER] = STATE_IDLE_WARHAMMER_R;
 		m_iReserveStateDefault[PALADIN] = STATE_IDLE_PALADIN_R;
+		m_iReserveStateDefault[PRIEST] = STATE_IDLE_PRIEST;
+		m_iReserveStateDefault[ENGINEER] = STATE_IDLE_WARHAMMER_R;
 		m_iReserveStateDefault[FIONA] = STATE_IDLE_VALKYRIE_R;
 		m_iReserveStateDefault[QANDA] = STATE_IDLE_QANDA;
 		m_iReserveStateDefault[LANCER] = STATE_IDLE_LANCER;
-		m_iReserveStateDefault[PRIEST] = STATE_IDLE_PRIEST;
 		break;
 
 	case CUnit::UNIT_TYPE::eAI_Default:
 
 		m_iReserveStateDefault[WARRIOR] = AI_STATE_PATROL_DEFAULT_WARRIOR_R;
 		m_iReserveStateDefault[ARCHER] = AI_STATE_PATROL_DEFAULT_ARCHER_R;
-		m_iReserveStateDefault[ENGINEER] = AI_STATE_PATROL_DEFAULT_ENGINEER_R;
-		m_iReserveStateDefault[FIONA] = AI_STATE_COMBAT_DEFAULT_FIONA_R;
 		m_iReserveStateDefault[PALADIN] = AI_STATE_PATROL_DEFAULT_PALADIN_R;
 		m_iReserveStateDefault[PRIEST] = AI_STATE_PATROL_DEFAULT_PRIEST;
+		m_iReserveStateDefault[ENGINEER] = AI_STATE_PATROL_DEFAULT_ENGINEER_R;
+		m_iReserveStateDefault[FIONA] = AI_STATE_COMBAT_DEFAULT_FIONA_R; 
+		m_iReserveStateDefault[QANDA] = AI_STATE_PATROL_DEFAULT_QANDA; // 공격상태로 바꿔야함.
+		m_iReserveStateDefault[LANCER] = AI_STATE_PATROL_DEFAULT_LANCER;
 
 		break;
 
@@ -702,9 +704,10 @@ HRESULT CPlayer::Initialize_Prototype()
 		m_eCurrentClass = ARCHER;
 		break;
 	case Client::PALADIN:
-		//Set_CustomWeapon_Paladin(eWeaponEnum);
+		m_eCurrentClass = PALADIN;
 		break;
 	case Client::PRIEST:
+		m_eCurrentClass = PRIEST;
 		break;
 	case Client::ENGINEER:
 		m_eCurrentClass = ENGINEER;
@@ -1204,6 +1207,7 @@ void CPlayer::Set_OutlineType(OUTLINETYPE eOutlineType)
 
 void CPlayer::My_Tick()
 {
+	// 행복버튼~ 즐코
 	//if (!m_bIsMainPlayer)
 	//{
 	//	if (KEY(J, TAP))
@@ -1437,7 +1441,7 @@ void CPlayer::Update_HeroGauge()
 		}
 		else //변신 중일때 
 		{
-			m_fGauge -= fDT(0) * 2.f; // 인게임속도2.f 
+			//m_fGauge -= fDT(0) * 2.f; // 인게임속도2.f 
 
 			if (m_bIsMainPlayer)
 			{

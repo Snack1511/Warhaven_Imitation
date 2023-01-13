@@ -88,6 +88,8 @@ void CRun_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 
 STATE_TYPE CRun_Lancer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pOwner->Is_Air())
+        return STATE_JUMPFALL_LANCER;
 
     DoMove(STATE_DIRECTION_N, pOwner);
     Follow_MouseLook(pOwner);

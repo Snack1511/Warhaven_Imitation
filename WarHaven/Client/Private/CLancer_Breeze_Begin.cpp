@@ -47,7 +47,7 @@ HRESULT CLancer_Breeze_Begin::Initialize()
 	m_fInterPolationTime = 0.1f;
 	m_fAnimSpeed = 2.5f;
 
-	m_fDamagePumping = 9.f;
+	m_fDamagePumping = 15.f;
 
 	m_vecAdjState.push_back(STATE_ATTACK_BREEZE_LOOP_LANCER);
 

@@ -40,7 +40,7 @@ HRESULT CLancer_Breeze_Loop::Initialize()
 	m_tHitInfo.fJumpPower = 0.f;
 	m_tHitInfo.bSting = true;
 
-	m_fDamagePumping = 9.f;
+	m_fDamagePumping = 15.f;
 
 
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입

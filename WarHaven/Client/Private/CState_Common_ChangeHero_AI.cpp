@@ -77,12 +77,15 @@ STATE_TYPE CState_Common_ChangeHero_AI::Tick(CUnit* pOwner, CAnimator* pAnimator
 		switch (m_iRand)
 		{
 		case 0:
-			m_eChangeClassType = FIONA;
+			m_eChangeClassType = LANCER;
 			break;
 		default:
-			m_eChangeClassType = FIONA;
+			m_eChangeClassType = LANCER;
 			break;
 		}
+
+		if (m_eChangeClassType <= FIONA)
+			m_eChangeClassType = FIONA;
 
 		Set_HeroType(pOwner, m_eChangeClassType);
 
