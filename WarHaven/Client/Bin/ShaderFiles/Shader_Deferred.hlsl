@@ -522,7 +522,7 @@ PS_OUT PS_MAIN_BLOOMBLEND(PS_IN In)
 
 
 	//DOF
-	//if (g_bBilateral)
+	//if (g_fDOFPower > 0.1f)
 	{
 		/* 멀수록 Ratio가 강하게 */
 

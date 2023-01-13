@@ -1573,7 +1573,6 @@ HRESULT CRender_Manager::Render_BloomBlend()
 
 
 	/*Shader Option*/
-	_float	m_fDOFPower = 1.f;
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_fDOFPower", &m_fDOFPower, sizeof(_float));
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 

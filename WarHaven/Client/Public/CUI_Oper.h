@@ -227,6 +227,9 @@ private:
 	CUI_Object* m_pConquestBlur = nullptr;
 	CUI_Object* m_pArrConquestBlur[3];
 
+	_bool	m_bIsOperation = true;
+	_bool	m_bRespawnTriggerClicked = false;
+
 private:
 	void Create_SelectEffect();
 	void Init_SelectEffect();

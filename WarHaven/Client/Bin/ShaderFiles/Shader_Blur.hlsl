@@ -937,9 +937,9 @@ PS_OUT	PS_MAIN_FASTBLUR(PS_DOWNSCALE_IN input)
 	float Pi = 6.28318530718; // Pi*2
 
    // GAUSSIAN BLUR SETTINGS {{{
-	float Directions = 16.0 * g_fShaderPower; // BLUR DIRECTIONS (Default 16.0 - More is better but slower)
-	float Quality = 4.0 * g_fShaderPower; // BLUR QUALITY (Default 4.0 - More is better but slower)
-	float Size = 20.0; // BLUR SIZE (Radius)
+	float Directions = 20.0 *g_fShaderPower; // BLUR DIRECTIONS (Default 16.0 - More is better but slower)
+	float Quality = 20.0 *(g_fShaderPower / 4); // BLUR QUALITY (Default 4.0 - More is better but slower)
+	float Size = 10.0;// *g_fShaderPower; // BLUR SIZE (Radius)
 	// GAUSSIAN BLUR SETTINGS }}}
 
 	float2 Radius = Size / g_vResolution;

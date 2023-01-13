@@ -40,7 +40,7 @@ HRESULT CMainApp::Initialize()
 #ifdef _DEBUG
 	ShowCursor(true);
 #else
-	//ShowCursor(false);
+	ShowCursor(false);
 #endif // _DEBUG
 
 
@@ -73,7 +73,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(CState_Manager::Get_Instance()->Initialize()))
 		return E_FAIL;
 
-	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_MAINMENU)))
+	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_LOGO)))
 		return E_FAIL;
 
 	//Sound

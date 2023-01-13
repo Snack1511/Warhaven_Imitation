@@ -232,17 +232,13 @@ void CScript_FollowCam::Start()
 
 void CScript_FollowCam::Tick()
 {
-	if (KEY(TAB, TAP))
+	if (KEY(P, TAP))
 	{
 		m_bMouseVisible = !m_bMouseVisible;
-
-		//if (!m_bMouseVisible)
-		//	ShowCursor(false);
-		//else
-		//	ShowCursor(true);
-
-
 		CUser::Get_Instance()->Set_FixCursor(!m_bMouseVisible);
+		PLAYER->Set_Controlable();
+		ShowCursor(m_bMouseVisible);
+
 	}
 
 	if (m_bMouseVisible)

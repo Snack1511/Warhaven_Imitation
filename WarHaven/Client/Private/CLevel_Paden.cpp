@@ -119,22 +119,6 @@ HRESULT CLevel_Paden::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
-
-#ifdef _DEBUG
-	if (FAILED(GAMEINSTANCE->Render_Font(L"DefaultFont", L"Paden Level", _float2(100.f, 30.f), _float4(1.f, 1.f, 1.f, 1.f))))
-		return E_FAIL;
-
-#endif
-
-#ifdef RELEASE_IMGUI
-
-#ifndef _DEBUG
-	if (FAILED(GAMEINSTANCE->Render_Font(L"DefaultFont", L"Paden Level", _float2(100.f, 30.f), _float4(1.f, 1.f, 1.f, 1.f))))
-		return E_FAIL;
-
-#endif // !_DEBUG
-#endif
-
 	return S_OK;
 }
 

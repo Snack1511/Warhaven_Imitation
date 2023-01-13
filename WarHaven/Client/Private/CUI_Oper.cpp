@@ -138,7 +138,13 @@ void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 		CUser::Get_Instance()->Set_TargetPointPos(iEventNum);
 
 	// a, r, c
-	PLAYER->Get_OwnerPlayer()->Set_MainPlayerStartPath(iEventNum);
+	if (m_bIsOperation)
+		PLAYER->Get_OwnerPlayer()->Set_MainPlayerStartPath(iEventNum);
+	else
+	{
+		if (iEventNum == 1)
+			m_bRespawnTriggerClicked = true;
+	}
 }
 
 void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
@@ -160,8 +166,20 @@ void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
 	CPlayer* pMainPlayer = CUser::Get_Instance()->Get_MainPlayerInfo()->Get_Player();
 	_float4 vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition_Start();
 
+	if (m_bRespawnTriggerClicked)
+	{
+		if (m_eLoadLevel == LEVEL_PADEN)
+			vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition("Paden_Trigger_R");
+		else
+			vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition("Hwara_Respawn");
+
+	}
+
 	pMainPlayer->Respawn_Unit(vStartPos, CUser::Get_Instance()->Get_MainPlayerInfo()->Get_ChonsenClass());
 	GAMEINSTANCE->Change_Camera(L"PlayerCam");
+
+	m_bIsOperation = false;
+	m_bRespawnTriggerClicked = false;
 
 }
 
@@ -1105,7 +1123,7 @@ void CUI_Oper::Set_OperProfile()
 
 	for (int i = 0; i < 4; ++i)
 	{
-		_uint iTextureNum = iter->second->Get_PlayerInfo()->Choose_Character();
+		_uint iTextureNum = iter->second->Get_PlayerInfo()->Get_ChonsenClass();
 		wstring wstrPlayerName = iter->second->Get_PlayerName();
 
 		m_pArrOperProfile[i]->Set_TextureIndex(iTextureNum);

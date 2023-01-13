@@ -50,6 +50,7 @@ HRESULT CWindow_Shader::Render()
 		return E_FAIL;
 
 	static _bool	bPBR = true;
+	static _bool	bDOF = true;
 	static _float fSSAO = 1.f;
 	static _float fBrightness = 1.f;
 	static _float fContrast = 1.f;
@@ -138,11 +139,10 @@ HRESULT CWindow_Shader::Render()
 	ImGui::SameLine();
 
 	ImGui::PushItemWidth(100);
-	if (ImGui::SliderFloat("DOF Power", &fDOFPower, 0.01f, 10.f, " % .2f"))
+	if (ImGui::SliderFloat("DOF", &fDOFPower, 0.01f, 3.f, " % .2f"))
 	{
 		GAMEINSTANCE->Set_DOFPower(fDOFPower);
 	}
-
 	__super::End();
 
 	return S_OK;

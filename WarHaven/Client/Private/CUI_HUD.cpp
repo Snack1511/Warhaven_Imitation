@@ -254,7 +254,7 @@ void CUI_HUD::SetActive_SquardInfo(_bool value)
 
 	for (int i = 1; i < vecPlayer.size(); ++i)
 	{
-		_uint iTextureNum = vecPlayer[i]->Get_PlayerInfo()->Choose_Character();
+		_uint iTextureNum = vecPlayer[i]->Get_PlayerInfo()->Get_ChonsenClass();
 		wstring wstrPlayerName = vecPlayer[i]->Get_PlayerName();
 
 		_uint iIdx = (i - 1);

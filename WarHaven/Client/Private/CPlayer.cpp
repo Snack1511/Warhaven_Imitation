@@ -424,7 +424,7 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 		//Path 갱신 + 캐릭터 재선택
 		if (!m_bReborn)
 		{
-			m_pMyPlayerInfo->Choose_Character();
+			//m_pMyPlayerInfo->Choose_Character();
 
 			if (m_bIsLeaderPlayer)
 			{
@@ -1195,14 +1195,14 @@ void CPlayer::Set_OutlineType(OUTLINETYPE eOutlineType)
 
 void CPlayer::My_Tick()
 {
-	if (!m_bIsMainPlayer)
-	{
-		if (KEY(J, TAP))
-		{
-			m_pCurrentUnit->Get_Status().fHP = 0.f;
-			m_pCurrentUnit->Teleport_Unit(_float4(0.f, 20.f, 0.f));
-		}
-	}
+	//if (!m_bIsMainPlayer)
+	//{
+	//	if (KEY(J, TAP))
+	//	{
+	//		m_pCurrentUnit->Get_Status().fHP = 0.f;
+	//		m_pCurrentUnit->Teleport_Unit(_float4(0.f, 20.f, 0.f));
+	//	}
+	//}
 
 	if (m_bIsBattle)
 	{

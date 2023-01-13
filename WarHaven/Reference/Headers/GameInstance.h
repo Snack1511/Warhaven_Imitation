@@ -68,7 +68,6 @@ public: /* For. Input_Device */
 public: /* For. Sound_Device */
 	HRESULT		Load_SoundFile(wstring wstrFolderPath);
 
-
 	void		Play_Sound(const _tchar* strSoundKey, CHANNEL_GROUP iGroupIndex, _float fVolumeRatio = 1.f);
 	void		Play_BGM(const _tchar* strSoundKey);
 

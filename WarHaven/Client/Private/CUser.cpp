@@ -91,14 +91,14 @@ void CUser::Tick()
 {
 	Fix_CursorPosToCenter();
 
-	if (KEY(TAB, TAP))
+	/*if (KEY(TAB, TAP))
 	{
 		static _bool bShowCursor = false;
 
 		bShowCursor = !bShowCursor;
 
 		ShowCursor(bShowCursor);
-	}
+	}*/
 
 	Update_KillLog();
 	Update_KillName();
