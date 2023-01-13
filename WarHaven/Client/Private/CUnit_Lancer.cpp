@@ -94,14 +94,17 @@ void CUnit_Lancer::SetUp_Colliders(_bool bPlayer)
 	COL_GROUP_CLIENT	eHitBoxHead = (bPlayer) ? COL_BLUEHITBOX_HEAD : COL_REDHITBOX_HEAD;
 	COL_GROUP_CLIENT	eAttack = (bPlayer) ? COL_BLUEATTACK : COL_REDATTACK;
 	COL_GROUP_CLIENT	eGroggy = (bPlayer) ? COL_BLUEGROGGYATTACK : COL_REDGROGGYATTACK;
-	COL_GROUP_CLIENT	eFlyAttack = (bPlayer) ? COL_BLUEFLYATTACK : COL_REDFLYATTACK;
 
 
-	const _uint iBodySphereNum = 4;
+	const _uint iBodySphereNum = 8;
 
 	CUnit::UNIT_COLLIDERDESC tUnitColDesc[iBodySphereNum] =
 	{
 		//Radius,	vOffsetPos.		eColType
+		{0.5f, _float4(0.f, 0.5f, -0.7f),(_uint)eHitBoxBody },
+		{0.5f, _float4(0.f, 0.5f, 0.7f),(_uint)eHitBoxBody },
+		{0.5f, _float4(0.f, 1.f, -0.7f),(_uint)eHitBoxBody },
+		{0.5f, _float4(0.f, 1.f, 0.7f),(_uint)eHitBoxBody },
 		{0.6f, _float4(0.f, 1.4f, -0.7f),(_uint)eHitBoxBody },
 		{0.6f, _float4(0.f, 1.4f, 0.f),(_uint)eHitBoxBody },
 		{0.6f, _float4(0.f, 1.4f, 0.7f),(_uint)eHitBoxBody },
@@ -163,13 +166,13 @@ void	CUnit_Lancer::SetUp_HitStates(UNIT_TYPE eUnitType)
 
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
-		m_tHitType.eHitState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_WARRIOR;
-		m_tHitType.eGuardBreakState = AI_STATE_COMBAT_GUARDCANCEL_WARRIOR;
-		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_WARRIOR;
-		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_WARRIOR;
-		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_WARRIOR;
-		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_WARRIOR_L;
+		m_tHitType.eHitState = AI_STATE_COMMON_HIT_LANCER;
+		m_tHitType.eGuardState = AI_STATE_COMMON_GROGGYHIT_LANCER;
+		m_tHitType.eGuardBreakState = AI_STATE_COMMON_GROGGYHIT_LANCER;
+		m_tHitType.eStingHitState = AI_STATE_COMMON_GROGGYHIT_LANCER;
+		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_LANCER;
+		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_LANCER;
+		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_LANCER;
 		break;
 
 		
@@ -186,12 +189,13 @@ void	CUnit_Lancer::SetUp_HitStates(UNIT_TYPE eUnitType)
 
 void CUnit_Lancer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 {
+	m_eSprintEndState = NO_PATTERN;
+
 	switch (eUnitType)
 	{
 	case Client::CUnit::UNIT_TYPE::ePlayer:
 
 		m_eDefaultState = STATE_IDLE_LANCER;
-		m_eSprintEndState = NO_PATTERN;
 		m_eBreezeBegin = STATE_ATTACK_BREEZE_BEGIN_LANCER;
 		m_eBreezeLoop = STATE_ATTACK_BREEZE_LOOP_LANCER;
 
@@ -199,15 +203,15 @@ void CUnit_Lancer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
-		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
-		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+		m_eDefaultState = AI_STATE_PATROL_DEFAULT_LANCER; // 컴뱃으로 바꿀 예정
+		//m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
 
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_idiot:
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
-		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+		//m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
 
 		break;
 
@@ -234,7 +238,7 @@ void CUnit_Lancer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	{
 	case eBehaviorType::ePatrol:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEFAULT_WARRIOR_R;
+		eNewState = AI_STATE_PATROL_DEFAULT_LANCER;
 		break;
 	case eBehaviorType::eFollow:
 		//상태변경
@@ -911,7 +915,9 @@ void CUnit_Lancer::My_LateTick()
 		{
 			if (m_iNeedleNums < eNeedle_Max)
 			{
-				CUser::Get_Instance()->Set_LancerGauge(m_iNeedleNums, m_fTimeAcc, m_fNeedleCreateTime);
+				if(m_bIsMainPlayer)
+					CUser::Get_Instance()->Set_LancerGauge(m_iNeedleNums, m_fTimeAcc, m_fNeedleCreateTime);
+				
 				m_fTimeAcc += fDT(0);
 
 				if (m_fTimeAcc > m_fNeedleCreateTime)

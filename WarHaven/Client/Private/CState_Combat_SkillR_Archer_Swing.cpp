@@ -35,8 +35,6 @@ CState_Combat_SkillR_Archer_Swing* CState_Combat_SkillR_Archer_Swing::Create()
 }
 HRESULT CState_Combat_SkillR_Archer_Swing::Initialize()
 {
-	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
-
 	m_tHitInfo.eHitType = HIT_TYPE::eUP;
 	m_tHitInfo.fKnockBackPower = 1.f;
 	m_tHitInfo.fJumpPower = 0.f;
@@ -55,12 +53,16 @@ HRESULT CState_Combat_SkillR_Archer_Swing::Initialize()
 	Add_KeyFrame(41, 1);
 	Add_KeyFrame(48, 2);
 
+	m_eBounceState = AI_STATE_COMMON_BOUNCE_ARCHER;
 
 	return __super::Initialize();
 }
 
 void CState_Combat_SkillR_Archer_Swing::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	
+	pOwner->Set_BounceState(m_eBounceState);
+
 	pOwner->On_Use(CUnit::SKILL1);
 	static_cast<CUnit_Archer*>(pOwner)->Change_ArrowPhase((_uint)CProjectile::eLOOP);
 
@@ -102,7 +104,11 @@ STATE_TYPE CState_Combat_SkillR_Archer_Swing::Tick(CUnit* pOwner, CAnimator* pAn
 	if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
 		return AI_STATE_COMBAT_DEFAULT_ARCHER_R;
 
+	CUnit* pUnit = pOwner->Get_TargetUnit();
+	CTransform* pMyTransform = pOwner->Get_Transform();
 
+	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+	pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
 
 	return __super::Tick(pOwner, pAnimator);
 }

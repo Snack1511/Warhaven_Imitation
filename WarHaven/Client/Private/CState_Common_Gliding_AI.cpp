@@ -83,15 +83,19 @@ STATE_TYPE CState_Common_Gliding_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
         return eSprintEndState;
     }
 
-    if (KEY(SPACE, TAP))
-    {
-        STATE_TYPE eSprintFallState = pOwner->Get_SprintFallState();
-        pOwner->Reset_GlidingTime();
-        pOwner->Get_PhysicsCom()->Set_Jump(0.f);
-        m_bReturn = true;
-        return  eSprintFallState;
-    }
 
+    /* 날개 접는 코드 */
+    //if (KEY(SPACE, TAP))
+    //{
+    //    STATE_TYPE eSprintFallState = pOwner->Get_SprintFallState();
+    //    pOwner->Reset_GlidingTime();
+    //    pOwner->Get_PhysicsCom()->Set_Jump(0.f);
+    //    m_bReturn = true;
+    //    return  eSprintFallState;
+    //}
+
+
+    // 카메라 Look 방향으로 이동
     _float4 vLook = pOwner->Get_FollowCamLook();
     
     if (vLook.y > -0.5f)

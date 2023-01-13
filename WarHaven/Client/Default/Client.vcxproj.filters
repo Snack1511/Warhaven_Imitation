@@ -3835,6 +3835,9 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\08. Lancer">
       <UniqueIdentifier>{7fb81beb-29e2-4ea3-8950-4dc8f1440cf1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\08. Lancer">
+      <UniqueIdentifier>{e640dd90-a31b-450d-b9a9-6ca60e74e501}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6828,6 +6831,57 @@
     <ClInclude Include="..\Public\CState_Common_Gliding_AI.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\08. Gliding</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Hit_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_GuardHit_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Groggy_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Sting_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_FlyHit_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\08. Lancer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\08. Lancer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Hit_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\08. Lancer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Groggy_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\08. Lancer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_FlyHit_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\08. Lancer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\08. Lancer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\08. Lancer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\08. Lancer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9801,6 +9855,57 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Common_Gliding_AI.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\08. Gliding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Hit_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_GuardHit_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Groggy_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Sting_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_FlyHit_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\08. Lancer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\08. Lancer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Hit_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\08. Lancer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Groggy_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\08. Lancer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_FlyHit_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\08. Lancer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\08. Lancer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\08. Lancer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\08. Lancer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

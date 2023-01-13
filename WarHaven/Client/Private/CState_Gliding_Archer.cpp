@@ -62,7 +62,6 @@ void CState_Gliding_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
     pOwner->Get_Glider()->Set_GliderState(CGlider::eGliderState::eOpen);
 
     GAMEINSTANCE->Start_RadialBlur(0.015f);
-    GAMEINSTANCE->Start_ChromaticAberration(30.f);
 
     m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
@@ -114,7 +113,6 @@ void CState_Gliding_Archer::Exit(CUnit* pOwner, CAnimator* pAnimator)
         pOwner->Enable_Glider(false);
 
     GAMEINSTANCE->Stop_RadialBlur();
-    GAMEINSTANCE->Stop_ChromaticAberration();
 
     pOwner->Get_Glider()->Set_GliderState(CGlider::eGliderState::eClose);
 }

@@ -170,13 +170,14 @@ void CUnit_Qanda::SetUp_HitStates(UNIT_TYPE eUnitType)
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
-		//m_tHitType.eHitState = AI_STATE_COMMON_HIT_QANDA;
-		//m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_QANDA;
-		//m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_QANDA; // 이거 아직 안함.
-		//m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_QANDA;
-		//m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_QANDA;
-		//m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_QANDA;
-		//m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_QANDA;
+		m_tHitType.eHitState = AI_STATE_COMMON_HIT_QANDA;
+		m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_QANDA;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_QANDA; // 이거 아직 안함.
+		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_QANDA;
+		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_QANDA;
+		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_QANDA;
+		m_tHitType.eBounce = AI_STATE_COMMON_HIT_QANDA;
+
 		break;
 
 	default:
@@ -200,6 +201,7 @@ void CUnit_Qanda::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
+		m_eDefaultState = AI_STATE_PATROL_DEFAULT_QANDA;
 		//m_eDefaultState = AI_STATE_COMBAT_DEFAULT_QANDA_R;
 		//m_eSprintEndState = AI_STATE_PATROL_DEFAULT_QANDA_R;
 
@@ -228,7 +230,7 @@ void CUnit_Qanda::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	{
 	case eBehaviorType::ePatrol:
 		//상태변경
-	//	eNewState = AI_STATE_PATROL_DEFAULT_QANDA_R;
+		eNewState = AI_STATE_PATROL_DEFAULT_QANDA;
 		break;
 	case eBehaviorType::eFollow:
 		//상태변경

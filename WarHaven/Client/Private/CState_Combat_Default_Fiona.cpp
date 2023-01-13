@@ -30,6 +30,8 @@ HRESULT CState_Combat_Default_Fiona::Initialize()
 
 void CState_Combat_Default_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Get_Status().fDamageMultiplier = 2.f;
+
 	if (ePrevType == m_eStateType)
 		m_fInterPolationTime = 0.f;
 

@@ -253,7 +253,7 @@ void CPurpleArrow::Death_Cam(CUnit* pOtherUnit)
 	tHitInfo.fKnockBackPower = 3.f;
 	tHitInfo.fJumpPower = 0.f;
 
-	pOtherUnit->On_PlusHp(m_fDamage * 30.f, m_pOwnerUnit, false, 3);
+	pOtherUnit->On_PlusHp(m_fDamage * 5.f, m_pOwnerUnit, false, 3);
 	pOtherUnit->Enter_State(pOtherUnit->Get_HitType().eGroggyState, &tHitInfo);
 
 	if (pOtherUnit->Get_Status().fHP <= 0.f)

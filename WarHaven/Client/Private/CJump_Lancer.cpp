@@ -100,6 +100,7 @@ STATE_TYPE CJump_Lancer::Tick(CUnit* pOwner, CAnimator* pAnimator)
         return STATE_RUN_LANCER;
 
     Follow_MouseLook(pOwner);
+    pOwner->Set_DirAsLook();
 
     return __super::Tick(pOwner, pAnimator);
     

@@ -226,4 +226,7 @@ STATE_TYPE CState_Combat_Default_Archer::Choose_Arrow(CUnit* pOwner)
 
 	else if (!pOwner->Get_SkillTrigger().bSkillETrigger && !pOwner->Get_SkillTrigger().bSkillQTrigger)
 		return AI_STATE_COMBAT_ATTACK_BEGIN_ARCHER;
+
+
+	return STATE_END;
 }

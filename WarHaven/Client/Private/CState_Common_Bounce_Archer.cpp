@@ -4,11 +4,13 @@
 #include "UsefulHeaders.h"
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Archer.h"
 
 #include "CUser.h"
 #include "CEffects_Factory.h"
 #include "CSword_Effect.h"
 #include "CColorController.h"
+#include "CProjectile.h"
 
 
 CState_Common_Bounce_Archer::CState_Common_Bounce_Archer()
@@ -39,6 +41,8 @@ HRESULT CState_Common_Bounce_Archer::Initialize()
     m_iAnimIndex = 9;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_COMMON_BOUNCE_ARCHER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
+    m_fAnimSpeed = 2.f;
+
     m_fInterPolationTime = 0.1f;
 
     return S_OK;
@@ -53,6 +57,8 @@ void CState_Common_Bounce_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
         m_bShoot = true;
         m_fInterPolationTime = 0.f;
     }
+
+    static_cast<CUnit_Archer*>(pOwner)->Change_ArrowPhase((_uint)CProjectile::eLOOP);
 
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -71,7 +77,7 @@ STATE_TYPE CState_Common_Bounce_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator
 
 void CState_Common_Bounce_Archer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+    static_cast<CUnit_Archer*>(pOwner)->Change_ArrowPhase((_uint)CProjectile::eSTART);
 }
 
 STATE_TYPE CState_Common_Bounce_Archer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
