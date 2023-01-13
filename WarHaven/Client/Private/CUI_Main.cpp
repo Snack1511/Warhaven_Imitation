@@ -14,6 +14,8 @@
 #include "CPlayer.h"
 #include "CUnit.h"
 
+#include "Functor.h"
+
 CUI_Main::CUI_Main()
 {
 }
@@ -43,12 +45,16 @@ HRESULT CUI_Main::Start()
 	SetActive_PlayerNameText(true);
 	SetActive_MainWindow(MW_Play);
 
+	CFunctor::Play_Sound(L"BGM_Main", CHANNEL_BGM, 1.f);
+
 	return S_OK;
 }
 
 void CUI_Main::On_PointEnter_TopBtn(const _uint& iEventNum)
 {
 	m_pArrTopBtn[iEventNum]->Set_FontColor(m_vColorWhite);
+
+	CFunctor::Play_Sound(L"UI_Btn_Enter_Main", CHANNEL_UI, 1.f);
 }
 
 void CUI_Main::On_PointExit_TopBtn(const _uint& iEventNum)
@@ -61,6 +67,8 @@ void CUI_Main::On_PointExit_TopBtn(const _uint& iEventNum)
 
 void CUI_Main::On_PointDown_TopBtn(const _uint& iEventNum)
 {
+	CFunctor::Play_Sound(L"UI_Btn_Down_Main", CHANNEL_UI, 1.f);
+
 	m_iPrvEnvetNum = m_iCurEventNum;
 	m_iCurEventNum = iEventNum;
 

@@ -102,7 +102,8 @@ void CWarrior_Attack_HorizontalMiddle::On_KeyFrameEvent(CUnit * pOwner, CAnimato
 	switch (iSequence)
 	{
 	case 1:
-		m_bAttackTrigger = true;
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS, 1.f);
+		m_bAttackTrigger = true;		
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;
 

@@ -73,7 +73,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(CState_Manager::Get_Instance()->Initialize()))
 		return E_FAIL;
 
-	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_LOGO)))
+	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_MAINMENU)))
 		return E_FAIL;
 
 	//Sound
@@ -314,6 +314,12 @@ HRESULT CMainApp::Load_SoundFile()
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/UI")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Env")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Effect")))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Warrior")))

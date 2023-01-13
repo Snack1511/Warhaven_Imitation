@@ -980,6 +980,11 @@ void CState::Physics_Setting_Right_AI(_float fSpeed, CUnit* pOwner, _bool bSpeed
 		pMyPhysicsCom->Set_SpeedasMax();
 }
 
+void CState::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float fVolume)
+{
+	CFunctor::Play_Sound(wstrFileName, iGroupIndex, fVolume);
+}
+
 void CState::Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable)
 {
 	GET_COMPONENT_FROM(pOwner, CModel)->Enable_ModelParts(iPartType, bEnable);
