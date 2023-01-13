@@ -27,6 +27,8 @@ private:
 
 	_float fPosX = 450.f;
 
+	_float m_fDisableTime = 7.f;
+
 	_float4 m_vColorGold = RGB(255, 207, 64);
 
 private:

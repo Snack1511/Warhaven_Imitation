@@ -77,7 +77,7 @@ void CUI_Info::Create_InfoUI()
 	{
 		m_pInfoUI[i] = CUI_Object::Create();
 
-		m_pInfoUI[i]->Set_FadeDesc(0.1f, 0.3f, 3.f, true);
+		m_pInfoUI[i]->Set_FadeDesc(0.1f, 0.3f, m_fDisableTime, true);
 		m_pInfoUI[i]->Set_Sort(0.49f);
 
 		switch (i)
@@ -124,7 +124,7 @@ void CUI_Info::Create_InfoText()
 	{
 		m_pInfoText[i] = CUI_Object::Create();
 
-		m_pInfoText[i]->Set_FadeDesc(0.1f, 0.3f, 3.f, true);
+		m_pInfoText[i]->Set_FadeDesc(0.1f, 0.3f, m_fDisableTime, true);
 		m_pInfoText[i]->Set_Sort(0.49f);
 
 	}
