@@ -982,7 +982,7 @@ void CState::Physics_Setting_Right_AI(_float fSpeed, CUnit* pOwner, _bool bSpeed
 
 void CState::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float fVolume)
 {
-	CFunctor::Play_Sound(wstrFileName, iGroupIndex, fVolume);
+	CFunctor::Play_Sound(wstrFileName, iGroupIndex, m_pOwner->Get_Transform()->Get_World(WORLD_POS), fVolume);
 }
 
 void CState::Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable)

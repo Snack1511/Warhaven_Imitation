@@ -359,6 +359,8 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 		if (m_eCurrentClass >= FIONA)
 		{
 			m_pCurrentUnit->Get_Status().fHP = m_pCurrentUnit->Get_Status().fMaxHP;
+
+			CFunctor::Play_Sound(L"Effect_ChangeHero", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS), 1.f);
 		}
 
 
@@ -506,7 +508,7 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 			}
 
 
-			
+
 
 		}
 	}
@@ -575,7 +577,7 @@ void CPlayer::SetUp_ReserveState()
 		m_iReserveStateDefault[PALADIN] = AI_STATE_PATROL_DEFAULT_PALADIN_R;
 		m_iReserveStateDefault[PRIEST] = AI_STATE_PATROL_DEFAULT_PRIEST;
 		m_iReserveStateDefault[ENGINEER] = AI_STATE_PATROL_DEFAULT_ENGINEER_R;
-		m_iReserveStateDefault[FIONA] = AI_STATE_COMBAT_DEFAULT_FIONA_R; 
+		m_iReserveStateDefault[FIONA] = AI_STATE_COMBAT_DEFAULT_FIONA_R;
 		m_iReserveStateDefault[QANDA] = AI_STATE_PATROL_DEFAULT_QANDA; // 공격상태로 바꿔야함.
 		m_iReserveStateDefault[LANCER] = AI_STATE_PATROL_DEFAULT_LANCER;
 
@@ -1489,7 +1491,7 @@ void CPlayer::Clear_DebugObject()
 		DELETE_GAMEOBJECT(Debug);
 	}
 	m_pRouteDebug.clear();
-}
+	}
 
 #endif
 _bool CPlayer::Is_OpenCell()
@@ -1520,7 +1522,7 @@ void CPlayer::Make_BestRoute(_float4 vPosition)
 
 	m_pCurrentUnit->Get_NaviCom()->Make_Route(&m_CurRoute, CGameSystem::Get_Instance()->Get_CellLayer(), Get_WorldPos(), vPosition);
 
-	
+
 #ifdef _DEBUG
 	m_CurNodeList = m_pCurrentUnit->Get_NaviCom()->m_DebugRouteNode;
 #endif
