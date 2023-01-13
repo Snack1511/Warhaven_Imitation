@@ -184,6 +184,10 @@ void CUI_MainPlay::On_PointUpEvent_Start(const _uint& iEventNum)
 			CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_PADEN);
 			break;
 
+		case CUI_MainPlay::Hwara:
+			CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_HWARA);
+			break;
+
 		case CUI_MainPlay::Training:
 			CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_BOOTCAMP);
 			break;
@@ -246,6 +250,11 @@ void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
 		else if (iTextureNum == 1)
 		{
 			Enable_StageClickRect(vPos);
+
+			m_eStage = Select_Map::Hwara;
+
+			m_wstrModeText = TEXT("¸Ê - ÆÄ¶ó");
+			m_pStageNameRect->Set_FontText(m_wstrModeText);
 		}
 		else if (iTextureNum == 2)
 		{

@@ -525,8 +525,8 @@ void CUI_ScoreBoard::Init_PointUI()
 			}
 		}
 
-		m_pArrPointUI[Point_A][PU_Outline]->Set_TextureIndex(1);
-		m_pArrPointUI[Point_A][PU_Gauge]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_A][PU_Outline]->Set_TextureIndex(0);
+		m_pArrPointUI[Point_A][PU_Gauge]->Set_TextureIndex(0);
 		m_pArrPointUI[Point_A][PU_Text]->Set_TextureIndex(0);
 		m_pArrPointUI[Point_A][PU_Outline]->Set_PosY(-17.f);
 		m_pArrPointUI[Point_A][PU_Gauge]->Set_PosY(-17.f);
@@ -598,6 +598,12 @@ void CUI_ScoreBoard::Init_PointUI()
 		m_pArrPointUI[Point_E][PU_Outline]->Set_PosY(-15.f);
 		m_pArrPointUI[Point_E][PU_Gauge]->Set_PosY(-15.f);
 		m_pArrPointUI[Point_E][PU_Text]->Set_PosY(-17.f);
+
+		for (int i = 0; i < PU_End; ++i)
+		{
+			m_pArrPointUI[Point_A][i]->Set_Color(m_vColorBlue2);
+			m_pArrPointUI[Point_E][i]->Set_Color(m_vColorRed2);
+		}
 
 		break;
 	}

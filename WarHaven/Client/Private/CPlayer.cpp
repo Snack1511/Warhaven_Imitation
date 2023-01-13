@@ -719,7 +719,8 @@ HRESULT CPlayer::Initialize_Prototype()
 
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
-	Create_UnitHUD();
+	if (!m_bIsMainPlayer)
+		Create_UnitHUD();
 
 	if (FAILED(SetUp_Collider()))
 		return E_FAIL;
@@ -942,7 +943,7 @@ _bool CPlayer::Is_AbleRevival()
 	return m_bAbleRevival;
 }
 
-CPlayer* CPlayer::Get_TargetPlayer(eTargetPlayerType eType) 
+CPlayer* CPlayer::Get_TargetPlayer(eTargetPlayerType eType)
 {
 	if (!m_pAIController)
 		return m_pTargetPlayer;
@@ -1057,12 +1058,13 @@ void CPlayer::On_PlusGauge(_float fGauge)
 
 void CPlayer::SetActive_UnitHUD(_bool value)
 {
-	m_pUnitHUD->SetActive(value);
+	if (m_pUnitHUD)
+		m_pUnitHUD->SetActive(value);
 }
 
 void CPlayer::On_RealChangeBehavior()
 {
-	
+
 
 	m_pCurBehaviorDesc = m_pReserveBehaviorDesc;
 
@@ -1215,7 +1217,8 @@ void CPlayer::My_Tick()
 
 	//공통으로 업데이트 되어야 하는것
 
-	m_pUnitHUD->Set_UnitStatus(m_pCurrentUnit->Get_Status());
+	if (m_pUnitHUD)
+		m_pUnitHUD->Set_UnitStatus(m_pCurrentUnit->Get_Status());
 
 	Update_HeroGauge();
 
@@ -1270,8 +1273,11 @@ void CPlayer::My_LateTick()
 	m_bIsInFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
 	if (!m_bIsInFrustum)
 	{
-		m_pUnitHUD->Disable_RevivalUI();
-		m_pUnitHUD->Get_UnitHP()->SetActive(false);
+		if (m_pUnitHUD)
+		{
+			m_pUnitHUD->Disable_RevivalUI();
+			m_pUnitHUD->Get_UnitHP()->SetActive(false);
+		}
 	}
 	else
 	{
@@ -1281,7 +1287,12 @@ void CPlayer::My_LateTick()
 		if (Get_Team()->IsMainPlayerTeam())
 		{
 			if (m_bAbleRevival)
-				m_pUnitHUD->Enable_RevivalUI();
+			{
+				if (m_pUnitHUD)
+				{
+					m_pUnitHUD->Enable_RevivalUI();
+				}
+			}
 		}
 	}
 
@@ -1576,7 +1587,10 @@ void CPlayer::Check_AbleRevival()
 	if (m_bAbleRevival)
 	{
 		m_fRevivalAcc += fDT(0);
-		m_pUnitHUD->Set_RevivalGauge(m_fRevivalAcc, m_fMaxRevivalTime);
+
+		if (m_pUnitHUD)
+			m_pUnitHUD->Set_RevivalGauge(m_fRevivalAcc, m_fMaxRevivalTime);
+
 		if (m_fRevivalAcc >= m_fMaxRevivalTime)
 		{
 
@@ -1631,13 +1645,19 @@ void CPlayer::Create_UnitHUD()
 
 void CPlayer::Enable_UnitHUD()
 {
-	CREATE_GAMEOBJECT(m_pUnitHUD, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pUnitHUD);
+	if (m_pUnitHUD)
+	{
+		CREATE_GAMEOBJECT(m_pUnitHUD, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pUnitHUD);
+	}
 }
 
 void CPlayer::Frustum_UnitHUD()
 {
 	if (!m_pCurrentUnit->Is_Valid())
+		return;
+
+	if (!m_pUnitHUD)
 		return;
 
 	_float fDis = CUtility_Transform::Get_FromCameraDistance(m_pCurrentUnit);
@@ -1669,7 +1689,8 @@ void CPlayer::TransformProjection()
 {
 	if (m_pCurrentUnit)
 	{
-		m_pUnitHUD->Set_ProjPos(m_pCurrentUnit->Get_Transform());
+		if (m_pUnitHUD)
+			m_pUnitHUD->Set_ProjPos(m_pCurrentUnit->Get_Transform());
 	}
 }
 

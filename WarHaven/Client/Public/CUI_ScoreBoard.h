@@ -83,6 +83,9 @@ private:
 	_float4 m_vColorBlue = _float4(0.f, 0.8f, 1.f, 0.1f);
 	_float4 m_vColorRed = _float4(1.f, 0.2f, 0.f, 0.1f);
 
+	_float4 m_vColorBlue2 = _float4(0.f, 0.8f, 1.f, 1.f);
+	_float4 m_vColorRed2 = _float4(1.f, 0.2f, 0.f, 1.f);
+
 private:
 	void Create_ScoreMiniMap();
 	void Create_ScorePlayerList();

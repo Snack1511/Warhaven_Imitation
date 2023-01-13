@@ -8,6 +8,7 @@ class CNode;
 #ifdef _DEBUG
 class CShader;
 #endif
+class CShader;
 class ENGINE_DLL CCellLayer
 {
 public:

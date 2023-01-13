@@ -1289,7 +1289,7 @@ void CUnit::My_Tick()
 			CUser::Get_Instance()->Set_SkillCoolTime(i, m_fCoolAcc[i], m_fCoolTime[i]);
 		}
 	}
-	
+
 	if (m_fAttackDelay > 0.f)
 		m_fAttackDelay -= fDT(0);
 	else
@@ -1323,7 +1323,7 @@ void CUnit::My_Tick()
 
 		}
 
-	}	
+	}
 
 	STATE_TYPE eNewState = STATE_END;
 	eNewState = m_pCurState->Tick(this, m_pAnimator);
@@ -1566,7 +1566,8 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 
 	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot, 3);
 
-	Get_OwnerHUD()->SetActive_UnitHP(true);
+	if (!m_bIsMainPlayer)
+		Get_OwnerHUD()->SetActive_UnitHP(true);
 
 	/*블러드 오버레이*/
 	if (m_bIsMainPlayer)
