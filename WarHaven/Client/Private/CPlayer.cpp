@@ -81,6 +81,8 @@
 #pragma endregion AI 추가용
 #include "CDebugObject.h"
 
+#include "CTrigger.h"
+
 
 
 CPlayer::CPlayer()
@@ -927,7 +929,9 @@ CBehavior* CPlayer::Get_CurBehavior()
 void CPlayer::On_Die()
 {
 	//m_bDie = true;
-	DISABLE_GAMEOBJECT(m_pUnitHUD);
+	if (m_pUnitHUD)
+		DISABLE_GAMEOBJECT(m_pUnitHUD);
+
 	m_bDieDelay = true;
 
 	if (!m_bIsMainPlayer)
@@ -976,6 +980,14 @@ CPlayer* CPlayer::Get_TargetPlayer(eTargetPlayerType eType)
 
 	return m_pTargetPlayer;
 
+}
+
+_float4 CPlayer::Get_TargetObjPos()
+{
+	if (!m_pTargetObj)
+		return ZERO_VECTOR;
+
+	return m_pTargetObj->Get_Transform()->Get_World(WORLD_POS);
 }
 
 void CPlayer::On_RealDie()
@@ -1083,17 +1095,40 @@ void CPlayer::On_RealChangeBehavior()
 	if (!m_pCurBehaviorDesc)
 		return;
 
+	CGameObject* pNewTargetObj = nullptr;
+
 	switch (m_pCurBehaviorDesc->eCurType)
 	{
 	case eBehaviorType::eCombat:
 		m_pTargetPlayer = m_pCurBehaviorDesc->pEnemyPlayer;
+		pNewTargetObj = m_pTargetPlayer;
+		m_bKeepRay = true;
+
 		break;
 	case eBehaviorType::eRevive:
 		m_pTargetPlayer = m_pCurBehaviorDesc->pAlliesPlayer;
+		pNewTargetObj = m_pTargetPlayer;
+		m_bKeepRay = false;
+
 		break;
+
+	case eBehaviorType::eGoToTrigger:
+		pNewTargetObj = m_pCurBehaviorDesc->pTriggerPtr;
+		m_bKeepRay = false;
+		break;
+
 	default:
+		m_bKeepRay = false;
+
 		break;
 	}
+
+	if (m_pTargetObj != pNewTargetObj)
+	{
+		m_CurRoute.clear();
+	}
+
+	m_pTargetObj = pNewTargetObj;
 }
 
 void CPlayer::On_FinishGame(CTeamConnector* pLoseTeam)

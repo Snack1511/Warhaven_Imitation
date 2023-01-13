@@ -177,6 +177,11 @@ public:
 	void	Set_TargetPlayer(CPlayer* pTargetPlayer) { m_pTargetPlayer = pTargetPlayer; }
 	CPlayer* Get_TargetPlayer(eTargetPlayerType eType = eEnemy);
 
+	void	Set_TargetObj(CGameObject* pTargetObject) { m_pTargetObj = pTargetObject; }
+	CGameObject* Get_TargetObject() { return m_pTargetObj; }
+	_float4		Get_TargetObjPos();
+
+
 public:
 	_bool& AbleHero() { return m_bAbleHero; }
 	_bool& IsHero() { return m_bIsHero; }
@@ -272,6 +277,7 @@ private:
 
 private:
 	CPlayer* m_pTargetPlayer = nullptr;
+	CGameObject* m_pTargetObj = nullptr;
 
 public:
 	_bool IsDieDlay() { return m_bDieDelay; }
@@ -368,6 +374,12 @@ private:
 public:
 	_bool IsBattle() { return m_bIsBattle; }
 	void Set_IsBattle(_bool value) { m_bIsBattle = value; }
+
+private:
+	_bool	m_bKeepRay = false;
+	
+public:
+	_bool	Is_KeepRay() { return m_bKeepRay; }
 
 private:
 	_bool m_bIsBattle = false;

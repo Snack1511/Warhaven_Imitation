@@ -38,6 +38,9 @@ void CState_PathNavigation::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (!m_pOwner->Get_OwnerPlayer()->Get_TargetObject())
+		return STATE_END;
+
 	m_fAIDelayTime += fDT(0);
 
 	// 만약에 계속 낀다면 이 로직 한번 사용해보세요.
@@ -49,7 +52,7 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		//	return m_eWalkState;
 	}
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	if (KEY(J, TAP))
 	{
 		pOwner->Get_CurRoute().clear();
@@ -57,25 +60,53 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		pOwner->Get_OwnerPlayer()->Make_BestRoute(vTargetPos);
 
 	}
-#endif
+//#endif
 
-	/* 따라가면 대 */
+	_float4 vTargetPos = m_pOwner->Get_OwnerPlayer()->Get_TargetObjPos();
 	_float4 vCurPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
-	_float4 vDir;
+	_float4 vDir = vTargetPos - vCurPos;
+
+	_bool bFindRoute = true;
+
+	if (pOwner->Get_OwnerPlayer()->Is_KeepRay())
+	{
+		_float fDiffY = fabsf(vTargetPos.y - vCurPos.y);
+
+		if (fDiffY < m_fMaxY)
+		{
+			//높이 차 별로 안나면 ray 쏴야함
+			_float4 vOutPos;
+			_float fOutDist;
+
+			_float4 vRayStartPos = vCurPos;
+			vRayStartPos.y += 0.5f;
+			_float4 vRayEndPos = vTargetPos;
+			vRayEndPos.y += 0.5f;
+
+			_float4 vRayDir = vRayEndPos - vRayStartPos;
+
+			if (!GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vRayStartPos, vRayDir, vRayDir.Length()))
+			{
+				//ray 안맞았으면 전 상태로
+				//여기다 다시 return으로 전 상태로 가게 해
 
 
+				bFindRoute = false;
+
+
+			}
+		}
+	}
+
+	if (bFindRoute)
+	{
 		_float4 vDestination;
+		/* empty면 일단 루트를 만들으라고 해야대*/
 		if (pOwner->Get_CurRoute().empty())
 		{
-			/* empty면 일단 루트를 만들으라고 해야대*/
-			if (!m_pOwner->Get_OwnerPlayer()->Get_BehaviorDesc()->pTriggerPtr)
-				return STATE_END;
-
-			_float4 vTargetPos = m_pOwner->Get_OwnerPlayer()->Get_BehaviorDesc()->pTriggerPtr->Get_Transform()->Get_World(WORLD_POS);
 			pOwner->Get_OwnerPlayer()->Make_BestRoute(vTargetPos);
-
 		}
-		else 
+		else
 		{
 
 			vDestination = pOwner->Get_CurRoute().front();
@@ -91,6 +122,9 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			}
 			vDir = vDiffPositon.Normalize();
 		}
+	}
+	
+
 
 
 

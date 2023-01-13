@@ -38,6 +38,7 @@ protected:
 
 private:
 	_float4	m_vOriPos;
+	_float	m_fMaxY = 2.5f;
 };
 
 END

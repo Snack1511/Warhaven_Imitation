@@ -486,7 +486,7 @@ void CPhysX_Manager::Release()
 _bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance)
 {
 	_float fMinDist = 9999.f;
-	_float4 vFinalHitPos = vStartPos + vStartDir * fMaxDistance;
+	_float4 vFinalHitPos = vStartPos + vStartDir.Normalize() * fMaxDistance;
 
 	for (auto& elem : m_listAllStatics)
 	{

@@ -1522,6 +1522,8 @@ void CUnit::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	m_pOwnerPlayer->Reserve_BehaviorDesc(pBehaviorDesc);
 
 
+
+
 }
 
 void CUnit::On_FinishGame(_bool bWin)

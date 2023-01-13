@@ -30,6 +30,38 @@ void CState_Combat::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 
 STATE_TYPE CState_Combat::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	//높이 차 별로 안나면 ray 쏴야함
+	if (!pOwner->Get_OwnerPlayer()->Get_TargetObject())
+		return STATE_END;
+
+	_float4 vOutPos;
+	_float fOutDist;
+
+	_float4 vCurPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+	_float4 vTargetPos = pOwner->Get_OwnerPlayer()->Get_TargetObjPos();
+
+	//높이 차 별로 안나면 ray 쏴야함
+	_float4 vOutPos;
+	_float fOutDist;
+
+	_float4 vRayStartPos = vCurPos;
+	vRayStartPos.y += 0.5f;
+	_float4 vRayEndPos = vTargetPos;
+	vRayEndPos.y += 0.5f;
+
+	_float4 vRayDir = vRayEndPos - vRayStartPos;
+
+	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vCurPos, vRayDir, vRayDir.Length()))
+	{
+		//ray 맞았으면 PathFind로 가야지 (common)
+
+
+		//여기다 return pathfind로 ㅇㅋ?
+
+
+	}
+
+
     return __super::Tick(pOwner, pAnimator);
 }
 
