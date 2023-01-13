@@ -45,6 +45,7 @@
 #include "CMapColliders.h"
 
 #include "CGameSystem.h"
+#include "Functor.h"
 
 CLevel_BootCamp::CLevel_BootCamp()
 {
@@ -108,6 +109,9 @@ HRESULT CLevel_BootCamp::Enter()
 	//CUser::Get_Instance()->Start_FadeDark(0.f, 0.1f, 0.3f);
 
 	GAMEINSTANCE->Stop_DarkScreen(1.5f);
+
+	CFunctor::Play_Sound(L"BGM_Bootcamp", CHANNEL_BGM, 1.f);
+
 	return S_OK;
 }
 

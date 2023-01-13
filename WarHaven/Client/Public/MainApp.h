@@ -34,7 +34,11 @@ private:
 	HRESULT SetUp_Font();
 
 private:
+	HRESULT Load_SoundFile();
+private:
 	void	Col_Check();
+
+
 };
 
 END
