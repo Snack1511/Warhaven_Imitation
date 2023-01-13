@@ -362,6 +362,10 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 
 			CFunctor::Play_Sound(L"Effect_ChangeHero", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS), 1.f);
 		}
+		else
+		{
+			CFunctor::Play_Sound(L"Effect_UnchangeHero", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS), 1.f);
+		}
 
 
 		ENABLE_GAMEOBJECT(pUnit);

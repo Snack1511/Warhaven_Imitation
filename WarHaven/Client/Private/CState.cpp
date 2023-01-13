@@ -194,13 +194,13 @@ void CState::Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator)
 
     for (_uint i = 0; i < iSize; ++i)
     {
-        if (iCurKeyFrame >= m_vecKeyFrameEvent[i].iKeyFrame)
+        if (iCurKeyFrame == m_vecKeyFrameEvent[i].iKeyFrame)
         {
             if (m_vecKeyFrameEvent[i].bExecuted)
                 continue;
 
             On_KeyFrameEvent(pOwner, pAnimator, m_vecKeyFrameEvent[i], m_vecKeyFrameEvent[i].iSequence);
-            m_vecKeyFrameEvent[i].bExecuted = true;
+            // m_vecKeyFrameEvent[i].bExecuted = true;
         }
     }
 }

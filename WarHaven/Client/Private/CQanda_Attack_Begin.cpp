@@ -132,6 +132,8 @@ STATE_TYPE CQanda_Attack_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnima
 
 	if (KEY(LBUTTON, HOLD))
 	{
+		Play_Sound(L"Effect_Charge_Qanda", CHANNEL_UI);
+
 		CAnimWeapon_Crow::ePhyxState eAnimWeaponState = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->Get_Phase();
 
 		if (eAnimWeaponState == CAnimWeapon_Crow::ePhyxState::eSHOOT)

@@ -180,6 +180,8 @@ void CUI_MainPlay::On_PointUpEvent_Start(const _uint& iEventNum)
 {
 	if (!m_pBG->Is_Valid())
 	{
+		CFunctor::Play_Sound(L"UI_Btn_Down_MainPlay", CHANNEL_UI, 1.f);
+
 		switch (m_eStage)
 		{
 		case CUI_MainPlay::Paden:
@@ -201,6 +203,8 @@ void CUI_MainPlay::On_PointUpEvent_Mode(const _uint& iEventNum)
 {
 	if (!m_pBG->Is_Valid())
 	{
+		CFunctor::Play_Sound(L"UI_Btn_Down_MainPlay", CHANNEL_UI, 1.f);
+
 		m_bIsMouseEvent = true;
 		SetActive_ModeWindow();
 	}

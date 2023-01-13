@@ -118,9 +118,9 @@ void CQanda_ShadowStep::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fSprintSpeed;
 	//D3D11_RENDER_TARGET_BLEND_DESC
 
-	Play_Sound(L"Effect_ShadowStep_Qanda", CHANNEL_EFFECTS);
-
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Sound(L"Effect_ShadowStep_Begin_Qanda", CHANNEL_EFFECTS);
 }
 
 STATE_TYPE CQanda_ShadowStep::Tick(CUnit* pOwner, CAnimator* pAnimator)
