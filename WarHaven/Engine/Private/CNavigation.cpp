@@ -367,11 +367,99 @@ return GoalList;
 */
 
 //A. 연산량 주의
+
+int CNavigation::Func_MakeRoute(list<_float4>* NodeList, map<_float, CCellLayer*>* Layers, _float4 vStart, _float4 vEnd, CNavigation* pNaviCom)
+{
+	/* Locked 체크 */
+	pNaviCom->m_bThreadOn = true;
+
+	while (1)
+	{
+		_bool bBreak = false;
+
+		for (auto& elem : *Layers)
+		{
+			if (elem.second->Is_Locked())
+				break;
+
+			bBreak = true;
+
+		}
+
+		if (bBreak)
+			break;
+	}
+	
+	for (auto& elem : *Layers)
+		elem.second->Lock();
+
+	/* 길찾기 */
+	*NodeList = pNaviCom->Get_BestRoute(*Layers, vStart, vEnd);
+
+	for (auto& elem : *Layers)
+		elem.second->UnLock();
+
+	pNaviCom->m_bThreadOn = false;
+
+	return 0;
+
+	/*list<pair<_float4, CCellLayer*>> GoalList = CNavigation::Get_Goals(*Layers, vStart, vEnd);
+	CCellLayer::CellList Routes;
+
+	pNaviCom->m_pStartNode->Set_NodePosition(vStart);
+
+	for (auto value : GoalList)
+	{
+		if (nullptr == value.second)
+			continue;
+		pNaviCom->m_pEndNode->Set_NodePosition(value.first);
+
+		_bool bFind = false;
+		list<_float4> listTemp;
+		CCellLayer::CellList List = value.second->Get_BestRoute(pNaviCom->m_pStartNode, pNaviCom->m_pEndNode, bFind, listTemp);
+
+		for (auto Cell : List)
+			Routes.push_back(Cell);
+
+		pNaviCom->m_pStartNode->Clear_Node();
+		pNaviCom->m_pEndNode->Clear_Node();
+
+		pNaviCom->m_pStartNode->Set_NodePosition(value.first);
+	}
+
+
+
+	list<_float4> Return;
+	if (!Routes.empty())
+	{
+		Routes.pop_front();
+		if (!Routes.empty())
+			Routes.pop_back();
+
+		NodeList->push_back(vStart);
+		for (auto Cell : Routes)
+		{
+			NodeList->push_back(Cell->Get_Position());
+		}
+		NodeList->push_back(vEnd);
+	}*/
+}
+
+void CNavigation::Make_Route(list<_float4>* NodeList, map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd)
+{
+	if (m_bThreadOn)
+		return;
+
+	std::future<int> result = std::async(bind(Func_MakeRoute, NodeList, &Layers, vStart, vEnd, this));
+
+	//*NodeList = Get_BestRoute(Layers, vStart, vEnd);
+}
+
 list<_float4> CNavigation::Get_BestRoute(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd)
 {
 	m_DebugRouteNode.clear();
 	_float4 vStartPos = vStart;
-	list<pair<_float4, CCellLayer*>>GoalList = Get_Goals(Layers, vStartPos, vEnd);
+	list<pair<_float4, CCellLayer*>> GoalList = Get_Goals(Layers, vStartPos, vEnd);
 	CCellLayer::CellList Routes;
 	m_pStartNode->Set_NodePosition(vStart);
 	

@@ -1513,17 +1513,18 @@ void CPlayer::Make_BestRoute(_float4 vPosition)
 #ifdef _DEBUG
 	Clear_DebugObject();
 #endif
-	m_CurRoute.clear();
-	m_CurRoute = m_pCurrentUnit->Get_NaviCom()->
-		Get_BestRoute(CGameSystem::Get_Instance()->Get_CellLayer(),
-			Get_WorldPos(), vPosition);
 
+	m_pCurrentUnit->Get_NaviCom()->Make_Route(&m_CurRoute, CGameSystem::Get_Instance()->Get_CellLayer(), Get_WorldPos(), vPosition);
+
+	
+#ifdef _DEBUG
 	m_CurNodeList = m_pCurrentUnit->Get_NaviCom()->m_DebugRouteNode;
+#endif
 
-	if (m_CurRoute.empty())
-		Set_IsFindRoute(false);
-	else
-		Set_IsFindRoute(true);
+	//if (m_CurRoute.empty())
+	//	Set_IsFindRoute(false);
+	//else
+	//	Set_IsFindRoute(true);
 }
 
 void CPlayer::On_AbleHero()

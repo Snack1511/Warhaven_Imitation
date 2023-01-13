@@ -13,9 +13,7 @@
 //	~CThread_Manager();
 //
 //public:
-//	HRESULT		Initialize(_uint iReserveSize);
-//	HRESULT		Render();
-//	void		Release();
+//	HRESULT		Initialize(_int iReserveSize = -1);
 //public:
 //	HRESULT Allocate_Thread();
 //	vector<shared_ptr<thread>> m_ThreadArr;

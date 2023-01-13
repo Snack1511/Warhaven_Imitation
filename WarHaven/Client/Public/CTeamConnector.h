@@ -48,8 +48,8 @@ public:
 	_bool	Has_CannonTrigger() { return m_bHasTrigger[2]; }
 
 	_bool	Has_CenterTrigger() { return m_bHasTrigger[3]; }
-	_bool	Has_HwaraRespawnTrigger() { return m_bHasTrigger[4]; }
-	_bool	Has_HwaraFinalTrigger() { return m_bHasTrigger[5]; }
+	_bool	Has_HwaraRespawnTrigger() { return m_bHasTrigger[1]; }
+	_bool	Has_HwaraFinalTrigger() { return m_bHasTrigger[4]; }
 	list<CSquad*>& Get_SquadList() { return m_SquadList; }
 
 public:

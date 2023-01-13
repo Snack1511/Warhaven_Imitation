@@ -8,7 +8,7 @@
 #include "CUnit.h"
 
 #include "CUser.h"
-
+#include "CTrigger.h"
 #include "CPath.h"
 #include "CAI_MoveStateUtility.h"
 
@@ -38,8 +38,6 @@ void CState_PathNavigation::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
-
 	m_fAIDelayTime += fDT(0);
 
 	// 만약에 계속 낀다면 이 로직 한번 사용해보세요.
@@ -52,27 +50,29 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	}
 
 
+	if (KEY(J, TAP))
+	{
+		pOwner->Get_CurRoute().clear();
+		_float4 vTargetPos = PLAYER->Get_Transform()->Get_World(WORLD_POS);
+		pOwner->Get_OwnerPlayer()->Make_BestRoute(vTargetPos);
+
+	}
+
 	/* 따라가면 대 */
 	_float4 vCurPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
 	_float4 vDir;
 
-	CPath* pCurPath = pOwner->Get_CurPath();
 
-	if (!pCurPath)
-	{
-		assert(0);
-		return STATE_END;
-	}
-
-	if(pOwner->Get_OwnerPlayer()->Is_FindRoute()) //(!pOwner->Get_CurRoute().empty()) 
-	{
 		_float4 vDestination;
 		if (pOwner->Get_CurRoute().empty())
 		{
-			pOwner->Get_OwnerPlayer()->Set_IsFindRoute(false);
-			vDestination = vCurPos;
-			_float4 vDiffPositon = (vDestination - vCurPos);
-			vDir = vDiffPositon.Normalize();
+			/* empty면 일단 루트를 만들으라고 해야대*/
+			if (!m_pOwner->Get_OwnerPlayer()->Get_BehaviorDesc()->pTriggerPtr)
+				return STATE_END;
+
+			_float4 vTargetPos = m_pOwner->Get_OwnerPlayer()->Get_BehaviorDesc()->pTriggerPtr->Get_Transform()->Get_World(WORLD_POS);
+			pOwner->Get_OwnerPlayer()->Make_BestRoute(vTargetPos);
+
 		}
 		else 
 		{
@@ -90,14 +90,7 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			}
 			vDir = vDiffPositon.Normalize();
 		}
-	}
-	else 
-	{
-		//vDir = pCurPath->Get_CurDir(pOwner->Get_Transform()->Get_World(WORLD_POS));
 
-		//pCurPath->Update_CurrentIndex(vCurPos);
-		
-	}
 
 
 	CCell* pCurCell = pOwner->Get_NaviCom()->Get_CurCell(vCurPos, CGameSystem::Get_Instance()->Get_CellLayer());
@@ -108,7 +101,8 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 
 	pOwner->Get_Transform()->Set_LerpLook(vDir, 0.4f);
-	pOwner->Get_PhysicsCom()->Set_Dir(vDir);
+	//pOwner->Get_PhysicsCom()->Set_Dir(vDir);
+	pOwner->Get_PhysicsCom()->Set_Dir(pOwner->Get_Transform()->Get_World(WORLD_LOOK));
 	pOwner->Get_PhysicsCom()->Set_Accel(100.f);
 
 	

@@ -166,6 +166,7 @@ protected:
 
 protected:
 	_bool				m_bStraight = false;
+	_bool				m_bStopDamagePumping = false;
 
 protected:
 	_float				m_fAIDelayTime = 0.f;

@@ -194,6 +194,13 @@ CCellLayer* CCellLayer::Clone_Layer(_float MinHeight)
 	return pCellLayer;
 }
 
+CCellLayer* CCellLayer::Clone()
+{
+	CCellLayer* pNewLayer = new CCellLayer(*this);
+	pNewLayer->m_Nodes.clear();
+	return pNewLayer;
+}
+
 void CCellLayer::Save(wstring strForlderPath, wstring strForlderName)
 {
 	wstring SavePath = strForlderPath;

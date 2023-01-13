@@ -662,7 +662,7 @@ void CTable_Conditions::Select_ConquerTrigger(_bool& OutCondition, BEHAVIOR_DESC
         {
             pTargetTrigger = CGameSystem::Get_Instance()->Find_Trigger("Paden_Trigger_R");
         }
-        else if (!pTeamConnector->Has_CenterTrigger())
+        else if (!pTeamConnector->Has_CannonTrigger())
         {
             pTargetTrigger = CGameSystem::Get_Instance()->Find_Trigger("Paden_Trigger_C");
 

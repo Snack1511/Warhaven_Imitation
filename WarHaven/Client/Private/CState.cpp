@@ -88,7 +88,8 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		pOwner->Get_Status().fDamageMultiplier < 1.f  - FLT_MIN||
 		pOwner->Get_Status().fDamageMultiplier > 1.f + FLT_MIN)
 	{
-		m_fDamagePumping = pOwner->Get_Status().fDamageMultiplier;
+		if(!m_bStopDamagePumping)
+			m_fDamagePumping = pOwner->Get_Status().fDamageMultiplier;
 	}
 
     Check_KeyFrameEvent(pOwner, pAnimator);

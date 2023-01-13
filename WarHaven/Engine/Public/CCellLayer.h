@@ -15,13 +15,16 @@ public:
 	typedef list<CNode*> NODES;
 	typedef vector<CCell*> CELLS;
 	typedef list<CCell*> CellList;
+
 public:
 	CCellLayer();
 	virtual ~CCellLayer();
+
 public:
 	static CCellLayer* Create(_uint XNums, _uint ZNums, _float fTileSize, _float4 vCenterPosition, _float fHeightMin, _float fHeightMax, _int BaseCellAttribute = 4);
 	static CCellLayer* Create(wstring strFolderPath, wstring strFolderName);
 	CCellLayer* Clone_Layer(_float MinHeight);
+	CCellLayer* Clone();
 public:
 	void Save(wstring strForlderPath, wstring strPath);
 	void Save_Info(wstring strInfoPath);
@@ -196,13 +199,23 @@ private:
 	list < _float4> m_BlockedIncludePosition;
 	list<pair<_float4, _float4>> m_LinkPosList;
 	list<pair<CNode*, CNode*>> m_LinkList;
+
 private:
 	_float* m_NeighborLayerKeys = nullptr;
 	_int* m_NeighborIndex = nullptr;
 	wstring m_strFolderPath = L"";
 
+private:
+	_bool		m_bLocked = false;
+
+public:
+	_bool		Is_Locked() { return m_bLocked; }
+	void		Lock() { m_bLocked = true; }
+	void		UnLock() { m_bLocked = false; }
+
 public:
 	void Func_Compare_UseThread(list<pair<CNode*, CNode*>>* pList);
+
 private:
 	vector<shared_ptr<thread>> m_ThreadArr;
 

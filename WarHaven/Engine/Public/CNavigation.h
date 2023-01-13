@@ -40,6 +40,9 @@ class ENGINE_DLL CNavigation
 	: public CComponent
 {
 public:
+	static int Func_MakeRoute(list<_float4>* NodeList, map<_float, CCellLayer*>* Layers, _float4 vStart, _float4 vEnd, CNavigation* pNaviCom);
+
+public:
 	enum CELL_TYPE {DEFAULT, WALL, BLOCKED, CELL_END};
 	DECLARE_PROTOTYPE(CNavigation)
 
@@ -71,8 +74,14 @@ public:
 	void		Set_StartPosition(_float4 vPosition);
 	void		Set_EndPosition(_float4 vPosition);
 	//시작 점과 끝 점을 기반으로 각 레이어에서의 도착점 생성
-	list<pair<_float4, CCellLayer*>> Get_Goals(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd);
+	static list<pair<_float4, CCellLayer*>> Get_Goals(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd);
+
+
+	void			Make_Route(list<_float4>* NodeList, map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd);
 	list<_float4> Get_BestRoute(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd);
+
+
+
 	CCell* Get_CurCell(_float4 vPosition, map<_float, CCellLayer*>& Layers);
 public:
 	//CELL_TYPE	isMove(_vector vPosition, _float4* pOutPos);
@@ -122,7 +131,11 @@ protected:
 	_float4		Get_NewPosFromWall(CCell* pCell, _float4 vRayPos, _float4 vRayDir);
 public:
 	list<_float4> m_DebugRouteNode;
+
+private:
+	_bool		m_bThreadOn = false;
 };
+
 
 
 END
