@@ -1075,8 +1075,6 @@ void CPlayer::SetActive_UnitHUD(_bool value)
 
 void CPlayer::On_RealChangeBehavior()
 {
-
-
 	m_pCurBehaviorDesc = m_pReserveBehaviorDesc;
 
 	if (!m_pCurBehaviorDesc)
@@ -1282,6 +1280,16 @@ void CPlayer::My_LateTick()
 	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
 	vPos.y += 2.f;
 	m_bIsInFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
+
+	if (m_pCurrentUnit->Get_Status().fHP > 0.f)
+	{
+		if (m_pUnitHUD)
+		{
+			Frustum_UnitHUD();
+			TransformProjection();
+		}
+	}
+
 	if (!m_bIsInFrustum)
 	{
 		if (m_pUnitHUD)
@@ -1300,17 +1308,9 @@ void CPlayer::My_LateTick()
 			if (m_bAbleRevival)
 			{
 				if (m_pUnitHUD)
-				{
 					m_pUnitHUD->Enable_RevivalUI();
-				}
 			}
 		}
-	}
-
-	if (m_pCurrentUnit->Get_Status().fHP > 0.f)
-	{
-		Frustum_UnitHUD();
-		TransformProjection();
 	}
 
 	if (nullptr != m_pCurrentUnit)
@@ -1669,31 +1669,15 @@ void CPlayer::Frustum_UnitHUD()
 	if (!m_pCurrentUnit->Is_Valid())
 		return;
 
-	if (!m_pUnitHUD)
-		return;
-
 	_float fDis = CUtility_Transform::Get_FromCameraDistance(m_pCurrentUnit);
 	if (fDis < m_fEnable_UnitHUDis)
 	{
 		m_pUnitHUD->Set_UnitDis(fDis);
-
-		if (m_bIsInFrustum)
-		{
-			if (!m_pUnitHUD->Is_Valid())
-				ENABLE_GAMEOBJECT(m_pUnitHUD);
-		}
-		else
-		{
-			if (m_pUnitHUD->Is_Valid())
-				DISABLE_GAMEOBJECT(m_pUnitHUD);
-		}
+		m_pUnitHUD->SetActive(m_bIsInFrustum);
 	}
 	else
 	{
-		if (m_pUnitHUD->Is_Valid())
-		{
-			DISABLE_GAMEOBJECT(m_pUnitHUD);
-		}
+		m_pUnitHUD->SetActive(false);
 	}
 }
 
