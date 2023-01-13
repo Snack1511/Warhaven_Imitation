@@ -164,7 +164,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	CUser::Get_Instance()->Set_Player(pUserPlayer);
 	READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
-	for (_uint i = 0; i < 1; ++i)
+	for (_uint i = 0; i < 0; ++i)
 	{
 		vPlayerPos.z += 3.f;
 		vPlayerPos.x += 1.f;
@@ -1107,19 +1107,19 @@ HRESULT CGameSystem::On_Update_Paden()
 		}
 	}
 
-	if (pMinusScoreTeam)
-	{
-		m_fScoreAcc += fDT(0);
+	//if (pMinusScoreTeam)
+	//{
+	//	m_fScoreAcc += fDT(0);
 
-		if (m_fScoreAcc >= m_fScoreMinusTime)
-		{
-			m_fScoreAcc = 0.f;
+	//	if (m_fScoreAcc >= m_fScoreMinusTime)
+	//	{
+	//		m_fScoreAcc = 0.f;
 
-			if (!pMinusScoreTeam->Minus_Score())
-				On_FinishGame(pMinusScoreTeam);
+	//		if (!pMinusScoreTeam->Minus_Score())
+	//			On_FinishGame(pMinusScoreTeam);
 
-		}
-	}
+	//	}
+	//}
 
 
 	/* for (auto& elem : m_mapAllTriggers)
@@ -1353,9 +1353,9 @@ HRESULT CGameSystem::On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& v
 	TRIGGER_STAGE("Hwara_Final_Red")->Set_DominionEffect(pDominionEffect_F);
 
 
-	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_Final_Blue")]);
+	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_Final_Red")]);
 
-	m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_Final_Red")]);
+	m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_Final_Blue")]);
 
 	return S_OK;
 }
@@ -1614,16 +1614,28 @@ CTrigger* CGameSystem::Find_Trigger(string strTriggerKey)
 
 void CGameSystem::Enable_HwaraFinalTrigger(eTEAM_TYPE eTeamType)
 {
+	_bool bConquestEnemy = false;
+
+	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+	auto iter = mapPlayers.begin();
+	eTEAM_TYPE eMainTeam = iter->second->Get_Team()->Get_TeamType();
+	bConquestEnemy = eMainTeam == eTeamType ? true : false;
+
 	if (eTeamType == eTEAM_TYPE::eBLUE)
 	{
 		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Red"));
 		ENABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Blue"));
-	}
 
+		if (!bConquestEnemy)
+			CUser::Get_Instance()->Enable_ConquestPopup(2);
+	}
 	else
 	{
 		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Blue"));
 		ENABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Red"));
+
+		if (!bConquestEnemy)
+			CUser::Get_Instance()->Enable_ConquestPopup(2);
 	}
 }
 

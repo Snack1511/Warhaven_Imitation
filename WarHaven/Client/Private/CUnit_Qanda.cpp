@@ -590,7 +590,7 @@ HRESULT CUnit_Qanda::Initialize_Prototype()
 
 	m_fCoolTime[SKILL1] = 3.f;
 	m_fCoolTime[SKILL2] = 5.f;
-	m_fCoolTime[SKILL3] = 3.f;
+	m_fCoolTime[SKILL3] = 60.f;
 
 	m_fCoolAcc[SKILL1] = 0.f;
 	m_fCoolAcc[SKILL2] = 0.f; 

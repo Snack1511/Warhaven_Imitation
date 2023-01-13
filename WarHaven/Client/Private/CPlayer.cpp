@@ -29,7 +29,7 @@
 #include "CScript_FollowCam.h"
 
 #include "MeshContainer.h"
-
+#include "CUI_UnitHP.h"
 #include "CState.h"
 #include "CState_Manager.h"
 
@@ -562,7 +562,7 @@ void CPlayer::SetUp_ReserveState()
 	case CUnit::UNIT_TYPE::eAI_Default:
 
 		m_iReserveStateDefault[WARRIOR] = AI_STATE_PATROL_DEFAULT_WARRIOR_R;
-		//	m_iReserveStateDefault[ARCHER] = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+		m_iReserveStateDefault[ARCHER] = AI_STATE_PATROL_DEFAULT_ARCHER_R;
 		m_iReserveStateDefault[ENGINEER] = AI_STATE_PATROL_DEFAULT_ENGINEER_R;
 		m_iReserveStateDefault[FIONA] = AI_STATE_COMBAT_DEFAULT_FIONA_R;
 		m_iReserveStateDefault[PALADIN] = AI_STATE_PATROL_DEFAULT_PALADIN_R;
@@ -573,7 +573,7 @@ void CPlayer::SetUp_ReserveState()
 	case CUnit::UNIT_TYPE::eAI_idiot:
 
 		m_iReserveStateDefault[WARRIOR] = AI_STATE_COMMON_HIT_WARRIOR;
-		//	m_iReserveStateDefault[ARCHER] = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+		m_iReserveStateDefault[ARCHER] = AI_STATE_COMMON_HIT_WARRIOR;
 		m_iReserveStateDefault[ENGINEER] = AI_STATE_COMMON_HIT_WARRIOR;
 		m_iReserveStateDefault[FIONA] = AI_STATE_COMMON_HIT_WARRIOR;
 		m_iReserveStateDefault[PALADIN] = AI_STATE_COMMON_HIT_WARRIOR;
@@ -944,8 +944,13 @@ _bool CPlayer::Is_AbleRevival()
 
 CPlayer* CPlayer::Get_TargetPlayer(eTargetPlayerType eType) 
 {
+	if (!m_pAIController)
+		return m_pTargetPlayer;
+
 	if (nullptr == m_pCurBehaviorDesc)
 		return nullptr;
+
+
 	switch (eType)
 	{
 	case eTargetPlayerType::eEnemy:
@@ -953,6 +958,9 @@ CPlayer* CPlayer::Get_TargetPlayer(eTargetPlayerType eType)
 	case eTargetPlayerType::eAllies:
 		return m_pCurBehaviorDesc->pAlliesPlayer;
 	}
+
+	return m_pTargetPlayer;
+
 }
 
 void CPlayer::On_RealDie()
@@ -1038,6 +1046,9 @@ void CPlayer::Start_Reborn()
 
 void CPlayer::On_PlusGauge(_float fGauge)
 {
+	if (m_bIsHero)
+		return;
+
 	m_fGauge += fGauge;
 
 	if (m_fGauge >= m_fMaxGauge)
@@ -1051,7 +1062,12 @@ void CPlayer::SetActive_UnitHUD(_bool value)
 
 void CPlayer::On_RealChangeBehavior()
 {
+	
+
 	m_pCurBehaviorDesc = m_pReserveBehaviorDesc;
+
+	if (!m_pCurBehaviorDesc)
+		return;
 
 	switch (m_pCurBehaviorDesc->eCurType)
 	{
@@ -1255,6 +1271,7 @@ void CPlayer::My_LateTick()
 	if (!m_bIsInFrustum)
 	{
 		m_pUnitHUD->Disable_RevivalUI();
+		m_pUnitHUD->Get_UnitHP()->SetActive(false);
 	}
 	else
 	{
@@ -1265,7 +1282,7 @@ void CPlayer::My_LateTick()
 		{
 			if (m_bAbleRevival)
 				m_pUnitHUD->Enable_RevivalUI();
-		}                           
+		}
 	}
 
 	if (m_pCurrentUnit->Get_Status().fHP > 0.f)
@@ -1621,13 +1638,12 @@ void CPlayer::Enable_UnitHUD()
 void CPlayer::Frustum_UnitHUD()
 {
 	if (!m_pCurrentUnit->Is_Valid())
-		return;	
+		return;
 
 	_float fDis = CUtility_Transform::Get_FromCameraDistance(m_pCurrentUnit);
 	if (fDis < m_fEnable_UnitHUDis)
 	{
 		m_pUnitHUD->Set_UnitDis(fDis);
-
 
 		if (m_bIsInFrustum)
 		{

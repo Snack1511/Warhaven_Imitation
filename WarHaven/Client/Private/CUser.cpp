@@ -353,10 +353,22 @@ void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransf
 		m_pUI_Paden->Set_PointUI_ProjectionTransform(iPointIdx, pTransform, isInFrustum);
 }
 
+void CUser::Set_PointUI_ProjectionTransform(string strPadenPointKey, CTransform* pTransform, _bool isInFrustum)
+{
+	if (m_pUI_Paden)
+		m_pUI_Paden->Set_PointUI_ProjectionTransform(strPadenPointKey, pTransform, isInFrustum);
+}
+
 void CUser::Set_MiniMapConquestTime(_uint iPoinIdx, _float fConquestTime, _float fMaxConquestTime)
 {
 	if (m_pMiniMap)
 		m_pMiniMap->Set_ConquestTime(iPoinIdx, fConquestTime, fMaxConquestTime);
+}
+
+void CUser::Set_MiniMapConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
+{
+	if (m_pMiniMap)
+		m_pMiniMap->Set_ConquestTime(strPadenPointKey, fConquestTime, fMaxConquestTime);
 }
 
 void CUser::Set_MiniMapGaugeColor(_bool IsMainTeam, _uint iPointIdx)
@@ -892,6 +904,14 @@ void CUser::Set_ScoreBoardConquestTime(_uint iPointIdx, _float fConquestTime, _f
 	}
 }
 
+void CUser::Set_ScoreBoardConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Set_ConquestTime(strPadenPointKey, fConquestTime, fMaxConquestTime);
+	}
+}
+
 void CUser::Set_ScoreBoardGaugeColor(_bool IsMainTeam, _uint iPointIdx)
 {
 	if (m_pScoreBoard)
@@ -1010,6 +1030,11 @@ void CUser::Enable_SkinPopup(_uint iSkin)
 		m_pUI_Popup->SetActive(true);
 		m_pUI_Popup->Enable_SkinPopup(iSkin);
 	}
+}
+
+void CUser::Enable_ConquestPopup(_uint iNum)
+{
+	m_pUI_Paden->Enable_Popup(iNum);
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)

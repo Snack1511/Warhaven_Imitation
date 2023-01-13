@@ -7,6 +7,8 @@
 #include "CRectEffects.h"
 
 #include "CColorController.h"
+#include "Loading_Manager.h"
+#include "CCamera_Follow.h"
 
 #include "CCollider_Sphere.h"
 
@@ -81,7 +83,7 @@ HRESULT CPurpleArrow::Initialize_Prototype()
 	m_fMaxPoisonTime = 0.3f;
 	m_fDamage = -5.f;
 
-	m_fMaxSpeed = 40.f;
+	m_fMaxSpeed = 50.f;
 	m_fMaxDistance = 70.f;
 
 
@@ -167,11 +169,48 @@ void CPurpleArrow::My_Tick()
 				tHitInfo.fKnockBackPower = 3.f;
 				tHitInfo.fJumpPower = 0.f;
 
-				pUnit->On_PlusHp(m_fDamage * 5.f, m_pOwnerUnit, false, 3);
+				pUnit->On_PlusHp(m_fDamage * 30.f, m_pOwnerUnit, false, 3);
 				pUnit->Enter_State(pUnit->Get_HitType().eGroggyState, &tHitInfo);
 				
 				if (pUnit->Get_Status().fHP <= 0.f)
+				{
+					CTransform* pMyTransform = m_pOwnerUnit->Get_Transform();
+					_float4 vMyPos = pMyTransform->Get_World(WORLD_POS);
+
+					// 데드에 넘겨주기	
+					if (CLoading_Manager::Get_Instance()->Get_LoadLevel() >= LEVEL_PADEN)
+					{
+						m_pOwnerUnit->Get_OwnerPlayer()->On_ScoreKDA_Kill(pUnit->Get_OwnerPlayer());
+						pUnit->Get_OwnerPlayer()->On_ScoreKDA_Death();
+					}
+
+
+					CUser::Get_Instance()->Add_KillLog(m_pOwnerUnit->Get_OwnerPlayer(), pUnit->Get_OwnerPlayer());
+
+					if (pUnit->Get_OwnerPlayer()->IsMainPlayer())
+					{
+						CUser::Get_Instance()->Turn_HeroGaugeFire(false);
+						CUser::Get_Instance()->SetActive_SquardInfo(false);
+						CUser::Get_Instance()->SetActive_HUD(false);
+						CUser::Get_Instance()->Set_TargetInfo(m_pOwnerUnit->Get_OwnerPlayer()->Get_PlayerInfo());
+						CUser::Get_Instance()->Toggle_DeadUI(true);
+
+						// Other(죽은) 유닛의 타겟은 죽인 유닛을 바라볼 수 있도록 설정
+						pUnit->Get_FollowCam()->Set_FollowTarget(m_pOwnerUnit);
+					}
+					else
+					{
+						// 맞은놈이 메인 플레이어 였다면? 처치 로그
+						if (m_pOwnerUnit->Get_OwnerPlayer()->IsMainPlayer())
+						{
+							wstring wstrEnemyName = pUnit->Get_OwnerPlayer()->Get_PlayerName();
+							CUser::Get_Instance()->Add_KillName(wstrEnemyName);
+						}
+					}
+
 					pUnit->On_Die();
+				}
+					
 				
 				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Poison_End",
 					pUnit, pUnit->Get_Transform()->Get_World(WORLD_POS));

@@ -225,6 +225,8 @@ void CPriest_Cure_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
 
+	m_pTargetUnit = static_cast<CUnit*>(pOwner->Get_CureObject());
+
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
@@ -232,6 +234,18 @@ void CPriest_Cure_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	m_pPrvUnit = m_pCurUnit;
+	m_pCurUnit = static_cast<CUnit*>(pOwner->Get_CureObject());
+
+	if (m_pPrvUnit != m_pCurUnit)
+	{
+		if (m_pPrvUnit)
+			m_pPrvUnit->Get_OwnerHUD()->Disable_HealBlur();
+	}
+
+	if (m_pCurUnit)
+		m_pCurUnit->Get_OwnerHUD()->Enable_HealBlur();
+
 	m_pTargetUnit = static_cast<CUnit*>(pOwner->Get_CureObject());
 
 	if (!m_pTargetUnit)
@@ -239,7 +253,7 @@ STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	if (pOwner->Get_SameNearObejct())
 	{
-		static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);	
+		static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);
 	}
 	else
 	{

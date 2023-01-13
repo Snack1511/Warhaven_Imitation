@@ -6708,6 +6708,12 @@
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Archer_R.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\01. Right</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Guard_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillR_Archer_Swing.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\05. Archer</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\CAI_MoveStateUtility.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility</Filter>
     </ClInclude>
@@ -9675,6 +9681,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Archer_R.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Guard_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillR_Archer_Swing.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\05. Archer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_MoveStateUtility.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility</Filter>

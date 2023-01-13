@@ -328,7 +328,6 @@ void CUnit_WarHammer::On_Die()
 
 	Add_DeathStones(CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle_Death(L"DeadBody_Engineer", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
 
-	m_DeathStones.push_back(CEffects_Factory::Get_Instance()->Create_MeshParticle_Death(L"EngineerDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
 }
 
 void CUnit_WarHammer::Set_BarricadeMatrix()

@@ -70,6 +70,9 @@ void CState_Common_GuardHit_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, S
 
 STATE_TYPE CState_Common_GuardHit_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pOwner->Can_Use(CUnit::SKILL1))
+        return AI_STATE_COMBAT_ATTACK_SWING_ARCHER;
+
     if (pAnimator->Is_CurAnimFinished())
     {
         STATE_TYPE eDefaultState = pOwner->Get_DefaultState();

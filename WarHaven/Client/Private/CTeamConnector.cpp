@@ -108,11 +108,13 @@ void CTeamConnector::Add_Trigger(CTrigger* pTrigger)
     m_OurTriggers.push_back(pTrigger);
 
     CTrigger_Stage::eSTAGE_TRIGGER_TYPE eType = static_cast<CTrigger_Stage*>(pTrigger)->Get_TriggerType();
+    static_cast<CTrigger_Stage*>(pTrigger)->Set_ConqueredTeam(this);
 
     if (eType != CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eSTART)
     {
         m_bHasTrigger[(_uint)eType - 1] = true;
     }
+
 }
 
 void CTeamConnector::Erase_Trigger(string strTriggerKey)

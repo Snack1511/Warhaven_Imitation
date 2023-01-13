@@ -536,7 +536,10 @@ _bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist
 	}
 
 	if (fMinDist == 9999.f)
+	{
+		*pOutPos = vFinalHitPos;
 		return false;
+	}
 
 	/* GROUP_PLAYER °Ë»ç */
 

@@ -22,6 +22,7 @@ public:
 	virtual void Set_Shader_PointGauge_A(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_PointGauge_R(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_PointGauge_C(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_PointGauge_E(CShader* pShader, const char* pConstName);
 
 	virtual void Set_Shader_SocreGauge_Red(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_SocreGauge_Blue(CShader* pShader, const char* pConstName);
@@ -32,6 +33,7 @@ public:
 public:
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
+	void Set_PointUI_ProjectionTransform(string strPadenPointKey, CTransform* pTransform, _bool isInFrustum);
 
 	void Set_TargetTransform(CTransform* pTargetTransform);
 
@@ -113,7 +115,7 @@ private:
 
 private:
 	enum PointUI { PU_Point, PU_Gauge, PU_Text, PU_End };
-	enum PointName { Point_A, Point_R, Point_C, Point_End };
+	enum PointName { Point_A, Point_R, Point_C, Point_E, Point_End };
 
 	PointName m_ePoint = Point_End;
 
@@ -162,7 +164,12 @@ private:
 	_float4 m_vColorBlue = _float4(0.1f, 0.6f, 1.f, 0.9f);
 	_float4 m_vColorRed = _float4(1.f, 0.2f, 0.1f, 0.9f);
 
+	_float4 m_vGaugeColorBlue = _float4(0.1f, 0.6f, 1.f, 0.5f);
+	_float4 m_vGaugeColorRed = _float4(1.f, 0.2f, 0.1f, 0.5f);
+
 	_float m_fPointUIPosY = 260.f;
+
+	eTEAM_TYPE m_eTeam = eTEAM_TYPE::eCOUNT;
 
 private:	// Hwara
 	enum HwaraGauge { Hwara_BG, Hwara_Arrow, Hwara_Glow, Hwara_End };

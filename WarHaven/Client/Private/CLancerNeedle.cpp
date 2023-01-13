@@ -310,7 +310,7 @@ HRESULT CLancerNeedle::SetUp_Model(wstring wstrModelFilePath, CHierarchyNode* pO
 	//vOffsetPos.z += fRadius;
 	//vOffsetPos.z += fRadius;
 
-	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, COL_BLUEFLYATTACKGUARDBREAK, vOffsetPos, DEFAULT_TRANS_MATRIX);
+	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, COL_BLUEGROGGYATTACK, vOffsetPos, DEFAULT_TRANS_MATRIX);
 	vOffsetPos.x += fRadius;
 	pCollider->Add_Collider(fRadius, vOffsetPos);
 	vOffsetPos.x += fRadius;
@@ -558,15 +558,15 @@ void CLancerNeedle::OnEnable()
 	__super::OnEnable();
 
 	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
-		m_pCollider->Set_ColIndex(COL_BLUEFLYATTACKGUARDBREAK);
+		m_pCollider->Set_ColIndex(COL_BLUEGROGGYATTACK);
 	else
 	{
 		eTEAM_TYPE eTeamType = m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType();
 
 		if (eTeamType == eTEAM_TYPE::eBLUE)
-			m_pCollider->Set_ColIndex(COL_BLUEFLYATTACKGUARDBREAK);
+			m_pCollider->Set_ColIndex(COL_BLUEGROGGYATTACK);
 		else
-			m_pCollider->Set_ColIndex(COL_REDFLYATTACKGUARDBREAK);
+			m_pCollider->Set_ColIndex(COL_REDGROGGYATTACK);
 	}
 
 	DISABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));

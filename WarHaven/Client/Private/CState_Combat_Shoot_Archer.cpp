@@ -123,9 +123,23 @@ STATE_TYPE CState_Combat_Shoot_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		{
 			m_fTimeAcc += fDT(0);
 
-			if(m_fTimeAcc > m_fMaxTime)
-				return AI_STATE_COMBAT_ATTACK_BEGIN_ARCHER;
+			if (m_fTimeAcc > m_fMaxTime)
+			{
+				if (pOwner->Get_SkillTrigger().bSkillQTrigger && !pOwner->Get_SkillTrigger().bSkillETrigger)
+				{
+					pOwner->Get_SkillTrigger().bSkillQTrigger = false;
+					return AI_STATE_COMBAT_ATTACK_BEGIN_SNIPING_ARCHER;
+				}
 
+				else if (pOwner->Get_SkillTrigger().bSkillETrigger && !pOwner->Get_SkillTrigger().bSkillQTrigger)
+				{
+					pOwner->Get_SkillTrigger().bSkillETrigger = false;
+					return AI_STATE_COMBAT_ATTACK_BEGIN_POISION_ARCHER;
+				}
+
+				else if (!pOwner->Get_SkillTrigger().bSkillETrigger && !pOwner->Get_SkillTrigger().bSkillQTrigger)
+					return AI_STATE_COMBAT_ATTACK_BEGIN_ARCHER;
+			}
 		}
 
 	}
