@@ -79,7 +79,6 @@ STATE_TYPE CState_PathNavigation_Walk_Priest::Tick(CUnit* pOwner, CAnimator* pAn
     else
         return m_iAINextState;
 
-    DoMove_AI_NoTarget(pOwner, pAnimator);
 
     return __super::Tick(pOwner, pAnimator);
 }

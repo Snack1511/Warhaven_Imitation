@@ -70,9 +70,8 @@ STATE_TYPE CState_PathNavigation_Walk_Paladin::Tick(CUnit* pOwner, CAnimator* pA
 	else
 		return m_iAINextState;
 
-	DoMove_AI_NoTarget(pOwner, pAnimator);
 
-    return CState::Tick(pOwner, pAnimator);
+    return __super::Tick(pOwner, pAnimator);
 }
 
 void CState_PathNavigation_Walk_Paladin::Exit(CUnit* pOwner, CAnimator* pAnimator)

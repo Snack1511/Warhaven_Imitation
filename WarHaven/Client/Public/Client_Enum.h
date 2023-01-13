@@ -341,6 +341,8 @@ namespace Client
 		AI_STATE_COMMON_SLIDELOOP_AI,
 		AI_STATE_COMMON_SLIDEEND_AI,
 		AI_STATE_COMMON_TRANSFORM_AI,
+		AI_STATE_CANNON_AI,
+		AI_STATE_GLIDING_AI,
 
 #pragma region Warrior
 //#pragma region Base_R

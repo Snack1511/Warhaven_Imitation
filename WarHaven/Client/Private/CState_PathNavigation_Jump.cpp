@@ -45,7 +45,7 @@ void CState_PathNavigation_Jump::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 STATE_TYPE CState_PathNavigation_Jump::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (!pOwner->Is_Air() || pAnimator->Is_CurAnimFinished())
-        return m_iAINextState;
+        return m_eFallState;
 
     return __super::Tick(pOwner, pAnimator);
 }

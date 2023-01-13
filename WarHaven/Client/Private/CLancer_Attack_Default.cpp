@@ -177,20 +177,8 @@ void CLancer_Attack_Default::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TY
 
 STATE_TYPE CLancer_Attack_Default::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	//Follow_MouseLook(pOwner);
-	//pOwner->Set_DirAsLook();
-
-	// _uint iFrame = (pAnimator->Get_CurAnimFrame() + 1) % 27;
-
-	//if (iFrame == 1)
-	//{
-	//	m_bStraight = false;
-	//	DoMove(STATE_DIRECTION_S, pOwner);
-	//	m_bStraight = true;
-	//}
-
-	//if(pAnimator->Is_ActionFinished())
-	//	DoMove(STATE_DIRECTION_E, pOwner);
+	Follow_MouseLook(pOwner);
+	pOwner->Set_DirAsLook();
 
     return __super::Tick(pOwner, pAnimator);
 }

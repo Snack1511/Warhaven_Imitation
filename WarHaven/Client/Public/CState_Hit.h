@@ -39,8 +39,12 @@ protected:
 
 	_bool			m_bGuardBreak = false; // GuardBreak 가 hit 상태에 없기 때문에 따로 만들어줌.
 	_bool			m_bHitSting = false;
+	_bool			m_bStingDead = false; // 두번 찔리는 거 예외 처리
+
 
 	CHierarchyNode* m_pStingBone = nullptr;
+
+
 
 	/*For. Enter*/
 

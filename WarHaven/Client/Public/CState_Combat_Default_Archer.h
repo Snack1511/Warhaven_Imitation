@@ -24,6 +24,7 @@ protected:
 
 private:
 	STATE_TYPE	Near_Enemy(CUnit* pOwner, CAnimator* pAnimator);
+	STATE_TYPE	Choose_Arrow(CUnit* pOwner);
 
 private:
 	_bool m_bNoShoot = false;

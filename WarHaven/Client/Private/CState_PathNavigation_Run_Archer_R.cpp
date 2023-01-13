@@ -52,7 +52,7 @@ HRESULT CState_PathNavigation_Run_Archer_R::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 27;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 32;
 
-    m_iAINextState = AI_STATE_PATHNAVIGATION_JUMP_ARCHER_R;
+    m_eJumpState = AI_STATE_PATHNAVIGATION_JUMP_ARCHER_R;
     m_eJumpFallStateType = AI_STATE_COMMON_FALL_ARCHER_R;
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_ARCHER_R;
 

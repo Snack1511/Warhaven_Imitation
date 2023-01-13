@@ -51,7 +51,7 @@ HRESULT CState_PathNavigation_Default_Paladin_R::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 22;
 
-    m_iAINextState = AI_STATE_PATHNAVIGATION_JUMP_PALADIN_R;
+    m_eJumpState = AI_STATE_PATHNAVIGATION_JUMP_PALADIN_R;
     m_eJumpFallStateType = AI_STATE_COMMON_FALL_PALADIN_R;
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_PALADIN_R;
 

@@ -30,6 +30,7 @@ HRESULT CState_Combat_Default_Archer::Initialize()
 
 	// 애니메이션의 전체 속도를 올려준다.
 	m_fAnimSpeed = 1.f;
+	m_fAIMyLength = 2.5f;
 
     return S_OK;
 }
@@ -43,9 +44,11 @@ void CState_Combat_Default_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 	m_iDirectionRand = random(0, 7);
 	m_fRand = frandom(1.f, 3.f);
 
+	
+
 	if (pOwner->Get_TargetUnit())
 	{
-		if (fabs(Get_TargetLook_Length(pOwner)) > m_fAIMyLength * 2.f || pOwner->Get_TargetUnit()->Get_Status().fHP <= 0.f)
+		if (fabs(Get_TargetLook_Length(pOwner)) > m_fAIMyLength * 1.5f)
 			Set_Direction_Front_AI(m_iDirectionRand);
 
 		else
@@ -63,7 +66,7 @@ void CState_Combat_Default_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 
 	m_iStateChangeKeyFrame = 15;
 
-	m_fAIMyLength = 2.5f;
+
 
 	Physics_Setting_AI(m_fMaxSpeed, pOwner);
 
@@ -164,6 +167,16 @@ STATE_TYPE CState_Combat_Default_Archer::Check_Condition(CUnit* pOwner, CAnimato
 
 STATE_TYPE CState_Combat_Default_Archer::Near_Enemy(CUnit* pOwner, CAnimator* pAnimator)
 {
+	STATE_TYPE eArrowStateType = Choose_Arrow(pOwner);
+
+	if (!pOwner->Get_TargetUnit())
+	{
+		if (pOwner->Get_TargetUnit()->Get_Status().fHP <= 40.f || m_iRand == 7)
+		{
+			if (eArrowStateType != STATE_END)
+				return eArrowStateType;
+		}
+	}
 
 	switch (m_iRand)
 	{
@@ -183,32 +196,34 @@ STATE_TYPE CState_Combat_Default_Archer::Near_Enemy(CUnit* pOwner, CAnimator* pA
 
 		break;
 
-
-	case 7:
-
-		if (pOwner->Can_Use(CUnit::SKILL1))
-			return AI_STATE_COMBAT_ATTACK_SWING_ARCHER;
-
-		if (pOwner->Get_SkillTrigger().bSkillQTrigger && !pOwner->Get_SkillTrigger().bSkillETrigger)
-		{
-			pOwner->Get_SkillTrigger().bSkillQTrigger = false;
-			return AI_STATE_COMBAT_ATTACK_BEGIN_SNIPING_ARCHER;
-		}
-
-		else if (pOwner->Get_SkillTrigger().bSkillETrigger && !pOwner->Get_SkillTrigger().bSkillQTrigger)
-		{
-			pOwner->Get_SkillTrigger().bSkillETrigger = false;
-			return AI_STATE_COMBAT_ATTACK_BEGIN_POISION_ARCHER;
-		}
-
-		else if (!pOwner->Get_SkillTrigger().bSkillETrigger && !pOwner->Get_SkillTrigger().bSkillQTrigger)
-			return AI_STATE_COMBAT_ATTACK_BEGIN_ARCHER;
-
-		break;
-
 	default:
+
+		if (eArrowStateType != STATE_END)
+			return eArrowStateType;
+
 		break;
 	}
 
 	return STATE_END;
+}
+
+STATE_TYPE CState_Combat_Default_Archer::Choose_Arrow(CUnit* pOwner)
+{
+	if (pOwner->Can_Use(CUnit::SKILL1))
+		return AI_STATE_COMBAT_ATTACK_SWING_ARCHER;
+
+	if (pOwner->Get_SkillTrigger().bSkillQTrigger && !pOwner->Get_SkillTrigger().bSkillETrigger)
+	{
+		pOwner->Get_SkillTrigger().bSkillQTrigger = false;
+		return AI_STATE_COMBAT_ATTACK_BEGIN_SNIPING_ARCHER;
+	}
+
+	else if (pOwner->Get_SkillTrigger().bSkillETrigger && !pOwner->Get_SkillTrigger().bSkillQTrigger)
+	{
+		pOwner->Get_SkillTrigger().bSkillETrigger = false;
+		return AI_STATE_COMBAT_ATTACK_BEGIN_POISION_ARCHER;
+	}
+
+	else if (!pOwner->Get_SkillTrigger().bSkillETrigger && !pOwner->Get_SkillTrigger().bSkillQTrigger)
+		return AI_STATE_COMBAT_ATTACK_BEGIN_ARCHER;
 }

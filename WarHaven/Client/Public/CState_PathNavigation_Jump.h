@@ -22,6 +22,7 @@ protected:
 
 protected:
 	_uint iPlaceJumpAnimIndex = 0; 
+	STATE_TYPE m_eFallState = STATE_END;
 
 };
 

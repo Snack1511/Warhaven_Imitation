@@ -936,6 +936,8 @@
 #include "CState_Common_Slide_Begin_AI.h"
 #include "CState_Common_Slide_Loop_AI.h"
 #include "CState_Common_Slide_End_AI.h"
+#include "CState_Common_Cannon_AI.h"
+#include "CState_Common_Gliding_AI.h"
 
 #pragma endregion
 
@@ -976,6 +978,8 @@ HRESULT CState_Manager::Initialize()
 	m_arrStates[AI_STATE_COMMON_SLIDELOOP_AI] = CState_Common_Slide_Loop_AI::Create();
 	m_arrStates[AI_STATE_COMMON_SLIDEEND_AI] = CState_Common_Slide_End_AI::Create();
 	m_arrStates[AI_STATE_COMMON_TRANSFORM_AI] = CState_Victory::Create();
+	m_arrStates[AI_STATE_CANNON_AI] = CState_Common_Cannon_AI::Create();
+	m_arrStates[AI_STATE_GLIDING_AI] = CState_Common_Gliding_AI::Create();
 
 
 	Spear_State();

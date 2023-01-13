@@ -60,7 +60,7 @@ HRESULT CState_PathNavigation_Jump_Paladin_R::Initialize()
 
 	iPlaceJumpAnimIndex = 4;
 
-    m_iAINextState = AI_STATE_PATHNAVIGATION_FALL_PALADIN_R;
+    m_eFallState = AI_STATE_PATHNAVIGATION_FALL_PALADIN_R;
 
 
     return S_OK;

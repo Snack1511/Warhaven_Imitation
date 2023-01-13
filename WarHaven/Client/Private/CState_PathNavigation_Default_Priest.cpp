@@ -51,9 +51,10 @@ HRESULT CState_PathNavigation_Default_Priest::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 24;
 
-    m_iAINextState = AI_STATE_PATHNAVIGATION_JUMP_PRIEST;
+    m_eJumpState = AI_STATE_PATHNAVIGATION_JUMP_PRIEST;
     m_eJumpFallStateType = AI_STATE_COMMON_FALL_PRIEST;
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_PRIEST;
+    m_eSprintBeginState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_PRIEST;
 
     return S_OK;
 }
@@ -64,52 +65,13 @@ void CState_PathNavigation_Default_Priest::Enter(CUnit* pOwner, CAnimator* pAnim
 
     m_iStateChangeKeyFrame = 25;
 
-    m_eSprintBeginState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_PRIEST;
-
-    m_fRand = frandom(0.2f, 0.5f);
-    m_iRand = random(0, 5);
+    
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_PathNavigation_Default_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (m_fAIDelayTime > m_fRand)
-    {
-        switch (m_iRand)
-        {
-        case 0:
-        case 1:
-        case 2:
-
-            return m_eSprintBeginState;
-
-
-        case 3:
-
-            return m_iAINextState;
-
-        case 4:
-
-            if (pAnimator->Is_CurAnimFinished())
-                return m_eStateType;
-
-            break;
-
-        case 5:
-
-            return m_eWalkState;
-
-            break;
-
-        default:
-            return m_iAINextState;
-
-        }
-
-
-    }
-
     return __super::Tick(pOwner, pAnimator);
 }
 

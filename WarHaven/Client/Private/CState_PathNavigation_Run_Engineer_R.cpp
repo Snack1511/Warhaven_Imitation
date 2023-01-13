@@ -52,7 +52,7 @@ HRESULT CState_PathNavigation_Run_Engineer_R::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 47;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 33;
 
-    m_iAINextState = AI_STATE_PATHNAVIGATION_JUMP_ENGINEER_R;
+    m_eJumpState = AI_STATE_PATHNAVIGATION_JUMP_ENGINEER_R;
     m_eJumpFallStateType = AI_STATE_COMMON_FALL_ENGINEER_R;
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_ENGINEER_R;
 

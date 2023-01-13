@@ -21,6 +21,7 @@ protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
 protected:
+	STATE_TYPE m_eJumpState = STATE_END;
 	STATE_TYPE m_eWalkState = STATE_END;
 	STATE_TYPE m_eSprintBeginState = STATE_END;
 

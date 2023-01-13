@@ -44,53 +44,11 @@ void CState_PathNavigation_Default_Fiona::Enter(CUnit* pOwner, CAnimator* pAnima
 
 	m_eSprintBeginState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_FIONA;
 
-	m_fRand = frandom(0.2f, 0.5f);
-	m_iRand = random(0, 5);
-
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_PathNavigation_Default_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
-	if (m_fAIDelayTime > m_fRand)
-	{
-		switch (m_iRand)
-		{
-		case 0:
-		case 1:
-		case 2:
-
-			return m_eSprintBeginState;
-
-
-		case 3:
-
-			return m_iAINextState;
-
-		case 4:
-
-			if(pAnimator->Is_CurAnimFinished())
-				return m_eStateType;
-
-			break;
-
-		case 5:
-
-			return m_eWalkState;
-
-			break;
-
-		default:
-			return m_iAINextState;
-
-		}
-
-			
-	}
-
-
-
     return __super::Tick(pOwner, pAnimator);
 }
 

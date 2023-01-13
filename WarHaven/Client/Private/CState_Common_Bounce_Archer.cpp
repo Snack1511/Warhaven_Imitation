@@ -36,8 +36,10 @@ HRESULT CState_Common_Bounce_Archer::Initialize()
 	__super::Initialize();
 
     m_eAnimType = ANIM_BASE_R;            // 애니메이션의 메쉬타입
-    m_iAnimIndex = 0;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_iAnimIndex = 9;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_COMMON_BOUNCE_ARCHER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+
+    m_fInterPolationTime = 0.1f;
 
     return S_OK;
 }
