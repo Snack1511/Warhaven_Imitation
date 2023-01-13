@@ -190,28 +190,6 @@ void CUI_MiniMap::My_Tick()
 {
 	__super::My_Tick();
 
-	if (m_iStartCount == 0)
-	{
-		m_iStartCount++;
-
-		map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
-		auto iter = mapPlayers.begin();
-		eTEAM_TYPE eTeam = iter->second->Get_Team()->Get_TeamType();
-		for (int i = 0; i < MP_End; ++i)
-		{
-			if (eTeam == eTEAM_TYPE::eBLUE)
-			{
-				m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-565.f);
-				m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-433.f);
-			}
-			else
-			{
-				m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-433.f);
-				m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-565.f);
-			}
-		}
-	}
-
 	for (int i = 0; i < 8; ++i)
 	{
 		_float fHP = m_pPlayers[i]->Get_CurrentUnit()->Get_Status().fHP;
@@ -478,8 +456,6 @@ void CUI_MiniMap::Init_MiniMapPoint()
 				m_pArrMiniMapPoint[Point_E][i]->Set_PosY(245.f);
 				m_pArrMiniMapPoint[Point_R][i]->Set_PosY(277.f);
 
-				m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-575.f);
-				m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-423.f);
 				continue;
 			}
 
@@ -487,6 +463,23 @@ void CUI_MiniMap::Init_MiniMapPoint()
 			m_pArrMiniMapPoint[Point_A][i]->Set_PosY(246.f);
 			m_pArrMiniMapPoint[Point_E][i]->Set_PosY(246.f);
 			m_pArrMiniMapPoint[Point_R][i]->Set_PosY(278.f);
+
+			map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+			auto iter = mapPlayers.begin();
+			eTEAM_TYPE eTeam = iter->second->Get_Team()->Get_TeamType();
+			for (int i = 0; i < MP_End; ++i)
+			{
+				if (eTeam == eTEAM_TYPE::eBLUE)
+				{
+					m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-565.f);
+					m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-433.f);
+				}
+				else
+				{
+					m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-433.f);
+					m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-565.f);
+				}
+			}
 		}
 		break;
 	}

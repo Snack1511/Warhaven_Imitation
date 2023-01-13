@@ -254,7 +254,11 @@ public:
 	_float4 Get_SquadDir();
 
 public:
-	CUI_UnitHUD* Get_UnitHUD() { return m_pUnitHUD; }
+	CUI_UnitHUD* Get_UnitHUD()
+	{
+		if (m_pUnitHUD)
+			return m_pUnitHUD;
+	}
 
 private:
 	//어떤 타입인지(적, 샌드백)

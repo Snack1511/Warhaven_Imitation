@@ -87,7 +87,7 @@ void CUI_Info::Create_InfoUI()
 			m_pInfoUI[i]->Set_Sort(0.5f);
 			m_pInfoUI[i]->Set_Scale(300.f, 125.f);
 			m_pInfoUI[i]->Set_PosX(fPosX);
-			m_pInfoUI[i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.8f));
+			m_pInfoUI[i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.75f));
 
 			break;
 
