@@ -154,31 +154,46 @@ list<pair<_float4, CCellLayer*>> CNavigation::Get_Goals(map<_float, CCellLayer*>
 		return GoalList;
 	}
 
-	if (pStartLayer->Is_Access(pEndLayer->Get_MinHeight()))
+	CCellLayer* pCurLayer = pStartLayer;
+	CCellLayer* pNextLayer = pEndLayer;
+	//현재 레이어에서 목표 레이어까지의 거쳐야 할 레이어 정보가 존재하면 들어감
+	if (pCurLayer->Is_Access(pNextLayer->Get_MinHeight()))
 	{
-		list<_float> LayerRoute = pStartLayer->Get_LayerRoute(pEndLayer->Get_MinHeight());
+		//현재 레이어에서 목표 레이어까지의 거쳐야 할 레이어 정보
+		list<_float> LayerRoute = pCurLayer->Get_LayerRoute(pNextLayer->Get_MinHeight());
 		_float PrevKey = pStartLayer->Get_MinHeight();
 		_float4 vStartPos = vStart;
 		for (auto Key : LayerRoute)
 		{
 			if (Key == PrevKey)
 				continue;
-			auto LayerIter = Layers.find(Key);
-			list<CCell*> StairList = LayerIter->second->Get_StairCellList(PrevKey);
+			auto PrevLayerIter = Layers.find(PrevKey);
+
+			if (Layers.end() == PrevLayerIter)
+				continue;
+
+			//현재 레이어와 연결된 이전 레이어의 Stair키
+			list<CCell*> StairList = PrevLayerIter->second->Get_StairCellList(Key);
+			if (StairList.empty())
+				continue;
+
 			StairList.sort([&vStartPos](auto Sour, auto Dest) {
 				_float SourLength = (vStartPos - Sour->Get_Position()).Length();
 				_float DestLength = (vStartPos - Dest->Get_Position()).Length();
-				if (SourLength > DestLength)
+				if (SourLength < DestLength)
 					return true;
 				else return false;
 				});
 
+			//현재 레이어의 Stairlist --> 이전레이어에도 같은 인덱스의 셀 존재
 			_float4 vGoal = StairList.front()->Get_Position();
-			GoalList.push_back(make_pair(vGoal, LayerIter->second));
+			GoalList.push_back(make_pair(vGoal, PrevLayerIter->second));
 
 			PrevKey = Key;
+			vGoal.y = Key;
 			vStartPos = vGoal;
 		}
+		GoalList.push_back(make_pair(vEnd, pEndLayer));
 	}
 
 	return GoalList;
@@ -369,14 +384,9 @@ list<_float4> CNavigation::Get_BestRoute(map<_float, CCellLayer*>& Layers, _floa
 		_bool bFind = false;
 		CCellLayer::CellList List = value.second->Get_BestRoute(m_pStartNode, m_pEndNode, bFind, m_DebugRouteNode);
 
-		if (Routes.empty())
-		{
-			Routes.swap(List);
-		}
-		else
-		{
-			Routes.merge(List);
-		}
+		for (auto Cell : List)
+			Routes.push_back(Cell);
+
 		m_pStartNode->Clear_Node();
 		m_pEndNode->Clear_Node();
 

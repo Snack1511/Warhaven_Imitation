@@ -1084,10 +1084,10 @@ void CPlayer::On_RealChangeBehavior()
 
 	switch (m_pCurBehaviorDesc->eCurType)
 	{
-	case eBehaviorType::eAttack:
+	case eBehaviorType::eCombat:
 		m_pTargetPlayer = m_pCurBehaviorDesc->pEnemyPlayer;
 		break;
-	case eBehaviorType::eResurrect:
+	case eBehaviorType::eRevive:
 		m_pTargetPlayer = m_pCurBehaviorDesc->pAlliesPlayer;
 		break;
 	default:

@@ -1444,11 +1444,18 @@ namespace Client
 	enum class eBehaviorType
 	{
 		ePatrol,
-		eFollow,
-		eAttack,
-		ePathNavigation,
-		eResurrect,
+		eGoToTrigger,
+		ePadenCannonInteract,
+		eRevive,
+		eCombat,
 		eChange,
 		eCNT
+	};
+	enum class eBehaviorConditionType
+	{
+		eWhen,
+		eWhat,
+		eTick,
+		eCount,
 	};
 }

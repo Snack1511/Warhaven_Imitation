@@ -1752,15 +1752,15 @@ HRESULT CCellLayer::SetUp_LayerRoute(map<_float, CCellLayer*>& Layers)
 {
 	//나를 제외한 모든 레이어에 대해 검사
 	list<_float>CircularTest;
-	CircularTest.push_back(m_fLayerHeightMin);
+	//CircularTest.push_back(m_fLayerHeightMin);
 	for (auto Layer : Layers)
 	{
 		if (Layer.second == this)
 			continue;
 		list<_float> LayerRoute;
-		LayerRoute.push_back(m_fLayerHeightMin);
+		//LayerRoute.push_back(m_fLayerHeightMin);
 		
-		if (Layer.second->Check_MovableLayer(Layer.first, Layers, LayerRoute, CircularTest))
+		if (Check_MovableLayer(Layer.first, Layers, LayerRoute, CircularTest))
 		{
 			m_LayerRoute.emplace(Layer.first, LayerRoute);
 		}
@@ -1798,6 +1798,8 @@ _bool CCellLayer::Check_MovableLayer(_float fTargetLayerKey, map<_float, CCellLa
 		list<list<_float>> LayerListArr;
 		for (auto StairList : m_StairList)
 		{
+			if (StairList.second.empty())
+				continue;
 			auto LayerIter = Layers.find(StairList.first);
 			if (Layers.end() == LayerIter)
 				assert(0);//못찾으면 사고임 서순 확인ㄱㄱ
@@ -1816,16 +1818,24 @@ _bool CCellLayer::Check_MovableLayer(_float fTargetLayerKey, map<_float, CCellLa
 			//}
 		}
 		LayerListArr.sort([](auto& Sour, auto& Dest) {
-			if (Sour.size() > Dest.size())
+			if (Sour.size() < Dest.size())
 				return true;
 			else return false;
 			});
+		if (LayerListArr.empty())
+			return false;
 		list<_float> Route = LayerListArr.front();
 
 		if (Route.back() != fTargetLayerKey)
 			assert(0);//이론상 여기 걸리면 안됨 뭔가 큰 문제가 있는거
-
-		LayerRoute.merge(Route);
+		for (auto Pos : Route)
+		{
+			LayerRoute.push_back(Pos);
+		}
+		//if (LayerRoute.empty())
+		//	LayerRoute = Route;
+		//else
+		//	LayerRoute.merge(Route);
 		return true;
 	}
 }

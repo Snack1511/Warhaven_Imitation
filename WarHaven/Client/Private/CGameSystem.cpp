@@ -651,7 +651,7 @@ HRESULT CGameSystem::On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyOb
 #endif // _DEBUG
 
 	/* 플레이어 모두 생성해서 분류까지 완료 */
-	if (FAILED(On_ReadyTirggers_Paden(vecReadyObjects)))
+	if (FAILED(On_ReadyTriggers_Paden(vecReadyObjects)))
 		return E_FAIL;
 
 #ifdef _DEBUG
@@ -699,13 +699,13 @@ HRESULT CGameSystem::On_ReadyPlayers_Stage(vector<pair<CGameObject*, _uint>>& ve
 		if (nullptr == pPlayerInfo)
 			continue;
 
-		if (m_mapPersonality.empty())
-			pPlayerInfo->Set_Personality(CAIPersonality::Create(L"Empty_Personality", m_pConditionTable));
-		else
-		{
-			//Personality 랜덤 할당
-			//Leader의 경우 특징적인 Personality할당
-		}
+		//if (m_mapPersonality.empty())
+		//	//pPlayerInfo->Set_Personality(CAIPersonality::Create(L"Empty_Personality", m_pConditionTable));
+		//else
+		//{
+		//	//Personality 랜덤 할당
+		//	//Leader의 경우 특징적인 Personality할당
+		//}
 
 		CPlayer* pPlayer = pPlayerInfo->Make_Player();
 		if (!pPlayer)
@@ -819,7 +819,7 @@ HRESULT CGameSystem::On_ReadyPlayers_Stage(vector<pair<CGameObject*, _uint>>& ve
 	return S_OK;
 }
 
-HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+HRESULT CGameSystem::On_ReadyTriggers_Paden(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
 	//0. 양쪽 진영
 	CTrigger* pTrigger = nullptr;
@@ -1282,7 +1282,7 @@ HRESULT CGameSystem::On_ReadyHwara(vector<pair<CGameObject*, _uint>>& vecReadyOb
 #endif // _DEBUG
 
 	/* 플레이어 모두 생성해서 분류까지 완료 */
-	if (FAILED(On_ReadyTirggers_Hwara(vecReadyObjects)))
+	if (FAILED(On_ReadyTriggers_Hwara(vecReadyObjects)))
 		return E_FAIL;
 
 #ifdef _DEBUG
@@ -1299,7 +1299,7 @@ HRESULT CGameSystem::On_ReadyHwara(vector<pair<CGameObject*, _uint>>& vecReadyOb
 	return S_OK;
 }
 
-HRESULT CGameSystem::On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+HRESULT CGameSystem::On_ReadyTriggers_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
 	//0. 양쪽 진영
 	CTrigger* pTrigger = nullptr;

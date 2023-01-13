@@ -64,20 +64,32 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		return STATE_END;
 	}
 
-	if (!pOwner->Get_CurRoute().empty()) 
+	if(pOwner->Get_OwnerPlayer()->Is_FindRoute()) //(!pOwner->Get_CurRoute().empty()) 
 	{
-		_float4 vDestination = pOwner->Get_CurRoute().front();
-		vDestination.y = vCurPos.y;
-		_float4 vDiffPositon = (vDestination - vCurPos);
-		if (vDiffPositon.Length() 
-			<= m_pOwner->Get_PhysicsCom()->Get_Physics().fSpeed * fDT(0))
+		_float4 vDestination;
+		if (pOwner->Get_CurRoute().empty())
 		{
-			pOwner->Get_CurRoute().pop_front();
-#ifdef _DEBUG
-			pOwner->Get_OwnerPlayer()->Add_DebugObject(vDestination);
-#endif
+			pOwner->Get_OwnerPlayer()->Set_IsFindRoute(false);
+			vDestination = vCurPos;
+			_float4 vDiffPositon = (vDestination - vCurPos);
+			vDir = vDiffPositon.Normalize();
 		}
-		vDir = vDiffPositon.Normalize();
+		else 
+		{
+
+			vDestination = pOwner->Get_CurRoute().front();
+			vDestination.y = vCurPos.y;
+			_float4 vDiffPositon = (vDestination - vCurPos);
+			if (vDiffPositon.Length()
+				<= m_pOwner->Get_PhysicsCom()->Get_Physics().fSpeed * fDT(0))
+			{
+				pOwner->Get_CurRoute().pop_front();
+#ifdef _DEBUG
+				pOwner->Get_OwnerPlayer()->Add_DebugObject(vDestination);
+#endif
+			}
+			vDir = vDiffPositon.Normalize();
+		}
 	}
 	else 
 	{

@@ -1,4 +1,4 @@
-#define SHADOW_ON
+//#define SHADOW_ON
 #define MATH_PI 3.141592
 
 matrix		g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;

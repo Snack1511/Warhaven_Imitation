@@ -42,10 +42,14 @@ public:
 	eTEAM_TYPE	Get_TeamType() { return m_eTeamType; }
 	_bool	IsMainPlayerTeam() { return m_bIsMainPlayerTeam; }
 	_bool	Minus_Score();
+
 	_bool	Has_MainTrigger() { return m_bHasTrigger[0]; }
-	_bool	Has_CannonTrigger() { return m_bHasTrigger[2]; }
 	_bool	Has_RespawnTrigger() { return m_bHasTrigger[1]; }
+	_bool	Has_CannonTrigger() { return m_bHasTrigger[2]; }
+
 	_bool	Has_CenterTrigger() { return m_bHasTrigger[3]; }
+	_bool	Has_HwaraRespawnTrigger() { return m_bHasTrigger[4]; }
+	_bool	Has_HwaraFinalTrigger() { return m_bHasTrigger[5]; }
 	list<CSquad*>& Get_SquadList() { return m_SquadList; }
 
 public:
