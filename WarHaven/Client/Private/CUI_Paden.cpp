@@ -1065,6 +1065,11 @@ void CUI_Paden::Init_PointUI()
 		{
 			for (int j = 0; j < PU_End; ++j)
 			{
+				m_pArrPointUI[Point_E][j]->Set_Color(m_vColorRed);
+				m_pArrPointUI[Point_A][j]->Set_Color(m_vColorBlue);
+				m_pArrProjPointUI[Point_E][j]->Set_Color(m_vColorRed);
+				m_pArrProjPointUI[Point_A][j]->Set_Color(m_vColorBlue);
+
 				map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
 				auto iter = mapPlayers.begin();
 				m_eTeam = iter->second->Get_Team()->Get_TeamType();
@@ -1072,6 +1077,7 @@ void CUI_Paden::Init_PointUI()
 				{
 					m_pArrPointUI[Point_A][j]->Set_PosX(-50.f);
 					m_pArrPointUI[Point_E][j]->Set_PosX(50.f);
+
 				}
 				else
 				{

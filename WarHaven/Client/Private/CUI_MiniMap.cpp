@@ -449,16 +449,6 @@ void CUI_MiniMap::Init_MiniMapPoint()
 				GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Text], CTexture)->Set_CurTextureIndex(j);
 			}
 
-			if (i == MP_Text)
-			{
-				m_pArrMiniMapPoint[Point_C][i]->Set_PosY(245.f);
-				m_pArrMiniMapPoint[Point_A][i]->Set_PosY(245.f);
-				m_pArrMiniMapPoint[Point_E][i]->Set_PosY(245.f);
-				m_pArrMiniMapPoint[Point_R][i]->Set_PosY(277.f);
-
-				continue;
-			}
-
 			m_pArrMiniMapPoint[Point_C][i]->Set_PosY(246.f);
 			m_pArrMiniMapPoint[Point_A][i]->Set_PosY(246.f);
 			m_pArrMiniMapPoint[Point_E][i]->Set_PosY(246.f);
@@ -479,6 +469,19 @@ void CUI_MiniMap::Init_MiniMapPoint()
 					m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-433.f);
 					m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-565.f);
 				}
+			}
+
+			m_pArrMiniMapPoint[Point_A][i]->Set_Color(m_vColorBlue);
+			m_pArrMiniMapPoint[Point_E][i]->Set_Color(m_vColorRed);
+
+			if (i == MP_Text)
+			{
+				m_pArrMiniMapPoint[Point_C][i]->Set_PosY(245.f);
+				m_pArrMiniMapPoint[Point_A][i]->Set_PosY(245.f);
+				m_pArrMiniMapPoint[Point_E][i]->Set_PosY(245.f);
+				m_pArrMiniMapPoint[Point_R][i]->Set_PosY(277.f);
+
+				continue;
 			}
 		}
 		break;
