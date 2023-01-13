@@ -32,7 +32,7 @@ private:
 	_float4 m_vColorGold = RGB(255, 207, 64);
 
 private:
-	enum Info { Info_BG, Info_Line, Info_Name, Info_Mode, Info_End };
+	enum Info { Info_BG, Info_Line, Info_Name, Info_Mode, Info_Point, Info_End };
 	CUI_Object* m_pInfoUI[Info_End];
 
 	enum Info_Text { Text_0, Text_1, Text_2, Text_End };
