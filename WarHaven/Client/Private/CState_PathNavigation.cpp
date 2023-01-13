@@ -49,7 +49,7 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		//	return m_eWalkState;
 	}
 
-
+#ifdef _DEBUG
 	if (KEY(J, TAP))
 	{
 		pOwner->Get_CurRoute().clear();
@@ -57,6 +57,7 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		pOwner->Get_OwnerPlayer()->Make_BestRoute(vTargetPos);
 
 	}
+#endif
 
 	/* 따라가면 대 */
 	_float4 vCurPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
