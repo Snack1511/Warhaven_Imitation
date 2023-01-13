@@ -7,6 +7,9 @@ class CState_PathNavigation abstract
 {
 
 protected:
+	enum SPRINT_STATE { SPRINT_STATE_LOOP1, SPRINT_STATE_LOOP2, SPRINT_STATE_LOOP3, SPRINT_STATE_JUMP, SPRINT_STATE_STOP, SPRINT_STATE_END};
+
+protected:
 	CState_PathNavigation();
 	virtual ~CState_PathNavigation();
 

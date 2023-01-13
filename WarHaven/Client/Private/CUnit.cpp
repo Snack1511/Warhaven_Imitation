@@ -1654,7 +1654,9 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 	CState::HIT_INFO tInfo = *(CState::HIT_INFO*)(pHitInfo);
 
 	//마주보지않았을 경우 가드 실패
-	if (!tInfo.bFace)
+	if (!tInfo.bFace ||
+		iOtherColType == COL_BLUEGROGGYATTACK ||
+		iOtherColType == COL_REDGROGGYATTACK)
 	{
 		On_Hit(pOtherUnit, iOtherColType, vHitPos, pHitInfo);
 		return;

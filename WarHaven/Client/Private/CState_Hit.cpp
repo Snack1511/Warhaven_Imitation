@@ -89,7 +89,7 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
 
 STATE_TYPE CState_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (m_tHitInfo.bSting && m_pStingBone)
+    if (m_tHitInfo.bSting)
     {
         if (!m_bAttackTrigger)
         {
@@ -132,14 +132,16 @@ STATE_TYPE CState_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
             m_bAttackTrigger = true;
         }
 
+        m_tHitInfo.bSting = false;
+    }
+
+    if (m_pStingBone)
+    {
         m_fTimeAcc += fDT(0);
 
         if (m_fTimeAcc > 1.5f)
             pOwner->On_Die();
-            
- 
     }
-
 
     return __super::Tick(pOwner, pAnimator);
 }

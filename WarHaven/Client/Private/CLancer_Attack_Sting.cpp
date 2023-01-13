@@ -176,6 +176,8 @@ void CLancer_Attack_Sting::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 STATE_TYPE CLancer_Attack_Sting::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	Follow_MouseLook(pOwner);
+	pOwner->Set_DirAsLook();
 
     return __super::Tick(pOwner, pAnimator);
 }

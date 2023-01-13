@@ -93,7 +93,7 @@ void CUnit_Lancer::SetUp_Colliders(_bool bPlayer)
 	COL_GROUP_CLIENT	eHitBoxBody = (bPlayer) ? COL_BLUEHITBOX_BODY : COL_REDHITBOX_BODY;
 	COL_GROUP_CLIENT	eHitBoxHead = (bPlayer) ? COL_BLUEHITBOX_HEAD : COL_REDHITBOX_HEAD;
 	COL_GROUP_CLIENT	eAttack = (bPlayer) ? COL_BLUEATTACK : COL_REDATTACK;
-	COL_GROUP_CLIENT	eGuardBreak = (bPlayer) ? COL_BLUEGUARDBREAK : COL_REDGUARDBREAK;
+	COL_GROUP_CLIENT	eGroggy = (bPlayer) ? COL_BLUEGROGGYATTACK : COL_REDGROGGYATTACK;
 	COL_GROUP_CLIENT	eFlyAttack = (bPlayer) ? COL_BLUEFLYATTACK : COL_REDFLYATTACK;
 
 
@@ -135,7 +135,7 @@ void CUnit_Lancer::SetUp_Colliders(_bool bPlayer)
 
 
 	for (_uint i = 0; i < iWeaponSphereNum; ++i)
-		tWeaponUnitColDesc[i].eColType = (_uint)eGuardBreak;
+		tWeaponUnitColDesc[i].eColType = (_uint)eGroggy;
 
 	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 

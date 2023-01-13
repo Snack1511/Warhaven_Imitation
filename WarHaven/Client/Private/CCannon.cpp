@@ -156,10 +156,10 @@ void CCannon::Control_Cannon(CPlayer* pPlayer)
 	{
 		GET_COMPONENT_FROM(m_pCannonCam, CScript_FollowCam)->Start_LerpType(CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_CANNON);
 		GAMEINSTANCE->Change_Camera(L"CannonCam");
+		CUser::Get_Instance()->SetActive_CannonUI(true);
+		CUser::Get_Instance()->SetActive_CannonCrosshair(true);
 	}
 
-	CUser::Get_Instance()->SetActive_CannonUI(true);
-	CUser::Get_Instance()->SetActive_CannonCrosshair(true);
 
 	ENABLE_GAMEOBJECT(m_pUI_Trail);
 }
@@ -257,12 +257,16 @@ void CCannon::My_Tick()
 
 	CUser::Get_Instance()->Set_CannonCoolTime(m_fCannonCoolAcc, m_fCannonCoolTime);
 
-	if (KEY(LBUTTON, TAP))
+	if (m_pCurOwnerPlayer->IsMainPlayer())
 	{
-		Shoot_Cannon();
+		if (KEY(LBUTTON, TAP))
+		{
+			Shoot_Cannon();
 
-		CUser::Get_Instance()->SetActive_CannonCoolTime(true);
+			CUser::Get_Instance()->SetActive_CannonCoolTime(true);
+		}
 	}
+
 
 	if (m_pAnimator->Is_CurAnimFinished())
 	{

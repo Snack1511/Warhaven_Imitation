@@ -65,7 +65,7 @@ void	CLancerNeedle::Needle_CollisionEnter(CGameObject* pOtherObj, const _uint& e
 			return;
 
 		m_pStinedUnit = pOtherUnit;
-		//DISABLE_COMPONENT(GET_COMPONENT_FROM(m_pStinedUnit, CCollider_Sphere));
+		DISABLE_COMPONENT(GET_COMPONENT_FROM(m_pStinedUnit, CCollider_Sphere));
 
 		if (m_pOwnerUnit->Is_MainPlayer())
 		{
@@ -598,15 +598,13 @@ void CLancerNeedle::OnDisable()
 	
 	if (m_pStinedUnit)
 	{
-		if (!m_pStinedUnit->Is_Valid())
-		{
-			m_pStinedUnit->On_Die();
-			m_pStinedUnit = nullptr;
-		}
+		m_pStinedUnit->On_Die();
+		m_pStinedUnit = nullptr;
 	}
 	
 	m_bStartNeedle = true;
 	m_bBeginNeedle = true;
+
 	/*if(m_pNiddleMesh)
 	{
 		static_cast<CEffect*>(m_pNiddleMesh)->Set_FadeOut();
