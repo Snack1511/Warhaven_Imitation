@@ -56,7 +56,7 @@ HRESULT CState_PathNavigation_Jump_Warrior_R::Initialize()
 
 	iPlaceJumpAnimIndex = 12;
 
-    m_iAINextState = AI_STATE_PATHNAVIGATION_FALL_WARRIOR_R;
+    m_eFallState = AI_STATE_PATHNAVIGATION_FALL_WARRIOR_R;
 
 
     return S_OK;

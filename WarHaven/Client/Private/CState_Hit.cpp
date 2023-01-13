@@ -50,8 +50,16 @@ HRESULT CState_Hit::Initialize()
 
 void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData)
 {
+    STATE_TYPE eCurStateType = pOwner->Get_CurState();
 
+    if (pOwner->Get_HitType().eStingHitState == eCurStateType)
+    {
+        if (ePrevStateType == eCurStateType)
+        {
+            m_bStingDead = true;
+        }
 
+    }
 
     if (!m_tHitInfo.vDir.Is_Zero())
         pOwner->Get_PhysicsCom()->Set_Dir(m_tHitInfo.vDir);
@@ -89,9 +97,10 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
 
 STATE_TYPE CState_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
     if (m_tHitInfo.bSting)
     {
-        if (!m_bAttackTrigger)
+        if (!m_bStingDead)
         {
 
             CTransform* pMyTransform = pOwner->Get_Transform();
@@ -128,8 +137,6 @@ STATE_TYPE CState_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
                     CUser::Get_Instance()->Add_KillName(wstrEnemyName);
                 }
             }
-
-            m_bAttackTrigger = true;
         }
 
         m_tHitInfo.bSting = false;

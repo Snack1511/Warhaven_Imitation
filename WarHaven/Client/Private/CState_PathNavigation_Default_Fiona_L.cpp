@@ -50,7 +50,7 @@ HRESULT CState_PathNavigation_Default_Fiona_L::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 22;
 
-    m_iAINextState = AI_STATE_PATHNAVIGATION_JUMP_FIONA_L;
+    m_eJumpState = AI_STATE_PATHNAVIGATION_JUMP_FIONA_L;
     m_eJumpFallStateType = AI_STATE_COMMON_FALL_FIONA_L;
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_FIONA_L;
 

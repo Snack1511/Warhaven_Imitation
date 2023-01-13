@@ -70,9 +70,7 @@ STATE_TYPE CState_PathNavigation_Walk_Fiona::Tick(CUnit* pOwner, CAnimator* pAni
 	else
 		return m_iAINextState;
 
-	DoMove_AI_NoTarget(pOwner, pAnimator);
-
-    return CState::Tick(pOwner, pAnimator);
+    return __super::Tick(pOwner, pAnimator);
 }
 
 void CState_PathNavigation_Walk_Fiona::Exit(CUnit* pOwner, CAnimator* pAnimator)

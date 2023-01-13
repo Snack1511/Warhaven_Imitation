@@ -4,11 +4,13 @@
 #include "UsefulHeaders.h"
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Archer.h"
 
 #include "CUser.h"
 #include "CEffects_Factory.h"
 #include "CSword_Effect.h"
 #include "CColorController.h"
+#include "CProjectile.h"
 
 
 CState_Combat_SkillR_Archer_Swing::CState_Combat_SkillR_Archer_Swing()
@@ -60,6 +62,7 @@ HRESULT CState_Combat_SkillR_Archer_Swing::Initialize()
 void CState_Combat_SkillR_Archer_Swing::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	pOwner->On_Use(CUnit::SKILL1);
+	static_cast<CUnit_Archer*>(pOwner)->Change_ArrowPhase((_uint)CProjectile::eLOOP);
 
 	CColorController::COLORDESC tColorDesc;
 	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
@@ -107,6 +110,7 @@ STATE_TYPE CState_Combat_SkillR_Archer_Swing::Tick(CUnit* pOwner, CAnimator* pAn
 void CState_Combat_SkillR_Archer_Swing::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	__super::Exit(pOwner, pAnimator);
+	static_cast<CUnit_Archer*>(pOwner)->Change_ArrowPhase((_uint)CProjectile::eSTART);
 	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 }
 

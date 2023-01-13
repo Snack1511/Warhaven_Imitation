@@ -3730,6 +3730,111 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\09. Cannon">
       <UniqueIdentifier>{4edf7d8d-e453-4c98-949c-e6ee2ef67bb2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda">
+      <UniqueIdentifier>{e2196713-b68a-4186-a8c9-d9a72b1001b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\07. Qanda">
+      <UniqueIdentifier>{9396506e-6a86-4a6f-abfb-fb04f283d4c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\08. Lancer">
+      <UniqueIdentifier>{0bd324a8-3a9b-4e97-8844-a14f89d67ab6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\08. Lancer">
+      <UniqueIdentifier>{c503e51e-8f19-42bf-8535-b34b8def79b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\07. Qanda">
+      <UniqueIdentifier>{072ff87f-373c-4712-9ab8-446473a1707b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\08. Lancer">
+      <UniqueIdentifier>{adcdb0f7-da1a-4843-8b54-8d5816d2b957}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\07. Qanda">
+      <UniqueIdentifier>{c5f32fc6-5b7e-46a1-a62e-ff1302c52bc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\08. Lancer">
+      <UniqueIdentifier>{e29dd98a-6fba-4d74-8adf-7eadd648aa6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\07. Qanda">
+      <UniqueIdentifier>{934903cb-ad64-4e91-9bf2-91f282e2548a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\08. Lancer">
+      <UniqueIdentifier>{9c80fa2d-ba19-4857-be3d-ac1c171278aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\07. Qanda">
+      <UniqueIdentifier>{1a225ca0-2c09-4eff-b8b3-97e6917dfbc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\07. Qanda">
+      <UniqueIdentifier>{b6c29dd8-3462-479b-b5b0-b9adcecdc685}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\07. Qanda">
+      <UniqueIdentifier>{94a5c32c-f4ac-4985-b97a-b6a9e085dab3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\07. Qanda">
+      <UniqueIdentifier>{a0cdfaf3-750f-4ad7-9f30-39fb3bba303e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\07. Qanda">
+      <UniqueIdentifier>{17369cb5-d126-4b4f-b1ac-60bd504e2802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\07. Qanda">
+      <UniqueIdentifier>{6e382f84-1c32-42a0-85cd-5ff440392d91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\07. Qanda">
+      <UniqueIdentifier>{8ee8b762-3bd1-47a2-9d7f-b19cd2938693}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\07. Qanda">
+      <UniqueIdentifier>{9e6b6c78-a4e2-4101-8b61-2629973d5b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\07. Qanda">
+      <UniqueIdentifier>{4bc5c322-3067-4aa7-bb79-759a673f7287}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda">
+      <UniqueIdentifier>{b919bb74-0b55-41b8-a951-5648529e15bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\07. Qanda">
+      <UniqueIdentifier>{15ead5ab-2a6d-4e79-8ef7-b16ac82a638a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\07. Qanda">
+      <UniqueIdentifier>{91e58ca3-6f5c-4871-a391-da93c31608e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\07. Qanda">
+      <UniqueIdentifier>{412b4409-744a-495f-8d54-9648bb4374ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\07. Qanda">
+      <UniqueIdentifier>{f39f1521-0bb7-435a-8a00-ebb18610b29c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\07. Qanda">
+      <UniqueIdentifier>{c70313e3-540d-4e1f-8cf9-9237427de99b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\08. Lancer">
+      <UniqueIdentifier>{cbb7451e-dd99-4ba2-8534-8e7ed877055a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\08. Lancer">
+      <UniqueIdentifier>{7cdb89ec-e05d-47e0-8bb2-8e261b4308ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\08. Lancer">
+      <UniqueIdentifier>{920a9421-21e8-4520-a5f9-3f16746b501f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\08. Lancer">
+      <UniqueIdentifier>{cc6f6531-199f-4342-a461-8490afd40020}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\08. Lancer">
+      <UniqueIdentifier>{aaa1a05c-a04e-4993-9657-37895642a186}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\08. Lancer">
+      <UniqueIdentifier>{728f58d9-4cc1-4d76-bb03-e65930eac304}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\08. Lancer">
+      <UniqueIdentifier>{bd943c95-60a1-402b-81c7-998bd85bd019}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\08. Lancer">
+      <UniqueIdentifier>{f91c027f-b399-44ef-a314-62a5409e0ce8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\08. Lancer">
+      <UniqueIdentifier>{f580467a-ed27-401b-90bf-790c027031d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\08. Lancer">
+      <UniqueIdentifier>{7fb81beb-29e2-4ea3-8950-4dc8f1440cf1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

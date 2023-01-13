@@ -60,7 +60,7 @@ HRESULT CState_PathNavigation_Jump_Priest::Initialize()
 
 	iPlaceJumpAnimIndex = 11;
 
-    m_iAINextState = AI_STATE_PATHNAVIGATION_FALL_PRIEST;
+    m_eFallState = AI_STATE_PATHNAVIGATION_FALL_PRIEST;
 
 
     return S_OK;

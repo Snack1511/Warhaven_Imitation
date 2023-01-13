@@ -47,7 +47,7 @@ HRESULT CState_PathNavigation_Sprint_Fiona_Loop::Initialize()
 void CState_PathNavigation_Sprint_Fiona_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
     m_fRand = frandom(1.f, 8.f);
-    m_iRand = random(0, 5);
+    m_iRand = random(SPRINT_STATE_LOOP1, SPRINT_STATE_END);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -59,26 +59,26 @@ STATE_TYPE CState_PathNavigation_Sprint_Fiona_Loop::Tick(CUnit* pOwner, CAnimato
     {
         switch (m_iRand)
         {
-        case 0:
-        case 1:
-        case 2:
+        case SPRINT_STATE_LOOP1:
+        case SPRINT_STATE_LOOP2:
+        case SPRINT_STATE_LOOP3:
            
-            m_iRand = random(0, 5);
+            m_iRand = random(SPRINT_STATE_LOOP1, SPRINT_STATE_END);
 
             break;
 
-        case 3:
+        case SPRINT_STATE_JUMP:
 
 
             return AI_STATE_PATHNAVIGATION_SPRINTJUMP_FIONA;
 
-        case 4:
+        case SPRINT_STATE_STOP:
 
             return AI_STATE_PATHNAVIGATION_SPRINTEND_FIONA;
 
         default:
 
-            m_iRand = random(0, 5);
+            m_iRand = random(SPRINT_STATE_LOOP1, SPRINT_STATE_END);
 
             break;
         }

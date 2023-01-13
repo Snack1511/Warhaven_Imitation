@@ -154,8 +154,8 @@ void CProjectile::Reset(CGameObject* pGameObject)
 
 
 	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
-		m_pCollider->Set_ColIndex(COL_BLUEATTACK);
-		//m_pCollider->Set_ColIndex(COL_REDATTACK);
+		//m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+		m_pCollider->Set_ColIndex(COL_REDATTACK);
 	else
 	{
 		Set_ColliderType(m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType());
@@ -628,11 +628,18 @@ void CProjectile::My_LateTick()
 		if (!m_pHitUnit->Is_Valid())
 			DISABLE_GAMEOBJECT(this);
 
-		_float4x4 matCurWorld = m_pCurStickBone->Get_BoneMatrix();
-		matCurWorld = m_matHitOffset * matCurWorld;
+		if (m_pCurStickBone)
+		{
+			_float4x4 matCurWorld = m_pCurStickBone->Get_BoneMatrix();
+			matCurWorld = m_matHitOffset * matCurWorld;
 
-		m_pTransform->Get_Transform().matMyWorld = matCurWorld;
-		m_pTransform->Make_WorldMatrix();
+			m_pTransform->Get_Transform().matMyWorld = matCurWorld;
+			m_pTransform->Make_WorldMatrix();
+		}
+		else
+			DISABLE_GAMEOBJECT(this);
+
+
 	}
 		break;
 	case Client::CProjectile::eEND:

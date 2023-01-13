@@ -50,7 +50,7 @@ HRESULT CState_PathNavigation_Run_Warrior_L::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 22;
 
-    m_iAINextState = AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_L;
+    m_eJumpState = AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_L;
     m_eJumpFallStateType = AI_STATE_COMMON_FALL_WARRIOR_L;
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_WARRIOR_L;
 
