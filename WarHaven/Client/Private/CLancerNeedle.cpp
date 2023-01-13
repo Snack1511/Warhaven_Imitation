@@ -285,6 +285,8 @@ HRESULT CLancerNeedle::SetUp_Model(wstring wstrModelFilePath, CHierarchyNode* pO
 	pModel->Set_ShaderFlag(SH_LIGHT_BLOOM);
 	pModel->Set_ShaderPassToAll(VTXMODEL_PASS_NORMALMAPPING);
 
+	wstring strTexpath = L"../bin/resources/textures/black.png";
+	pModel->Change_Texture(0, 1, strTexpath);
 
 	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXMODEL,
 		VTXMODEL_DECLARATION::Element, VTXMODEL_DECLARATION::iNumElements);

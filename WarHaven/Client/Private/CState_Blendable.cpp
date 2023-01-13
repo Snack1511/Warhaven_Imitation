@@ -104,7 +104,6 @@ void CState_Blendable::Exit(CUnit * pOwner, CAnimator * pAnimator)
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 	pOwner->TurnOn_TrailEffect(false);
-
 	//pOwner->CallBack_CollisionEnter -= bind(&CState_Blendable::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 	//pOwner->CallBack_CollisionStay -= bind(&CState_Blendable::OnCollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);
 

@@ -1,4 +1,10 @@
 
+#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Combat_Default_Fiona.cpp"
+
+
+#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Combat_Default_Fiona_L.cpp"
+
+
 #include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Combat_Default_Fiona_R.cpp"
 
 
@@ -51,10 +57,4 @@
 
 
 #include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Combat_Default_Engineer_L.cpp"
-
-
-#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Combat_Default_Engineer_R.cpp"
-
-
-#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Combat_GuardBegin_Engineer.cpp"
 
