@@ -112,10 +112,10 @@ void CBehavior::Save(wstring wstrSaveName)
     writeFile.write((char*)&iPriority, sizeof(_uint));
 
     //OtherCondition
-    Save_Functions(writeFile, m_strConditionName[_uint(eConditionType::eWhen)]);
+    Save_Functions(writeFile, m_strConditionName[_uint(eBehaviorConditionType::eWhen)]);
 
     //WhatCondition
-    Save_Functions(writeFile, m_strConditionName[_uint(eConditionType::eWhat)]);
+    Save_Functions(writeFile, m_strConditionName[_uint(eBehaviorConditionType::eWhat)]);
 
     //BehaviorTick
     Save_Functions(writeFile, m_strBehaviorTickName);
@@ -186,7 +186,7 @@ void CBehavior::Add_WhatCondition(wstring strWhatConditionName)
         return;
     if (strWhatConditionName == L"")
         return;
-    m_strConditionName[_uint(eConditionType::eWhat)].push_back(strWhatConditionName);
+    m_strConditionName[_uint(eBehaviorConditionType::eWhat)].push_back(strWhatConditionName);
     Callback_WhatCondition += m_pConditionTable->Find_WhatCondition(strWhatConditionName);
 }
 
@@ -196,7 +196,7 @@ void CBehavior::Add_OtherCondition(wstring strOtherConditionName)
         return;
     if (strOtherConditionName == L"")
         return;
-    m_strConditionName[_uint(eConditionType::eWhen)].push_back(strOtherConditionName);
+    m_strConditionName[_uint(eBehaviorConditionType::eWhen)].push_back(strOtherConditionName);
     Callback_OtherCondition += m_pConditionTable->Find_OtherCondition(strOtherConditionName);
 }
 
@@ -206,17 +206,17 @@ void CBehavior::Add_CallBack_Tick(wstring strCallbackTickName)
         return;
     if (strCallbackTickName == L"")
         return;
-    m_strConditionName[_uint(eConditionType::eTick)].push_back(strCallbackTickName);
+    m_strConditionName[_uint(eBehaviorConditionType::eTick)].push_back(strCallbackTickName);
     Callback_BehaviorTick += m_pConditionTable->Find_BehaviorTick(strCallbackTickName);
 }
 
-void CBehavior::Add_Condition(wstring strConditionName, eConditionType eType)
+void CBehavior::Add_Condition(wstring strConditionName, eBehaviorConditionType eType)
 {
-    if (eType == eConditionType::eWhen)
+    if (eType == eBehaviorConditionType::eWhen)
     {
         Add_OtherCondition(strConditionName);
     }
-    else if (eType == eConditionType::eWhat)
+    else if (eType == eBehaviorConditionType::eWhat)
     {
         Add_WhatCondition(strConditionName);
     }
@@ -252,7 +252,7 @@ void CBehavior::Delete_WhatCondition(wstring strWhatConditionName)
 {
     vector<wstring> TmpVector;
     Callback_WhatCondition.Clear();
-    for (auto& NameValue : m_strConditionName[_uint(eConditionType::eWhat)])
+    for (auto& NameValue : m_strConditionName[_uint(eBehaviorConditionType::eWhat)])
     {
         if (strWhatConditionName != NameValue)
         {
@@ -260,14 +260,14 @@ void CBehavior::Delete_WhatCondition(wstring strWhatConditionName)
             TmpVector.push_back(NameValue);
         }
     }
-    TmpVector.swap(m_strConditionName[_uint(eConditionType::eWhat)]);
+    TmpVector.swap(m_strConditionName[_uint(eBehaviorConditionType::eWhat)]);
 }
 
 void CBehavior::Delete_OtherCondition(wstring strOtherConditionName)
 {
     vector<wstring> TmpVector;
     Callback_OtherCondition.Clear();
-    for (auto& NameValue : m_strConditionName[_uint(eConditionType::eWhen)])
+    for (auto& NameValue : m_strConditionName[_uint(eBehaviorConditionType::eWhen)])
     {
         if (strOtherConditionName != NameValue)
         {
@@ -275,14 +275,14 @@ void CBehavior::Delete_OtherCondition(wstring strOtherConditionName)
             TmpVector.push_back(NameValue);
         }
     }
-    TmpVector.swap(m_strConditionName[_uint(eConditionType::eWhen)]);
+    TmpVector.swap(m_strConditionName[_uint(eBehaviorConditionType::eWhen)]);
 }
 
 void CBehavior::Delete_CallBack_Tick(wstring strBehaviorTickName)
 {
     vector<wstring> TmpVector;
     Callback_BehaviorTick.Clear();
-    for (auto& NameValue : m_strConditionName[_uint(eConditionType::eTick)])
+    for (auto& NameValue : m_strConditionName[_uint(eBehaviorConditionType::eTick)])
     {
         if (strBehaviorTickName != NameValue)
         {
@@ -290,16 +290,16 @@ void CBehavior::Delete_CallBack_Tick(wstring strBehaviorTickName)
             TmpVector.push_back(NameValue);
         }
     }
-    TmpVector.swap(m_strConditionName[_uint(eConditionType::eTick)]);
+    TmpVector.swap(m_strConditionName[_uint(eBehaviorConditionType::eTick)]);
 }
 
-void CBehavior::Delete_Condition(wstring strConditionName, eConditionType eType)
+void CBehavior::Delete_Condition(wstring strConditionName, eBehaviorConditionType eType)
 {
-    if (eType == eConditionType::eWhen)
+    if (eType == eBehaviorConditionType::eWhen)
     {
         Delete_OtherCondition(strConditionName);
     }
-    else if (eType == eConditionType::eWhat)
+    else if (eType == eBehaviorConditionType::eWhat)
     {
         Delete_WhatCondition(strConditionName);
     }    
@@ -309,14 +309,14 @@ void CBehavior::Delete_Condition(wstring strConditionName, eConditionType eType)
     }
 }
 
-void CBehavior::Clear_Condition(eConditionType eType)
+void CBehavior::Clear_Condition(eBehaviorConditionType eType)
 {
     m_strConditionName[_uint(eType)].clear();
-    if (eType == eConditionType::eWhen)
+    if (eType == eBehaviorConditionType::eWhen)
     {
         Callback_OtherCondition.Clear();
     }
-    else if (eType == eConditionType::eWhat)
+    else if (eType == eBehaviorConditionType::eWhat)
     {
         Callback_WhatCondition.Clear();
     }
@@ -351,7 +351,7 @@ BEHAVIOR_DESC* CBehavior::Check_Condition(_bool& bOut , CPlayer* pPlayer, CAICon
     return m_pBehaviorDesc;
 }
 
-vector<wstring>& CBehavior::Get_ConditionNames(eConditionType eType)
+vector<wstring>& CBehavior::Get_ConditionNames(eBehaviorConditionType eType)
 {
     return m_strConditionName[_uint(eType)];
 }

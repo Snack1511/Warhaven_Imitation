@@ -107,10 +107,10 @@ void CAIController::Early_Tick()
 	}
 
 	/* For¹® ³¡ */
-	CBehavior* pPatrolBehavior = m_pPersonality->Get_Patrol();
+	CBehavior* pPatrolBehavior = m_pPersonality->Get_DefaultBehavior();
 	if (nullptr == pNextBehavior && nullptr != pPatrolBehavior)
 	{
-		pNextBehavior = m_pPersonality->Get_Patrol();
+		pNextBehavior = m_pPersonality->Get_DefaultBehavior();
 		pBehaviorDescTemp = pNextBehavior->Get_BehaviorDesc();
 	}
 

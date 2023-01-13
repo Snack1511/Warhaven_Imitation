@@ -12,9 +12,9 @@ CAIPersonality* CAIPersonality::Create(CTable_Conditions* pConditionTable)
 		Call_MsgBox(L"Failed to Initialize : CAIPersonality");
 		SAFE_DELETE(pInstance);
 	}
-	if (FAILED(pInstance->SetUp_PatrolBehavior()))
+	if (FAILED(pInstance->SetUp_DefaultBehavior()))
 	{
-		Call_MsgBox(L"Failed to SetUp_PatrolBehavior : CAIPersonality");
+		Call_MsgBox(L"Failed to SetUp_DefaultBehavior : CAIPersonality");
 		SAFE_DELETE(pInstance);
 	}
 	if (FAILED(pInstance->SetUp_PersonalityName(wstring(L"Empty_Personlity"))))
@@ -186,7 +186,7 @@ void CAIPersonality::Release()
 	for (auto& elem : m_BehaviorList)
 		SAFE_DELETE(elem);
 
-	SAFE_DELETE(m_pPatrolBehavior);
+	SAFE_DELETE(m_pDefaultBehavior);
 }
 
 HRESULT CAIPersonality::SetUp_PersonalityName(wstring strPersonalityName)
@@ -195,16 +195,16 @@ HRESULT CAIPersonality::SetUp_PersonalityName(wstring strPersonalityName)
 	return S_OK;
 }
 
-HRESULT CAIPersonality::SetUp_PatrolBehavior()
+HRESULT CAIPersonality::SetUp_DefaultBehavior()
 {
-	if (nullptr == m_pPatrolBehavior)
+	if (nullptr == m_pDefaultBehavior)
 	{
 		CBehavior* pBehavior = nullptr;
 		pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Patrol"))->Clone();
 		pBehavior->Initialize();
-		pBehavior->Add_BehaviorTick(wstring(L"Callback_Tick_UpdatePatrol"));
+		pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 		pBehavior->Set_Priority(0);
-		m_pPatrolBehavior = pBehavior;
+		m_pDefaultBehavior = pBehavior;
 	}
 	return S_OK;
 }

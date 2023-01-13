@@ -261,20 +261,20 @@ void CUnit_Paladin::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		//상태변경
 		eNewState = AI_STATE_PATROL_DEFAULT_PALADIN_R;
 		break;
-	case eBehaviorType::eFollow:
+	case eBehaviorType::ePadenCannonInteract:
 		//상태변경
 		break;
-	case eBehaviorType::eAttack:
+	case eBehaviorType::eCombat:
 		//상태변경
 		eNewState = AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 
 		break;
-	case eBehaviorType::ePathNavigation:
+	case eBehaviorType::eGoToTrigger:
 		//상태변경
 		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_PALADIN_R;
 		break;
 
-	case eBehaviorType::eResurrect:
+	case eBehaviorType::eRevive:
 		//상태변경
 		eNewState = AI_STATE_COMMON_REVIVE_AI;
 		break;

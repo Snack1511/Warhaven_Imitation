@@ -520,7 +520,7 @@ void CWindow_AI::ListUp_BehaviorConditions(const char* szListName, const char* L
     }
     else
     {
-        vector<wstring>& rhsConditionNameVector = pBehavior->Get_ConditionNames(CBehavior::eConditionType(iConditionType));
+        vector<wstring>& rhsConditionNameVector = pBehavior->Get_ConditionNames(eBehaviorConditionType(iConditionType));
         if (ImGui::BeginListBox(ListID, Size))
         {
             if (rhsConditionNameVector.empty())
@@ -538,7 +538,7 @@ void CWindow_AI::ListUp_BehaviorConditions(const char* szListName, const char* L
                     if (ImGui::Selectable(CFunctor::To_String(Name).c_str(), bSelect))
                     {
                         rhsConditionName = Name;
-                        m_pCurSelectBehavior->Delete_Condition(rhsConditionName, CBehavior::eConditionType(iConditionType));
+                        m_pCurSelectBehavior->Delete_Condition(rhsConditionName, eBehaviorConditionType(iConditionType));
                     }
                     //m_CurSelectIncludeCondition.strConditionName = rhsConditionName;
                     //lstrcpy(m_CurSelectIncludeCondition.szConditionName, Name.c_str());
@@ -571,7 +571,7 @@ void CWindow_AI::ListUp_BehaviorConditions(const char* szListName, const char* L
             {
                 if (ImGui::Selectable(CFunctor::To_String(Name).c_str()))
                 {
-                    m_pCurSelectBehavior->Add_Condition(Name, CBehavior::eConditionType(iConditionType));
+                    m_pCurSelectBehavior->Add_Condition(Name, eBehaviorConditionType(iConditionType));
                 }
                 //lstrcpy(m_CurSelectIncludeCondition.szConditionName, Name.c_str());
                 //m_CurSelectExcludeCondition.iConditionType = iConditionType;
@@ -585,7 +585,7 @@ void CWindow_AI::ListUp_BehaviorConditions(const char* szListName, const char* L
     }
     if (ImGui::Button(u8"조건 초기화")) 
     {
-        pBehavior->Clear_Condition(CBehavior::eConditionType(iConditionType));
+        pBehavior->Clear_Condition(eBehaviorConditionType(iConditionType));
     }
 }
 
@@ -619,17 +619,17 @@ void CWindow_AI::Func_ChangeBehaviorCondition()
         ListUp_BehaviorConditions("WhenCondition", "##WhenConditions",
             vBehaviorSize, m_pCurSelectBehavior,
             m_strCurSelectWhenCondition,
-            _uint(CBehavior::eConditionType::eWhen));
+            _uint(eBehaviorConditionType::eWhen));
 
         ListUp_BehaviorConditions("WhatCondition", "##WhatConditions",
             vBehaviorSize, m_pCurSelectBehavior,
             m_strCurSelectWhatCondition, 
-            _uint(CBehavior::eConditionType::eWhat));
+            _uint(eBehaviorConditionType::eWhat));
 
         ListUp_BehaviorConditions("BehaviorTick", "##BehaviorTick",
             vBehaviorSize, m_pCurSelectBehavior,
             m_strCurSelectBehaviorTick,
-            _uint(CBehavior::eConditionType::eTick));
+            _uint(eBehaviorConditionType::eTick));
     }
 
 }
@@ -811,7 +811,7 @@ void CWindow_AI::Add_Condition(const ImGuiPayload* pPayload)
     if (nullptr == pBehavior)
         return;
 
-    pBehavior->Add_Condition(strConditionName, CBehavior::eConditionType(iConditionType));
+    pBehavior->Add_Condition(strConditionName, eBehaviorConditionType(iConditionType));
 
 }
 
