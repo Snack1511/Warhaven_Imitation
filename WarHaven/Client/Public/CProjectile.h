@@ -38,7 +38,7 @@ public:
 
 
 public:
-	enum ePROJECTILE_PHASE { eSTART, eLOOP, eRANDOM, eChase, eSHOOT, eHIT, eSTICK, eEND };
+	enum ePROJECTILE_PHASE { eSTART, eLOOP, eRANDOM, eChase, eSHOOT, eHIT, eSTICK, eCATCHED, eEND };
 	void		On_ShootProjectile();
 	void		On_ChangePhase(ePROJECTILE_PHASE eNextPhase);
 

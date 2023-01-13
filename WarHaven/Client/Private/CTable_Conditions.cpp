@@ -695,7 +695,23 @@ void CTable_Conditions::Select_ConquerTrigger(_bool& OutCondition, BEHAVIOR_DESC
 
     if (nullptr == pTargetTrigger)
         OutCondition = false;
-    else OutCondition = true;
+    else
+    {
+        /* Trigger와 거리 재기 */
+        _float4 vTriggerPos = pTargetTrigger->Get_Transform()->Get_World(WORLD_POS);
+        _float4 vPlayerPos = pPlayer->Get_WorldPos();
+
+        _float fLength = (vTriggerPos - vPlayerPos).Length();
+
+        //2보다 멀면 true로
+        if (fLength > 2.f)
+            OutCondition = true;
+    }
+
+    //false면 이제 patrol 갈 듯
+
+   
+
     OutDesc->pTriggerPtr = pTargetTrigger;
 }
 

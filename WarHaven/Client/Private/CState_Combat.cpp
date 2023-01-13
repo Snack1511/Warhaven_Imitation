@@ -41,8 +41,6 @@ STATE_TYPE CState_Combat::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	_float4 vTargetPos = pOwner->Get_OwnerPlayer()->Get_TargetObjPos();
 
 	//높이 차 별로 안나면 ray 쏴야함
-	_float4 vOutPos;
-	_float fOutDist;
 
 	_float4 vRayStartPos = vCurPos;
 	vRayStartPos.y += 0.5f;

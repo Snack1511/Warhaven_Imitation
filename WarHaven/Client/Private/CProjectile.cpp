@@ -66,7 +66,7 @@ void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint&
 
 		m_pLeftHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pLeftBoneName);
 		m_pRightHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pRightBoneName);
-		On_ChangePhase(eLOOP);
+		On_ChangePhase(eCATCHED);
 
 		COL_GROUP_CLIENT eColType = (COL_GROUP_CLIENT)m_pCollider->Get_ColIndex();
 
@@ -335,6 +335,11 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 			m_pTrailEffect2->TurnOn_TrailEffect(false);
 		}
 		Safe_release(m_pActor);
+		break;
+
+	case eCATCHED:
+		m_pCurStickBone = m_pLeftHandBone;
+		break;
 	case Client::CProjectile::eEND:
 		break;
 	default:
@@ -642,6 +647,35 @@ void CProjectile::My_LateTick()
 
 	}
 		break;
+
+	case Client::CProjectile::eCATCHED:
+
+	{
+		_float4 vTargetPos;
+		memcpy(&vTargetPos, m_pCurStickBone->Get_BoneMatrix().m[3], sizeof(_float4));
+
+		vTargetPos += m_pOwnerUnit->Get_Transform()->Get_World(WORLD_LOOK) * 1.3f;
+
+		_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
+
+		_float4 vDir = vTargetPos - vCurPos;
+		_float fLength = vDir.Length();
+
+		_float fSpeed = 4.f;
+
+		vCurPos += vDir * fSpeed * fDT(0);
+
+		m_pTransform->Set_World(WORLD_POS, vCurPos);
+		m_pTransform->Set_LerpLook(m_pOwnerUnit->Get_Transform()->Get_World(WORLD_RIGHT), 0.4f);
+		m_pTransform->Make_WorldMatrix();
+
+	}
+		
+
+		break;
+
+
+
 	case Client::CProjectile::eEND:
 		break;
 	default:

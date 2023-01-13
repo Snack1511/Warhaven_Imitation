@@ -107,7 +107,7 @@ void CCannonBall::Projectile_CollisionExit(CGameObject* pOtherObj, const _uint& 
 
 HRESULT CCannonBall::Initialize_Prototype()
 {
-	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_NONANIM, L"../bin/resources/meshes/weapons/ball/CannonBall.fbx",
+	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_NONANIM, L"../bin/resources/meshes/weapons/ball/SK_CannonBall.fbx",
 		XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationZ(XMConvertToRadians(270.f)) * XMMatrixRotationX(XMConvertToRadians(90.0f))
 	);
 
