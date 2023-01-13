@@ -158,7 +158,7 @@ void	CFunctor::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float4 vPosi
 
 	_float fRatio = 0.f;
 
-	_float4 vPlayerPos = PLAYER->Get_Transform()->Get_World(WORLD_POS);
+	_float4 vPlayerPos = GAMEINSTANCE->Get_ViewPos();
 	
 	_float fLength = (vPlayerPos - vPosition).Length();
 	_float fMinRatio = 0.1f;

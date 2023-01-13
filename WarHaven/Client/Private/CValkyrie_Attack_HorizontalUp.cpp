@@ -168,6 +168,7 @@ void CValkyrie_Attack_HorizontalUp::On_KeyFrameEvent(CUnit * pOwner, CAnimator *
 	case 0:
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		Play_Voice(pOwner, L"Voice_Attack", 1.f, 1);
 		break;
 
 	case 1:

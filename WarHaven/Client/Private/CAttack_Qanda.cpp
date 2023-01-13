@@ -13,6 +13,7 @@
 
 #include "CProjectile.h"
 #include "CAnimWeapon_Crow.h"
+#include "CUnit_Qanda.h"
 
 CAttack_Qanda::CAttack_Qanda()
 {

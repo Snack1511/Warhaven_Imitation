@@ -171,7 +171,7 @@ STATE_TYPE CChangeHero_Player::Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass)
 	_uint iIndex = (_uint)eClass;
 	pOwner->On_ChangeToHero(iIndex);
 
-
+	Play_Voice(pOwner, L"Voice_Start", 1.f);
 
 	return m_eStateType;
 }

@@ -319,6 +319,9 @@ HRESULT CMainApp::Load_SoundFile()
 	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Warrior")))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Paladin")))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Valkyrie")))
 		return E_FAIL;
 

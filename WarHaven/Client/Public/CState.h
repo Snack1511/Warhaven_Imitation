@@ -91,6 +91,9 @@ public:
 	HIT_INFO& Get_HitInfo() { return m_tHitInfo; }
 
 public:
+	virtual void Play_Voice(CUnit* pOwner, wstring strName, _float fVol = 1.f, _int iRand = 0);
+
+public:
 	virtual HRESULT		Initialize()	PURE;
 	virtual void		Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData = nullptr);
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);

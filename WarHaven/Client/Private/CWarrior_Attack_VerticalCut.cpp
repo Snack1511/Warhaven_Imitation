@@ -168,6 +168,7 @@ void CWarrior_Attack_VerticalCut::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 {
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -212,6 +213,7 @@ void CWarrior_Attack_VerticalCut::On_KeyFrameEvent(CUnit * pOwner, CAnimator * p
 
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
+		Play_Voice(pOwner, L"Voice_Attack", 1.f, 1);
 		break;
 
 	case 2:

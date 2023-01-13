@@ -185,6 +185,62 @@ void CState::Hit_GroundEffect(CUnit* pOwner)
 
 }
 
+void CState::Play_Voice(CUnit* pOwner, wstring strName, _float fVol, _int iRand)
+{
+	if (!pOwner)
+		return;
+
+	_int iRandom = random(0, iRand);
+
+	if (iRandom != 0)
+		return;
+
+	CLASS_TYPE eClass = pOwner->Get_OwnerPlayer()->Get_CurClass();
+	_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+	wstring strKey = strName;
+
+
+	switch (eClass)
+	{
+	case Client::WARRIOR:
+		strKey += L"_Warrior";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, vPos, fVol);
+		break;
+	case Client::ARCHER:
+		strKey += L"_Archer";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, vPos, fVol);
+		break;
+	case Client::PALADIN:
+		strKey += L"_Paladin";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, vPos, fVol);
+		break;
+	case Client::PRIEST:
+		strKey += L"_Priest";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, vPos, fVol);
+		break;
+	case Client::ENGINEER:
+		strKey += L"_Engineer";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, vPos, fVol);
+		break;
+	case Client::FIONA:
+		strKey += L"_Fiona";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, vPos, fVol);
+		break;
+	case Client::QANDA:
+		strKey += L"_Qanda";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, vPos, fVol);
+		break;
+	case Client::LANCER:
+		strKey += L"_Lancer";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, vPos, fVol);
+		break;
+	case Client::CLASS_END:
+		break;
+	default:
+		break;
+	}
+}
+
 
 void CState::Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator)
 {

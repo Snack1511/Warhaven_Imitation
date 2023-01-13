@@ -5,8 +5,10 @@
 #include "HIerarchyNode.h"
 #include "CUnit_Priest.h"
 #include "CUnit_Paladin.h"
+#include "CUnit_Qanda.h"
 #include "Loading_Manager.h"
 #include "CCamera_Follow.h"
+
 
 CState_Hit::CState_Hit()
 {
@@ -74,13 +76,30 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
         pOwner->Get_PhysicsCom()->Set_Speed(m_tHitInfo.fKnockBackPower);
 
 
-    if (PRIEST == pOwner->Get_OwnerPlayer()->Get_CurClass())
+    CLASS_TYPE eClass = pOwner->Get_OwnerPlayer()->Get_CurClass();
+
+    switch (eClass)
     {
-        static_cast<CUnit_Priest*>(pOwner)->TurnOff_AllEffect();
-    }
-    if (PALADIN == pOwner->Get_OwnerPlayer()->Get_CurClass())
-    {
+    case Client::WARRIOR:
+        break;
+    case Client::SPEAR:
+        break;
+    case Client::PALADIN:
         static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(false);
+        break;
+    case Client::PRIEST:
+        static_cast<CUnit_Priest*>(pOwner)->TurnOff_AllEffect();
+        break;
+    case Client::FIONA:
+        break;
+    case Client::QANDA:
+        static_cast<CUnit_Qanda*>(pOwner)->Turn_ChargeEffect(false);
+        static_cast<CUnit_Qanda*>(pOwner)->Turn_SteamEffect(false);
+        break;
+    case Client::LANCER:
+        break;
+    default:
+        break;
     }
 
 
@@ -91,6 +110,8 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
         GAMEINSTANCE->Stop_ChromaticAberration();
     }
 
+
+    Play_Voice(pOwner, L"Voice_Hit", 1.f);
 
     __super::Enter(pOwner, pAnimator, ePrevStateType);
 }
