@@ -139,6 +139,14 @@ public:	/* For. Render_Manager */
 
 	void	Set_SunUV(_float2 vSunUV) { m_pRenderManager->Set_SunUV(vSunUV); }
 
+	void	Set_PBR(_bool b);
+	void	Set_SSAO(_float f);
+	void	Set_Brightness(_float f);
+	void	Set_Contrast(_float f);
+	void	Set_Saturation(_float f);
+	void	Set_ShadowQuality(_float f);
+	void	Set_DOFPower(_float f);
+
 
 
 public:	/* For. Object_Manager */

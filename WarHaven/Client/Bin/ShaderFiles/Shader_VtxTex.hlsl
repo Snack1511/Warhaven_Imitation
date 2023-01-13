@@ -48,6 +48,8 @@ float g_fUVPower;
 
 float g_fTimeAcc;
 
+
+
 struct VS_IN
 {
     float3 vPosition : POSITION;

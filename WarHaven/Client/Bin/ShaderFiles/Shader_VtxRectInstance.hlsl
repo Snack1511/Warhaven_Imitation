@@ -30,6 +30,11 @@ float g_fAlpha;
 float g_fUVPlusX;
 float g_fUVPlusY;
 
+
+vector		g_vCamPosition;
+
+float		g_fRimlightPower;
+
 struct VS_IN
 {
 	float3		vPosition : POSITION;

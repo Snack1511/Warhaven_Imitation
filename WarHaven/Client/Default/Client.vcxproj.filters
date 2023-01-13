@@ -3724,6 +3724,9 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility">
       <UniqueIdentifier>{379a1bc2-1d0a-4b86-8054-aeb34be9c677}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\11. Window_Shader">
+      <UniqueIdentifier>{945e2d95-b834-402f-a4bb-a5fb0ff147e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6711,6 +6714,9 @@
     <ClInclude Include="..\Public\CAI_MoveStateUtility.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CWindow_Shader.h">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\11. Window_Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9678,6 +9684,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CAI_MoveStateUtility.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CWindow_Shader.cpp">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\11. Window_Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

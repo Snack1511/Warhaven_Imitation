@@ -465,6 +465,41 @@ void CGameInstance::Start_MotionBlur(_float fTime)
 	m_pRenderManager->Start_MotionBlur(fTime);
 }
 
+void CGameInstance::Set_PBR(_bool b)
+{
+	m_pRenderManager->Set_PBR(b);
+}
+
+void CGameInstance::Set_SSAO(_float f)
+{
+	m_pRenderManager->Set_SSAO(f);
+}
+
+void CGameInstance::Set_Brightness(_float f)
+{
+	m_pRenderManager->Set_Brightness(f);
+}
+
+void CGameInstance::Set_Contrast(_float f)
+{
+	m_pRenderManager->Set_Contrast(f);
+}
+
+void CGameInstance::Set_Saturation(_float f)
+{
+	m_pRenderManager->Set_Saturation(f);
+}
+
+void CGameInstance::Set_ShadowQuality(_float f)
+{
+	m_pRenderManager->Set_ShadowQuality(f);
+}
+
+void CGameInstance::Set_DOFPower(_float f)
+{
+	m_pRenderManager->Set_DOFPower(f);
+}
+
 list<CGameObject*>& CGameInstance::Get_ObjGroup(const _uint& iGroupIdx)
 {
 	return m_pObjectManager->Get_ObjGroup(iGroupIdx);

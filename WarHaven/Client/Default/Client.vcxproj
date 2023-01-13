@@ -1164,6 +1164,7 @@
     <ClInclude Include="..\public\CWindow_PhysX.h" />
     <ClInclude Include="..\public\CWindow_Position.h" />
     <ClInclude Include="..\public\CWindow_Select.h" />
+    <ClInclude Include="..\public\CWindow_Shader.h" />
     <ClInclude Include="..\public\CWindow_Tile.h" />
     <ClInclude Include="..\Public\CWindow_UI.h" />
     <ClInclude Include="..\Public\CWrapping_Easing_Util.h" />
@@ -2158,6 +2159,7 @@
     <ClCompile Include="..\private\CWindow_PhysX.cpp" />
     <ClCompile Include="..\private\CWindow_Position.cpp" />
     <ClCompile Include="..\private\CWindow_Select.cpp" />
+    <ClCompile Include="..\private\CWindow_Shader.cpp" />
     <ClCompile Include="..\private\CWindow_Tile.cpp" />
     <ClCompile Include="..\Private\CWindow_UI.cpp" />
     <ClCompile Include="..\Private\CWrapping_Easing_Util.cpp" />

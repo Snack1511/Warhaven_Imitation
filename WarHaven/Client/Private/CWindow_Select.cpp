@@ -58,6 +58,10 @@ HRESULT CWindow_Select::Render()
 	{
 		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_LEVEL);
 	}
+	if (ImGui::Button("SHADER OPTION"))
+	{
+		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_SHADER);
+	}
 	ImGui::Spacing();
 
 	if (ImGui::Button("Map Tool"))

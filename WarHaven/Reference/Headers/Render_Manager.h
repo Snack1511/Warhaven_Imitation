@@ -110,6 +110,27 @@ private:
 	_bool	m_bLensFlare = true;
 	_float4 m_vSunWorldPos;
 	_float2 m_vSunUV = _float2(0.f, 0.f);
+	_float	m_fLensPower = 0.f;
+
+private:
+	_bool	m_bPBR = true;
+
+	_float	m_fSSAOPower = 1.f;
+	_float	m_fBrightness = 1.f;
+	_float	m_fContrast = 1.f;
+	_float	m_fSaturation = 1.f;
+	_float	m_fShadowQuality = 1.f;
+	_float	m_fDOFPower = 1.f;
+	
+
+public:
+	void	Set_PBR(_bool b) { m_bPBR = b; }
+	void	Set_SSAO(_float f) { m_fSSAOPower = f; }
+	void	Set_Brightness(_float f) { m_fBrightness = f; }
+	void	Set_Contrast(_float f) { m_fContrast = f; }
+	void	Set_Saturation(_float f) { m_fSaturation = f; }
+	void	Set_ShadowQuality(_float f) { m_fShadowQuality = f; }
+	void	Set_DOFPower(_float f) { m_fDOFPower = f; }
 
 #ifdef _DEBUG
 private:

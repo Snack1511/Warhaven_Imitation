@@ -56,6 +56,8 @@ float		g_fCoord[3] = { -1.f, 0.f, 1.f };
 float g_fUVPlusX;
 float g_fUVPlusY;
 
+float	g_fDOFPower;
+
 
 float		g_fDarkScreen = 0.f;
 
@@ -528,16 +530,15 @@ PS_OUT PS_MAIN_BLOOMBLEND(PS_IN In)
 		{
 			float		fMaxDepth = 0.15f;
 
-			float fRatio = saturate(vDepthDesc.y / fMaxDepth);
+			float fRatio = saturate((vDepthDesc.y / fMaxDepth) * g_fDOFPower);
 
 
 			//멀수록 강해짐
-
 			vector			vBlurDesc = g_BlurTexture.Sample(DefaultSampler, In.vTexUV);
 
 			Out.vColor = Out.vColor * (1.f - fRatio) + vBlurDesc * fRatio;
 
-			Out.vColor.xyz += (fRatio * 0.2f);
+			Out.vColor.xyz += (fRatio * 0.2f) * g_fDOFPower;
 		}
 
 	}
