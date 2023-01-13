@@ -35,9 +35,7 @@ HRESULT CUI_UnitHUD::Start()
 	CREATE_GAMEOBJECT(m_pUnitNameText, GROUP_UI);
 
 	for (int i = 0; i < UI_End; ++i)
-	{
 		CREATE_GAMEOBJECT(m_pUnitUI[i], GROUP_UI);
-	}
 
 	__super::Start();
 
@@ -102,7 +100,6 @@ void CUI_UnitHUD::My_Tick()
 				if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 1)
 				{
 					m_pUnitNameText->Set_Scale(m_fLeaderIconScale);
-
 					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(1);
 				}
 			}
@@ -111,25 +108,26 @@ void CUI_UnitHUD::My_Tick()
 				m_pUnitNameText->Set_Scale(8.f);
 
 				if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 0)
-				{
 					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(0);
-				}
 			}
 
-			if (m_pOwner->Get_Team() && m_pOwner->Get_Team()->IsMainPlayerTeam())
+			if (m_pOwner->Get_Team())
 			{
-				if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+				if (m_pOwner->Get_Team()->IsMainPlayerTeam())
 				{
-					m_pUnitNameText->Set_Color(m_vColorLightGreen);
+					if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+					{
+						m_pUnitNameText->Set_Color(m_vColorLightGreen);
+					}
+					else
+					{
+						m_pUnitNameText->Set_Color(m_vColorBlue);
+					}
 				}
 				else
 				{
-					m_pUnitNameText->Set_Color(m_vColorBlue);
+					m_pUnitNameText->Set_Color(m_vColorRed);
 				}
-			}
-			else
-			{
-				m_pUnitNameText->Set_Color(m_vColorRed);
 			}
 		}
 
@@ -193,8 +191,10 @@ void CUI_UnitHUD::My_Tick()
 		}
 	}
 
-	if (m_pOwner->IsMainPlayer())
-		return;
+	if (!m_pOwner->IsMainPlayer())
+		cout << CFunctor::To_String(m_pOwner->Get_PlayerName()) << endl;
+
+	Set_ProjPos(m_pOwner->Get_Transform());
 
 	Tick_UnitHP();
 	Tick_TargetUI();
@@ -382,9 +382,10 @@ void CUI_UnitHUD::SetActive_UnitHP(_bool value)
 
 void CUI_UnitHUD::Tick_UnitHP()
 {
-	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHP(m_tStatus.fHP, m_tStatus.fMaxHP);
 	if (m_pUnitUI[UI_Hp]->Is_Valid())
 	{
+		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHP(m_tStatus.fHP, m_tStatus.fMaxHP);
+
 		m_fEnableHpTime += fDT(0);
 		if (m_fEnableHpTime > m_fDisableHpTime)
 		{
