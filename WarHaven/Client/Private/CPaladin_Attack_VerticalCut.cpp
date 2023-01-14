@@ -201,6 +201,7 @@ void CPaladin_Attack_VerticalCut::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAn
 	switch (iSequence)
 	{
 	case 0:
+		Play_Sound(L"Effect_Swing_Blunt");
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		Play_Voice(pOwner, L"Voice_Attack", 1.f);

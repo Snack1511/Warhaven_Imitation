@@ -37,9 +37,9 @@ HRESULT CRun_Paladin::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.5f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.7f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.7f;
-	
-	Add_KeyFrame(6, 0);
-	Add_KeyFrame(31, 0);
+
+	Add_KeyFrame(6, 0, true);
+	Add_KeyFrame(31, 0, true);
 
 
 	// 선형 보간 시간
@@ -49,10 +49,10 @@ HRESULT CRun_Paladin::Initialize()
 
 	m_iStateChangeKeyFrame = 0;
 
-    return S_OK;
+	return S_OK;
 }
 
-void CRun_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CRun_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 	m_fMyMaxLerp = 0.4f;
@@ -72,20 +72,20 @@ void CRun_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 	}
 
 
-    __super::Enter(pOwner, pAnimator, ePrevType, pData);
+	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CRun_Paladin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-		
+
 
 	_uint iDirection = Move_Direction_Loop(pOwner, pAnimator, 0.1f);
 
 	if (iDirection < 8)
 		m_iCurDirection = iDirection;
 
-    return __super::Tick(pOwner, pAnimator);
+	return __super::Tick(pOwner, pAnimator);
 
 }
 
@@ -111,11 +111,11 @@ STATE_TYPE CRun_Paladin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
 			return m_eStateType;
 		}
-		
+
 	}
 
 
-    return STATE_END;
+	return STATE_END;
 }
 
 void CRun_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
