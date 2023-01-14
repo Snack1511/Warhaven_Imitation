@@ -154,8 +154,8 @@ void CProjectile::Reset(CGameObject* pGameObject)
 
 
 	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
-		m_pCollider->Set_ColIndex(COL_BLUEATTACK);
-		//m_pCollider->Set_ColIndex(COL_REDATTACK);
+		//m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+		m_pCollider->Set_ColIndex(COL_REDATTACK);
 	else
 	{
 		Set_ColliderType(m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType());
@@ -549,7 +549,7 @@ void CProjectile::My_LateTick()
 
 		_float4 vLook = m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
 
-		if (0.f >= m_pTargetUnit->Get_Status().fHP)
+		if (0.f >= m_pTargetUnit->Get_Status().fHP || !m_pTargetUnit->Is_Valid())
 		{
 			if (0.5f > vLook.Length())
 				DISABLE_GAMEOBJECT(this);		

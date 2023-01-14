@@ -663,7 +663,13 @@ void CState::DoMove_AI(CUnit* pOwner, CAnimator* pAnimator)
 
 	CUnit* pUnit = m_pCurrentTargetUnit;
 	if (!pUnit)
-		return;
+	{
+		pUnit = pOwner;
+
+		if (!pOwner)
+			return;
+	}
+		
 
 
 

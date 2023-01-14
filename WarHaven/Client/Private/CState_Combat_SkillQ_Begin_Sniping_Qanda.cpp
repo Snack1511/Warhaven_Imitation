@@ -4,6 +4,7 @@
 #include "UsefulHeaders.h"
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Qanda.h"
 
 #include "CUser.h"
 #include "CEffects_Factory.h"
@@ -80,15 +81,6 @@ STATE_TYPE CState_Combat_SkillQ_Begin_Sniping_Qanda::Tick(CUnit* pOwner, CAnimat
 	if (pAnimator->Is_CurAnimFinished())
 		return AI_STATE_COMBAT_AIMING_SNIPING_QANDA;
 
-	CGameObject* pTargetObject = pOwner->Get_MultipleFrustumObject().front();
-
-	if (pTargetObject)
-	{
-		CTransform* pMyTransform = pOwner->Get_Transform();
-
-		_float4 vLook = pTargetObject->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
-		pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
-	}
 
 	return __super::Tick(pOwner, pAnimator);
 }

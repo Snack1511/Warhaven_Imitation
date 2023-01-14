@@ -52,7 +52,7 @@ HRESULT CState_Combat_Attack_Default_Begin_Qanda::Initialize()
     m_fAnimSpeed = 1.3f;
     m_iStateChangeKeyFrame = 999;
    
-	m_fAIMyLength = 1.5f;
+	m_fAIMyLength = 2.f;
 
     return __super::Initialize();
 }

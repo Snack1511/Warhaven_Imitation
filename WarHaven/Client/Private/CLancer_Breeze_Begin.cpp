@@ -88,6 +88,9 @@ void CLancer_Breeze_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 STATE_TYPE CLancer_Breeze_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	m_fDamagePumping = 15.f;
+	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
+
 	pOwner->Get_PhysicsCom()->Set_Accel(m_fMyAccel);
 	Follow_MouseLook(pOwner);
 	pOwner->Set_DirAsLook();

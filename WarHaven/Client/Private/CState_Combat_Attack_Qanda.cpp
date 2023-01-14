@@ -35,6 +35,8 @@ HRESULT CState_Combat_Attack_Qanda::Initialize()
 	m_fMyAccel = 20.f;
 	m_fMyMaxLerp = 0.4f;
 
+	m_fAIMyLength = 2.f;
+
 	return S_OK;
 }
 
@@ -92,6 +94,9 @@ STATE_TYPE CState_Combat_Attack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
 		vLook.y = 0.f;
 		pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
+
+		//if (Get_TargetLook_Length(pUnit) < m_fAIMyLength)
+		//	return AI_STATE_COMBAT_SHOOT_QANDA;
 	}
 
 	if (m_bAiming)

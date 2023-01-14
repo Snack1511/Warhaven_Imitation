@@ -9,6 +9,7 @@
 #include "CPlayer.h"
 
 #include "Model.h"
+#include "Transform.h"
 
 #include "CUser.h"
 #include "Renderer.h"
@@ -45,7 +46,7 @@ HRESULT CState_Combat_SkillE_ShadowStep_Qanda::Initialize()
     m_eStateType = AI_STATE_COMBAT_SHADOWSTEP_QANDA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
-    m_iStateChangeKeyFrame = 0;
+    m_iStateChangeKeyFrame = 99;
 
     // 선형 보간 시간
     m_fInterPolationTime = 0.1f;
@@ -53,7 +54,7 @@ HRESULT CState_Combat_SkillE_ShadowStep_Qanda::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.5f;
     m_fMyMaxLerp = 0.4f;
-    m_fMyAccel = 10.f;
+    m_fMyAccel = 30.f;
 
 
    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 8;
@@ -89,36 +90,57 @@ void CState_Combat_SkillE_ShadowStep_Qanda::Enter(CUnit* pOwner, CAnimator* pAni
     static_cast<CUnit_Qanda*>(pOwner)->Turn_TransformParticle(false);
     static_cast<CUnit_Qanda*>(pOwner)->TurnOn_Trail(false);
 
-    m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
+    m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed * 1.2f;
     m_iDirectionRand = random(0, 7);
 
     Set_Direction_Back_AI(m_iDirectionRand);
 
-    pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fSprintSpeed;
-    //D3D11_RENDER_TARGET_BLEND_DESC
+    Physics_Setting_AI(m_fMaxSpeed, pOwner);
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_Combat_SkillE_ShadowStep_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (m_iStack == 3)
+    if (m_iStack == 5)
         return AI_STATE_COMBAT_DEAFULT_QANDA;
 
-    DoMove_AI(pOwner, pAnimator);
-    
+    _float4 vLook = ZERO_VECTOR;
+
+    if (m_pCurrentTargetUnit)
+    {
+        vLook =  pOwner->Get_Transform()->Get_World(WORLD_POS) - m_pCurrentTargetUnit->Get_Transform()->Get_World(WORLD_POS);
+    }
+    else if(pOwner->Get_TargetUnit())
+    {
+        
+        vLook = pOwner->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_TargetUnit()->Get_Transform()->Get_World(WORLD_POS);
+    }
+
+    vLook.Normalize();
+
+    CTransform* pMyTransform = pOwner->Get_Transform();
+    CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+    pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
+
+    pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
+    pMyPhysicsCom->Set_Dir(vLook);
+    pMyPhysicsCom->Set_Accel(m_fMyAccel);
+
     m_fTimeAcc += fDT(0);
 
 
-    if (m_fTimeAcc > 0.5f && !m_bJump)
+    if (m_fTimeAcc > 0.5f)
     {
-        if (m_iDirectionRand % 2 == 0)
+        if (m_iDirectionRand % 2 == 0 && !m_bJump)
         {
             pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower);
             m_bJump = true;
         }
         
-        m_iDirectionRand = random(0, 8);
-        Set_Direction_Back_AI(m_iDirectionRand);
+        //m_iDirectionRand = random(0, 8);
+        //Set_Direction_Back_AI(m_iDirectionRand);
         m_fTimeAcc = 0.f;
         ++m_iStack;
     }

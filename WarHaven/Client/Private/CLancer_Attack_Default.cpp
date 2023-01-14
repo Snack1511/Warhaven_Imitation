@@ -165,6 +165,9 @@ HRESULT CLancer_Attack_Default::Initialize()
 
 void CLancer_Attack_Default::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	m_fDamagePumping = 2.5f;
+	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
+
 	pOwner->TurnOn_TrailEffect(true);
 	m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 

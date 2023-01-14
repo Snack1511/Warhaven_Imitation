@@ -54,8 +54,11 @@ STATE_TYPE CState_Combat::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vRayStartPos, vRayDir, vRayDir.Length()))
 	{
-		STATE_TYPE eAIPathNavigationState = pOwner->Get_AIState_Type().eAIPathFindDefaultState;
-		return eAIPathNavigationState;
+		if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame || pAnimator->Is_CurAnimFinished())
+		{
+			STATE_TYPE eAIPathNavigationState = pOwner->Get_AIState_Type().eAIPathFindDefaultState;
+			return eAIPathNavigationState;
+		}			
 
 	}
 
@@ -101,4 +104,6 @@ void CState_Combat::Set_StraightLook(CUnit* pOwner)
 	}
 	else
 		m_vAIRandLook = _float4(frandom(0.f, 1.f), frandom(0.f, 1.f), frandom(0.f, 1.f));
+
+	m_vAIRandLook.y = 0.f;
 }

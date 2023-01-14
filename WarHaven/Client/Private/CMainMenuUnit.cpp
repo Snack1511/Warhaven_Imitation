@@ -290,35 +290,35 @@ void CMainMenuUnit::OnDisable()
 
 void CMainMenuUnit::My_Tick()
 {
-	_uint		iFrame = 0;
+	//_uint		iFrame = 0;
 
-	if (m_eClassType == PALADIN)
-	{
-		if (m_pAnimator->Is_CurAnimFinished() && m_pAnimator->Get_CurAnimIndex() != 3)
-		{
-			
-			ANIM_TYPE	eAnimType = ANIM_ATTACK;
+	//if (m_eClassType == PALADIN)
+	//{
+	//	if (m_pAnimator->Is_CurAnimFinished() && m_pAnimator->Get_CurAnimIndex() != 3)
+	//	{
+	//		
+	//		ANIM_TYPE	eAnimType = ANIM_ATTACK;
 
-			if (m_pAnimator->Get_CurAnimIndex() == 18)
-				iFrame = 19;
+	//		if (m_pAnimator->Get_CurAnimIndex() == 18)
+	//			iFrame = 19;
 
-			//else if (m_pAnimator->Get_CurAnimIndex() == 21)
-			//	iFrame = 19;
+	//		//else if (m_pAnimator->Get_CurAnimIndex() == 21)
+	//		//	iFrame = 19;
 
-			else if (m_pAnimator->Get_CurAnimIndex() == 19)
-			{
-				eAnimType = ANIM_BASE_R;
-				iFrame = 3;
-			}
-				
+	//		else if (m_pAnimator->Get_CurAnimIndex() == 19)
+	//		{
+	//			eAnimType = ANIM_BASE_R;
+	//			iFrame = 3;
+	//		}
+	//			
 
-			m_pAnimator->Set_CurAnimIndex(eAnimType, iFrame, ANIM_DIVIDE::eDEFAULT);
-			m_pAnimator->Set_InterpolationTime(eAnimType, iFrame, 0.f);
-			m_pAnimator->Set_AnimSpeed(eAnimType, iFrame, 1.f);
+	//		m_pAnimator->Set_CurAnimIndex(eAnimType, iFrame, ANIM_DIVIDE::eDEFAULT);
+	//		m_pAnimator->Set_InterpolationTime(eAnimType, iFrame, 0.f);
+	//		m_pAnimator->Set_AnimSpeed(eAnimType, iFrame, 1.f);
 
-		}
+	//	}
 
-	}
+	//}
 
 
 	

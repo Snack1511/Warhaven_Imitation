@@ -25,6 +25,7 @@ protected:
 	void	Straight_Move(CUnit* pOwner);
 	void	Set_StraightLook(CUnit* pOwner);
 
+
 };
 
 

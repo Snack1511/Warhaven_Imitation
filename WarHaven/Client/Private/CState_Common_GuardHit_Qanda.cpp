@@ -75,10 +75,7 @@ STATE_TYPE CState_Common_GuardHit_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimato
         
 
     if (pAnimator->Is_CurAnimFinished())
-    {
-        STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
-        return eDefaultState;
-    }
+        return AI_STATE_COMBAT_SHADOWSTEP_QANDA;
 
 
     return __super::Tick(pOwner, pAnimator);

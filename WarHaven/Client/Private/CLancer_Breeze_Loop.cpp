@@ -55,6 +55,9 @@ HRESULT CLancer_Breeze_Loop::Initialize()
 
 void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+	m_fDamagePumping = 15.f;
+	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
+
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
 
