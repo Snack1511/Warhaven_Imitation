@@ -233,7 +233,7 @@ void CPriest_Cure_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 
-	GAMEINSTANCE->Stop_Sound(CH_GROUP_0)
+	GAMEINSTANCE->Stop_Sound(CH_GROUP_0);
 }
 
 STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)

@@ -224,6 +224,8 @@ CUI_Revive* CUI_UnitHUD::Get_ReviveUI()
 {
 	if (m_pUnitUI[UI_Revive])
 		return static_cast<CUI_Revive*>(m_pUnitUI[UI_Revive]);
+
+	return nullptr;
 }
 
 void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
@@ -298,10 +300,6 @@ void CUI_UnitHUD::Disable_HealBlur()
 	static_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Disable_HealBlur();
 }
 
-void CUI_UnitHUD::Set_UnitHP(_float fCurHP, _float fMaxHP)
-{
-	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHP(m_tStatus.fHP, m_tStatus.fMaxHP);
-}
 
 void CUI_UnitHUD::Create_UnitHUD()
 {

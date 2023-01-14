@@ -123,7 +123,7 @@ void CPhysXCharacter::Tick()
 	_float4 vMove = vDir * fSpeed * fDT(0) * m_fCurCosTheta;
 
 	/* Navigation °Ë»ç */
-	if (m_pNaviCom)
+	/*if (m_pNaviCom)
 	{
 		_float4 vCurPos = m_pOwner->Get_Transform()->Get_World(WORLD_POS);
 
@@ -134,7 +134,7 @@ void CPhysXCharacter::Tick()
 			vMove = ZERO_VECTOR;
 		}
 
-	}
+	}*/
 
 
 

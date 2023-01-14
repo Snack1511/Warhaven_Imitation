@@ -53,7 +53,6 @@ public:
 	void Enable_HealBlur();
 	void Disable_HealBlur();
 
-	void Set_UnitHP(_float fCurHP, _float fMaxHP);
 
 private:
 	CUI_Wrapper* m_pUnitUI[UI_End];
