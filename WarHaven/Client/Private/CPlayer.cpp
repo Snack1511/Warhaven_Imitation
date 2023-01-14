@@ -1559,7 +1559,6 @@ _bool CPlayer::Is_OpenCell()
 		return false;
 
 	_float4 vUnitPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
-
 	CCell* pCell = pNaviComponent->Get_CurCell(vUnitPos, CGameSystem::Get_Instance()->Get_CellLayer());
 
 	if (nullptr == pCell)

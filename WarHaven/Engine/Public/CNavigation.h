@@ -74,7 +74,7 @@ public:
 	void		Set_StartPosition(_float4 vPosition);
 	void		Set_EndPosition(_float4 vPosition);
 	//시작 점과 끝 점을 기반으로 각 레이어에서의 도착점 생성
-	static list<pair<_float4, CCellLayer*>> Get_Goals(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd);
+	static list<pair<_float4, CCellLayer*>> Get_Goals(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd, CCellLayer* pStartLayer);
 
 
 	void			Make_Route(list<_float4>* NodeList, map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd);
@@ -82,7 +82,8 @@ public:
 
 
 
-	CCell* Get_CurCell(_float4 vPosition, map<_float, CCellLayer*>& Layers);
+	CCell* Get_CurCell(_float4 vPosition, map<_float, CCellLayer*>& Layers, CCellLayer** ppOutInCellLayer = nullptr);
+	CCell* Get_NearOpenCell(_float4 vPosition, map<_float, CCellLayer*>& Layers, CCellLayer** ppOutInCellLayer = nullptr);
 public:
 	//CELL_TYPE	isMove(_vector vPosition, _float4* pOutPos);
 	_float4		Enter_Wall();

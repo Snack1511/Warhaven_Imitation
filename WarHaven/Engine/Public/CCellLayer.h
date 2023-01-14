@@ -165,6 +165,7 @@ private:
 public:
 	CCell* Find_Cell(_float4 vPosition);
 	list<CCell*> Find_Cell_InRange(_float4 vPosition, _float fRange);
+	void Find_NearOpenCell(_float4 vPosition, list<CCell*>& NearOpenCells, _int NeighborLevel = 1);
 	CCell* Get_Cell(_int Index);
 	_uint Get_XTileNums() { return m_iXNums; }
 	_uint Get_ZTileNums() { return m_iZNums; }
