@@ -699,10 +699,10 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 	Enemies.sort([&MyPositoin](auto& Sour, auto& Dest)
 		{
 			_float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-			_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-			if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
-				return true;
-			else return false;
+	_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+	if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
+		return true;
+	else return false;
 		});
 
 	//정리해놓고, 만약 그동안 쓰레드가 내놓은 타겟 플레이어가 있으면 갱신 시키기. (동기화?)
@@ -736,10 +736,10 @@ void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& O
 	Allies.sort([&MyPositoin](auto& Sour, auto& Dest)
 		{
 			_float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-			_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-			if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
-				return true;
-			else return false;
+	_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+	if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
+		return true;
+	else return false;
 		});
 
 	CPlayer* pTargetPlayer = Allies.front();

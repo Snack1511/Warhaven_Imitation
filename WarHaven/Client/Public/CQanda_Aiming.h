@@ -35,6 +35,9 @@ private:
 	list<CGameObject*> m_CrowSteam;
 
 	_bool				m_bShoot = false;
+
+	_uint m_iSndIdx;
+	_float m_fSndTime;
 };
 
 END

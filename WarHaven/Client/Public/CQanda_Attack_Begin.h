@@ -39,6 +39,7 @@ private:
 
 private:
 	_uint	m_iAnimFrame = 0;
+	_float m_fSndTime = 0.f;
 };
 
 END

@@ -120,6 +120,7 @@ void CQanda_ShadowStep::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 
     Play_Voice(pOwner, L"Voice_Shadow", 1.f);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
 	Play_Sound(L"Effect_ShadowStep_Begin_Qanda", CHANNEL_EFFECTS);
 }
 

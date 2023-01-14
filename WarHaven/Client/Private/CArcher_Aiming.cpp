@@ -78,7 +78,7 @@ void CArcher_Aiming::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	__super::Exit_Aiming(pOwner, pAnimator);
 	__super::Exit(pOwner, pAnimator);
 }
-
+ 
 STATE_TYPE CArcher_Aiming::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
     return STATE_END;

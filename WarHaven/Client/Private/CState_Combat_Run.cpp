@@ -55,6 +55,10 @@ void CState_Combat_Run::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, co
     case 0:
         Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS, m_fAIDeafultVolume);
         break;
+
+    case 1:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS, m_fAIDeafultVolume);
+        break;
     }
 }
 

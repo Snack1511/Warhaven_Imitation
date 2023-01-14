@@ -66,7 +66,9 @@ void CQanda_Attack_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 	
 	static_cast<CUnit_Qanda*>(pOwner)->Turn_ChargeEffect(true);
-	//Play_Sound(L"Effect_Charge_Qanda", CHANNEL_UI);
+
+
+	Play_Sound(L"Effect_Charge01_Qanda");
 }
 
 STATE_TYPE CQanda_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
