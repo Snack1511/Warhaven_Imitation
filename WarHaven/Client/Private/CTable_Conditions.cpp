@@ -657,10 +657,10 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 	Enemies.sort([&MyPositoin](auto& Sour, auto& Dest)
 		{
 			_float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-			_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-			if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
-				return true;
-			else return false;
+	_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+	if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
+		return true;
+	else return false;
 		});
 	CPlayer* pTargetPlayer = nullptr;
 
@@ -670,7 +670,7 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 	_float4 vRayStartPos = pPlayer->Get_WorldPos();
 	vRayStartPos.y += 0.5f;
 
-	/*for (auto& elem : Enemies)
+	for (auto& elem : Enemies)
 	{
 		if (!elem->Is_Valid())
 			continue;
@@ -684,7 +684,6 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 			break;
 		}*/
 		pTargetPlayer = elem;
-
 	}
 
 	if (!pTargetPlayer)
@@ -710,10 +709,10 @@ void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& O
 	Allies.sort([&MyPositoin](auto& Sour, auto& Dest)
 		{
 			_float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-			_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-			if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
-				return true;
-			else return false;
+	_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+	if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
+		return true;
+	else return false;
 		});
 	CPlayer* pTargetPlayer = Allies.front();
 	pPlayer->Set_TargetPos(pTargetPlayer->Get_WorldPos());

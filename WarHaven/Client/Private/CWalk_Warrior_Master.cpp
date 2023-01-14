@@ -21,7 +21,6 @@ HRESULT CWalk_Warrior_Master::Initialize()
 {
     m_fInterPolationTime = 0.2f;
 
-
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;

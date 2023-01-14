@@ -369,11 +369,11 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 		{
 			m_pCurrentUnit->Get_Status().fHP = m_pCurrentUnit->Get_Status().fMaxHP;
 
-			CFunctor::Play_Sound(L"Effect_ChangeHero", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS), 1.f);
+			CFunctor::Play_Sound(L"Effect_ChangeHero", CHANNEL_EFFECTS, Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS), 1.f);
 		}
 		else
 		{
-			CFunctor::Play_Sound(L"Effect_UnchangeHero", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS), 1.f);
+			CFunctor::Play_Sound(L"Effect_UnchangeHero", CHANNEL_EFFECTS, Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS), 1.f);
 		}
 
 
@@ -1130,7 +1130,7 @@ void CPlayer::On_RealChangeBehavior()
 		m_bKeepRay = false;
 		break;
 
-	 
+
 		m_pTargetPlayer = m_pCurBehaviorDesc->pAlliesPlayer;
 		pNewTargetObj = m_pTargetPlayer;
 		m_bKeepRay = false;
@@ -1168,7 +1168,7 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 	m_tKdaStat.iCurKillCount++;
 	m_tKdaStat.iKillStreak++;
 	m_tKdaStat.iTotalKillCount++;
-		
+
 	if (CLoading_Manager::Get_Instance()->Get_LoadLevel() >= LEVEL_PADEN)
 	{
 		m_pScoreInfo->Update_KillCnt(m_tKdaStat.iTotalKillCount);
@@ -1185,7 +1185,7 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eBURGERKING);
 		}
 		else if (m_tKdaStat.iHeadShotKillCount == 3)
-		{	
+		{
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eHEADHUNTER);
 		}
 		else if (pOtherPlayer->Get_CurClass() >= CLASS_TYPE::FIONA)
@@ -1429,7 +1429,7 @@ void CPlayer::Set_NewMainPath(CPath* pPath)
 
 
 	m_pCurPath = m_pStartMainPath;
-	
+
 }
 
 _float4 CPlayer::Get_LookDir()

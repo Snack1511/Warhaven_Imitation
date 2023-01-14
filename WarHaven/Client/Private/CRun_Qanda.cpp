@@ -93,8 +93,8 @@ HRESULT CRun_Qanda::Initialize()
 
    Init_CommonState_Hero_Player();
 
-   Add_KeyFrame(20, 0);
-   Add_KeyFrame(44, 0);
+   Add_KeyFrame(20, 0, true);
+   Add_KeyFrame(44, 0, true);
 
     return S_OK;
 }
