@@ -104,74 +104,90 @@ list<pair<_float4, CCellLayer*>> CNavigation::Get_Goals(map<_float, CCellLayer*>
 	list<pair<_float4, CCellLayer*>> GoalList;
 	//CCellLayer* pStartLayer = nullptr;
 	CCellLayer* pEndLayer = nullptr;
-	for (auto& Layer : Layers)
-	{
-		_float vLayerKey = Layer.first;
-		_float4 vPosition = _float4(vEnd.x, vLayerKey, vEnd.z);
-		if (vLayerKey <= vEnd.y)
-		{
-			CCell* pCell = Layer.second->Find_Cell(vPosition);
-			if (!pCell)//이런게 존재하면 안됨..
-				assert(0);
-			//현재셀이 Blocked가 아니거나
-			if (!pCell->Check_Attribute(CELL_BLOCKED)) 
-			{
-				pEndLayer = Layer.second;
-			}
-			else 
-			{
-				//바로 이웃하는 셀이 Open일때
-				for (_int i = 0; i < CCell::LINE_END; ++i)
-				{
-					CCell* pNeighborCell = pCell->Get_NeighborCell(CCell::LINE(i));
-					if(pNeighborCell&& !pNeighborCell->Check_Attribute(CELL_BLOCKED))
-						pEndLayer = Layer.second;
+	//for (auto& Layer : Layers)
+	//{
+	//	_float vLayerKey = Layer.first;
+	//	_float4 vPosition = _float4(vEnd.x, vLayerKey, vEnd.z);
+	//	if (vLayerKey <= vEnd.y)
+	//	{
+	//		CCell* pCell = Layer.second->Find_Cell(vPosition);
+	//		if (!pCell)//이런게 존재하면 안됨..
+	//			assert(0);
+	//		//현재셀이 Blocked가 아니거나
+	//		if (!pCell->Check_Attribute(CELL_BLOCKED)) 
+	//		{
+	//			pEndLayer = Layer.second;
+	//		}
+	//		else 
+	//		{
+	//			//바로 이웃하는 셀이 Open일때
+	//			for (_int i = 0; i < CCell::LINE_END; ++i)
+	//			{
+	//				CCell* pNeighborCell = pCell->Get_NeighborCell(CCell::LINE(i));
+	//				if(pNeighborCell&& !pNeighborCell->Check_Attribute(CELL_BLOCKED))
+	//					pEndLayer = Layer.second;
 
-				}
-			}
-		}
-	}
+	//			}
+	//		}
+	//	}
+	//}
 
-	//못찾았으면 높은대서부터 비교..
-	auto InvIter = Layers.rbegin();
-	for (; InvIter != Layers.rend(); ++InvIter)
-	{
-		_float Key = InvIter->first;
-		if (nullptr == pEndLayer)
-		{
-			if (Key > vEnd.y)
-			{
-				pEndLayer = InvIter->second;
-			}
-		}
-		
-	}
+	CCell* pEndCell = nullptr;
+	pEndCell = Get_CurCell(vEnd, Layers, &pEndLayer);
 
 	//이론상 무조건 하나의 레이어를 가지고 있어야 함
 	if (nullptr == pEndLayer)
 		assert(0);
 
-	list<CCell*>OutEndCellList;
-	_float4 vEndPos = vEnd;
-	vEndPos.y = pEndLayer->Get_MinHeight();
-	pEndLayer->Find_NearOpenCell(vEnd, OutEndCellList, 3);
-
-	if (OutEndCellList.empty())
+	if (pEndCell->Check_Attribute(CELL_BLOCKED))
 	{
-		assert(0);
-
+		pEndCell = pEndLayer->Find_NearOpenCell(pEndCell);
 	}
 
-	OutEndCellList.sort([&vEndPos](auto& Sour, auto& Dest)
-		{
-			_float SourLength = (Sour->Get_Position() - vEndPos).Length();
-			_float DestLength = (Dest->Get_Position() - vEndPos).Length();
-			if (SourLength < DestLength)
-				return true;
-			else return false;
-		});
-	vEndPos = OutEndCellList.front()->Get_Position();
 
+	if (pEndCell->Check_Attribute(CELL_BLOCKED)) 
+	{
+		assert(0);
+	}
+
+	//못찾았으면 높은대서부터 비교..
+	//auto InvIter = Layers.rbegin();
+	//for (; InvIter != Layers.rend(); ++InvIter)
+	//{
+	//	_float Key = InvIter->first;
+	//	if (nullptr == pEndLayer)
+	//	{
+	//		if (Key > vEnd.y)
+	//		{
+	//			pEndLayer = InvIter->second;
+	//		}
+	//	}
+	//	
+	//}
+
+
+
+	//list<CCell*>OutEndCellList;
+	//_float4 vEndPos = vEnd;
+	//vEndPos.y = pEndLayer->Get_MinHeight();
+	//pEndLayer->Find_NearOpenCell(vEnd, OutEndCellList, 3);
+
+	//if (OutEndCellList.empty())
+	//{
+	//	assert(0);
+
+	//}
+
+	//OutEndCellList.sort([&vEndPos](auto& Sour, auto& Dest)
+	//	{
+	//		_float SourLength = (Sour->Get_Position() - vEndPos).Length();
+	//		_float DestLength = (Dest->Get_Position() - vEndPos).Length();
+	//		if (SourLength < DestLength)
+	//			return true;
+	//		else return false;
+	//	});
+	//vEndPos = OutEndCellList.front()->Get_Position();
+	_float4 vEndPos = pEndCell->Get_Position();
 	if (pStartLayer == pEndLayer)
 	{
 		GoalList.push_back(make_pair(vEndPos, pEndLayer));
@@ -465,6 +481,7 @@ list<_float4> CNavigation::Get_BestRoute(map<_float, CCellLayer*>& Layers, _floa
 
 	if (nullptr == m_pStartLayer)
 	{
+		assert(0);
 		return list<_float4>();
 	}
 
@@ -533,7 +550,24 @@ CCell* CNavigation::Get_CurCell(_float4 vPosition, map<_float, CCellLayer*>& Lay
 	CCell* pReturn = nullptr;
 	CCellLayer* pCellLayer = nullptr;
 
-	for (auto& Layer : Layers)
+	//터레인부터 PositionY의 상대높이
+	_float fRelativeY = 0.f;
+
+	for (auto Layer : Layers)
+	{
+		if (Layer.first <= fRelativeY)
+			pCellLayer = Layer.second;
+	}
+	//상대높이로 레이어 가져옴
+	//auto TargetLayerIter = Layers.find(fLayerKey);
+	//pCellLayer = TargetLayerIter->second;
+
+	if (ppOutInCellLayer)
+		(*ppOutInCellLayer) = pCellLayer;
+	pReturn = pCellLayer->Find_Cell(vPosition);
+
+
+	/*for (auto& Layer : Layers)
 	{
 		_float vLayerKey = Layer.first;
 		CCell* pCell = Layer.second->Find_Cell(vPosition);
@@ -545,12 +579,14 @@ CCell* CNavigation::Get_CurCell(_float4 vPosition, map<_float, CCellLayer*>& Lay
 			pReturn = pCell;
 		}
 
-	}
+	}*/
 
-	if (pReturn->IsBlocked())
-	{
-		pReturn = Layers.begin()->second->Find_Cell(vPosition);
-	}
+
+
+	//if (pReturn->IsBlocked())
+	//{
+	//	pReturn = Layers.begin()->second->Find_Cell(vPosition);
+	//}
 
 	return pReturn;
 }
@@ -560,95 +596,108 @@ CCell* CNavigation::Get_NearOpenCell(_float4 vPosition, map<_float, CCellLayer*>
 	CCell* pReturn = nullptr;
 	CCellLayer* pCellLayer = nullptr;
 
-	pReturn = Get_CurCell(vPosition, Layers);
+
+	pReturn = Get_CurCell(vPosition, Layers, &pCellLayer);
+
+	if (ppOutInCellLayer)
+		*ppOutInCellLayer = pCellLayer;
+	m_pStartLayer = pCellLayer;
 
 	if (!pReturn->IsBlocked())
 	{
-		ppOutInCellLayer = &Layers.find(pReturn->Get_Position().y)->second;
-		m_pStartLayer = *ppOutInCellLayer;
-		return m_pStartCell = pReturn;
+		m_pStartCell = pReturn;
+
 	}
-
-
-	for (auto& Layer : Layers)
+	else
 	{
-		_float vLayerKey = Layer.first;
-		CCell* pCell = Layer.second->Find_Cell(vPosition);
-
-
-		if (vLayerKey <= vPosition.y)
-		{
-			if (!pCell->Check_Attribute(CELL_BLOCKED))
-			{
-				pCellLayer = Layer.second;
-				pReturn = pCell;
-			}
-			else
-			{
-				
-
-				for (_uint i = 0; i < CCell::LINE_END; ++i)
-				{
-					CCell* pNeighborCell = pCell->Get_NeighborCell(CCell::LINE(i));
-					if (pNeighborCell)
-					{
-						if (!pNeighborCell->Check_Attribute(CELL_BLOCKED)
-							&&!pNeighborCell->Check_Attribute(CELL_STAIR))
-						{
-							pCellLayer = Layer.second;
-							pReturn = pNeighborCell;
-							break;
-						}
-					}
-				}
-			}
-		}
-
+		pReturn = pCellLayer->Find_NearOpenCell(pReturn);
+		m_pStartCell = pReturn;
 	}
 
-	if (nullptr == pReturn)
-	{
-		for (auto& Layer : Layers)
-		{
-			_float vLayerKey = Layer.first;
-			CCell* pCell = Layer.second->Find_Cell(vPosition);
-			if (vLayerKey <= vPosition.y)
-			{
-				pCellLayer = Layer.second;
-				pReturn = pCell;
-				
-			}
-		}
+	if (nullptr == m_pStartCell)
+		assert(0);
 
-		list<CCell*> TmpList;
-		_int LevelInCrease = 1;
-		while (TmpList.empty())
-		{
-			pCellLayer->Find_NearOpenCell(vPosition, TmpList, LevelInCrease);
-			LevelInCrease++;
-		}
+	return m_pStartCell;
 
-		TmpList.sort([&vPosition](auto Sour, auto Dest)
-			{
+	//for (auto& Layer : Layers)
+	//{
+	//	_float vLayerKey = Layer.first;
+	//	CCell* pCell = Layer.second->Find_Cell(vPosition);
 
-				_float SourLeng = (Sour->Get_Position()- vPosition).Length();
-				_float DestLeng = (Dest->Get_Position() - vPosition).Length();
-				if (SourLeng < DestLeng)
-					return true;
-				else return false;
-			});
 
-		pReturn = TmpList.front();
-	}
+	//	if (vLayerKey <= vPosition.y)
+	//	{
+	//		if (!pCell->Check_Attribute(CELL_BLOCKED))
+	//		{
+	//			pCellLayer = Layer.second;
+	//			pReturn = pCell;
+	//		}
+	//		else
+	//		{
+	//			
 
-	//pReturn이 NULL이면 타일 모양이 이상한거..
-	if (ppOutInCellLayer)
-		(*ppOutInCellLayer) = pCellLayer;
+	//			for (_uint i = 0; i < CCell::LINE_END; ++i)
+	//			{
+	//				CCell* pNeighborCell = pCell->Get_NeighborCell(CCell::LINE(i));
+	//				if (pNeighborCell)
+	//				{
+	//					if (!pNeighborCell->Check_Attribute(CELL_BLOCKED)
+	//						&&!pNeighborCell->Check_Attribute(CELL_STAIR))
+	//					{
+	//						pCellLayer = Layer.second;
+	//						pReturn = pNeighborCell;
+	//						break;
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
 
-	m_pStartLayer = pCellLayer;
-	m_pStartCell = pReturn;
+	//}
 
-	return pReturn;
+	//if (nullptr == pReturn)
+	//{
+	//	for (auto& Layer : Layers)
+	//	{
+	//		_float vLayerKey = Layer.first;
+	//		CCell* pCell = Layer.second->Find_Cell(vPosition);
+	//		if (vLayerKey <= vPosition.y)
+	//		{
+	//			pCellLayer = Layer.second;
+	//			pReturn = pCell;
+	//			
+	//		}
+	//	}
+
+	//	list<CCell*> TmpList;
+	//	_int LevelInCrease = 1;
+	//	while (TmpList.empty())
+	//	{
+	//		pCellLayer->Find_NearOpenCell(vPosition, TmpList, LevelInCrease);
+	//		LevelInCrease++;
+	//	}
+
+	//	TmpList.sort([&vPosition](auto Sour, auto Dest)
+	//		{
+
+	//			_float SourLeng = (Sour->Get_Position()- vPosition).Length();
+	//			_float DestLeng = (Dest->Get_Position() - vPosition).Length();
+	//			if (SourLeng < DestLeng)
+	//				return true;
+	//			else return false;
+	//		});
+
+	//	pReturn = TmpList.front();
+	//}
+
+	////pReturn이 NULL이면 타일 모양이 이상한거..
+	//if (ppOutInCellLayer)
+	//	(*ppOutInCellLayer) = pCellLayer;
+
+	//m_pStartLayer = pCellLayer;
+	//m_pStartCell = pReturn;
+
+	//return pReturn;
 }
 
 //CNavigation::CELL_TYPE CNavigation::isMove(_vector vPosition, _float4* pOutPos)
