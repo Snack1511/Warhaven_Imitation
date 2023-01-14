@@ -1,22 +1,14 @@
 #pragma once
-#include "CState_Common_Hit.h"
-
-BEGIN(Engine)
-END
-
+#include "CState_PathNavigation_Sprint.h"
 
 BEGIN(Client)
-class CState_Common_GuardHit_Qanda
-	: public CState_Common_Hit
+class CState_PathNavigation_Sprint_Qanda abstract
+	: public CState_PathNavigation_Sprint
 {
-	DECLARE_STATE(CState_Common_GuardHit_Qanda);
 
-private:
-	CState_Common_GuardHit_Qanda();
-	virtual ~CState_Common_GuardHit_Qanda();
-
-public:
-	static CState_Common_GuardHit_Qanda* Create();
+protected:
+	CState_PathNavigation_Sprint_Qanda();
+	virtual ~CState_PathNavigation_Sprint_Qanda();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -25,11 +17,15 @@ public:
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
-private:
+
+//protected:
+//	void	Target_Near_ChangeState(_uint );
+
+protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
-private:
-	_uint	m_iShadowStepDelay = 10; 
+
+
 
 };
 

@@ -3865,6 +3865,60 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\06. Stop\08. Lancer">
       <UniqueIdentifier>{a8a2b65b-ed10-404f-b816-82530e769e25}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\01. Jump">
+      <UniqueIdentifier>{5110614f-ec17-41e3-aaf3-8f9ebe62ee44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\01. Jump\01. Jump">
+      <UniqueIdentifier>{8c2d4481-680a-4279-b118-1a6926b317fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\01. Jump\02. Fall">
+      <UniqueIdentifier>{8b555e65-bb3c-469f-b305-f0420465179d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\02. Run">
+      <UniqueIdentifier>{abf91cae-e79a-44fd-a6c2-b84c73338a9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\02. Run\01. Begin">
+      <UniqueIdentifier>{4db5e7da-dee5-4754-98f8-c76908d776ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\02. Run\02. Loop">
+      <UniqueIdentifier>{864394a0-da57-4b44-b730-a813fcf04fd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\03. End">
+      <UniqueIdentifier>{b03916ae-905b-4d15-93b9-80fb9031920c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\99. Parents">
+      <UniqueIdentifier>{bef28ddd-d189-499e-a3ed-b08149280351}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\99. Parents\01. Attack_and_Begin">
+      <UniqueIdentifier>{3e3357b4-b57d-4378-946b-13e5db0de27e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\99. Parents\02. Shoot">
+      <UniqueIdentifier>{a6420cf4-9fb5-42ae-92a9-cb54971b450e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\01. Default">
+      <UniqueIdentifier>{477bfeed-9d1f-45d9-910b-034e567be0d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\01. Default\01. Begin">
+      <UniqueIdentifier>{95200ea9-ea97-47ed-94e9-c96798549654}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\01. Default\02. Loop">
+      <UniqueIdentifier>{613bdf6e-5be6-4415-b0cd-726ae33f811a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\01. Default\03. Shoot">
+      <UniqueIdentifier>{61d3ac2d-dd1a-4125-aba0-72076e65ddf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\07. Qanda\02. Sniping">
+      <UniqueIdentifier>{45390e38-51ff-4a22-87cc-9398b9aaad85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\07. Qanda\02. Sniping\01. Begin">
+      <UniqueIdentifier>{e7381b39-71b2-4ba1-9e7b-601a3b67db02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\07. Qanda\02. Sniping\02. Loop">
+      <UniqueIdentifier>{26d5e229-6769-4d22-b347-2842ece308fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\07. Qanda\02. Sniping\03. Shoot">
+      <UniqueIdentifier>{d96e10c5-e548-485e-ae88-c17a12e1f9d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6939,6 +6993,69 @@
     <ClInclude Include="..\Public\CState_Combat_Stop_Lancer.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\06. Stop\08. Lancer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Default_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Qanda_End.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Qanda_Fall.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\01. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Qanda_Jump.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\01. Jump\01. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Qanda_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\02. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Qanda_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\02. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Default_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Shoot_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\99. Parents\02. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\99. Parents\01. Attack_and_Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Default_Begin_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\01. Default\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Default_Aiming_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\01. Default\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Default_Shoot_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\01. Default\03. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_Begin_Sniping_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\07. Qanda\02. Sniping\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_Aiming_Sniping_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\07. Qanda\02. Sniping\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_Shoot_Sniping_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\07. Qanda\02. Sniping\03. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Guard_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\07. Qanda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillE_ShadowStep_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\07. Qanda</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9993,6 +10110,69 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_Stop_Lancer.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\06. Stop\08. Lancer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Default_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Qanda_End.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Qanda_Fall.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\01. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Qanda_Jump.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\01. Jump\01. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Qanda_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\02. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Qanda_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda\02. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Default_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Shoot_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\99. Parents\02. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\99. Parents\01. Attack_and_Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Default_Begin_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\01. Default\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Default_Aiming_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\01. Default\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Default_Shoot_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\07. Qanda\01. Default\03. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_Begin_Sniping_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\07. Qanda\02. Sniping\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_Aiming_Sniping_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\07. Qanda\02. Sniping\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_Shoot_Sniping_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\07. Qanda\02. Sniping\03. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Guard_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\07. Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillE_ShadowStep_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\07. Qanda</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

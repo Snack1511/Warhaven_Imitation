@@ -70,8 +70,9 @@ void CState_Common_GuardHit_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 
 STATE_TYPE CState_Common_GuardHit_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    //if (pOwner->Can_Use(CUnit::SKILL1))
-    //    return AI_STATE_COMBAT_ATTACK_SWING_ARCHER;
+    if (pAnimator->Get_CurAnimFrame() > m_iShadowStepDelay)
+        return AI_STATE_COMBAT_SHADOWSTEP_QANDA;
+        
 
     if (pAnimator->Is_CurAnimFinished())
     {

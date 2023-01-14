@@ -1,22 +1,23 @@
+
 #pragma once
-#include "CState_Common_Hit.h"
+#include "CState_PathNavigation_Fall.h"
 
 BEGIN(Engine)
+class CAnimator;
 END
 
-
 BEGIN(Client)
-class CState_Common_GuardHit_Qanda
-	: public CState_Common_Hit
+class CState_PathNavigation_Fall_Qanda
+	: public CState_PathNavigation_Fall
 {
-	DECLARE_STATE(CState_Common_GuardHit_Qanda);
+	DECLARE_STATE(CState_PathNavigation_Fall_Qanda);
 
 private:
-	CState_Common_GuardHit_Qanda();
-	virtual ~CState_Common_GuardHit_Qanda();
+	CState_PathNavigation_Fall_Qanda();
+	virtual ~CState_PathNavigation_Fall_Qanda();
 
 public:
-	static CState_Common_GuardHit_Qanda* Create();
+	static CState_PathNavigation_Fall_Qanda* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -28,8 +29,6 @@ public:
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
-private:
-	_uint	m_iShadowStepDelay = 10; 
 
 };
 

@@ -760,6 +760,17 @@
 #include "CState_Combat_SkillR_AirDash_Priest.h"
 #include "CState_Combat_SkillE_Priest_WindAttack.h"
 
+#include "CState_Combat_Default_Qanda.h"
+#include "CState_Combat_Attack_Default_Begin_Qanda.h"
+#include "CState_Combat_Attack_Default_Aiming_Qanda.h"
+#include "CState_Combat_Attack_Default_Shoot_Qanda.h"
+#include "CState_Combat_SkillQ_Begin_Sniping_Qanda.h"
+#include "CState_Combat_SkillQ_Aiming_Sniping_Qanda.h"
+#include "CState_Combat_SkillQ_Shoot_Sniping_Qanda.h"
+#include "CState_Combat_SkillE_ShadowStep_Qanda.h"
+#include "CState_Combat_Guard_Qanda.h"
+
+
 #include "CState_Combat_Default_Lancer.h"
 #include "CState_Combat_Attack_Default_Lancer.h"
 #include "CState_Combat_Attack_Sting_Lancer.h"
@@ -854,9 +865,20 @@
 #include "CState_PathNavigation_Walk_Priest.h"
 #include "CState_PathNavigation_Fall_Priest.h"
 
+#include "CState_PathNavigation_Default_Qanda.h"
+#include "CState_PathNavigation_Walk_Qanda.h"
+#include "CState_PathNavigation_Sprint_Qanda_Begin.h"
+#include "CState_PathNavigation_Sprint_Qanda_Loop.h"
+#include "CState_PathNavigation_Sprint_Qanda_End.h"
+#include "CState_PathNavigation_Sprint_Qanda_Jump.h"
+#include "CState_PathNavigation_Sprint_Qanda_Fall.h"
+#include "CState_PathNavigation_Jump_Qanda.h"
+#include "CState_PathNavigation_Fall_Qanda.h"
+
 #include "CState_PathNavigation_Default_Lancer.h"
 #include "CState_PathNavigation_Jump_Lancer.h"
 #include "CState_PathNavigation_Stop_Lancer.h"
+
 
 
 #pragma endregion
@@ -2263,11 +2285,37 @@ void CState_Manager::Qanda_State_AI()
 
 #pragma region Combat
 
+	m_arrStates[AI_STATE_COMBAT_DEAFULT_QANDA] = CState_Combat_Default_Qanda::Create();
+
+	m_arrStates[AI_STATE_COMBAT_BEGIN_QANDA] = CState_Combat_Attack_Default_Begin_Qanda::Create();
+	m_arrStates[AI_STATE_COMBAT_AIMING_QANDA] = CState_Combat_Attack_Default_Aiming_Qanda::Create();
+	m_arrStates[AI_STATE_COMBAT_SHOOT_QANDA] = CState_Combat_Attack_Default_Shoot_Qanda::Create();
+
+	m_arrStates[AI_STATE_COMBAT_BEGIN_SNIPING_QANDA] = CState_Combat_SkillQ_Begin_Sniping_Qanda::Create();
+	m_arrStates[AI_STATE_COMBAT_AIMING_SNIPING_QANDA] = CState_Combat_SkillQ_Aiming_Sniping_Qanda::Create();
+	m_arrStates[AI_STATE_COMBAT_SHOOT_SNIPING_QANDA] = CState_Combat_SkillQ_Shoot_Sniping_Qanda::Create();
+
+	m_arrStates[AI_STATE_COMBAT_SHADOWSTEP_QANDA] = CState_Combat_SkillE_ShadowStep_Qanda::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARD_QANDA] = CState_Combat_Guard_Qanda::Create();
 
 #pragma endregion
 
 
 #pragma region PathNavigation
+
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_QANDA] = CState_PathNavigation_Default_Qanda::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_QANDA] = CState_PathNavigation_Walk_Qanda::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_QANDA] = CState_PathNavigation_Sprint_Qanda_Begin::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTLOOP_QANDA] = CState_PathNavigation_Sprint_Qanda_Loop::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTEND_QANDA] = CState_PathNavigation_Sprint_Qanda_End::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMP_QANDA] = CState_PathNavigation_Sprint_Qanda_Jump::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_QANDA] = CState_PathNavigation_Sprint_Qanda_Fall::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_QANDA] = CState_PathNavigation_Jump_Qanda::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_QANDA] = CState_PathNavigation_Fall_Qanda::Create();
+
+
+
 #pragma endregion
 
 #pragma region Common
@@ -2280,6 +2328,7 @@ void CState_Manager::Qanda_State_AI()
 	m_arrStates[AI_STATE_COMMON_FLYHIT_QANDA] = CState_Common_FlyHit_Qanda::Create();
 	m_arrStates[AI_STATE_COMMON_FALL_QANDA] = CState_Common_Fall_Qanda::Create();
 	m_arrStates[AI_STATE_COMMON_LAND_QANDA] = CState_Common_Land_Qanda::Create();
+	m_arrStates[AI_STATE_COMMON_GUARD_CANCEL_QANDA] = CState_Common_Land_Qanda::Create();
 
 
 #pragma endregion

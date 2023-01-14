@@ -7,6 +7,7 @@
 #include "HIerarchyNode.h"
 #include "CColorController.h"
 #include "CCollider_Sphere.h"
+#include "CTeamConnector.h"
 
 #include "CCrowBoom.h"
 #include "CColorController.h"
@@ -210,13 +211,40 @@ void CAnimWeapon_Crow::Shoot_Crow(_float4 vShootPos, _float4 vShootDir)
 
 	ENABLE_COMPONENT(m_pBoneColider);
 
+	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
+		//m_pCollider->Set_ColIndex(COL_BLUEFLYATTACKGUARDBREAK);
+		m_pCollider->Set_ColIndex(COL_REDFLYATTACKGUARDBREAK);
+	else
+	{
+		eTEAM_TYPE eTeam = m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType();
+
+
+		if (eTeam == eTEAM_TYPE::eBLUE)
+			m_pCollider->Set_ColIndex(COL_BLUEFLYATTACKGUARDBREAK);
+
+		else if(eTeam == eTEAM_TYPE::eRED)
+			m_pCollider->Set_ColIndex(COL_REDFLYATTACKGUARDBREAK);
+		
+	}
+
+
 	m_eCurPhase = eSHOOT;
 	m_vStartPosition = vCurPos;
 	Set_AnimIndex(19, 0.1f, 2.f);
 
 	m_pPhysics->Set_MaxSpeed(20.f);
-	m_vChaseLook = m_pOwnerUnit->Get_FollowCamLook();
-	m_vChaseRight = m_pOwnerUnit->Get_FollowCamRight();
+
+	if (m_pOwnerUnit->Get_CurState() == AI_STATE_COMBAT_SHOOT_QANDA)
+	{
+		m_vChaseLook = vShootDir;
+	}
+	else
+	{
+		m_vChaseLook = m_pOwnerUnit->Get_FollowCamLook();
+		m_vChaseRight = m_pOwnerUnit->Get_FollowCamRight();
+	}
+
+	
 
 
 

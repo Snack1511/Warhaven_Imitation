@@ -1,22 +1,20 @@
 #pragma once
-#include "CState_Common_Hit.h"
-
-BEGIN(Engine)
-END
-
+#include "CState_Combat_Attack.h"
 
 BEGIN(Client)
-class CState_Common_GuardHit_Qanda
-	: public CState_Common_Hit
-{
-	DECLARE_STATE(CState_Common_GuardHit_Qanda);
+class CColorController;
 
-private:
-	CState_Common_GuardHit_Qanda();
-	virtual ~CState_Common_GuardHit_Qanda();
+class CState_Combat_Shoot_Qanda
+	: public CState_Combat_Attack
+{
+	DECLARE_STATE(CState_Combat_Shoot_Qanda);
+
+protected:
+	CState_Combat_Shoot_Qanda();
+	virtual ~CState_Combat_Shoot_Qanda();
 
 public:
-	static CState_Common_GuardHit_Qanda* Create();
+	static CState_Combat_Shoot_Qanda* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -25,11 +23,10 @@ public:
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
-private:
+protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
+	virtual		void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
-private:
-	_uint	m_iShadowStepDelay = 10; 
 
 };
 

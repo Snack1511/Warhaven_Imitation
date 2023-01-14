@@ -748,7 +748,10 @@ void CState::DoMove_AI(CUnit* pOwner, CAnimator* pAnimator)
 	_float4 vMyLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
 	vMyLook.y = 0.f;
 
-	pMyPhysicsCom->Set_Dir(vMyLook);
+	if(pOwner->Get_OwnerPlayer()->Get_CurClass() == LANCER)
+		pMyPhysicsCom->Set_Dir(vMyLook);
+	else
+		pMyPhysicsCom->Set_Dir(vDir);
 
 	pMyPhysicsCom->Set_Accel(m_fMyAccel);
 
