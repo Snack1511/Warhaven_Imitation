@@ -177,6 +177,7 @@ void CValkyrie_Attack_HorizontalMiddle::On_KeyFrameEvent(CUnit * pOwner, CAnimat
 	switch (iSequence)
 	{
 	case 0:
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS);
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		Play_Voice(pOwner, L"Voice_Attack", 1.f, 1);

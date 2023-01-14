@@ -98,6 +98,8 @@ void CBounce_Valkyrie::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 	}
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Sound(L"Effect_Bounce");
 }
 
 STATE_TYPE CBounce_Valkyrie::Tick(CUnit* pOwner, CAnimator* pAnimator)

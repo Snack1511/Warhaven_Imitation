@@ -119,7 +119,7 @@ void CJump_WarHammer_Land_R::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimato
     switch (iSequence)
     {
     case 0:
-        Play_Sound(L"Env_LandingGround", CHANNEL_ENVIRONMENT, 0.4f);
+        Play_Sound(L"Env_LandingGround", CHANNEL_ENVIRONMENT);
         break;
     }
 }

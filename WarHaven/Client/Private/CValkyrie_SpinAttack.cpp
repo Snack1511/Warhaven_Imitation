@@ -126,7 +126,7 @@ void CValkyrie_SpinAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 		pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.1f;
 
 		Physics_Setting(m_fMaxSpeed, pOwner);
-
+		Play_Sound(L"Effect_Counter_Fiona");
 		m_bAttackTrigger = true;
 		pOwner->Enable_GroggyCollider(true);
 		Play_Voice(pOwner, L"Voice_ShieldAttack", 1.f);

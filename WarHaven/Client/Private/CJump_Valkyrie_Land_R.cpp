@@ -59,6 +59,7 @@ HRESULT CJump_Valkyrie_Land_R::Initialize()
 
     Init_CommonState_Hero_Player();
 
+    Add_KeyFrame(9, 0);
 
     return S_OK;
 }
@@ -111,4 +112,16 @@ STATE_TYPE CJump_Valkyrie_Land_R::Check_Condition(CUnit* pOwner, CAnimator* pAni
 		return m_eStateType;
 
     return STATE_END;
+}
+
+void CJump_Valkyrie_Land_R::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_LandingGround", CHANNEL_ENVIRONMENT);
+        break;
+    }
 }
