@@ -10,7 +10,6 @@ class CDominion_Effect;
 class CTrigger_Stage 
 	: public CTrigger
 {
-	
 	DECLARE_PROTOTYPE(CTrigger_Stage);
 
 public:

@@ -291,6 +291,26 @@ private:
 	OUTLINETYPE m_eOutlineType = OUTLINETYPE::eEnd;
 
 private:
+	/* 쓰레드가 만질 타겟 플레이어 포인터 */
+	list<CPlayer*> m_SortedEnemies;
+	CPlayer* m_pReserveTargetPlayer = nullptr;
+	_bool	m_bTargetLocked = false;
+	_float	m_fTargetAcc = 0.f;
+	_float	m_fTargetMaxTime = 1.5f;
+
+public:
+	list<CPlayer*>* Get_SortedEnemiesP() { return &m_SortedEnemies; }
+	void			Set_SortedEnemies(list<CPlayer*>& listEnemies) { m_SortedEnemies = listEnemies; }
+
+	void	ReserveTargetPlayer(CPlayer* pPlayer) { m_pReserveTargetPlayer = pPlayer; }
+	CPlayer*	Get_ReserveTargetPlayer() { return m_pReserveTargetPlayer; }
+
+	void	Target_Lock() { m_bTargetLocked = true; }
+	void	Target_UnLock() { m_bTargetLocked = false; }
+
+	_bool	Is_TargetLocked() { return m_bTargetLocked; }
+
+private:
 	CPlayer* m_pTargetPlayer = nullptr;
 	CGameObject* m_pTargetObj = nullptr;
 
@@ -311,6 +331,7 @@ private:
 	_bool	m_bAbleRevival = false;
 	_float		m_fRevivalAcc = 0.f;
 	_float		m_fMaxRevivalTime = 10.f;
+
 private:
 	CUnit* m_pCurrentUnit = nullptr;
 	CCamera_Follow* m_pFollowCam = nullptr;
@@ -376,6 +397,8 @@ private:
 	virtual void My_LateTick() override;
 
 private:
+	void Update_TargetLock();
+
 	void Create_UnitHUD();
 	void Enable_UnitHUD();
 

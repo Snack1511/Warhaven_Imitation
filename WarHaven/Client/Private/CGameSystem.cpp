@@ -29,6 +29,8 @@
 
 #include "CCannon.h"
 
+#include "CGame_Manager_HR.h"
+
 #pragma region AI 성향
 #include "CTable_Conditions.h"
 #include "CPersonality_Default.h"
@@ -1196,6 +1198,16 @@ void CGameSystem::On_StartGame()
 
 	/* 리더 먼저 */
 	_uint Index = 0;
+
+	/*쓰레드 준비 펴*/
+	CGame_Manager_HR::Get_Instance()->Ready_AllThreads();
+	list<CPlayer*>	listThreePlayers;
+
+#define ADDPLAYER(player) listThreePlayers.push_back(player); if (listThreePlayers.size() == 5) {\
+	CGame_Manager_HR::Get_Instance()->Create_RayThread(listThreePlayers);\
+	listThreePlayers.clear();\
+	}\
+
 	for (auto& elem : m_mapAllPlayers)
 	{
 		/* Leader가 아니면 건너 뛰기 */
@@ -1223,7 +1235,10 @@ void CGameSystem::On_StartGame()
 
 		/* ai들은 랜덤 선택 함수 호출 */
 		if (!elem.second->m_bIsMainPlayer)
+		{
 			elem.second->Choose_Character();
+			//ADDPLAYER(elem.second->m_pMyPlayer);
+		}
 
 		/* 자기 진영에서 포지션 가져오기 */
 		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
@@ -1258,6 +1273,7 @@ void CGameSystem::On_StartGame()
 	//	/* 자기 진영에서 포지션 가져오기 */
 		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
 		elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
+		//ADDPLAYER(elem.second->m_pMyPlayer);
 
 	}
 
@@ -1630,12 +1646,14 @@ CPath* CGameSystem::Clone_RandomReleasePath(_float4 vCurPos)
 		_float4 vDir = vFirstPos - vRayStartPos;
 		vRayStartPos.y += 0.5f;
 
-		if (GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, vDir.Length()))
-			continue;
+		
 
 		_float fDist = (vCurPos - vFirstPos).Length();
 		if (fMinDist > fDist)
 		{
+			if (GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, vDir.Length()))
+				continue;
+
 			fMinDist = fDist;
 			pPath = elem.second;
 		}
@@ -1660,14 +1678,18 @@ CPath* CGameSystem::Clone_RandomNearestPath(_float4 vCurPos)
 		/* Ray 쏴서 가능한지 확인 */
 		_float4 vRayStartPos = vCurPos;
 		_float4 vDir = vFirstPos - vRayStartPos;
+		_float fLength = vDir.Length();
+
+
 		vRayStartPos.y += 0.5f;
 
-		if (GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, vDir.Length()))
-			continue;
 
 		_float fDist = (vCurPos - vFirstPos).Length();
 		if (fMinDist > fDist)
 		{
+			if (GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, fLength))
+				continue;
+
 			fMinDist = fDist;
 			pPath = elem.second;
 		}

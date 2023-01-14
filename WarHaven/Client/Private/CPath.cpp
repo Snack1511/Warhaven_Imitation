@@ -95,8 +95,6 @@ void CPath::Update_CurrentIndex(_float4 vCurrentPos)
             break;
     }
 
-   
-
     if (m_pOwnerController)
     {
         _float4 vCurrentPos = m_pOwnerController->Get_OwnerPlayer()->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);

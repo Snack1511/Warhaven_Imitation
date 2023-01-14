@@ -944,8 +944,6 @@ PS_OUT	PS_MAIN_FASTBLUR(PS_DOWNSCALE_IN input)
 
 	float2 Radius = Size / g_vResolution;
 
-
-
 	// Blur calculations
 	for (float d = 0.0; d < Pi; d += Pi / Directions)
 	{

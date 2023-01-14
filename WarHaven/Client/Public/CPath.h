@@ -71,6 +71,14 @@ private: /* 이동량 누적용 */
 	_float			m_fMoveAcc = 0.f;
 
 private:
+	_bool			m_bLocked = false;
+
+public:
+	_bool		IsLocked() { return m_bLocked; }
+	void		Lock() { m_bLocked = true; }
+	void		UnLock() { m_bLocked = false; }
+
+private:
 	void	Save_CurPath();
 
 

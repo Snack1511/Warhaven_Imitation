@@ -18,6 +18,8 @@
 #include "CTrigger_Stage.h"
 #include "CCannon.h"
 
+
+
 #define    MAX_FOLLOW_LENGTH 3.f
 
 #define CHECKFALSEOUTCONDITION(OutCondition)\
@@ -76,6 +78,7 @@ m_vecStrConditionName[_uint(eBehaviorConditionType::eWhat)].push_back(strFunctio
     bind(&CTable_Conditions::BehaviorTick,\
         this, placeholders::_1, placeholders::_2));\
 m_vecStrConditionName[_uint(eBehaviorConditionType::eTick)].push_back(strBehaviorTickName);
+
 HRESULT CTable_Conditions::Initialize()
 {
 	if (FAILED(SetUp_Conditions()))
@@ -399,6 +402,10 @@ void CTable_Conditions::Check_ValidPath(_bool& OutCondition, CPlayer* pPlayer, C
 
 }
 
+void CTable_Conditions::Check_CombatDelay(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+}
+
 void CTable_Conditions::Check_Paden(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
 	CHECKFALSEOUTCONDITION(OutCondition);
@@ -642,11 +649,46 @@ void CTable_Conditions::Select_Leader(_bool& OutCondition, BEHAVIOR_DESC*& OutDe
 }
 
 
+int	Func_Ray(CPlayer* pPlayer)
+{
+	pPlayer->Target_Lock();
+	
+
+	list<CPlayer*>* pSortedEnemies = pPlayer->Get_SortedEnemiesP();
+
+	_float4 vRayStartPos = pPlayer->Get_WorldPos();
+	vRayStartPos.y += 0.5f;
+
+	CPlayer* pTargetPlayer = nullptr;
+
+	for (auto& elem : (*pSortedEnemies))
+	{
+		if (!elem->Is_Valid())
+			continue;
+
+		_float4 vDir = elem->Get_WorldPos() - pPlayer->Get_WorldPos();
+		_float fLength = vDir.Length();
+
+		if (!GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, fLength))
+		{
+			pTargetPlayer = elem;
+			break;
+		}
+
+	}
+
+	pPlayer->ReserveTargetPlayer(pTargetPlayer);
+
+	return 0;
+}
 
 
 void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
 	//CHECKFALSEOUTCONDITION(OutCondition);
+
+	//소팅하고 정리해놓기
+
 
 	_float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
 
@@ -662,40 +704,24 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 				return true;
 			else return false;
 		});
-	CPlayer* pTargetPlayer = nullptr;
 
-	//Ray 쏴서 안막힌 애한테 go
+	//정리해놓고, 만약 그동안 쓰레드가 내놓은 타겟 플레이어가 있으면 갱신 시키기. (동기화?)
+	pPlayer->Set_SortedEnemies(Enemies);
 
-
-	_float4 vRayStartPos = pPlayer->Get_WorldPos();
-	vRayStartPos.y += 0.5f;
-
-	/*for (auto& elem : Enemies)
+	if (pPlayer->Get_ReserveTargetPlayer())
 	{
-		if (!elem->Is_Valid())
-			continue;
-
-		_float4 vDir = elem->Get_WorldPos() - pPlayer->Get_WorldPos();
-		_float fLength = vDir.Length();
-
-		/*if (!GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, fLength))
-		{
-			pTargetPlayer = elem;
-			break;
-		}*/
-		pTargetPlayer = elem;
-
+		OutCondition = true;
+		OutDesc->pEnemyPlayer = pPlayer->Get_ReserveTargetPlayer();
 	}
-
-	if (!pTargetPlayer)
-	{
+	else
 		OutCondition = false;
-		return;
-	}
 
-	pPlayer->Set_TargetPos(pTargetPlayer->Get_WorldPos());
-	OutDesc->pEnemyPlayer = pTargetPlayer;
-	OutCondition = true;
+	if (!pPlayer->Is_TargetLocked())
+		std::future<int>	newThread = std::async(std::launch::async, bind(Func_Ray, pPlayer));
+
+
+	if (OutCondition)
+		pPlayer->Set_TargetPos(OutDesc->pEnemyPlayer->Get_WorldPos());
 }
 
 void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
@@ -715,6 +741,7 @@ void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& O
 				return true;
 			else return false;
 		});
+
 	CPlayer* pTargetPlayer = Allies.front();
 	pPlayer->Set_TargetPos(pTargetPlayer->Get_WorldPos());
 	OutDesc->pAlliesPlayer = pTargetPlayer;
@@ -1130,6 +1157,46 @@ _bool CTable_Conditions::Check_Team(CTeamConnector* pTeamConnector, eTEAM_TYPE e
 	else return false;
 }
 
+int	Find_Path(CPlayer* pPathOwner)
+{
+	//Path 사용중이면 대기 시키기
+	
+		CPath* pCurPath = CGameSystem::Get_Instance()->Clone_RandomNearestPath(pPathOwner->Get_WorldPos());
+		if (pCurPath)
+		{
+			while (1)
+			{
+				if (pPathOwner->Get_CurPath()->IsLocked())
+					continue;
+
+				pPathOwner->Set_NewPath(pCurPath);
+				break;
+			}
+
+			return 0;
+		}
+
+		pCurPath = CGameSystem::Get_Instance()->Clone_RandomReleasePath(pPathOwner->Get_WorldPos());
+
+		if (pCurPath)
+		{
+			while (1)
+			{
+				if (pPathOwner->Get_CurPath()->IsLocked())
+					continue;
+
+				pPathOwner->Set_NewPath(pCurPath);
+				break;
+			}
+
+			return 0;
+		}
+
+	
+
+	return 0;
+
+}
 
 
 void CTable_Conditions::Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIController* pAIController)
@@ -1146,18 +1213,10 @@ void CTable_Conditions::Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIControll
 		pPersonality->Init_RemainTime(eBehaviorType::ePatrol);
 
 
-		CPath* pCurPath = CGameSystem::Get_Instance()->Clone_RandomNearestPath(pPlayer->Get_WorldPos());
+		std::future<int> result = std::async(bind(Find_Path, pPlayer));
 
-		if (pCurPath)
-			pPlayer->Set_NewPath(pCurPath);
-		else
-		{
-			pCurPath = CGameSystem::Get_Instance()->Clone_RandomReleasePath(pPlayer->Get_WorldPos());
-
-			if (pCurPath)
-				pPlayer->Set_NewPath(pCurPath);
-		}
 
 		return;
 	}
 }
+

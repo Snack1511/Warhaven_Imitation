@@ -56,6 +56,7 @@ private:
     void Check_LookEnemy(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_DeadAllies(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_ValidPath(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_CombatDelay(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
 #pragma endregion 플레이어 체크
 
 

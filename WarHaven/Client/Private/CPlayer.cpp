@@ -1265,6 +1265,8 @@ void CPlayer::Set_OutlineType(OUTLINETYPE eOutlineType)
 
 void CPlayer::My_Tick()
 {
+	if (!m_bIsMainPlayer)
+		Update_TargetLock();
 	// 행복버튼~ 즐코
 	//if (!m_bIsMainPlayer)
 	//{
@@ -1409,6 +1411,7 @@ void CPlayer::Set_NewPath(CPath* pPath)
 
 	m_pCurPath->m_vPrevPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
 }
+
 void CPlayer::Set_NewMainPath(CPath* pPath)
 {
 	if (m_pStartMainPath == m_pCurPath)
@@ -1417,7 +1420,6 @@ void CPlayer::Set_NewMainPath(CPath* pPath)
 		m_pStartMainPath = nullptr;
 		m_pCurPath = nullptr;
 	}
-
 
 	SAFE_DELETE(m_pCurPath);
 	SAFE_DELETE(m_pStartMainPath);
@@ -1582,6 +1584,23 @@ void CPlayer::Clear_DebugObject()
 }
 
 #endif
+
+void CPlayer::Update_TargetLock()
+{
+	if (!m_bTargetLocked)
+		return;
+
+	m_fTargetAcc += fDT(0);
+
+	if (m_fTargetAcc >= m_fTargetMaxTime)
+	{
+		m_fTargetAcc = 0.f;
+		Target_UnLock();
+	}
+	 
+
+}
+
 _bool CPlayer::Is_OpenCell()
 {
 	if (nullptr == m_pCurrentUnit)

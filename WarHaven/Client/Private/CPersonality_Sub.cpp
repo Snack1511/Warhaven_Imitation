@@ -39,6 +39,7 @@ HRESULT CPersonality_Sub::Initailize()
 	m_tPersonalDesc.tPersonalityData.eFightPersonality = eFight_Default;
 	m_tPersonalDesc.tPersonalityData.eCoopPersonality = eCoop_Default;
 	m_tPersonalDesc.tPersonalityData.fRemainMaxTime[_uint(eBehaviorType::ePatrol)] = 5.f;
+	m_tPersonalDesc.tPersonalityData.fRemainMaxTime[_uint(eBehaviorType::eCombat)] = 1.f;
 
 	CBehavior* pBehavior = nullptr;
 	/* pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Follow"))->Clone();
@@ -84,7 +85,7 @@ HRESULT CPersonality_Sub::Initailize()
 	m_BehaviorList.push_back(pBehavior);*/
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Combat"))->Clone();
-	pBehavior->Add_OtherCondition(wstring(L"EmptyOtherCondition"));
+	pBehavior->Add_OtherCondition(wstring(L"Check_LookEnemy"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearEnemy"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
