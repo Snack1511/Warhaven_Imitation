@@ -68,6 +68,12 @@ private:
     void Check_Conquer_MainPoint(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_Conquer_PadenCannon(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_Conquer_HwaraFinal(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    //캐논 사용가능할때
+    void Check_UsableCannon(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    //캐논 트리거 위치에 있을 때
+    void Check_InCannonConquerTrigger(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    //활공 트리거랑 충돌할 때
+    void Check_GriderTrigger(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
 #pragma endregion 맵 체크
 
 #pragma region 캐릭터체크
@@ -88,6 +94,7 @@ private:
 #pragma endregion 비해비어 체크
 
 #pragma region 플레이어 상태 체크
+    void Check_AdjCannon(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_AbleHero(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_EmptyRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
 #pragma endregion 플레이어 상태 체크
@@ -114,6 +121,7 @@ private:
     void  Select_RespawnTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     void  Select_MainTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     void  Select_HwaraFinalTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+    void Select_NearGliderTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     //void  Select_JumpTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
 #pragma endregion 트리거 선택
 

@@ -3940,6 +3940,9 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\06. Priest\04. Shoot">
       <UniqueIdentifier>{f64ee1e2-9442-4ef2-aede-c66ef3637ddf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\11. Trigger\03.Trigger_Glider">
+      <UniqueIdentifier>{312190ff-94c3-448e-8298-60a22b3f997c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -7098,6 +7101,9 @@
     <ClInclude Include="..\Public\CState_Combat_SkillQ_Catching_Priest.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\06. Priest\03. Catching</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CTrigger_Glider.h">
+      <Filter>03. Instances\02. GameObject\11. Trigger\03.Trigger_Glider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -10236,6 +10242,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_SkillQ_Catching_Priest.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\06. Priest\03. Catching</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTrigger_Glider.cpp">
+      <Filter>03. Instances\02. GameObject\11. Trigger\03.Trigger_Glider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
