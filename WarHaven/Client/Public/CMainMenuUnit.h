@@ -46,6 +46,7 @@ private:
 	CLASS_TYPE	m_eClassType = CLASS_END;
 
 	CUnit_Lancer_Head* m_pMyLancerHead = nullptr;
+	CAnimWeapon* m_pAnimWeapon = nullptr;
 };
 
 END

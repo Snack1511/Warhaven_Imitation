@@ -180,6 +180,21 @@ _bool CTeamConnector::Minus_Score()
     return true;
 }
 
+list<CPlayer*> CTeamConnector::Get_AllPlayers()
+{
+    list<CPlayer*>  listPlayers;
+
+    for (auto& elem : m_SquadList)
+    {
+        for (auto& pPlayer : elem->Get_AllPlayers())
+        {
+            listPlayers.push_back(pPlayer.second);
+        }
+    }
+
+    return listPlayers;
+}
+
 HRESULT CTeamConnector::On_EnterPaden()
 {
     m_iScore = m_iMaxScore;

@@ -195,6 +195,9 @@
     <ClInclude Include="..\Public\CHit_GuardHit_Lancer.h" />
     <ClInclude Include="..\Public\CHit_Lancer.h" />
     <ClInclude Include="..\public\CMainMenuPlayer.h" />
+    <ClInclude Include="..\public\CPersonality_Leader.h" />
+    <ClInclude Include="..\public\CPersonality_Sub.h" />
+    <ClInclude Include="..\public\CPlayerInfo_Sub.h" />
     <ClInclude Include="..\Public\CState_Common_Bounce_Lancer.h" />
     <ClInclude Include="..\Public\CState_Common_Cannon_AI.h" />
     <ClInclude Include="..\Public\CState_Common_Fall_Lancer.h" />
@@ -1213,6 +1216,9 @@
     <ClCompile Include="..\Private\CHit_GuardHit_Lancer.cpp" />
     <ClCompile Include="..\Private\CHit_Lancer.cpp" />
     <ClCompile Include="..\private\CMainMenuPlayer.cpp" />
+    <ClCompile Include="..\private\CPersonality_Leader.cpp" />
+    <ClCompile Include="..\private\CPersonality_Sub.cpp" />
+    <ClCompile Include="..\private\CPlayerInfo_Sub.cpp" />
     <ClCompile Include="..\Private\CState_Common_Bounce_Lancer.cpp" />
     <ClCompile Include="..\Private\CState_Common_Cannon_AI.cpp" />
     <ClCompile Include="..\Private\CState_Common_Fall_Lancer.cpp" />

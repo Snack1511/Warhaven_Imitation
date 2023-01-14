@@ -169,6 +169,7 @@ public:		// ºê¸®ÇÎ
 	_bool Get_SelectTargetPoint();
 
 	void Set_MainMenuUnit(_uint iUnitIdx);
+	CMainMenuPlayer* Get_MainMenuPlayer() { return m_pMainMenuPlayer; }
 	void Change_ModelParts(_uint iClassType, MODEL_PART_TYPE eModelPartType);
 
 public:

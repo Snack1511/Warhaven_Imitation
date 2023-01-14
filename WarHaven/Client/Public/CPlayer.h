@@ -262,7 +262,6 @@ public:
 public:
 	CUI_UnitHUD* Get_UnitHUD()
 	{
-		if (m_pUnitHUD)
 			return m_pUnitHUD;
 	}
 

@@ -164,6 +164,11 @@ void CCustomTrail::ReMap_TrailBuffers(list<_float4>& NodesList, _float fWide)
 	_float4 vPrevNode = ZERO_VECTOR;
 	_uint iVertexIndex = 0;
 
+	_float fFullLength = 0.f;
+
+	vector<_float> vecLength;
+	vecLength.push_back(0.f);
+
 	for (auto& elem : NodesList)
 	{
 		/* 트레일 두 점의 방향 */
@@ -172,7 +177,12 @@ void CCustomTrail::ReMap_TrailBuffers(list<_float4>& NodesList, _float fWide)
 		if (elem == NodesList.front())
 			vDir = _float4(0.f, 0.f, 1.f, 0.f);
 		else
+		{
 			vDir = (elem - vPrevNode);
+			fFullLength += vDir.Length();
+			vecLength.push_back(vDir.Length());
+		}
+
 
 		vDir.y = 0.f;
 		vDir.Normalize();
@@ -195,10 +205,25 @@ void CCustomTrail::ReMap_TrailBuffers(list<_float4>& NodesList, _float fWide)
 			break;
 	}
 
+	_float fAverageLength = fFullLength / (_int)(NodesList.size() - 1);
+
+
+	_float fPrevUV = 0.f;
+	_float fCurUV = 0.f;
+
 	for (_uint i = 0; i < iVertexIndex; i += 2)
 	{
-		((VTXTEX*)SubResource.pData)[i].vTexUV = { (_float)i / ((_float)iVertexIndex - 2), 1.f };
-		((VTXTEX*)SubResource.pData)[i + 1].vTexUV = { (_float)i / ((_float)iVertexIndex - 2), 0.f };
+		// 총 길이에 비례해서 uv를 넣어야 함.
+		_int iCurIndex = i / 2;
+		_float fRatio = (vecLength[iCurIndex] / fFullLength);
+
+		fCurUV = fPrevUV + fRatio;
+
+
+		((VTXTEX*)SubResource.pData)[i].vTexUV = { fCurUV, 1.f };
+		((VTXTEX*)SubResource.pData)[i + 1].vTexUV = { fCurUV, 0.f };
+
+		fPrevUV = fCurUV;
 	}
 
 	/* 남은 정점들은 전부 끝 점으로 맞추기 */

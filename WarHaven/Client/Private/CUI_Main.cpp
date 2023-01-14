@@ -14,6 +14,8 @@
 #include "CPlayer.h"
 #include "CUnit.h"
 
+#include "CMainMenuPlayer.h"
+
 CUI_Main::CUI_Main()
 {
 }
@@ -149,6 +151,8 @@ void CUI_Main::SetActive_MainWindow(MainWindow eWindow)
 		m_pTopBtnEffect->Set_Pos(vPos.x, vPos.y);
 
 		ENABLE_GAMEOBJECT(m_pTopBtnEffect);
+		CUser::Get_Instance()->Get_MainMenuPlayer()->Set_Rotatable(false);
+
 	}
 	break;
 
@@ -161,6 +165,8 @@ void CUI_Main::SetActive_MainWindow(MainWindow eWindow)
 		m_pTopBtnEffect->Set_Pos(vPos.x, vPos.y);
 
 		ENABLE_GAMEOBJECT(m_pTopBtnEffect);
+
+		CUser::Get_Instance()->Get_MainMenuPlayer()->Set_Rotatable(true);
 	}
 	break;
 	}

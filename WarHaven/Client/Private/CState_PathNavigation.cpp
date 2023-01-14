@@ -116,6 +116,9 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 				<= m_pOwner->Get_PhysicsCom()->Get_Physics().fSpeed * fDT(0))
 			{
 				pOwner->Get_CurRoute().pop_front();
+
+				if (pOwner->Get_CurRoute().empty())
+					pOwner->Get_OwnerPlayer()->Set_IsFindRoute(false);
 #ifdef _DEBUG
 				pOwner->Get_OwnerPlayer()->Add_DebugObject(vDestination);
 #endif

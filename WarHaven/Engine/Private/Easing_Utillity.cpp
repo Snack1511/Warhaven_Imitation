@@ -120,9 +120,6 @@ _float4 CEasing_Utillity::QuadIn(_float4 vStartPoint, _float4 vTargetPoint, _flo
 _float4 CEasing_Utillity::QuadOut(_float4 vStartPoint, _float4 vTargetPoint, _float fPassedTime, _float fTotalTime)
 {
 	fPassedTime /= fTotalTime;
-
-
-
 	return _float4((vTargetPoint - vStartPoint) * -1.f * fPassedTime * (fPassedTime - 2) + vStartPoint);
 }
 
@@ -330,6 +327,12 @@ _float CEasing_Utillity::ElasticEaseOut(_float vStartValue, _float vTargetValue,
 	_float s = p / 4;
 
 	return ((vTargetValue - vStartValue) * pow(2, -10 * fPassedTime) * sinf((fPassedTime * fTotalTime - s) * (2 * PI) / p) + (vTargetValue - vStartValue) + vStartValue);
+}
+
+_float CEasing_Utillity::QuadOut(_float vStartValue, _float vTargetValue, _float fPassedTime, _float fTotalTime)
+{
+	fPassedTime /= fTotalTime;
+	return _float((vTargetValue - vStartValue) * -1.f * fPassedTime * (fPassedTime - 2) + vStartValue);
 }
 
 

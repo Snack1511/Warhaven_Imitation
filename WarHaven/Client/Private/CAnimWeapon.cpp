@@ -71,6 +71,7 @@ HRESULT CAnimWeapon::Start()
 {
 	__super::Start();
 
+	Set_AnimIndex(0, 0.1f, 1.f);
 
     return S_OK;
 }

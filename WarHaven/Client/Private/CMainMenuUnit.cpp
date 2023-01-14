@@ -14,7 +14,7 @@
 
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
-
+#include "CAnimWeapon.h"
 CMainMenuUnit::CMainMenuUnit()
 {
 }
@@ -220,6 +220,17 @@ HRESULT CMainMenuUnit::Start()
 		break;
 	case Client::ARCHER:
 		m_iAnimIndex = 4;
+
+		m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/longbow/SK_WP_LongBow0005_A00_30.fbx",
+			L"../bin/resources/meshes/weapons/longbow/LongBow_Anim2.fbx", this, "0B_L_WP1", 180.f, 180.f, 90.f);
+
+		if (!m_pAnimWeapon)
+			return E_FAIL;
+
+		m_pAnimWeapon->Initialize();
+		CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
+		DISABLE_GAMEOBJECT(m_pAnimWeapon);
+
 		break;
 	case Client::PALADIN:
 		m_eBaseType = ANIM_ATTACK;
@@ -278,6 +289,10 @@ void CMainMenuUnit::OnEnable()
 
 	if(m_pMyLancerHead)
 		ENABLE_GAMEOBJECT(m_pMyLancerHead);
+
+	if (m_pAnimWeapon)
+		ENABLE_GAMEOBJECT(m_pAnimWeapon);
+
 }
 
 void CMainMenuUnit::OnDisable()
@@ -286,11 +301,18 @@ void CMainMenuUnit::OnDisable()
 
 	if (m_pMyLancerHead)
 		DISABLE_GAMEOBJECT(m_pMyLancerHead);
+
+	if (m_pAnimWeapon)
+		DISABLE_GAMEOBJECT(m_pAnimWeapon);
 }
 
 void CMainMenuUnit::My_Tick()
 {
 	_uint		iFrame = 0;
+
+	
+		
+	}
 
 	if (m_eClassType == PALADIN)
 	{

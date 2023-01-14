@@ -1476,10 +1476,12 @@ namespace Client
 	{
 		ePatrol,
 		eGoToTrigger,
+		eFollowTeam,
 		ePadenCannonInteract,
 		eRevive,
 		eCombat,
 		eChange,
+
 		eCNT
 	};
 	enum class eBehaviorConditionType

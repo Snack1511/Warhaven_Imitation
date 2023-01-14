@@ -744,7 +744,7 @@ HRESULT CPlayer::Initialize_Prototype()
 	{
 
 
-		CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 100, 0.35f, -0.05f, 100.f, ZERO_VECTOR, _float4(0.2f, 1.f, 0.2f, 1.f),
+		CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 100, 0.35f, -0.035f, 70.f, ZERO_VECTOR, _float4(0.2f, 1.f, 0.2f, 1.f),
 			L"../bin/resources/textures/effects/warhaven/texture/T_ArrowUI_01_FX.dds",
 			L"../bin/resources/textures/White.png"
 		);
@@ -1108,12 +1108,18 @@ void CPlayer::On_RealChangeBehavior()
 	case eBehaviorType::eRevive:
 		m_pTargetPlayer = m_pCurBehaviorDesc->pAlliesPlayer;
 		pNewTargetObj = m_pTargetPlayer;
-		m_bKeepRay = false;
+		m_bKeepRay = true;
 
 		break;
 
 	case eBehaviorType::eGoToTrigger:
 		pNewTargetObj = m_pCurBehaviorDesc->pTriggerPtr;
+		m_bKeepRay = false;
+		break;
+
+	case eBehaviorType::eFollowTeam:
+		m_pTargetPlayer = m_pCurBehaviorDesc->pAlliesPlayer;
+		pNewTargetObj = m_pTargetPlayer;
 		m_bKeepRay = false;
 		break;
 
@@ -1126,6 +1132,7 @@ void CPlayer::On_RealChangeBehavior()
 	if (m_pTargetObj != pNewTargetObj)
 	{
 		m_CurRoute.clear();
+		m_bFindRoute = false;
 	}
 
 	m_pTargetObj = pNewTargetObj;
@@ -1549,6 +1556,7 @@ _bool CPlayer::Is_OpenCell()
 }
 void CPlayer::Make_BestRoute(_float4 vPosition)
 {
+	m_bFindRoute = true;
 #ifdef _DEBUG
 	Clear_DebugObject();
 #endif

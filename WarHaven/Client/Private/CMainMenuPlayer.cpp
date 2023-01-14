@@ -5,6 +5,8 @@
 
 #include "CMainMenuUnit.h"
 
+#include "Easing_Utillity.h"
+
 CMainMenuPlayer::CMainMenuPlayer()
 {
 }
@@ -34,6 +36,8 @@ void CMainMenuPlayer::Set_CurClassType(CLASS_TYPE eClassType)
 	DISABLE_GAMEOBJECT(m_pMainMenuUnit[m_eCurClassType]);
 	m_eCurClassType = eClassType;
 	ENABLE_GAMEOBJECT(m_pMainMenuUnit[m_eCurClassType]);
+	m_fRotateY[m_eCurClassType] = 180.f;
+
 	
 }
 
@@ -133,6 +137,25 @@ void CMainMenuPlayer::Change_ModelParts(CLASS_TYPE eClassType, MODEL_PART_TYPE e
 
 }
 
+void CMainMenuPlayer::Set_Rotatable(_bool b)
+{
+
+
+	if (!b)
+	{
+		if (m_pMainMenuUnit[m_eCurClassType])
+		{
+			if (m_fRotateY[m_eCurClassType] != 180.f)
+				m_pMainMenuUnit[m_eCurClassType]->Get_Transform()->Set_LerpLook(_float4(0.f, 0.f, -1.f, 0.f), 1.f);
+
+		}
+	}
+	m_fRotateY[m_eCurClassType] = 180.f;
+
+	m_bRotatable = b; m_bLerpFOV = true; m_fTimeAcc = 0.f;
+
+}
+
 HRESULT CMainMenuPlayer::Initialize_Prototype()
 {
 	
@@ -202,6 +225,8 @@ HRESULT CMainMenuPlayer::Initialize_Prototype()
 
 	for (int i = 0; i < CLASS_END; ++i)
 	{
+		m_fRotateY[i] = 180.f;
+
 		if (wstrModeSkel[i].empty())
 			continue;
 
@@ -252,38 +277,67 @@ HRESULT CMainMenuPlayer::Start()
 		DISABLE_GAMEOBJECT(m_pMainMenuUnit[i]);
 	}
 
+	m_fDefaultFOV = GAMEINSTANCE->Get_CurCam()->Get_Proj().fFOV;
+	m_fTargetFOV = m_fDefaultFOV * 1.4f;
+	m_fMaxTime = 0.5f;
+
     return S_OK;
 }
 
 void CMainMenuPlayer::My_Tick()
 {
-	if (KEY(UP, TAP))
+	if (!m_bLerpFOV)
+		return;
+
+	m_fTimeAcc += fDT(0);
+
+	if (m_fTimeAcc >= m_fMaxTime)
 	{
-		_uint iTemp = m_eCurClassType;
-		if (iTemp == 9)
-			return;
-		iTemp++;
+		m_bLerpFOV = false;
+		m_fTimeAcc = 0.f;
 
-		if(iTemp == SPEAR || iTemp == HOEDT)
-			iTemp++;
+		if (m_bRotatable)
+			GAMEINSTANCE->Get_CurCam()->Get_Proj().fFOV = m_fTargetFOV;
+		else
+			GAMEINSTANCE->Get_CurCam()->Get_Proj().fFOV = m_fDefaultFOV;
 
-		Set_CurClassType((CLASS_TYPE)iTemp);
-
-	}
-	else if (KEY(DOWN, TAP))
-	{
-		_uint iTemp = m_eCurClassType;
-		if (iTemp == 0)
-			return;
-
-		iTemp--;
-
-		if (iTemp == SPEAR || iTemp == HOEDT)
-			iTemp--;
-
-		Set_CurClassType((CLASS_TYPE)iTemp);
-
+		return;
 	}
 
+	_float fRatio = 0.f;
 
+	if (m_bRotatable)
+		fRatio = CEasing_Utillity::QuadOut(m_fDefaultFOV, m_fTargetFOV, m_fTimeAcc, m_fMaxTime);
+	else
+		fRatio = CEasing_Utillity::QuadOut(m_fTargetFOV, m_fDefaultFOV, m_fTimeAcc, m_fMaxTime);
+
+	GAMEINSTANCE->Get_CurCam()->Get_Proj().fFOV = fRatio;
+
+
+
+}
+
+void CMainMenuPlayer::My_LateTick()
+{
+	if (!m_bRotatable)
+		return;
+
+
+	if (KEY(LBUTTON, HOLD))
+	{
+		if (!m_pMainMenuUnit[m_eCurClassType])
+			return;
+
+		_float fMouseMove = (MOUSE_MOVE(MOUSEMOVE::MMS_X) / fDT(0)) * -0.0005f;
+
+		m_fRotateY[m_eCurClassType] += fMouseMove;
+
+		_float4 vCurPos = m_pMainMenuUnit[m_eCurClassType]->Get_Transform()->Get_World(WORLD_POS);
+		_float4x4 matRot;
+		matRot.Identity();
+		CUtility_Transform::Turn_ByAngle(matRot, _float4(0.f, 1.f, 0.f, 0.f), m_fRotateY[m_eCurClassType]);
+		m_pMainMenuUnit[m_eCurClassType]->Get_Transform()->Get_Transform().matMyWorld = matRot;
+		m_pMainMenuUnit[m_eCurClassType]->Get_Transform()->Set_World(WORLD_POS, vCurPos);
+		m_pMainMenuUnit[m_eCurClassType]->Get_Transform()->Make_WorldMatrix();
+	}
 }

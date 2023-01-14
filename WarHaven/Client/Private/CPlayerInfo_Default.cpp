@@ -36,12 +36,41 @@ HRESULT CPlayerInfo_Default::Initialize()
 
 	static _int g_iDefaultCnt = 0;
 	m_tPlayerInfo.wstrCamName = L"DefaultCam_";
-	m_tPlayerInfo.wstrCamName += to_wstring(g_iDefaultCnt);
-	m_tPlayerInfo.wstrName = L"Default_";
-	m_tPlayerInfo.wstrName += to_wstring(g_iDefaultCnt++);
+	m_tPlayerInfo.wstrCamName += to_wstring(g_iDefaultCnt++);
 
+	//총 6마리
 
+	//1. 시연회난동꾼
+	if (g_iDefaultCnt == 1)
+	{
+		m_tPlayerInfo.wstrName = L"서른도넘은설운도";
 
+#ifdef PALADIN_TH
+		m_vecPrefClassType.push_back(PALADIN);
+		Set_CustomHead(PALADIN, eCUSTOM_HEAD::eRABBIT);
+
+#endif // WARRIOR_TH
+	}
+	else if (g_iDefaultCnt == 2)
+	{
+		m_tPlayerInfo.wstrName = L"점심장터";
+	}
+	else if (g_iDefaultCnt == 3)
+	{
+		m_tPlayerInfo.wstrName = L"NULL죽이겠다";
+	}
+	else if (g_iDefaultCnt == 4)
+	{
+		m_tPlayerInfo.wstrName = L"아기상어";
+	}
+	else if (g_iDefaultCnt == 5)
+	{
+		m_tPlayerInfo.wstrName = L"밤새면그만이야";
+	}
+	else if (g_iDefaultCnt == 6)
+	{
+		m_tPlayerInfo.wstrName = L"DefaultPlayer";
+	}
 #ifdef ENGINEER_TH
 	m_vecPrefClassType.push_back(ENGINEER);
 #endif // WARRIOR_TH
@@ -50,17 +79,6 @@ HRESULT CPlayerInfo_Default::Initialize()
 	m_vecPrefClassType.push_back(WARRIOR);
 #endif // WARRIOR_TH
 
-#ifdef PALADIN_TH
-	m_vecPrefClassType.push_back(PALADIN);
-#endif // WARRIOR_TH
-
-#ifdef ARCHER_TH
-	m_vecPrefClassType.push_back(ARCHER);
-#endif // ARCHER_TH
-
-#ifdef PRIEST_TH
-	m_vecPrefClassType.push_back(PRIEST);
-#endif // PRIEST_TH
 
 	if (FAILED(SetUp_AIPersonality()))
 		return E_FAIL;

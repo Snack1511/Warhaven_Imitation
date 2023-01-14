@@ -3841,6 +3841,15 @@
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\11. Window_Shader">
       <UniqueIdentifier>{945e2d95-b834-402f-a4bb-a5fb0ff147e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\03. User\PlayerInfo\05. Sub">
+      <UniqueIdentifier>{3b5020a5-6e19-4ea7-a6cd-c807ad7ea1ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\03. Component\06. AI\Personality\01. Sub">
+      <UniqueIdentifier>{1961fbaa-1efb-47f8-982b-1ffc6d88e76f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\03. Component\06. AI\Personality\02. Leader">
+      <UniqueIdentifier>{9eb297a5-7555-496f-922a-7c92ed18a4d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6888,6 +6897,15 @@
     <ClInclude Include="..\public\CWindow_Shader.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\11. Window_Shader</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CPlayerInfo_Sub.h">
+      <Filter>02. Design\03. User\PlayerInfo\05. Sub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CPersonality_Sub.h">
+      <Filter>03. Instances\03. Component\06. AI\Personality\01. Sub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CPersonality_Leader.h">
+      <Filter>03. Instances\03. Component\06. AI\Personality\02. Leader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9915,6 +9933,15 @@
     </ClCompile>
     <ClCompile Include="..\private\CWindow_Shader.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\11. Window_Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CPlayerInfo_Sub.cpp">
+      <Filter>02. Design\03. User\PlayerInfo\05. Sub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CPersonality_Sub.cpp">
+      <Filter>03. Instances\03. Component\06. AI\Personality\01. Sub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CPersonality_Leader.cpp">
+      <Filter>03. Instances\03. Component\06. AI\Personality\02. Leader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

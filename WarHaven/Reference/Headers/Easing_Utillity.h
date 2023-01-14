@@ -103,6 +103,8 @@ public:
 	static _float sinfInOut(_float vStartValue, _float vTargetValue, _float fPassedTime, _float fTotalTime);
 	static _float ElasticEaseOut(_float vStartValue, _float vTargetValue, _float fPassedTime, _float fTotalTime);
 
+	static _float QuadOut(_float vStartValue, _float vTargetValue, _float fPassedTime, _float fTotalTime);
+
 
 };
 

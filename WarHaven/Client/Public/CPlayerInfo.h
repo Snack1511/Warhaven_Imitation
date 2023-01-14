@@ -31,17 +31,17 @@ return pInstance;\
 #define WARRIOR_TH
 #define ARCHER_TH
 #define FIONA_TH
-//#define PALADIN_TH
-//#define ENGINEER_TH
-#define PRIEST_TH
+#define PALADIN_TH
+#define ENGINEER_TH
+//#define PRIEST_TH
 //#define LANCER_TH
-//#define QANDA_TH
+#define QANDA_TH
 
 BEGIN(Client)
 
 class CTeamConnector;
 class CSquad;
-class CPlayer;
+class CPlayer;  
 class CAIPersonality;
 class CPlayerInfo abstract
 {
@@ -83,6 +83,8 @@ public:
 	void	Set_ChosenClass(CLASS_TYPE eEnum) { m_eCurChosenClass = eEnum; }
 
 	CLASS_TYPE	Get_ChonsenClass() { return m_eCurChosenClass; }
+	CLASS_TYPE	Get_ChangeHeroClass() { return m_eChangeHeroClass; }
+
 	_uint	Get_UnitType() { return m_iUnitType; }
 
 	wstring Get_PlayerName() { return m_tPlayerInfo.wstrName; }
@@ -130,6 +132,8 @@ protected:
 protected:
 	eTEAM_TYPE	m_eTeamType = eTEAM_TYPE::eBLUE;
 	CLASS_TYPE	m_eCurChosenClass = WARRIOR;
+
+	CLASS_TYPE	m_eChangeHeroClass = FIONA;
 
 protected:
 	PLAYER_INFO	m_tPlayerInfo;

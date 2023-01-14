@@ -27,8 +27,7 @@ public:
 	// 이게 스킨 바꾸는건데
 	void		Change_ModelParts(CLASS_TYPE eClassType, MODEL_PART_TYPE eModelPartType);
 
-	// 메인 프렐이어이인포를 갱신을 시켜줘야된대
-
+	void		Set_Rotatable(_bool b);
 public:
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;
@@ -40,7 +39,20 @@ private:
 	CMainMenuUnit* m_pMainMenuUnit[CLASS_END] = {};
 
 private:
+	_bool			m_bRotatable = false;
+	_float			m_fRotateY[CLASS_END] = {};
+	
+private:
+	_bool			m_bLerpFOV = false;
+	_float		m_fDefaultFOV = 0.f;
+	_float		m_fTargetFOV = 0.f;
+	_float		m_fTimeAcc = 0.f;
+	_float		m_fMaxTime = 0.f;
+
+
+private:
 	virtual void My_Tick() override;
+	virtual void My_LateTick() override;
 
 };
 

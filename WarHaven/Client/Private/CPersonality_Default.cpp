@@ -55,12 +55,23 @@ HRESULT CPersonality_Default::Initailize()
 		assert(0);
 	}
 
+	_uint iPriority = 1;
+
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"GoToTrigger"))->Clone();
+	pBehavior->Add_OtherCondition(wstring(L"Check_EmptyRoute"));
 	pBehavior->Add_OtherCondition(wstring(L"Check_Need_Conquer"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_ConquerTrigger"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
-	pBehavior->Set_Priority(1);
+	pBehavior->Set_Priority(iPriority++);
+	m_BehaviorList.push_back(pBehavior);
+
+	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"FollowTeam"))->Clone();
+	pBehavior->Add_OtherCondition(wstring(L"Check_EmptyRoute"));
+	pBehavior->Add_WhatCondition(wstring(L"Select_Leader"));
+	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
+	pBehavior->Initialize();
+	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PadenCannonInteract"))->Clone();
@@ -69,7 +80,7 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Add_WhatCondition(wstring(L"Select_PadenCannonTrigger"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
-	pBehavior->Set_Priority(2);
+	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);	
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Revive"))->Clone();
@@ -77,7 +88,7 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearAllies"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
-	pBehavior->Set_Priority(3);
+	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Combat"))->Clone();
@@ -85,7 +96,7 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearEnemy"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
-	pBehavior->Set_Priority(4);
+	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Change"))->Clone();
@@ -94,7 +105,7 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Add_WhatCondition(wstring(L"EmptyWhatCondition"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
-	pBehavior->Set_Priority(5);
+	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);
 
 

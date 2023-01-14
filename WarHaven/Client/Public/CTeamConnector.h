@@ -53,6 +53,9 @@ public:
 	list<CSquad*>& Get_SquadList() { return m_SquadList; }
 
 public:
+	list<CPlayer*>	Get_AllPlayers();
+
+public:
 	/* 파덴 진입시 호출 */
 	HRESULT	On_EnterPaden();
 public: 

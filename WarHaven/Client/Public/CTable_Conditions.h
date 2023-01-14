@@ -88,6 +88,7 @@ private:
 
 #pragma region 플레이어 상태 체크
     void Check_AbleHero(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_EmptyRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
 #pragma endregion 플레이어 상태 체크
     //void Check_Winning(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_EmptyEnemyInTerritory(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
@@ -100,10 +101,14 @@ private:
     void  Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     void  Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     void  Select_MainPlayer(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+    /* 리더 우선으로, 살아있는 팀원 아무나 가져오기 */
+    void  Select_Teammate(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
 #pragma endregion 플레이어 선택
 
 #pragma region 트리거 선택
     void  Select_ConquerTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+    void  Select_RandomConquerTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+
     void  Select_PadenCannonTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     void  Select_RespawnTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     void  Select_MainTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
