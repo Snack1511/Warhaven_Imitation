@@ -44,6 +44,9 @@ HRESULT CWalk_Archer::Initialize()
 
    // m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
+    Add_KeyFrame(37, 0);
+    Add_KeyFrame(60, 0);
+
     m_fMyMaxLerp = 0.4f;
     m_fMyAccel = 100.f;
 
@@ -94,3 +97,14 @@ STATE_TYPE CWalk_Archer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     return STATE_END;
 }
 
+void CWalk_Archer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+        break;
+    }
+}

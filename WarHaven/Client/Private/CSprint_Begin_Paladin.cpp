@@ -64,6 +64,10 @@ HRESULT CSprint_Begin_Paladin::Initialize()
 
 
 	Add_KeyFrame(10, 0);
+	Add_KeyFrame(28, 1);
+	Add_KeyFrame(50, 1);
+	Add_KeyFrame(72, 1);
+	Add_KeyFrame(95, 1);
 
     return S_OK;
 }
@@ -194,7 +198,11 @@ void CSprint_Begin_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator
 		//pMyPhysicsCom->Set_Accel(m_fMyAccel);
 
 	}
+    break;
 
+    case 1:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+        break;
 
 	default:
 		break;

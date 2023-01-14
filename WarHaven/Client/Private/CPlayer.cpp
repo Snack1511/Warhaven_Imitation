@@ -1487,7 +1487,7 @@ void CPlayer::Update_HeroGauge()
 				m_fGauge = m_fMaxGauge;
 
 				On_AbleHero();
-				
+
 			}
 
 		}
@@ -1509,7 +1509,7 @@ void CPlayer::Update_HeroGauge()
 
 void CPlayer::Update_KDA()
 {
-	
+
 
 	if (m_tKdaStat.iKillStreak > 0)
 	{
@@ -1550,7 +1550,7 @@ void CPlayer::Clear_DebugObject()
 		DELETE_GAMEOBJECT(Debug);
 	}
 	m_pRouteDebug.clear();
-	}
+}
 
 #endif
 _bool CPlayer::Is_OpenCell()
@@ -1739,12 +1739,18 @@ void CPlayer::Frustum_UnitHUD()
 	_float fDis = CUtility_Transform::Get_FromCameraDistance(m_pCurrentUnit);
 	if (fDis < m_fEnable_UnitHUDis)
 	{
+		m_fHUDTime = 0.f;
 		m_pUnitHUD->Set_UnitDis(fDis);
 		m_pUnitHUD->SetActive(m_bIsInFrustum);
 	}
 	else
 	{
-		m_pUnitHUD->SetActive(false);
+		m_fHUDTime += fDT(0);
+		if (m_fHUDTime > 3.f)
+		{
+			m_fHUDTime = 0.f;
+			m_pUnitHUD->SetActive(false);
+		}
 	}
 }
 

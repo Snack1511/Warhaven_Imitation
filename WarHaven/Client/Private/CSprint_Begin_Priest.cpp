@@ -61,6 +61,12 @@ HRESULT CSprint_Begin_Priest::Initialize()
 
 	Add_KeyFrame(10, 0);
 
+	Add_KeyFrame(4, 1);
+	Add_KeyFrame(27, 1);
+	Add_KeyFrame(39, 1);
+	Add_KeyFrame(68, 1);
+	Add_KeyFrame(90, 1);
+
     return S_OK;
 }
 
@@ -187,6 +193,9 @@ void CSprint_Begin_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
         Physics_Setting(pOwner->Get_Status().fSprintSpeed * 0.8f, pOwner, false);
 	}
 
+    case 1:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+        break;
 
 	default:
 		break;

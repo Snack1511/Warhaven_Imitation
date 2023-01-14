@@ -38,7 +38,8 @@ HRESULT CRun_Paladin::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.7f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.7f;
 	
-
+	Add_KeyFrame(6, 0);
+	Add_KeyFrame(31, 0);
 
 
 	// 선형 보간 시간
@@ -115,4 +116,16 @@ STATE_TYPE CRun_Paladin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
 
     return STATE_END;
+}
+
+void CRun_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+	switch (iSequence)
+	{
+	case 0:
+		Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+		break;
+	}
 }

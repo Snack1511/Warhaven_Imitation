@@ -282,6 +282,11 @@ void CUI_UnitHUD::Disable_HealBlur()
 	static_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Disable_HealBlur();
 }
 
+void CUI_UnitHUD::Set_UnitHP(_float fCurHP, _float fMaxHP)
+{
+	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHP(m_tStatus.fHP, m_tStatus.fMaxHP);
+}
+
 void CUI_UnitHUD::Create_UnitHUD()
 {
 	m_pUnitNameText = CUI_Object::Create();
@@ -384,8 +389,6 @@ void CUI_UnitHUD::Tick_UnitHP()
 {
 	if (m_pUnitUI[UI_Hp]->Is_Valid())
 	{
-		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHP(m_tStatus.fHP, m_tStatus.fMaxHP);
-
 		m_fEnableHpTime += fDT(0);
 		if (m_fEnableHpTime > m_fDisableHpTime)
 		{

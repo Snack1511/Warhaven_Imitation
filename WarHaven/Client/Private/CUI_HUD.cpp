@@ -213,7 +213,7 @@ void CUI_HUD::Create_EscMenu()
 void CUI_HUD::Set_Shader_HeroTransformGauge(CShader* pShader, const char* pConstName)
 {
 	_bool bFlip = true;
-	pShader->Set_RawValue("bFlip", &bFlip, sizeof(_bool));
+	pShader->Set_RawValue("g_bFlip", &bFlip, sizeof(_bool));
 	pShader->Set_RawValue("g_fValue", &m_fHeroTransformGaugeRatio, sizeof(_float));
 }
 
@@ -355,9 +355,8 @@ void CUI_HUD::Create_SquardInfo()
 
 			m_pSquardInfo[i]->Set_FontRender(true);
 			m_pSquardInfo[i]->Set_FontStyle(true);
-			m_pSquardInfo[i]->Set_FontCenter(true);
 
-			m_pSquardInfo[i]->Set_FontOffset(80.f, 4.5f);
+			m_pSquardInfo[i]->Set_FontOffset(5.f, -12.f);
 			m_pSquardInfo[i]->Set_FontScale(0.2f);
 
 			break;

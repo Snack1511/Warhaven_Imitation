@@ -52,6 +52,9 @@ HRESULT CSprint_Loop_Paladin::Initialize()
     m_vecAdjState.push_back(STATE_SPRINT_JUMP_PALADIN);
     m_vecAdjState.push_back(STATE_SPRINTATTACK_BEGIN_PALADIN);
 
+    Add_KeyFrame(13, 0);
+    Add_KeyFrame(37, 0);
+
     //m_vecAdjState.push_back(STATE_GROGGYATTACK_PALADIN);
     //m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_PALADIN);
     return S_OK;
@@ -165,4 +168,16 @@ STATE_TYPE CSprint_Loop_Paladin::Check_Condition(CUnit* pOwner, CAnimator* pAnim
 
    
     return STATE_END;
+}
+
+void CSprint_Loop_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+        break;
+    }
 }

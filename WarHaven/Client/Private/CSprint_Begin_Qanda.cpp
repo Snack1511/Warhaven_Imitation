@@ -62,6 +62,13 @@ HRESULT CSprint_Begin_Qanda::Initialize()
 
 	Add_KeyFrame(10, 0);
 
+    Add_KeyFrame(21, 0);
+    Add_KeyFrame(28, 0);
+    Add_KeyFrame(46, 0);
+    Add_KeyFrame(62, 0);
+    Add_KeyFrame(76, 0);
+    Add_KeyFrame(92, 0);
+
     return S_OK;
 }
 
@@ -209,7 +216,11 @@ void CSprint_Begin_Qanda::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, 
 		//pMyPhysicsCom->Set_Accel(m_fMyAccel);
 
 	}
+    break;
 
+    case 1:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+        break;
 
 	default:
 		break;

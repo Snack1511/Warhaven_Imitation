@@ -62,6 +62,12 @@ HRESULT CSprint_Begin_Valkyrie::Initialize()
 
 
 	Add_KeyFrame(10, 0);
+	Add_KeyFrame(25, 1);
+	Add_KeyFrame(44, 1);
+	Add_KeyFrame(60, 1);
+	Add_KeyFrame(77, 1);
+	Add_KeyFrame(94, 1);
+	Add_KeyFrame(113, 1);
 
     return S_OK;
 }
@@ -192,7 +198,11 @@ void CSprint_Begin_Valkyrie::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimato
 		//pMyPhysicsCom->Set_Accel(m_fMyAccel);
 
 	}
+    break;
 
+    case 1:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+        break;
 
 	default:
 		break;
