@@ -46,7 +46,8 @@ void CUI_Revive::Set_Shader_RevivalGauge(CShader* pShader, const char* pConstNam
 
 void CUI_Revive::Set_ReviveIcon(_uint iIconIndex)
 {
-	m_pReviveIcon->Set_TextureIndex(iIconIndex);
+	if (m_pReviveIcon)
+		m_pReviveIcon->Set_TextureIndex(iIconIndex);
 }
 
 void CUI_Revive::Set_ClassIcon(CPlayer* pDeadPlayer)
@@ -64,7 +65,7 @@ void CUI_Revive::Set_ClassIcon(CPlayer* pDeadPlayer)
 		{
 			m_pClassIcon[Class_Icon]->Set_Color(_float4(0.25f, 0.65f, 0.9f, 1.f));
 		}
-	} 
+	}
 }
 
 void CUI_Revive::Set_GaugeRatio(_float fCurTime, _float fMaxTime)

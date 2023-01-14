@@ -1117,6 +1117,33 @@ HRESULT CGameSystem::On_Update_Paden()
 
 			if (!pMinusScoreTeam->Minus_Score())
 				On_FinishGame(pMinusScoreTeam);
+			else
+			{
+				_int iScore = pMinusScoreTeam->Get_Score();
+
+				if (pMinusScoreTeam->m_bIsMainPlayerTeam)
+				{
+					if (iScore == 50)
+					{
+						CFunctor::Play_Sound(L"UI_ScoreRemain50", CHANNEL_UI, 1.f);
+					}
+					if (iScore == 20)
+					{
+						CFunctor::Play_Sound(L"UI_ScoreRemain20", CHANNEL_UI, 1.f);
+					}
+				}
+				else
+				{
+					if (iScore == 50)
+					{
+						CFunctor::Play_Sound(L"", CHANNEL_UI, 1.f);
+					}
+					if (iScore == 20)
+					{
+						CFunctor::Play_Sound(L"", CHANNEL_UI, 1.f);
+					}
+				}
+			}
 
 		}
 	}

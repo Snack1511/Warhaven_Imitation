@@ -355,9 +355,10 @@ void CUnit_Qanda::Turn_TransformParticle(_bool bOnOff)
 		{
 			for (auto& elem : m_TransformParticles)
 				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+
+			m_TransformParticles.clear();
 		}
 
-		m_TransformParticles.clear();
 	}
 }
 

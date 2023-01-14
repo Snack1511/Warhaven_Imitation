@@ -1484,7 +1484,7 @@ void CPlayer::Update_HeroGauge()
 				m_fGauge = m_fMaxGauge;
 
 				On_AbleHero();
-				
+
 			}
 
 		}
@@ -1506,7 +1506,7 @@ void CPlayer::Update_HeroGauge()
 
 void CPlayer::Update_KDA()
 {
-	
+
 
 	if (m_tKdaStat.iKillStreak > 0)
 	{
@@ -1547,7 +1547,7 @@ void CPlayer::Clear_DebugObject()
 		DELETE_GAMEOBJECT(Debug);
 	}
 	m_pRouteDebug.clear();
-	}
+}
 
 #endif
 _bool CPlayer::Is_OpenCell()
@@ -1732,6 +1732,9 @@ void CPlayer::Frustum_UnitHUD()
 {
 	if (!m_pCurrentUnit->Is_Valid())
 		return;
+
+	if (m_pUnitHUD)
+		m_pUnitHUD->Set_UnitHP(Get_CurrentUnit()->Get_Status().fHP, Get_CurrentUnit()->Get_Status().fMaxHP);
 
 	_float fDis = CUtility_Transform::Get_FromCameraDistance(m_pCurrentUnit);
 	if (fDis < m_fEnable_UnitHUDis)

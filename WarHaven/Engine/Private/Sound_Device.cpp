@@ -143,6 +143,27 @@ void CSound_Device::Play_Sound(const _tchar* strSoundKey, CHANNEL_GROUP iGroupIn
 	iter->second.push_back(pSound);
 }
 
+void CSound_Device::Play_BGM(const _tchar* strSoundKey, _float fVolume)
+{
+	auto iter = m_mapSound.find(Convert_ToHash(strSoundKey));
+
+	if (iter == m_mapSound.end())
+	{
+		Call_MsgBox(L"Failed to find SoundKey : CSound_Device");
+		return;
+	}
+
+	FMOD_SOUND* pSound = iter->second.front();
+
+	FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, pSound, FALSE, &m_pChannelArr[CH_BGM].front());
+	Set_ChannelVolume(CH_BGM, 0, fVolume);
+	FMOD_Channel_SetMode(m_pChannelArr[CH_BGM].front(), FMOD_LOOP_NORMAL);
+	FMOD_System_Update(m_pSystem);
+
+	iter->second.pop_front();
+	iter->second.push_back(pSound);
+}
+
 void CSound_Device::Stop_Sound(CHANNEL_GROUP eType)
 {
 	for (_uint i = 0; i < m_iChannelNumbers[eType]; ++ i)

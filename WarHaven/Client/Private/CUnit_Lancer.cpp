@@ -288,15 +288,19 @@ void CUnit_Lancer::Turn_TransformParticle(_bool bOnOff)
 		{
 			for (auto& elem : m_TransformParticles)
 				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+
+			m_TransformParticles.clear();
 		}
-		m_TransformParticles.clear();
+		
 
 		if (!m_EyeFlares.empty())
 		{
 			for (auto& elem : m_EyeFlares)
 				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+
+			m_EyeFlares.clear();
 		}
-		m_EyeFlares.clear();
+		
 	}
 }
 
@@ -859,6 +863,7 @@ HRESULT CUnit_Lancer::Start()
 	m_pModelCom->Set_RimLightFlag(RGB(50, 30, 0));
 
 	m_TransformParticles.clear();
+	m_EyeFlares.clear();
 
 	return S_OK;
 }

@@ -9,6 +9,7 @@
 
 #include "CTeamConnector.h"
 #include "CTrigger_Stage.h"
+#include "Functor.h"
 
 CDominion_Effect::CDominion_Effect()
 {
@@ -76,7 +77,6 @@ void CDominion_Effect::Set_DominionColor(CTeamConnector* pConqueredTeam)
 		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eCANNON:
 			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BlueAura_C", m_pTransform->Get_World(WORLD_POS));
 			break;
-
 		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER:
 			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BlueAura_A", m_pTransform->Get_World(WORLD_POS));
 			break;
