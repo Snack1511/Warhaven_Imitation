@@ -51,6 +51,8 @@ protected:
 	void Enable_Fade(CUI_Object* m_pUI, _float fDuration);
 	void Disable_Fade(CUI_Object* m_pUI, _float fDuration);
 
+	void Play_Sound(wstring wstrFileName, _float fVolume = 1.f);
+
 protected:
 	void Read_UI(string key);
 	void Read_Texture(string strFolderPath, string key);

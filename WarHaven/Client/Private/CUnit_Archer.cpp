@@ -272,6 +272,7 @@ void CUnit_Archer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	case STATE_ATTACK_HORIZONTALMIDDLE_L:
 	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY:
 	case AI_STATE_ATTACK_HORIZONTALMIDDLE_L:
+		Play_Sound(L"Effect_Swing_Warhammer", CHANNEL_EFFECTS, 1.f);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, matWorld);
 		break;
 

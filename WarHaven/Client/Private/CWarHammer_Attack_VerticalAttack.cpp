@@ -169,6 +169,7 @@ void CWarHammer_Attack_VerticalAttack::On_KeyFrameEvent(CUnit * pOwner, CAnimato
 	switch (iSequence)
 	{
 	case 0:
+		Play_Sound(L"Effect_Swing_Warhammer", CHANNEL_EFFECTS, 1.f);
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;

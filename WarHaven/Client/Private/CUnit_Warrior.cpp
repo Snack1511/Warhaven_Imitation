@@ -312,6 +312,7 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	switch (m_eCurState)
 	{
 	case STATE_ATTACK_HORIZONTALUP_L:
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS, 1.f);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LU", vHitPos, matWorld);
 		break;
 
@@ -319,18 +320,21 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY:
 	case AI_STATE_ATTACK_HORIZONTALMIDDLE_L:
 	case AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L:
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS, 1.f);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, matWorld);
 		break;
 
 	case STATE_ATTACK_HORIZONTALDOWN_L:
 	case STATE_SPRINTATTACK_PLAYER:
 	case AI_STATE_COMBAT_GUARDBREAK_WARRIOR:
+		Play_Sound(L"Effect_GuardBreak_Warrior", CHANNEL_EFFECTS);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", vHitPos, matWorld);
 		break;
 
 	case AI_STATE_COMBAT_OXEN_LOOPATTACK_WARRIOR:
 	case STATE_WARRIOR_OXEN_LOOPATTACK:
 	case STATE_ATTACK_HORIZONTALUP_R:
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS, 1.f);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", vHitPos, matWorld);
 		break;
 
@@ -342,18 +346,22 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 			break;
 
 	case STATE_ATTACK_HORIZONTALDOWN_R:
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS, 1.f);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", vHitPos, matWorld);
 		break;
 
 	case STATE_ATTACK_VERTICALCUT:
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", vHitPos, matWorld);
 		break;
 
 	case STATE_ATTACK_STING_PLAYER_L:
+		Play_Sound(L"Effect_Sting_Warrior", CHANNEL_EFFECTS, 1.f);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
 		break;
 
 	case STATE_ATTACK_STING_PLAYER_R:
+		Play_Sound(L"Effect_Sting_Warrior", CHANNEL_EFFECTS, 1.f);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
 		break;
 

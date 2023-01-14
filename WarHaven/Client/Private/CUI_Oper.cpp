@@ -505,6 +505,10 @@ void CUI_Oper::Progress_Oper()
 				m_fAccTime = 0.f;
 				m_iOperProgress++;
 
+				Play_Sound(L"UI_Oper0", 1.f);
+
+				CFunctor::Play_Sound(L"BGM_Oper", CHANNEL_BGM, 1.f);
+
 				Enable_Fade(m_pTextImg[Text_Oper1], 0.3f);
 				m_pTextImg[Text_Oper1]->DoScale(-512.f, 0.3f);
 			}
