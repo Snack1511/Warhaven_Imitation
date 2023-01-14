@@ -70,13 +70,13 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);	
 	
-	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Gliding"))->Clone();
+	/*pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Gliding"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_GriderTrigger"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearGliderTrigger"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(iPriority++);
-	m_BehaviorList.push_back(pBehavior);
+	m_BehaviorList.push_back(pBehavior);*/
 
 	/*pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Revive"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_DeadAllies"));
@@ -106,15 +106,15 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);
 
-	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"CatchCannon"))->Clone();
-	//근처에 상대가 쏜 대포알이 있을 때
-	pBehavior->Add_OtherCondition(wstring(L"EmptyOtherCondition"));
-	//대포알을 타겟으로 넣어줌ㅇㅇ
-	pBehavior->Add_WhatCondition(wstring(L"EmptyWhatCondition"));
-	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
-	pBehavior->Initialize();
-	pBehavior->Set_Priority(iPriority++);
-	m_BehaviorList.push_back(pBehavior);
+	//pBehavior = m_pConditionTable->Find_Behavior(wstring(L"CatchCannon"))->Clone();
+	////근처에 상대가 쏜 대포알이 있을 때
+	//pBehavior->Add_OtherCondition(wstring(L"EmptyOtherCondition"));
+	////대포알을 타겟으로 넣어줌ㅇㅇ
+	//pBehavior->Add_WhatCondition(wstring(L"EmptyWhatCondition"));
+	//pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
+	//pBehavior->Initialize();
+	//pBehavior->Set_Priority(iPriority++);
+	//m_BehaviorList.push_back(pBehavior);
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Change"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_CombatBehavior"));
