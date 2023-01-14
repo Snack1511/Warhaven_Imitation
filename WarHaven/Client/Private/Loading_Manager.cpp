@@ -10,6 +10,7 @@
 #include "CLevel_Paden.h"
 #include "CLevel_Hwara.h"
 #include "CShader.h"
+#include "Functor.h"
 
 IMPLEMENT_SINGLETON(CLoading_Manager)
 
@@ -66,6 +67,8 @@ HRESULT CLoading_Manager::Reserve_Load_Level(LEVEL_TYPE_CLIENT eLevelID)
 		Call_MsgBox_Index(L"Out of Range in Load_Level : CLoading_Manager", eLevelID);
 		return E_FAIL;
 	}
+
+	CFunctor::Stop_Sound(CHANNEL_BGM);
 
 	m_eLoadID = eLevelID;
 	m_bReservation = true;

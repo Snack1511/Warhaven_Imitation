@@ -67,6 +67,10 @@ HRESULT CSprint_Begin_WarHammer::Initialize()
 
 
 	Add_KeyFrame(10, 0);
+	Add_KeyFrame(20, 1);
+	Add_KeyFrame(51, 1);
+	Add_KeyFrame(79, 1);
+	Add_KeyFrame(103, 1);
 
     return S_OK;
 }
@@ -189,7 +193,11 @@ void CSprint_Begin_WarHammer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimat
 
         Physics_Setting(pOwner->Get_Status().fSprintSpeed, pOwner, false);
 	}
+    break;
 
+    case 1:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS);
+        break;
 
 	default:
 		break;

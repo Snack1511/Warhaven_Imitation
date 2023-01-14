@@ -39,7 +39,7 @@ HRESULT CRun_WarHammer_Begin::Initialize()
 
 	m_fInterPolationTime = 0.1f;
 
-
+	Add_KeyFrame(9, 0);
 
     return S_OK;
 }
@@ -110,5 +110,12 @@ void CRun_WarHammer_Begin::Change_Location_Begin(_uint iDirection, CAnimator* pA
 
 void CRun_WarHammer_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 
+	switch (iSequence)
+	{
+	case 0:
+		Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+		break;
+	}
 }

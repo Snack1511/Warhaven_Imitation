@@ -31,6 +31,8 @@ private:
 	void	Change_Location_Begin(_uint iDirection, CAnimator* pAnimator);
 
 
+	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
+
 };
 
 END

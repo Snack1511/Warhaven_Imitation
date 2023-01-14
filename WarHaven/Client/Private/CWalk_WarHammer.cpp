@@ -41,6 +41,8 @@ HRESULT CWalk_WarHammer::Initialize()
 
     Init_CommonState_Player();
 
+    Add_KeyFrame(14, 0);
+    Add_KeyFrame(59, 0);
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;
@@ -110,3 +112,14 @@ STATE_TYPE CWalk_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     return STATE_END;
 }
 
+void CWalk_WarHammer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+        break;
+    }
+}

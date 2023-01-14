@@ -99,6 +99,8 @@ void CUI_Oper::On_PointDown_SelectBG(const _uint& iEventNum)
 	if (m_iPrvSelectEventNum == iEventNum)
 		return;
 
+	Play_Sound(L"UI_Oper_SelectBG");
+
 	for (int i = 0; i < CP_End; ++i)
 	{
 		m_pArrCharacterPort[i][m_iPrvSelectEventNum]->DoScale(-10.f, 0.1f);
@@ -132,6 +134,8 @@ void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 	m_pBriefingUI[BU_Icon]->Set_Color(_float4(0.f, 0.6f, 0.f, 1.f));
 	m_pBriefingUI[BU_Icon]->Set_FontColor(_float4(0.f, 0.6f, 0.f, 1.f));
 	m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("목표 설정 완료"));
+
+	Play_Sound(TEXT("UI_Oper_Point"));
 
 	m_bSelectTargetPoint = true;
 	if (m_bSelectTargetPoint)
@@ -505,6 +509,10 @@ void CUI_Oper::Progress_Oper()
 				m_fAccTime = 0.f;
 				m_iOperProgress++;
 
+				Play_Sound(L"UI_Oper0", 1.f);
+
+				GAMEINSTANCE->Play_BGM(L"BGM_Oper");
+
 				Enable_Fade(m_pTextImg[Text_Oper1], 0.3f);
 				m_pTextImg[Text_Oper1]->DoScale(-512.f, 0.3f);
 			}
@@ -742,13 +750,18 @@ void CUI_Oper::Progress_Oper()
 					iter->SetActive(false);
 				}
 
+				CFunctor::Stop_Sound(CHANNEL_BGM);
+				GAMEINSTANCE->Set_ChannelVolume(CH_BGM, 0.3f);
+
 				switch (m_eLoadLevel)
 				{
 				case Client::LEVEL_PADEN:
 					CGameSystem::Get_Instance()->On_StartGame();
+					GAMEINSTANCE->Play_BGM(L"BGM_Paden");
 					break;
 				case Client::LEVEL_HWARA:
 					CGameSystem::Get_Instance()->On_StartGame();
+					GAMEINSTANCE->Play_BGM(L"BGM_Hwara");
 					break;
 				}
 

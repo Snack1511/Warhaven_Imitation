@@ -144,6 +144,11 @@ void CUI_Wrapper::Disable_Fade(CUI_Object* m_pUI, _float fDuration)
 	}
 }
 
+void CUI_Wrapper::Play_Sound(wstring wstrFileName, _float fVolume)
+{
+	CFunctor::Play_Sound(wstrFileName, CHANNEL_UI, fVolume);
+}
+
 void CUI_Wrapper::Read_UI(string key)
 {
 	const char* pFilePath = "../Bin/Data/UIData";

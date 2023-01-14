@@ -184,3 +184,8 @@ void CFunctor::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float fVolum
 {
 	GAMEINSTANCE->Play_Sound(wstrFileName.c_str(), (CHANNEL_GROUP)iGroupIndex, fVolume);
 }
+
+void CFunctor::Stop_Sound(_uint iGroupIndex)
+{
+	GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)iGroupIndex);
+}

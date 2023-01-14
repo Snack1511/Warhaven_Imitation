@@ -61,7 +61,12 @@ HRESULT CSprint_Begin::Initialize()
     m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
 
 
-	Add_KeyFrame(10, 0);
+	Add_KeyFrame(23, 0);
+	Add_KeyFrame(42, 0);
+	Add_KeyFrame(58, 0);
+	Add_KeyFrame(75, 0);
+	Add_KeyFrame(93, 0);
+	Add_KeyFrame(108, 0);
 
     return S_OK;
 }
@@ -185,16 +190,8 @@ void CSprint_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const 
 	switch (iSequence)
 	{
 	case 0:
-	{
-
-		//CTransform* pMyTransform = pOwner->Get_Transform();
-		//CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
-
-
-		//m_fMyAccel = 10.f;
-		//pMyPhysicsCom->Set_Accel(m_fMyAccel);
-
-	}
+        Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS);
+        break;
 
 
 	default:

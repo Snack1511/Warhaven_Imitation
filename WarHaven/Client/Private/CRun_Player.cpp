@@ -29,6 +29,9 @@ HRESULT CRun_Player::Initialize()
 
 	Init_CommonState_Player();
 
+	Add_KeyFrame(2, 0);
+	Add_KeyFrame(27, 0);
+
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
@@ -119,4 +122,17 @@ STATE_TYPE CRun_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
 
     return STATE_END;
+}
+
+void CRun_Player::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+	switch (iSequence)
+	{
+	case 0:
+		Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS);
+		break;
+	}
+
 }

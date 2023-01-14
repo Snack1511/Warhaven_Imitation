@@ -168,6 +168,7 @@ void CWarrior_GuardBreak::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, 
 	{
 
 	case 1:
+        Play_Sound(L"Effect_GuardBreak_Warrior", CHANNEL_EFFECTS);
         m_bKeyInputable = true;
         pOwner->Get_PhysicsCom()->Set_SpeedasMax();
         pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);

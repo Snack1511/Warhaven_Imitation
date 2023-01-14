@@ -249,13 +249,13 @@ void CState::Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator)
 
     for (_uint i = 0; i < iSize; ++i)
     {
-        if (iCurKeyFrame >= m_vecKeyFrameEvent[i].iKeyFrame)
+        if (iCurKeyFrame == m_vecKeyFrameEvent[i].iKeyFrame)
         {
             if (m_vecKeyFrameEvent[i].bExecuted)
                 continue;
 
             On_KeyFrameEvent(pOwner, pAnimator, m_vecKeyFrameEvent[i], m_vecKeyFrameEvent[i].iSequence);
-            m_vecKeyFrameEvent[i].bExecuted = true;
+            // m_vecKeyFrameEvent[i].bExecuted = true;
         }
     }
 }
@@ -1033,6 +1033,11 @@ void CState::Physics_Setting_Right_AI(_float fSpeed, CUnit* pOwner, _bool bSpeed
 
 	if (bSpeedasMax)
 		pMyPhysicsCom->Set_SpeedasMax();
+}
+
+void CState::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float fVolume)
+{
+	CFunctor::Play_Sound(wstrFileName, iGroupIndex, m_pOwner->Get_Transform()->Get_World(WORLD_POS), fVolume);
 }
 
 void CState::Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable)

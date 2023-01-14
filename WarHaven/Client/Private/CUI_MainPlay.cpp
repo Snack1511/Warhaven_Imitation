@@ -8,7 +8,7 @@
 #include "CShader.h"
 #include "CFader.h"
 #include "CButton.h"
-
+#include "Functor.h"
 #include "Loading_Manager.h"
 #include "Easing_Utillity.h"
 
@@ -125,6 +125,8 @@ void CUI_MainPlay::Set_Shader_BtnHighlight(CShader* pShader, const char* pConstN
 
 void CUI_MainPlay::On_PointEnter_PlayBtn(const _uint& iEventNum)
 {
+	CFunctor::Play_Sound(L"UI_Btn_Enter_MainPlay", CHANNEL_UI, 1.f);
+
 	m_pTarget = GET_COMPONENT_FROM(m_pPlayBtnUI[iEventNum], CButton)->Get_TargetUI();
 
 	_float4 vPos = m_pTarget->Get_Pos();
@@ -178,6 +180,8 @@ void CUI_MainPlay::On_PointUpEvent_Start(const _uint& iEventNum)
 {
 	if (!m_pBG->Is_Valid())
 	{
+		CFunctor::Play_Sound(L"UI_Btn_Down_MainPlay", CHANNEL_UI, 1.f);
+
 		switch (m_eStage)
 		{
 		case CUI_MainPlay::Paden:
@@ -199,6 +203,8 @@ void CUI_MainPlay::On_PointUpEvent_Mode(const _uint& iEventNum)
 {
 	if (!m_pBG->Is_Valid())
 	{
+		CFunctor::Play_Sound(L"UI_Btn_Down_MainPlay", CHANNEL_UI, 1.f);
+
 		m_bIsMouseEvent = true;
 		SetActive_ModeWindow();
 	}
@@ -211,6 +217,8 @@ void CUI_MainPlay::On_PointEnter_Stage(const _uint& iEventNum)
 	{
 		if (m_bIsMouseEvent)
 		{
+			CFunctor::Play_Sound(L"UI_Btn_Enter_Main", CHANNEL_UI, 1.f);
+
 			Enable_Fade(m_pStageHighlights[iEventNum], 0.3f);
 		}
 	}
@@ -235,6 +243,8 @@ void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
 	_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[iEventNum], CTexture)->Get_CurTextureIndex();
 	if (iTextureNum <= 3)
 	{
+		CFunctor::Play_Sound(L"UI_Btn_Down_Main", CHANNEL_UI, 1.f);
+
 		_float4 vPos = m_pStageSelectBtn[iEventNum]->Get_Pos();
 
 		if (iTextureNum == 0)

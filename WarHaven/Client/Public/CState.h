@@ -58,11 +58,12 @@ public:
 
 public:
 	enum STATE_DIRECTION {
-		STATE_DIRECTION_NW, STATE_DIRECTION_NE, STATE_DIRECTION_N, 
-		STATE_DIRECTION_SW, STATE_DIRECTION_SE, STATE_DIRECTION_S, 
-		STATE_DIRECTION_W, 
-		STATE_DIRECTION_E, 
-		STATE_DIRECTION_END};
+		STATE_DIRECTION_NW, STATE_DIRECTION_NE, STATE_DIRECTION_N,
+		STATE_DIRECTION_SW, STATE_DIRECTION_SE, STATE_DIRECTION_S,
+		STATE_DIRECTION_W,
+		STATE_DIRECTION_E,
+		STATE_DIRECTION_END
+	};
 
 protected:
 	CState();
@@ -137,7 +138,7 @@ protected:
 	_float				m_fETCCurTime = 0.f; // 건설, 점령 수리 등에 사용 
 	_float				m_fETCCoolTime = 0.f; // 건설, 점령 수리 등에 사용 
 
-	_float				m_fMyMaxLerp = 0.f; 
+	_float				m_fMyMaxLerp = 0.f;
 	_float				m_fMyAccel = 0.f;
 	_float				m_fMaxSpeed = 0.f;
 
@@ -150,7 +151,7 @@ protected:
 
 	_bool				m_bAIMove = false;
 	_bool				m_bAIAttack = false;
-	
+
 	_float				m_fRand = 0.f;
 	_uint				m_iRand = 0;
 	_int				m_iDirectionRand = 0;
@@ -180,7 +181,7 @@ protected:
 
 
 protected:
-		/*애니메이션 끝나고 돌아갈 상태 ENUM 값*/
+	/*애니메이션 끝나고 돌아갈 상태 ENUM 값*/
 	STATE_TYPE			m_eBounceState = STATE_END;
 
 	STATE_TYPE			m_ePreStateType = STATE_END;
@@ -191,7 +192,7 @@ protected:
 	/* 공격, 피격 정보
 	1. 공격하는 상태가 들고있는 hit Info를
 	맞는 상태한테 넘겨줘서 쓰는 방식.
-	
+
 	*/
 	HIT_INFO			m_tHitInfo;
 	_float				m_fDamagePumping = 1.f;
@@ -205,7 +206,7 @@ protected:
 protected:
 	_uint	Get_Direction(); // 8방향
 	_uint	Get_Direction_Four(); // 4방향
-	
+
 	_uint	Move_Direction_Loop(CUnit* pOwner, CAnimator* pAnimator, _float fInterPolationTime);
 
 	void	Change_Location_Loop(_uint iDirection, CAnimator* pAnimator, _float fInterPolationTime);
@@ -238,6 +239,9 @@ protected:
 	void	Physics_Setting_Right_AI(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bRight = true);
 
 protected:
+	void Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float fVolume = 1.f);
+
+protected:
 	void	Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable);
 
 
@@ -265,7 +269,7 @@ protected:
 
 private:
 
-	
+
 };
 
 END

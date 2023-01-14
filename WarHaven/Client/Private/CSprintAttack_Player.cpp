@@ -146,6 +146,7 @@ void	CSprintAttack_Player::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 		//Attack Begin
 	case 0:
 	{
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS);
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		m_bAttackTrigger = true;
 	}

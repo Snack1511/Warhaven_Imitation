@@ -99,6 +99,7 @@ void CWarrior_Attack_HorizontalDown::On_KeyFrameEvent(CUnit * pOwner, CAnimator 
 	switch (iSequence)
 	{
 	case 1:
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS, 1.f);
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		Play_Voice(pOwner, L"Voice_Attack", 1.f);

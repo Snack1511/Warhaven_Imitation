@@ -25,6 +25,8 @@ HRESULT CRun_AI_TG_Warrior_Begin::Initialize()
     m_fInterPolationTime = 0.f;
 
 
+	Add_KeyFrame(9, 0);
+
 	m_fMyAccel = 10.f;
 	m_fAnimSpeed = 3.f;
 
@@ -107,4 +109,17 @@ void CRun_AI_TG_Warrior_Begin::Change_Location_Begin(_uint iDirection, CAnimator
 
 
 	m_bMoveTrigger = true;
+}
+
+void CRun_AI_TG_Warrior_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+	switch (iSequence)
+	{
+	case 0:
+		Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS);
+		break;
+	}
+
 }

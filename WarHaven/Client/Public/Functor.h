@@ -30,6 +30,8 @@ public:
 	/* 1인자 : 사운드 이름, 2인자 : 채널 enum, 4인자 : 볼륨 크기 (default : 1)*/
 	static void		Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float fVolume = 1.f);
 
+	static void		Stop_Sound(_uint iGroupIndex);
+
 public:
 	static string	Get_FileName(string strFilePath);
 };

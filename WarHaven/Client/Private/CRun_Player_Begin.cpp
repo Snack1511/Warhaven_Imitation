@@ -25,6 +25,7 @@ HRESULT CRun_Player_Begin::Initialize()
 
 	Init_CommonState_Player();
 
+	Add_KeyFrame(9, 0);
 
     m_iStateChangeKeyFrame = 0;
 
@@ -105,4 +106,17 @@ void CRun_Player_Begin::Change_Location_Begin(_uint iDirection, CAnimator* pAnim
 
 
 	m_bMoveTrigger = true;
+}
+
+void CRun_Player_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+	switch (iSequence)
+	{
+	case 0:
+		Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS);
+		break;
+	}
+
 }

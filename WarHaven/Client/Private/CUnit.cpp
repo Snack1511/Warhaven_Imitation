@@ -258,6 +258,11 @@ void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColTyp
 	}
 }
 
+void CUnit::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float fVolume)
+{
+	CFunctor::Play_Sound(wstrFileName, iGroupIndex, Get_Transform()->Get_World(WORLD_POS), fVolume);
+}
+
 _bool CUnit::Is_Air()
 {
 	return m_pPhysics->Get_Physics().bAir;
@@ -1422,6 +1427,8 @@ void CUnit::Effect_Parring(_float4 vHitPos)
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos);
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), vHitPos);*/
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Parring_Particle", vHitPos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
+
+	CFunctor::Play_Sound(L"Effect_CollisionIron", CHANNEL_EFFECTS, vHitPos);
 }
 
 void CUnit::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
@@ -1571,6 +1578,8 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 	_float fDamage = pOtherUnit->Calculate_Damage(tInfo.bHeadShot, false);
 
 	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot, 3);
+
+	CFunctor::Play_Sound(L"Effect_Blood", CHANNEL_UI, Get_Transform()->Get_World(WORLD_POS));
 
 	if (!m_bIsMainPlayer)
 		Get_OwnerHUD()->SetActive_UnitHP(true);
@@ -1731,6 +1740,9 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 {
 	m_bDie = true;
+
+	CFunctor::Play_Sound(L"Effect_Die", CHANNEL_UI, Get_Transform()->Get_World(WORLD_POS));
+
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StoneSpark", vHitPos);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Hit_Particle", vHitPos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
 
