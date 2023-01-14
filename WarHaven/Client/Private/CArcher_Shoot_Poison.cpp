@@ -50,6 +50,8 @@ void CArcher_Shoot_Poison::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
     pOwner->On_Use(CUnit::SKILL2);
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+    Play_Sound(L"Effect_Arrow_PoisonShoot");
 }
 
 STATE_TYPE CArcher_Shoot_Poison::Tick(CUnit* pOwner, CAnimator* pAnimator)

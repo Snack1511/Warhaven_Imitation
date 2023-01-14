@@ -53,6 +53,8 @@ void CArcher_Shoot_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
     pOwner->On_Use(CUnit::SKILL3);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+    Play_Sound(L"Effect_Arrow_SnipingShoot");
 }
 
 STATE_TYPE CArcher_Shoot_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)

@@ -137,6 +137,7 @@ void CArcher_Attack_Begin_Poison::On_KeyFrameEvent(CUnit * pOwner, CAnimator * p
 	{
 
 	case 1:
+		Play_Sound(L"Effect_Arrow_Begin");
 		m_bAttackTrigger = true;
 		break;
 
