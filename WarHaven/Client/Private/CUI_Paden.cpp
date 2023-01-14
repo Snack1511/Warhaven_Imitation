@@ -543,8 +543,17 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 				m_pArrProjPointUI[Point_C][i]->SetActive(true);
 
 				m_pArrPointUI[Point_C][i]->DoScale(-10.f, fDuration);
+				_float4 vPos;
+				if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_HWARA)
+				{
+					vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
+				}
+				else
+				{
+					vPos = m_pArrPointUI[Point_R][i]->Get_Pos();
+					vPos -= 50.f;
+				}
 
-				_float4 vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
 				vPos.y = m_fPointUIPosY;
 				m_pArrPointUI[Point_C][i]->DoMove(vPos, fDuration, 0);
 			}

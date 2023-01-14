@@ -40,7 +40,7 @@ HRESULT CRun_Archer_Begin::Initialize()
 
 	m_fInterPolationTime = 0.1f;
 
-
+	Add_KeyFrame(13, 0);
 
     return S_OK;
 }
@@ -107,4 +107,16 @@ void CRun_Archer_Begin::Change_Location_Begin(_uint iDirection, CAnimator* pAnim
 
 
 	m_bMoveTrigger = true;
+}
+
+void CRun_Archer_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+	switch (iSequence)
+	{
+	case 0:
+		Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+		break;
+	}
 }

@@ -52,6 +52,10 @@ HRESULT CSprint_Loop_Valkyrie::Initialize()
     m_vecAdjState.push_back(STATE_SPRINT_JUMP_VALKYRIE);
     m_vecAdjState.push_back(STATE_SPRINTATTACK_BEGIN_VALKYRIE);
 
+    Add_KeyFrame(10, 0);
+    Add_KeyFrame(28, 0);
+    Add_KeyFrame(45, 0);
+    Add_KeyFrame(62, 0);
 
     //m_vecAdjState.push_back(STATE_GROGGYATTACK_VALKYRIE);
     //m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_VALKYRIE);
@@ -166,4 +170,16 @@ STATE_TYPE CSprint_Loop_Valkyrie::Check_Condition(CUnit* pOwner, CAnimator* pAni
 
    
     return STATE_END;
+}
+
+void CSprint_Loop_Valkyrie::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+        break;
+    }
 }

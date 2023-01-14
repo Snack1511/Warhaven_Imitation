@@ -71,6 +71,9 @@ HRESULT CRun_Priest::Initialize()
    m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
    m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
+   Add_KeyFrame(20, 0);
+   Add_KeyFrame(44, 0);
+
     return S_OK;
 }
 
@@ -134,4 +137,16 @@ STATE_TYPE CRun_Priest::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     }
 
     return STATE_END;
+}
+
+void CRun_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+        break;
+    }
 }

@@ -672,7 +672,7 @@ void CUI_MainPlay::Create_StageNameRect()
 	m_pStageNameRect->Set_FontRender(true);
 	m_pStageNameRect->Set_FontStyle(true);
 	m_pStageNameRect->Set_FontCenter(true);
-	m_pStageNameRect->Set_FontOffset(4.f, 4.f);
+	m_pStageNameRect->Set_FontOffset(5.f, 4.f);
 	m_pStageNameRect->Set_FontScale(0.2f);
 	m_pStageNameRect->Set_FontColor(m_vFontColor);
 	m_pStageNameRect->Set_FontText(m_wstrModeText);

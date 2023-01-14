@@ -23,7 +23,7 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-
+	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 private:
 	_bool	Change_Walk_Position(_uint iAnimIndex, ANIM_TYPE eAnimType)
 	{

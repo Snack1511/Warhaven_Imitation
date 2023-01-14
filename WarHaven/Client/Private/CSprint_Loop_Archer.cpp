@@ -47,6 +47,9 @@ HRESULT CSprint_Loop_Archer::Initialize()
 
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
+    Add_KeyFrame(12, 0);
+    Add_KeyFrame(26, 0);
+
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_vecAdjState.push_back(STATE_SPRINT_END_ARCHER);
     m_vecAdjState.push_back(STATE_SPRINT_JUMP_ARCHER);
@@ -162,4 +165,16 @@ STATE_TYPE CSprint_Loop_Archer::Check_Condition(CUnit* pOwner, CAnimator* pAnima
 
    
     return STATE_END;
+}
+
+void CSprint_Loop_Archer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+        break;
+    }
 }

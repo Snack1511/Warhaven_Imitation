@@ -88,6 +88,9 @@ HRESULT CWalk_Qanda::Initialize()
 
     Init_CommonState_Hero_Player();
 
+    Add_KeyFrame(32, 0);
+    Add_KeyFrame(60, 0);
+
     return S_OK;
 }
 
@@ -150,4 +153,16 @@ STATE_TYPE CWalk_Qanda::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     }
 
     return STATE_END;
+}
+
+void CWalk_Qanda::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+        break;
+    }
 }

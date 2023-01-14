@@ -42,6 +42,8 @@ HRESULT CWalk_Valkyrie::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
+    Add_KeyFrame(0, 0);
+    Add_KeyFrame(40, 0);
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;
@@ -92,3 +94,14 @@ STATE_TYPE CWalk_Valkyrie::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     return STATE_END;
 }
 
+void CWalk_Valkyrie::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+        break;
+    }
+}
