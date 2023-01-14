@@ -45,7 +45,7 @@ HRESULT CUI_Main::Start()
 	SetActive_PlayerNameText(true);
 	SetActive_MainWindow(MW_Play);
 
-	CFunctor::Play_Sound(L"BGM_Main", CHANNEL_BGM, 1.f);
+	GAMEINSTANCE->Play_BGM(L"BGM_Main");
 
 	return S_OK;
 }

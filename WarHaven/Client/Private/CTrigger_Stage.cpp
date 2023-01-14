@@ -261,7 +261,12 @@ void CTrigger_Stage::Update_Conquered()
 		_bool IsMainPlayerTeam = m_pConqueredTeam->IsMainPlayerTeam();
 		if (IsMainPlayerTeam)
 		{
+			CFunctor::Play_Sound(L"Effect_ConquestPoint_Ally", CHANNEL_UI);
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eConquest);
+		}
+		else
+		{
+			CFunctor::Play_Sound(L"Effect_ConquestPoint_Enemy", CHANNEL_UI);
 		}
 
 		CUser::Get_Instance()->Conquest_PointUI(m_strTriggerName, IsMainPlayerTeam);
