@@ -37,6 +37,8 @@ STATE_TYPE CState_Combat::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	if (!pOwner->Get_OwnerPlayer()->Get_TargetObject())
 		return __super::Tick(pOwner, pAnimator);
 
+	_float4 vOutPos;
+	_float fOutDist;
 
 	_float4 vCurPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
 	_float4 vTargetPos = pOwner->Get_OwnerPlayer()->Get_TargetObjPos();

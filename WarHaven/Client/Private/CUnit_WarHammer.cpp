@@ -242,6 +242,7 @@ void CUnit_WarHammer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		eNewState = AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
 
 		break;
+	case eBehaviorType::eFollowTeam:
 	case eBehaviorType::eGoToTrigger:
 		//상태변경
 		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_ENGINEER_R;

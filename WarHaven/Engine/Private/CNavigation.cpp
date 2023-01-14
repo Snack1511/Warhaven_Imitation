@@ -151,7 +151,10 @@ list<pair<_float4, CCellLayer*>> CNavigation::Get_Goals(map<_float, CCellLayer*>
 	pEndLayer->Find_NearOpenCell(vEnd, OutEndCellList);
 
 	if (OutEndCellList.empty())
+	{
 		assert(0);
+
+	}
 
 	OutEndCellList.sort([&vEndPos](auto& Sour, auto& Dest)
 		{

@@ -130,6 +130,8 @@ HRESULT CTable_Conditions::SetUp_Conditions()
 
 #pragma region 트리거 선택
     Add_WhatCondition(wstring(L"Select_ConquerTrigger"), Select_ConquerTrigger);
+    Add_WhatCondition(wstring(L"Select_RandomConquerTrigger"), Select_RandomConquerTrigger);
+
     Add_WhatCondition(wstring(L"Select_PadenCannonTrigger"), Select_PadenCannonTrigger);
     Add_WhatCondition(wstring(L"Select_RespawnTrigger"), Select_RespawnTrigger);
     Add_WhatCondition(wstring(L"Select_MainTrigger"), Select_MainTrigger);
@@ -674,7 +676,7 @@ void CTable_Conditions::Select_MainPlayer(_bool& OutCondition, BEHAVIOR_DESC*& O
 
 void CTable_Conditions::Select_Teammate(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
-    CHECKFALSEOUTCONDITION(OutCondition);
+    //CHECKFALSEOUTCONDITION(OutCondition);
     CTeamConnector* pTeamConnector = pPlayer->Get_Team();
 
     if (pTeamConnector->Get_SquadList().front()->Get_LeaderPlayer()->Get_CurrentUnit()->Is_Valid())
@@ -709,6 +711,12 @@ void CTable_Conditions::Select_Teammate(_bool& OutCondition, BEHAVIOR_DESC*& Out
         _float4 vPlayerPos = elem->Get_WorldPos();
         _float fLength = (vPlayerPos - vMyPos).Length();
 
+        if (fLength < 2.f)
+        {
+            OutCondition = false;
+            return;
+        }
+
         if (fLength < fMinDist)
         {
             fMinDist = fLength;
@@ -721,6 +729,7 @@ void CTable_Conditions::Select_Teammate(_bool& OutCondition, BEHAVIOR_DESC*& Out
         OutCondition = false;
         return;
     }
+
 
     OutDesc->pAlliesPlayer = pTargetPlayer;
     OutCondition = true;
