@@ -676,7 +676,6 @@ void CLancerNeedle::Dragging_Unit()
 		}
 
 
-
 		_float4 vStartPos = m_vStartPos;
 		vStartPos.y -= 20.f;
 

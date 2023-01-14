@@ -39,7 +39,9 @@ HRESULT CWarHammer_Attack_VerticalAttack::Initialize()
 
 	m_fInterPolationTime = 0.1f;
 	m_fAnimSpeed = 2.3f;
-	m_iStateChangeKeyFrame = 120;
+	m_iStateChangeKeyFrame = 130;
+
+	m_fDamagePumping = 2.5f;
 
 
 	m_fMyAccel = 10.f;

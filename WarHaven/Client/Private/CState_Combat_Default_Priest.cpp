@@ -154,6 +154,11 @@ STATE_TYPE CState_Combat_Default_Priest::Check_Condition(CUnit* pOwner, CAnimato
     return __super::Check_Condition(pOwner, pAnimator);
 }
 
+void CState_Combat_Default_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+}
+
 STATE_TYPE CState_Combat_Default_Priest::Random_State(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (Get_TargetLook_Length(pOwner) < m_fAIMyLength)

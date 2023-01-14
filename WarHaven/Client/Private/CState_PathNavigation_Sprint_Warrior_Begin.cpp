@@ -43,6 +43,13 @@ HRESULT CState_PathNavigation_Sprint_Warrior_Begin::Initialize()
 
     m_fInterPolationTime = 0.1f;
 
+    Add_KeyFrame(23, 0, true);
+    Add_KeyFrame(42, 0, true);
+    Add_KeyFrame(58, 0, true);
+    Add_KeyFrame(75, 0, true);
+    Add_KeyFrame(93, 0, true);
+    Add_KeyFrame(108, 0, true);
+
     return S_OK;
 }
 

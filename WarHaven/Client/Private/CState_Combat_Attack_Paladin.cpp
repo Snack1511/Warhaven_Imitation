@@ -59,6 +59,7 @@ void CState_Combat_Attack_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pA
 		m_fMyMaxLerp = 0.01f;
 		pOwner->Set_LookToTarget();
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		Play_Voice(pOwner, L"Voice_Attack", 1.f);
 		break;
 
 	case 2:

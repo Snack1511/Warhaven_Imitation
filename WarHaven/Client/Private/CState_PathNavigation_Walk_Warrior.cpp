@@ -32,6 +32,9 @@ HRESULT CState_PathNavigation_Walk_Warrior::Initialize()
 
 	m_fAnimSpeed = 2.5f;
 
+	Add_KeyFrame(34, 0, true);
+	Add_KeyFrame(75, 0, true);
+
     return S_OK;
 }
 

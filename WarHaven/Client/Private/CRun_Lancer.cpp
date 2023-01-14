@@ -74,6 +74,9 @@ HRESULT CRun_Lancer::Initialize()
    //m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
    //m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
+    //Add_KeyFrame(5, 0, true);
+    //Add_KeyFrame(5, 0, true);
+
     return S_OK;
 }
 

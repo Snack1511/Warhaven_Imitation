@@ -92,3 +92,8 @@ STATE_TYPE CState_Patrol_Walk_Fiona::Check_Condition(CUnit* pOwner, CAnimator* p
     return STATE_END;
 }
 
+void CState_Patrol_Walk_Fiona::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+}
+

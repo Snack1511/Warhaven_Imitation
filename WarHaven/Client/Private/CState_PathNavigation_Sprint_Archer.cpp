@@ -54,3 +54,8 @@ STATE_TYPE CState_PathNavigation_Sprint_Archer::Check_Condition(CUnit* pOwner, C
     return STATE_END;
 }
 
+void CState_PathNavigation_Sprint_Archer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+}
+

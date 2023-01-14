@@ -71,6 +71,7 @@ void CState_Combat_Attack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 	case 1:
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		Play_Voice(pOwner, L"Voice_Attack", m_fAIDeafultVolume);
 		break;
 
 	case 2:

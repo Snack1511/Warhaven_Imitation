@@ -190,6 +190,10 @@
     <ClInclude Include="..\Public\CAIController.h" />
     <ClInclude Include="..\Public\CAIPersonality.h" />
     <ClInclude Include="..\Public\CAI_MoveStateUtility.h" />
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_Catching_Priest.h" />
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_Catch_Begin_Priest.h" />
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_Catch_Loop_Priest.h" />
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_Shoot_Priest.h" />
     <ClInclude Include="..\Public\CState_Combat_SkillE_ShadowStep_Qanda.h" />
     <ClInclude Include="..\Public\CState_Combat_Guard_Qanda.h" />
     <ClInclude Include="..\Public\CState_Combat_SkillQ_Aiming_Sniping_Qanda.h" />
@@ -1241,6 +1245,10 @@
     <ClCompile Include="..\Private\CAIController.cpp" />
     <ClCompile Include="..\Private\CAIPersonality.cpp" />
     <ClCompile Include="..\Private\CAI_MoveStateUtility.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_Catching_Priest.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_Catch_Begin_Priest.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_Catch_Loop_Priest.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_Shoot_Priest.cpp" />
     <ClCompile Include="..\Private\CState_Combat_SkillE_ShadowStep_Qanda.cpp" />
     <ClCompile Include="..\Private\CState_Combat_Guard_Qanda.cpp" />
     <ClCompile Include="..\Private\CState_Combat_SkillQ_Aiming_Sniping_Qanda.cpp" />

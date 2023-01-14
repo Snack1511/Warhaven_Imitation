@@ -26,7 +26,9 @@ HRESULT CState_Combat_Attack_VerticalCut_Engineer::Initialize()
 
 	m_fAnimSpeed = 2.5f;
 
-	m_iStateChangeKeyFrame = 110;
+	m_iStateChangeKeyFrame = 130;
+
+	m_fDamagePumping = 2.5f;
 
 
 	m_fMyAccel = 10.f;
@@ -48,6 +50,8 @@ void CState_Combat_Attack_VerticalCut_Engineer::Enter(CUnit* pOwner, CAnimator* 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Voice(pOwner, L"Voice_Attack", 1.f);
 }
 
 STATE_TYPE CState_Combat_Attack_VerticalCut_Engineer::Tick(CUnit* pOwner, CAnimator* pAnimator)

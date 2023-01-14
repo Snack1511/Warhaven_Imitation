@@ -45,6 +45,11 @@ HRESULT CState_PathNavigation_Sprint_Warrior_Loop::Initialize()
 
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_WARRIOR_R;
 
+    Add_KeyFrame(9, 0, true);
+    Add_KeyFrame(24, 0, true);
+    Add_KeyFrame(44, 0, true);
+    Add_KeyFrame(57, 0, true);
+
     return S_OK;
 }
 

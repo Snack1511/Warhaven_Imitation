@@ -1651,13 +1651,18 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 
 	CFunctor::Play_Sound(L"Effect_Blood", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS));
 
+	_float fVolume = 1.f;
+
 	if (!m_bIsMainPlayer)
 	{
 		if (!Get_OwnerHUD())
 			return;
 
 		Get_OwnerHUD()->SetActive_UnitHP(true);
+		fVolume = 0.2f;
 	}
+
+	Get_CurStateP()->Play_Voice(this, L"Voice_Hit", fVolume);
 
 	/*블러드 오버레이*/
 	if (m_bIsMainPlayer)

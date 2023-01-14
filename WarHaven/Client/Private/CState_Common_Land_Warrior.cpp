@@ -29,6 +29,8 @@ HRESULT CState_Common_Land_Warrior::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.5f;
 
+    Add_KeyFrame(3, 0);
+
     return S_OK;
 }
 
@@ -67,3 +69,7 @@ STATE_TYPE CState_Common_Land_Warrior::Check_Condition(CUnit* pOwner, CAnimator*
     return STATE_END;
 }
 
+void CState_Common_Land_Warrior::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+}

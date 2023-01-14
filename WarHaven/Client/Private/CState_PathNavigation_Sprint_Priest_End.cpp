@@ -83,15 +83,5 @@ STATE_TYPE CState_PathNavigation_Sprint_Priest_End::Check_Condition(CUnit* pOwne
 
 void CState_PathNavigation_Sprint_Priest_End::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
-    switch (iSequence)
-    {
-    case 222:
-        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
-        break;
-    case 333:
-        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
-        break;
-    default:
-        break;
-    }
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }

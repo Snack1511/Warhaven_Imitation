@@ -30,6 +30,8 @@ HRESULT CState_Combat_Run_Warrior::Initialize()
 	// 애니메이션의 전체 속도를 올려준다.
 	m_fAnimSpeed = 1.f;
 	
+	Add_KeyFrame(2, 0, true);
+	Add_KeyFrame(27, 0, true);
 
     return S_OK;
 }
@@ -108,3 +110,7 @@ STATE_TYPE CState_Combat_Run_Warrior::Check_Condition(CUnit* pOwner, CAnimator* 
     return STATE_END;
 }
 
+void CState_Combat_Run_Warrior::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+}

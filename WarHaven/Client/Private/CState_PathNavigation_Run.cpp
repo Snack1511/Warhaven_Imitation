@@ -85,3 +85,13 @@ STATE_TYPE CState_PathNavigation_Run::Check_Condition(CUnit* pOwner, CAnimator* 
     return STATE_END;
 }
 
+void CState_PathNavigation_Run::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	switch (iSequence)
+	{
+	case 0:
+		Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS, m_fAIDeafultVolume);
+		break;
+	}
+}
+
