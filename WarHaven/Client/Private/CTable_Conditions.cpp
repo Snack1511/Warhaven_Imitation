@@ -1211,10 +1211,7 @@ void CTable_Conditions::Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIControll
 	if (pPersonality->Is_LongTimeRemain(eBehaviorType::ePatrol))
 	{
 		pPersonality->Init_RemainTime(eBehaviorType::ePatrol);
-
-
 		std::future<int> result = std::async(bind(Find_Path, pPlayer));
-
 
 		return;
 	}
