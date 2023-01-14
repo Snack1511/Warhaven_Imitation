@@ -24,6 +24,16 @@ HRESULT CState_Combat_Default_Paladin::Initialize()
 	m_fMyMaxLerp = 1.2f;
 	m_fMyAccel = 100.f;
 
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
+
+	m_fAnimSpeed = 2.f;
 
     return S_OK;
 }
@@ -103,5 +113,10 @@ void CState_Combat_Default_Paladin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 STATE_TYPE CState_Combat_Default_Paladin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
     return STATE_END;
+}
+
+void CState_Combat_Default_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }
 

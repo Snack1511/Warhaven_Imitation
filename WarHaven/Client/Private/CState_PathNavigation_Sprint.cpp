@@ -47,4 +47,26 @@ STATE_TYPE CState_PathNavigation_Sprint::Check_Condition(CUnit* pOwner, CAnimato
     return STATE_END;
 }
 
+void CState_PathNavigation_Sprint::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS, m_fAIDeafultVolume);
+        break;
+
+
+    case 222:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS, m_fAIDeafultVolume);
+        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+        break;
+    case 333:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS, m_fAIDeafultVolume);
+        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+        break;
+    default:
+        break;
+    }
+}
+
 

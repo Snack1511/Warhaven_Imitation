@@ -30,8 +30,19 @@ HRESULT CState_PathNavigation_Run_Warrior::Initialize()
 	m_fInterPolationTime = 0.1f;
 
 	// 애니메이션의 전체 속도를 올려준다.
-	m_fAnimSpeed = 1.f;
+	m_fAnimSpeed = 2.f;
 	
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
+
+	Add_KeyFrame(2, 0, true);
+	Add_KeyFrame(27, 0, true);
 
     return S_OK;
 }
@@ -63,3 +74,7 @@ STATE_TYPE CState_PathNavigation_Run_Warrior::Check_Condition(CUnit* pOwner, CAn
     return STATE_END;
 }
 
+void CState_PathNavigation_Run_Warrior::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+}

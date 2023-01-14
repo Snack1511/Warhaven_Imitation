@@ -44,3 +44,13 @@ STATE_TYPE CState_Patrol_Walk::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
     return STATE_END;
 }
 
+void CState_Patrol_Walk::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, m_fAIDeafultVolume);
+        break;
+    }
+}
+

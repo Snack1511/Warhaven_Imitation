@@ -161,10 +161,12 @@ void	CFunctor::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float4 vPosi
 	_float4 vPlayerPos = GAMEINSTANCE->Get_ViewPos();
 	
 	_float fLength = (vPlayerPos - vPosition).Length();
-	_float fMinRatio = 0.1f;
+	_float fMinRatio = 0.0005f;
 
 	//if (iGroupIndex == CHANNEL_VOICE)
 	//	fMinRatio = 0.5f;
+
+	//fLength *= 2.f;
 
 
 	if (fLength <= SOUND_MIN_RANGE)

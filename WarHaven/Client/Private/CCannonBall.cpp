@@ -44,9 +44,9 @@ void CCannonBall::Shoot_Cannon(CPlayer* pOwnerPlayer, _float4 vShootPos, _float4
 	m_pActor = pActor;
 
 	if (m_pOwnerPlayer->Get_Team()->Get_TeamType() == eTEAM_TYPE::eBLUE)
-		m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+		m_pCollider->Set_ColIndex(COL_BLUEFLYATTACKGUARDBREAK);
 	else
-		m_pCollider->Set_ColIndex(COL_REDATTACK);
+		m_pCollider->Set_ColIndex(COL_REDFLYATTACKGUARDBREAK);
 
 
 }

@@ -7,6 +7,7 @@
 #include "Functor.h"
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Archer.h"
 #include "Transform.h"
 #include "CUser.h"
 #include "CEffects_Factory.h"
@@ -53,6 +54,7 @@ HRESULT CState_Common_Gliding_AI::Initialize()
 void CState_Common_Gliding_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 
+
     if (ePrevType != m_ePreStateType && pOwner->Get_OwnerPlayer()->Get_CurClass() >= FIONA)
         m_iAnimIndex = 11;
 
@@ -65,6 +67,9 @@ void CState_Common_Gliding_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_
     pOwner->Enable_Glider(true);
     pOwner->Set_GliderAnimIndex(0, 0.1f, 2.f);
     pOwner->Get_Glider()->Set_GliderState(CGlider::eGliderState::eOpen);
+
+    if (pOwner->Get_OwnerPlayer()->Get_CurClass() == ARCHER)
+        static_cast<CUnit_Archer*>(pOwner)->Enable_Arrow(false);
 
     m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
@@ -85,7 +90,6 @@ STATE_TYPE CState_Common_Gliding_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 
     /* 날개 접는 코드 */
-    //if (KEY(SPACE, TAP))
     //{
     //    STATE_TYPE eSprintFallState = pOwner->Get_SprintFallState();
     //    pOwner->Reset_GlidingTime();
@@ -95,7 +99,8 @@ STATE_TYPE CState_Common_Gliding_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
     //}
 
 
-    // 카메라 Look 방향으로 이동
+    // 이전 : 카메라 Look 방향으로 이동 
+    // 변경 예정 : TargetObj? 아니면 Trigger? 의 위치를 받아서 Look 방향을 구해 이동 시킬 수 있도록 설정.
     _float4 vLook = pOwner->Get_FollowCamLook();
     
     if (vLook.y > -0.5f)
@@ -118,6 +123,9 @@ void CState_Common_Gliding_AI::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
     if(!m_bReturn)
         pOwner->Enable_Glider(false);
+
+    if (pOwner->Get_OwnerPlayer()->Get_CurClass() == ARCHER)
+        static_cast<CUnit_Archer*>(pOwner)->Enable_Arrow(true);
 
     pOwner->Get_Glider()->Set_GliderState(CGlider::eGliderState::eClose);
 

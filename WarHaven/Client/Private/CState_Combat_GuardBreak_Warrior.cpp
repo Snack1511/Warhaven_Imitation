@@ -132,6 +132,7 @@ void CState_Combat_GuardBreak_Warrior::On_KeyFrameEvent(CUnit* pOwner, CAnimator
 	{
 
 	case 1:
+        Play_Sound(L"Effect_GuardBreak_Warrior", CHANNEL_EFFECTS, m_fAIDeafultVolume);
         m_bKeyInputable = true;
         pOwner->Get_PhysicsCom()->Set_SpeedasMax();
         pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);

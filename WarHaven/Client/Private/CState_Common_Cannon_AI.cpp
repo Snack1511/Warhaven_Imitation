@@ -64,6 +64,14 @@ HRESULT CState_Common_Cannon_AI::Initialize()
 void CState_Common_Cannon_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
     CCannon* pCannon = pOwner->Get_AdjCannon();
+    CGameObject* pTargetObj = pOwner->Get_OwnerPlayer()->Get_TargetObject();
+
+    // 현재 인접한 타겟오브젝트가 대포가 아닐 시
+    if (pCannon != pTargetObj)
+    {
+        m_bNoAdjTrigger = true;
+        return;
+    }
 
     if (pCannon)
     {
@@ -79,6 +87,18 @@ void CState_Common_Cannon_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 
 STATE_TYPE CState_Common_Cannon_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
+    if (m_bNoAdjTrigger)
+    {
+        if (m_ePreStateType != STATE_END)
+            return m_ePreStateType;
+        else
+        {
+            STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+            return eDefaultState;
+        }
+    }
+        
     CCannon* pCannon = pOwner->Get_AdjCannon();     
     
     m_fTimeAcc += fDT(0);

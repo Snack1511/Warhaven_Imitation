@@ -29,14 +29,14 @@ HRESULT CRun_Paladin::Initialize()
 
 	Init_CommonState_Player();
 
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 1.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.7f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.7f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 	
 	Add_KeyFrame(6, 0);
 	Add_KeyFrame(31, 0);
@@ -45,7 +45,7 @@ HRESULT CRun_Paladin::Initialize()
 	// 선형 보간 시간
 	m_fInterPolationTime = 0.1f;
 
-	m_fAnimSpeed = 1.5f;
+	m_fAnimSpeed = 2.f;
 
 	m_iStateChangeKeyFrame = 0;
 

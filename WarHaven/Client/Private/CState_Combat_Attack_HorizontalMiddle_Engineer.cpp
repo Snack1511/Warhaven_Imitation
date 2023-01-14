@@ -26,8 +26,9 @@ HRESULT CState_Combat_Attack_HorizontalMiddle_Engineer::Initialize()
 
 	m_fAnimSpeed = 2.5f;
 
-	m_iStateChangeKeyFrame = 110;
+	m_iStateChangeKeyFrame = 140;
 
+	m_fDamagePumping = 2.f;
 
 	m_fMyAccel = 10.f;
 	m_fMyMaxLerp = 0.5f;
@@ -46,9 +47,12 @@ void CState_Combat_Attack_HorizontalMiddle_Engineer::Enter(CUnit* pOwner, CAnima
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HammerFlare_1"), pOwner,
 		pOwner->Get_Transform()->Get_World(WORLD_POS)); 
 
+	Play_Voice(pOwner, L"Voice_Attack", 1.f);
+	
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
 }
 
 STATE_TYPE CState_Combat_Attack_HorizontalMiddle_Engineer::Tick(CUnit* pOwner, CAnimator* pAnimator)

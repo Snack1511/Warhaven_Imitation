@@ -77,7 +77,7 @@ void CState_Combat_Attack_Warrior::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pA
 			pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.7f;
 			pOwner->Get_PhysicsCom()->Set_Dir(pOwner->Get_Transform()->Get_World(WORLD_LOOK));
 		}
-		Play_Voice(pOwner, L"Voice_Attack", 1.f);
+		Play_Voice(pOwner, L"Voice_Attack", 0.2f);
 		break;
 
 	case 2:

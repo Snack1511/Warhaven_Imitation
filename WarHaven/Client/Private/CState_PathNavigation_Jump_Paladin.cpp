@@ -58,3 +58,8 @@ STATE_TYPE CState_PathNavigation_Jump_Paladin::Check_Condition(CUnit* pOwner, CA
     return STATE_END;
 }
 
+void CState_PathNavigation_Jump_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+}
+

@@ -125,7 +125,7 @@ void CUI_Dead::My_Tick()
 			m_bAbleRevival = false;
 			m_bIsFall = false;
 
-			SetActive_RevivalUI(true);
+			SetActive_RevivalUI(false);
 			Toggle_DeadUI(false);
 
 			CUser::Get_Instance()->SetActive_UnitHUD(false);

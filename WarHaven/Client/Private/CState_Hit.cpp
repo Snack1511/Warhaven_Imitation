@@ -125,9 +125,6 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
         GAMEINSTANCE->Stop_ChromaticAberration();
     }
 
-
-    Play_Voice(pOwner, L"Voice_Hit", 1.f);
-
     __super::Enter(pOwner, pAnimator, ePrevStateType);
 }
 

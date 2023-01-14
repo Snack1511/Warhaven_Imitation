@@ -175,6 +175,8 @@ protected:
 
 	_int				m_iStateForcePushIndex = 0;
 
+	_float				m_fAIDeafultVolume = 0.8f;
+
 protected:
 	_bool				m_bStraight = false;
 	_bool				m_bStopDamagePumping = false;

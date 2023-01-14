@@ -31,7 +31,7 @@ HRESULT CWarHammer_Attack_Sting::Initialize()
 
 	m_fInterPolationTime = 0.1f;
 	m_fAnimSpeed = 2.3f;
-	m_iStateChangeKeyFrame = 120;
+	m_iStateChangeKeyFrame = 140;
 
 
 	m_fMyAccel = 10.f;
@@ -117,7 +117,7 @@ HRESULT CWarHammer_Attack_Sting::Initialize()
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 99;
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 99;
 
-	m_fDamagePumping = 1.f;
+	m_fDamagePumping = 2.f;
 
 	return __super::Initialize();
 

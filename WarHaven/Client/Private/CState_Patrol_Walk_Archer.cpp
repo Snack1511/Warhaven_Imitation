@@ -79,3 +79,8 @@ STATE_TYPE CState_Patrol_Walk_Archer::Check_Condition(CUnit* pOwner, CAnimator* 
     return STATE_END;
 }
 
+void CState_Patrol_Walk_Archer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+}
+

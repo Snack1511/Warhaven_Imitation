@@ -70,3 +70,8 @@ STATE_TYPE CState_PathNavigation_Default_Lancer::Check_Condition(CUnit* pOwner, 
 {
     return __super::Check_Condition(pOwner, pAnimator);
 }
+
+void CState_PathNavigation_Default_Lancer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+}

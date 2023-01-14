@@ -35,7 +35,7 @@ HRESULT CHit_Groggy_Lancer::Initialize()
 {
     
     m_eAnimType = ANIM_HIT;            // 애니메이션의 메쉬타입
-    m_iAnimIndex = 4;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_iAnimIndex = 7;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_GROGGYHIT_LANCER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
@@ -65,6 +65,7 @@ void CHit_Groggy_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 {
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Groggy_State(pOwner);
+    m_iAnimIndex = 7;
 
     /* Owner의 Animator Set Idle로 */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

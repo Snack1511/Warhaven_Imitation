@@ -121,3 +121,8 @@ STATE_TYPE CState_Patrol_Walk_Qanda::Check_Condition(CUnit* pOwner, CAnimator* p
 {
     return __super::Check_Condition(pOwner, pAnimator);
 }
+
+void CState_Patrol_Walk_Qanda::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+}

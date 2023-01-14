@@ -45,10 +45,10 @@ HRESULT CPlayerInfo_SandBack::Initialize()
 		m_vecPrefClassType.push_back(ENGINEER);
 	else
 	{
-		//m_vecPrefClassType.push_back(PALADIN);
+		m_vecPrefClassType.push_back(PALADIN);
 		//m_vecPrefClassType.push_back(ARCHER);
 		//m_vecPrefClassType.push_back(PRIEST);
-		m_vecPrefClassType.push_back(WARRIOR);
+		//m_vecPrefClassType.push_back(WARRIOR);
 		//m_vecPrefClassType.push_back(ENGINEER);
 	}
 

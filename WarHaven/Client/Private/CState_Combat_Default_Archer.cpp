@@ -164,6 +164,11 @@ STATE_TYPE CState_Combat_Default_Archer::Check_Condition(CUnit* pOwner, CAnimato
     return STATE_END;
 }
 
+void CState_Combat_Default_Archer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+}
+
 
 STATE_TYPE CState_Combat_Default_Archer::Near_Enemy(CUnit* pOwner, CAnimator* pAnimator)
 {

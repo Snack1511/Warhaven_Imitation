@@ -34,7 +34,9 @@ HRESULT CWarHammer_Attack_HorizontalMiddle::Initialize()
 
 	m_fAnimSpeed = 2.5f;
 
-	m_iStateChangeKeyFrame = 110;
+	m_iStateChangeKeyFrame = 140;
+
+	m_fDamagePumping = 2.f;
 
 
 	m_fMyAccel = 10.f;

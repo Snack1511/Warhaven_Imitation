@@ -117,6 +117,7 @@ void CState_Combat_SkillQ_AirSpike_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnima
 	case 0:
 		pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower);
 		Physics_Setting(m_fMaxSpeed, pOwner);
+		Play_Voice(pOwner, L"Voice_AirSpike", 1.f);
 		break;
 
 	default:

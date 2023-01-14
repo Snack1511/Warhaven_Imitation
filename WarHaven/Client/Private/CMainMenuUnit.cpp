@@ -233,11 +233,9 @@ HRESULT CMainMenuUnit::Start()
 
 		break;
 	case Client::PALADIN:
-		m_eBaseType = ANIM_ATTACK;
 		m_pModelCom->Set_TransformMatrix(MODEL_PART_WEAPON_L, XMMatrixRotationZ(XMConvertToRadians(270.f)));
 		vMyPos.z += 0.35f;
-		m_iAnimIndex = 18;
-		m_fAnimSpeed = 2.f;
+		m_iAnimIndex = 3;
 		break;
 	case Client::PRIEST:
 		vMyPos.y += 0.2f;

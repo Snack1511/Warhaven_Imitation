@@ -89,3 +89,8 @@ STATE_TYPE CState_PathNavigation_Jump_Priest::Check_Condition(CUnit* pOwner, CAn
     return __super::Check_Condition(pOwner, pAnimator);
 
 }
+
+void CState_PathNavigation_Jump_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+}
