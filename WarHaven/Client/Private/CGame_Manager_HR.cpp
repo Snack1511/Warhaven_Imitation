@@ -68,9 +68,6 @@ void CGame_Manager_HR::Create_RayThread(list<CPlayer*> listPlayer)
 {
 	std::future<int>	newThread = std::async(std::launch::async, bind(Func_Ray, listPlayer, this));
 
-	int i = 0;
-
-	int a = 2;
 
 	return;
 }
