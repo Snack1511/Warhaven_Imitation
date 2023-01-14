@@ -1500,9 +1500,11 @@ namespace Client
 	{
 		ePatrol,
 		ePathFinding,
-		ePadenCannonInteract,
+		eGliding,
 		eRevive,
+		ePadenCannonInteract,
 		eCombat,
+		eCatchCannon,
 		eChange,
 
 		eCNT

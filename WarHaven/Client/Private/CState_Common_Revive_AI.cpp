@@ -93,7 +93,7 @@ void CState_Common_Revive_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
         vDir = _float4(1.f, 0.f, 0.f);
     }
 
-
+    vDir.y = 0.f;
     pOwner->Get_Transform()->Set_LerpLook(vDir, 0.4f);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

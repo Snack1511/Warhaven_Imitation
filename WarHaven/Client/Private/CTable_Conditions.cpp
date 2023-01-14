@@ -16,6 +16,7 @@
 #include "CNavigation.h"
 #include "CGameSystem.h"
 #include "CTrigger_Stage.h"
+#include "CTrigger_Glider.h"
 #include "CCannon.h"
 
 
@@ -109,6 +110,9 @@ HRESULT CTable_Conditions::SetUp_Conditions()
 	Add_WhyCondition(wstring(L"Check_Conquer_Respawn"), Check_Conquer_Respawn);
 	Add_WhyCondition(wstring(L"Check_Conquer_PadenCannon"), Check_Conquer_PadenCannon);
 	Add_WhyCondition(wstring(L"Check_Conquer_HwaraFinal"), Check_Conquer_HwaraFinal);
+	Add_WhyCondition(wstring(L"Check_UsableCannon"), Check_UsableCannon);
+	Add_WhyCondition(wstring(L"Check_InCannonConquerTrigger"), Check_InCannonConquerTrigger);
+	Add_WhyCondition(wstring(L"Check_GriderTrigger"), Check_GriderTrigger);
 #pragma endregion 맵 체크
 
 #pragma region 비해비어 체크
@@ -121,6 +125,7 @@ HRESULT CTable_Conditions::SetUp_Conditions()
 #pragma endregion 비해비어 체크
 
 #pragma region 플레이어 상태 체크
+	Add_WhyCondition(wstring(L"Check_AdjCannon"), Check_AdjCannon);
 	Add_WhyCondition(wstring(L"Check_AbleHero"), Check_AbleHero);
 	Add_WhyCondition(wstring(L"Check_EmptyRoute"), Check_EmptyRoute);
 #pragma endregion 플레이어 상태 체크
@@ -163,9 +168,11 @@ HRESULT CTable_Conditions::SetUp_Behaviors()
 	CBehavior* pBehavior = nullptr;
 	Add_Behavior(pBehavior, wstring(L"Patrol"), eBehaviorType::ePatrol);
 	Add_Behavior(pBehavior, wstring(L"PathFinding"), eBehaviorType::ePathFinding);
-	Add_Behavior(pBehavior, wstring(L"PadenCannonInteract"), eBehaviorType::ePadenCannonInteract);
+	Add_Behavior(pBehavior, wstring(L"Gliding"), eBehaviorType::eGliding);
 	Add_Behavior(pBehavior, wstring(L"Revive"), eBehaviorType::eRevive);
+	Add_Behavior(pBehavior, wstring(L"PadenCannonInteract"), eBehaviorType::ePadenCannonInteract);
 	Add_Behavior(pBehavior, wstring(L"Combat"), eBehaviorType::eCombat);
+	Add_Behavior(pBehavior, wstring(L"CatchCannon"), eBehaviorType::eCatchCannon);
 	Add_Behavior(pBehavior, wstring(L"Change"), eBehaviorType::eChange);
 
 	return S_OK;
@@ -592,6 +599,70 @@ void CTable_Conditions::Check_ChangeBehavior(_bool& OutCondition, CPlayer* pPlay
 }
 
 
+void CTable_Conditions::Check_UsableCannon(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+	CHECKFALSEOUTCONDITION(OutCondition);
+	OutCondition = CGameSystem::Get_Instance()->Get_Cannon()->Can_ControlCannon(pPlayer);
+}
+
+void CTable_Conditions::Check_InCannonConquerTrigger(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+	CHECKFALSEOUTCONDITION(OutCondition);
+	
+	CTrigger* pCannonTrigger = CGameSystem::Get_Instance()->Find_Trigger("Paden_Trigger_C");
+
+	if (nullptr == pCannonTrigger)
+		OutCondition = false;
+
+	list<CTrigger*> TriggerList = pAIController->Get_NearTrigger();
+	for (auto Trigger : TriggerList)
+	{
+		if (Trigger == pCannonTrigger)
+		{
+			OutCondition = true;
+			return;
+		}
+	}
+
+	OutCondition = false;
+}
+
+void CTable_Conditions::Check_GriderTrigger(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+	CHECKFALSEOUTCONDITION(OutCondition);
+
+
+	list<CTrigger*> TriggerList = pAIController->Get_NearTrigger();
+	CHECK_EMPTY(TriggerList);
+
+	for (auto Trigger : TriggerList)
+	{
+		//Glider트리거가 존재할 때 조건 타게
+		if (Trigger->Get_TypeHash() == typeid(CTrigger_Glider).hash_code())
+		{
+			OutCondition = true;
+			return;
+		}
+	}
+
+	OutCondition = false;
+}
+
+void CTable_Conditions::Check_AdjCannon(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+	CHECKFALSEOUTCONDITION(OutCondition);
+	CUnit* pUnit = pPlayer->Get_CurrentUnit();
+	if(!pUnit)
+		OutCondition = false;
+
+	if (!pUnit->Is_Valid())
+		OutCondition = false;
+
+	if(nullptr == pUnit->Get_AdjCannon())
+		OutCondition = false;
+	else 
+		OutCondition = true;
+}
 
 void CTable_Conditions::Check_AbleHero(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
@@ -1104,6 +1175,38 @@ void CTable_Conditions::Select_HwaraFinalTrigger(_bool& OutCondition, BEHAVIOR_D
 		OutCondition = true;
 	}
 	OutDesc->pTriggerPtr = pTargetTrigger;
+}
+
+void CTable_Conditions::Select_NearGliderTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
+{
+
+	_float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+
+	list<CTrigger*> TriggerList = pAIController->Get_NearTrigger();
+	CHECK_EMPTY(TriggerList);
+
+	TriggerList.sort([&MyPositoin](auto& Sour, auto& Dest)
+		{
+			_float4 SourPosition = Sour->Get_Position();
+			_float4 DestPosition = Dest->Get_Position();
+			if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
+				return true;
+			else return false;
+		});
+
+
+	for (auto Trigger : TriggerList)
+	{
+		//Glider트리거가 존재할 때 조건 타게
+		if (Trigger->Get_TypeHash() == typeid(CTrigger_Glider).hash_code())
+		{
+			pPlayer->Set_TargetPos(Trigger->Get_Position());
+			OutDesc->pTriggerPtr = Trigger;
+			OutCondition = true;
+			return;
+		}
+	}
+
 }
 
 

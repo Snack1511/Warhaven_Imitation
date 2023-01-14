@@ -265,6 +265,7 @@
     <ClInclude Include="..\Public\CState_Patrol_Default_Qanda.h" />
     <ClInclude Include="..\Public\CState_Patrol_Walk_Lancer.h" />
     <ClInclude Include="..\Public\CState_Patrol_Walk_Qanda.h" />
+    <ClInclude Include="..\Public\CTrigger_Glider.h" />
     <ClInclude Include="..\Public\CUI_Cannon.h" />
     <ClInclude Include="..\Public\CLancerNeedle.h" />
     <ClInclude Include="..\Public\CUI_Info.h" />
@@ -1320,6 +1321,7 @@
     <ClCompile Include="..\Private\CState_Patrol_Default_Qanda.cpp" />
     <ClCompile Include="..\Private\CState_Patrol_Walk_Lancer.cpp" />
     <ClCompile Include="..\Private\CState_Patrol_Walk_Qanda.cpp" />
+    <ClCompile Include="..\Private\CTrigger_Glider.cpp" />
     <ClCompile Include="..\Private\CUI_Cannon.cpp" />
     <ClCompile Include="..\Private\CLancerNeedle.cpp" />
     <ClCompile Include="..\Private\CUI_Info.cpp" />
