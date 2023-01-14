@@ -413,6 +413,9 @@ protected:
 
 	CTrailEffect* m_pDistortionTrail = nullptr;
 
+	CTrailEffect* m_pEyeTrail = nullptr;
+	CTrailEffect* m_pEyeTrail2 = nullptr;
+
 protected:
 	CCamera_Follow* m_pFollowCam = nullptr;
 
@@ -486,6 +489,9 @@ public:
 protected:
 	CAnimWeapon* m_pAnimWeapon = nullptr;
 	CGlider* m_pGlider = nullptr;
+
+protected:
+	list<CGameObject*> m_EyeFlare;
 
 public:
 	void	Set_AnimWeaponIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);

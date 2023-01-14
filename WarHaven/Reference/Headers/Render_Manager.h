@@ -184,6 +184,7 @@ private:
 	HRESULT	Render_UIBlend(const _tchar* pRenderTargetName);
 
 private:
+	HRESULT		Render_Priority();
 	HRESULT		Render_Group(RENDER_GROUP eGroup);
 	void		Sort_AlphaList();
 	void		Sort_UIGroup();

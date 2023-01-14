@@ -15,6 +15,8 @@
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
 #include "CAnimWeapon.h"
+
+#include "CRectEffects.h"
 CMainMenuUnit::CMainMenuUnit()
 {
 }
@@ -212,9 +214,13 @@ HRESULT CMainMenuUnit::Start()
 	vMyPos.x += 0.2f;
 	vMyPos.y -= 1.4f;
 
+	m_EyeFlare.clear();
+
 	switch (m_eClassType)
 	{
 	case Client::WARRIOR:
+		if (m_EyeFlare.empty())
+			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Warrior_Eye", this, ZERO_VECTOR);
 		break;
 	case Client::SPEAR:
 		break;
@@ -291,6 +297,37 @@ void CMainMenuUnit::OnEnable()
 	if (m_pAnimWeapon)
 		ENABLE_GAMEOBJECT(m_pAnimWeapon);
 
+	switch (m_eClassType)
+	{
+	case Client::WARRIOR:
+		if (m_EyeFlare.empty())
+			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Warrior_Eye", this, ZERO_VECTOR);
+		break;
+	case Client::SPEAR:
+		break;
+	case Client::ARCHER:
+		break;
+	case Client::PALADIN:
+		break;
+	case Client::PRIEST:
+		break;
+	case Client::ENGINEER:
+		break;
+	case Client::FIONA:
+		break;
+	case Client::QANDA:
+		break;
+	case Client::HOEDT:
+		break;
+	case Client::LANCER:
+		break;
+	case Client::CLASS_END:
+		break;
+	default:
+		break;
+	}
+
+
 }
 
 void CMainMenuUnit::OnDisable()
@@ -302,6 +339,15 @@ void CMainMenuUnit::OnDisable()
 
 	if (m_pAnimWeapon)
 		DISABLE_GAMEOBJECT(m_pAnimWeapon);
+
+	if (!m_EyeFlare.empty())
+	{
+		for (auto& elem : m_EyeFlare)
+		{
+			static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		}
+		m_EyeFlare.clear();
+	}
 }
 
 void CMainMenuUnit::My_Tick()
