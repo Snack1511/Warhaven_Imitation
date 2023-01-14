@@ -77,10 +77,10 @@ STATE_TYPE CState_Common_ChangeHero_AI::Tick(CUnit* pOwner, CAnimator* pAnimator
 		switch (m_iRand)
 		{
 		case 0:
-			m_eChangeClassType = LANCER;
+			m_eChangeClassType = QANDA;
 			break;
 		default:
-			m_eChangeClassType = LANCER;
+			m_eChangeClassType = QANDA;
 			break;
 		}
 

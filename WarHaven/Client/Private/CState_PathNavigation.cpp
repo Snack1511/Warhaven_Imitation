@@ -39,7 +39,7 @@ void CState_PathNavigation::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	if (!m_pOwner->Get_OwnerPlayer()->Get_TargetObject())
-		return STATE_END;
+		return __super::Tick(pOwner, pAnimator);
 
 	m_fAIDelayTime += fDT(0);
 
@@ -87,12 +87,34 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 			if (!GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vRayStartPos, vRayDir, vRayDir.Length()))
 			{
-				//ray 안맞았으면 전 상태로
-				//여기다 다시 return으로 전 상태로 가게 해
+
+				eBehaviorType eBehaviortype = pOwner->Get_OwnerPlayer()->Get_BehaviorDesc()->eCurType;
+				
+				STATE_TYPE ePrevStateType = STATE_END;  
+
+				switch (eBehaviortype)
+				{
+				case Client::eBehaviorType::ePatrol:
+					ePrevStateType = pOwner->Get_AIState_Type().eAIPatrolDefaultState;
+					break;
 
 
-				bFindRoute = false;
+				case Client::eBehaviorType::ePadenCannonInteract:
+					ePrevStateType = pOwner->Get_AIState_Type().eAICannonDefaultState;
+					break;
 
+				case Client::eBehaviorType::eRevive:
+					ePrevStateType = pOwner->Get_AIState_Type().eAIReviveDefaultState;
+					break;
+
+				case Client::eBehaviorType::eCombat:
+					ePrevStateType = pOwner->Get_AIState_Type().eAICommbatDefaultState;
+					break;
+
+				}
+				
+				if(ePrevStateType != STATE_END)
+					return ePrevStateType;
 
 			}
 		}
@@ -137,10 +159,12 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		m_iRand = RUN_STATE_JUMP;
 	}
 
-
+	vDir.y = 0.f;
 	pOwner->Get_Transform()->Set_LerpLook(vDir, 0.4f);
 	//pOwner->Get_PhysicsCom()->Set_Dir(vDir);
-	pOwner->Get_PhysicsCom()->Set_Dir(pOwner->Get_Transform()->Get_World(WORLD_LOOK));
+	_float4 vCurDir = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
+	vCurDir.y = 0.f;
+	pOwner->Get_PhysicsCom()->Set_Dir(vCurDir);
 	pOwner->Get_PhysicsCom()->Set_Accel(100.f);
 
 	

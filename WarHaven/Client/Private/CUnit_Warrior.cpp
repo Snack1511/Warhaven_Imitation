@@ -230,6 +230,15 @@ void CUnit_Warrior::SetUp_ReserveState(UNIT_TYPE eUnitType)
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
 		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_WARRIOR;
 
+		m_tAIChangeType.eAIPathFindDefaultState = AI_STATE_PATHNAVIGATION_DEFAULT_WARRIOR_R;
+		m_tAIChangeType.eAICommbatDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
+		m_tAIChangeType.eAIReviveDefaultState = AI_STATE_COMMON_REVIVE_AI;
+		m_tAIChangeType.eAICannonDefaultState = AI_STATE_CANNON_AI;
+		m_tAIChangeType.eAIGlidingDefaultState = AI_STATE_GLIDING_AI;
+		m_tAIChangeType.eAIPatrolDefaultState = AI_STATE_PATROL_DEFAULT_WARRIOR_R;
+		m_tAIChangeType.eAIGoTirrgerDefaultState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_WARRIOR;
+		m_tAIChangeType.eAIChangeDeafultState = AI_STATE_COMMON_CHANGE_HERO;
+
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_idiot:
@@ -509,8 +518,8 @@ void CUnit_Warrior::My_LateTick()
 	__super::My_LateTick();
 
 	if (m_eCurState >= STATE_IDLE_WARRIOR_R_AI_ENEMY)
-	{
-		if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_TEST)
+	{		
+		//if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_TEST)
 		{
 			if (KEY(J, TAP))
 			{

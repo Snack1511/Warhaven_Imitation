@@ -200,9 +200,16 @@ void CUnit_Qanda::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
-		m_eDefaultState = AI_STATE_PATROL_DEFAULT_QANDA;
-		//m_eDefaultState = AI_STATE_COMBAT_DEFAULT_QANDA_R;
-		//m_eSprintEndState = AI_STATE_PATROL_DEFAULT_QANDA_R;
+		m_eDefaultState = AI_STATE_COMBAT_DEAFULT_QANDA;
+
+		m_tAIChangeType.eAIPathFindDefaultState = AI_STATE_PATHNAVIGATION_DEFAULT_QANDA;
+		m_tAIChangeType.eAICommbatDefaultState = AI_STATE_COMBAT_DEAFULT_QANDA;
+		m_tAIChangeType.eAIReviveDefaultState = AI_STATE_COMMON_REVIVE_AI;
+		m_tAIChangeType.eAICannonDefaultState = AI_STATE_CANNON_AI;
+		m_tAIChangeType.eAIGlidingDefaultState = AI_STATE_GLIDING_AI;
+		m_tAIChangeType.eAIPatrolDefaultState = AI_STATE_PATROL_DEFAULT_QANDA;
+		m_tAIChangeType.eAIGoTirrgerDefaultState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_QANDA;
+		m_tAIChangeType.eAIChangeDeafultState = AI_STATE_COMMON_CHANGE_HERO;
 
 		break;
 
@@ -279,8 +286,21 @@ void CUnit_Qanda::On_ChangePhase(_uint eCurPhase)
 
 void CUnit_Qanda::Shoot_AnimCrow()
 {
-	_float4 vShootPos = m_pAnimCrow->Get_Transform()->Get_World(WORLD_POS);
-	_float4 vShootDir = Get_FollowCamLook();
+
+
+	_float4 vShootPos = m_pOwnerPlayer->Get_CurrentUnit()->Get_FollowCamLook();
+	_float4 vShootDir = m_pOwnerPlayer->Get_CurrentUnit()->Get_FollowCamRight();
+
+	if (m_pOwnerPlayer->Get_CurrentUnit()->Get_CurState() == AI_STATE_COMBAT_SHOOT_QANDA)
+	{
+		CUnit* pMyUnit = m_pOwnerPlayer->Get_CurrentUnit();
+		CUnit* pOtherUnit = m_pOwnerPlayer->Get_CurrentUnit()->Get_TargetUnit();
+
+		_float4 vLook = pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - pMyUnit->Get_Transform()->Get_World(WORLD_POS);
+		vLook.Normalize();
+		vShootDir = vLook;
+	}
+		
 
 	m_pAnimCrow->Shoot_Crow(vShootPos, vShootDir);
 }
@@ -799,7 +819,8 @@ void CUnit_Qanda::OnDisable()
 void CUnit_Qanda::My_Tick()
 {
 	if (m_eCurState == STATE_ATTACK_BEGIN_SNIPING_QANDA ||
-		m_eCurState == STATE_ATTACK_AIMING_SNIPING_QANDA)
+		m_eCurState == STATE_ATTACK_AIMING_SNIPING_QANDA ||
+		m_eCurState == AI_STATE_COMBAT_DEAFULT_QANDA)
 	{
 
 		__super::Check_MultipleObject_IsInFrustum();

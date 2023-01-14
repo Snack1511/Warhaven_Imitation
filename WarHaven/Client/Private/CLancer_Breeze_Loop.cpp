@@ -92,11 +92,13 @@ void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 	GAMEINSTANCE->Start_RadialBlur(0.015f);
 
+	pOwner->TurnOn_TrailEffect(true);
 	pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_BREEZE);
 
 	CUser::Get_Instance()->Disable_LancerGauge();
 	CUser::Get_Instance()->SetActive_Gauge(true);
+
 
 	for (int i = 0; i < 4; ++i)
 		CUser::Get_Instance()->Set_LancerGauge(i, 0.f, 1.f);
@@ -134,7 +136,7 @@ void CLancer_Breeze_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	}
 	CUser::Get_Instance()->SetActive_Gauge(false);
 
-
+	pOwner->TurnOn_TrailEffect(false);
 	GAMEINSTANCE->Stop_RadialBlur();
 
 

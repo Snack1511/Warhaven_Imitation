@@ -263,6 +263,8 @@ public:
 	CUI_UnitHUD* Get_UnitHUD()
 	{
 			return m_pUnitHUD;
+
+		return nullptr;
 	}
 
 private:

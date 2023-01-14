@@ -560,7 +560,7 @@ void CLancerNeedle::OnEnable()
 	__super::OnEnable();
 
 	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
-		m_pCollider->Set_ColIndex(COL_BLUEGROGGYATTACK);
+		m_pCollider->Set_ColIndex(COL_REDGROGGYATTACK);
 	else
 	{
 		eTEAM_TYPE eTeamType = m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType();
