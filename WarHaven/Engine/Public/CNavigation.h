@@ -87,7 +87,7 @@ public:
 
 
 
-	CCell* Get_CurCell(_float4 vPosition, map<_float, CCellLayer*>& Layers, CCellLayer** ppOutInCellLayer = nullptr);
+	static CCell* Get_CurCell(_float4 vPosition, map<_float, CCellLayer*>& Layers, CCellLayer** ppOutInCellLayer = nullptr);
 	CCell* Get_NearOpenCell(_float4 vPosition, map<_float, CCellLayer*>& Layers, CCellLayer** ppOutInCellLayer = nullptr);
 public:
 	//CELL_TYPE	isMove(_vector vPosition, _float4* pOutPos);

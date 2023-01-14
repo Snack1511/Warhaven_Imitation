@@ -166,6 +166,7 @@ public:
 	CCell* Find_Cell(_float4 vPosition);
 	list<CCell*> Find_Cell_InRange(_float4 vPosition, _float fRange);
 	void Find_NearOpenCell(_float4 vPosition, list<CCell*>& NearOpenCells, _int NeighborLevel = 1);
+	CCell* Find_NearOpenCell(CCell* pTargetCell);
 	CCell* Get_Cell(_int Index);
 	_uint Get_XTileNums() { return m_iXNums; }
 	_uint Get_ZTileNums() { return m_iZNums; }
@@ -187,6 +188,7 @@ private:
 	_uint m_iXNums = 0;
 	_uint m_iZNums = 0;
 
+
 	
 
 private:
@@ -197,6 +199,7 @@ private:
 	//伎 加己喊肺 包府
 	map<_uint, CellList> m_CellList;
 	map<_float, CellList> m_StairList;
+	CellList m_BlockedList_NeighborOpen;
 	list < _float4> m_BlockedIncludePosition;
 	list<pair<_float4, _float4>> m_LinkPosList;
 	list<pair<CNode*, CNode*>> m_LinkList;
