@@ -115,6 +115,7 @@ void CArcher_Attack_Begin::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimato
 	switch (iSequence)
 	{
 	case 1:
+		Play_Sound(L"Effect_Arrow_Begin");
 		m_bAttackTrigger = true;
 		break;
 

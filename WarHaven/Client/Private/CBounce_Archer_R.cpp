@@ -67,6 +67,8 @@ void CBounce_Archer_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 
     /* Owner¿« Animator Set Idle∑Œ */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+    Play_Sound(L"Effect_Bounce");
 }
 
 STATE_TYPE CBounce_Archer_R::Tick(CUnit* pOwner, CAnimator* pAnimator)

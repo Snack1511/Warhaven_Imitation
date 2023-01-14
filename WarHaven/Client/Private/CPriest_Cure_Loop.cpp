@@ -233,7 +233,7 @@ void CPriest_Cure_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 
-	GAMEINSTANCE->Stop_Sound(CH_GROUP_0);
+	GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)CHANNEL_EFFECTS, m_iSndIdx);
 }
 
 STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -271,9 +271,9 @@ STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	_float fLength = (m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS)).Length();
 
 	if (m_fSndTime <= 0.f)
-		Play_Sound(L"Effect_Cure_Priest");
+		m_iSndIdx = CFunctor::Play_LoopSound(L"Effect_Cure_Priest", CHANNEL_EFFECTS);
 
-	m_fSndTime+=fDT(0);
+	m_fSndTime += fDT(0);
 	if (m_fSndTime >= m_fMaxSndTime)
 		m_fSndTime = 0.f;
 

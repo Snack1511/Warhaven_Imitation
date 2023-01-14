@@ -98,6 +98,8 @@ void CBounce_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePre
 	//}
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Sound(L"Effect_Bounce");
 }
 
 STATE_TYPE CBounce_Paladin::Tick(CUnit* pOwner, CAnimator* pAnimator)

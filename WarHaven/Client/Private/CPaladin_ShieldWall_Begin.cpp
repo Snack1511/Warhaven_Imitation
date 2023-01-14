@@ -96,6 +96,7 @@ void CPaladin_ShieldWall_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnim
 	switch (iSequence)
 	{
 	case 1:
+		Play_Sound(L"Effect_ShieldWall_Paladin");
 		pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
 		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"ShieldWall_0"), pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
 		Play_Voice(pOwner, L"Voice_Wall", 1.f);

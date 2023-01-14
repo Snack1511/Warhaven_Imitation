@@ -55,6 +55,8 @@ HRESULT CArcher_Shoot::Initialize()
 void CArcher_Shoot::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
     __super::Enter(pOwner, pAnimator, ePrevType, pData);	
+
+    Play_Sound(L"Effect_Arrow_Shoot");
 }
 
 STATE_TYPE CArcher_Shoot::Tick(CUnit* pOwner, CAnimator* pAnimator)

@@ -71,8 +71,8 @@ HRESULT CSprint_End_WarHammer::Initialize()
 	m_fMaxSpeed = 10.f;
 	m_fMyAccel = 10.f;
 
-    Add_KeyFrame(13, 111);
-    Add_KeyFrame(27, 222);
+    Add_KeyFrame(13, 111, true);
+    Add_KeyFrame(27, 222, true);
 
 
     return S_OK;

@@ -151,6 +151,7 @@ void CArcher_Attack_Begin_Sniping::On_KeyFrameEvent(CUnit * pOwner, CAnimator * 
 	{
 
 	case 1:
+		Play_Sound(L"Effect_Arrow_SnipingBegin");
 		m_bAttackTrigger = true;
 		break;
 

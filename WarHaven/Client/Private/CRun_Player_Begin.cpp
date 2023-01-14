@@ -25,7 +25,7 @@ HRESULT CRun_Player_Begin::Initialize()
 
 	Init_CommonState_Player();
 
-	Add_KeyFrame(9, 0);
+	Add_KeyFrame(9, 0, true);
 
     m_iStateChangeKeyFrame = 0;
 

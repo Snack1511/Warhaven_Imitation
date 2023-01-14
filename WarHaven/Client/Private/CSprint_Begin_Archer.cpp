@@ -59,13 +59,13 @@ HRESULT CSprint_Begin_Archer::Initialize()
 	m_vecAdjState.push_back(STATE_ATTACK_BEGIN_POISION_ARCHER);
 
 
-	Add_KeyFrame(10, 0);
-	Add_KeyFrame(24, 1);
-	Add_KeyFrame(44, 1);
-	Add_KeyFrame(62, 1);
-	Add_KeyFrame(80, 1);
-	Add_KeyFrame(93, 1);
-	Add_KeyFrame(116, 1);
+	Add_KeyFrame(10, 0, true);
+	Add_KeyFrame(24, 1, true);
+	Add_KeyFrame(44, 1, true);
+	Add_KeyFrame(62, 1, true);
+	Add_KeyFrame(80, 1, true);
+	Add_KeyFrame(93, 1, true);
+	Add_KeyFrame(116, 1, true);
 
 	return S_OK;
 }

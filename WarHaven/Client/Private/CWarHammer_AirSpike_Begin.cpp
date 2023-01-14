@@ -94,6 +94,8 @@ void CWarHammer_AirSpike_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 	GAMEINSTANCE->Start_RadialBlur(0.015f);
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Sound(L"Effect_AirStrikeUp_Warhammer");
 }
 
 STATE_TYPE CWarHammer_AirSpike_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)

@@ -53,7 +53,7 @@ HRESULT CPaladin_Rush_Loop::Initialize()
 	m_vecAdjState.push_back(STATE_RUSH_END_PALADIN);
 
 	Add_KeyFrame(29, 222);
-	
+
 	return S_OK;
 }
 
@@ -109,7 +109,7 @@ void CPaladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 	GAMEINSTANCE->Start_RadialBlur(0.01f);
 	pOwner->Lerp_Camera(6);
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
-} 
+}
 
 STATE_TYPE CPaladin_Rush_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
@@ -120,6 +120,13 @@ STATE_TYPE CPaladin_Rush_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	if (m_fTimeAcc > 5.f)
 		return STATE_RUSH_END_PALADIN;
+
+	if (m_fSndTime <= 0.f)
+		m_iSoundIdx = CFunctor::Play_LoopSound(L"Effect_ShieldRush_Step", CHANNEL_EFFECTS);
+
+	m_fSndTime += fDT(0);
+	if (m_fSndTime >= 0.3f)
+		m_fSndTime = 0.f;
 
 	DoMove(STATE_DIRECTION_N, pOwner);
 
@@ -145,7 +152,7 @@ void CPaladin_Rush_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(false);
 	pOwner->Lerp_Camera(0);
 	GAMEINSTANCE->Stop_RadialBlur();
-
+	GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)CHANNEL_EFFECTS, m_iSoundIdx);
 	pOwner->Enable_GuardCollider(false);
 	pOwner->Enable_GroggyCollider(false);
 }
@@ -157,5 +164,12 @@ STATE_TYPE CPaladin_Rush_Loop::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 
 void CPaladin_Rush_Loop::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
+	switch (iSequence)
+	{
+	case 0:
+		break;
 
+	default:
+		break;
+	}
 }

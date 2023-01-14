@@ -122,7 +122,7 @@ public:
 	virtual void	Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
 	virtual void	Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
 
-	void Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float fVolume = 1.f);
+	void Play_Sound(wstring wstrFileName, _uint iGroupIndex = CHANNEL_EFFECTS, _float fVolume = 1.f);
 
 public: /* Physics */
 	_bool		Is_Air();

@@ -19,15 +19,15 @@ CWalk_WarHammer::~CWalk_WarHammer()
 
 HRESULT CWalk_WarHammer::Initialize()
 {
-    m_fInterPolationTime = 0.2f;
+	m_fInterPolationTime = 0.2f;
 
 
 	//m_eAnimDivide = ANIM_DIVIDE::eBODYLOWER;
-    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_WARHAMMER);
-    m_vecAdjState.push_back(STATE_GUARD_BEGIN_WARHAMMER);
-    m_vecAdjState.push_back(STATE_GROGGYATTACK_WARHAMMER);
-    m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
-    m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
+	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_WARHAMMER);
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_WARHAMMER);
+	m_vecAdjState.push_back(STATE_GROGGYATTACK_WARHAMMER);
+	m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
+	m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
@@ -39,29 +39,29 @@ HRESULT CWalk_WarHammer::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
-    Init_CommonState_Player();
+	Init_CommonState_Player();
 
-    Add_KeyFrame(14, 0);
-    Add_KeyFrame(59, 0);
+	Add_KeyFrame(14, 0, true);
+	Add_KeyFrame(59, 0, true);
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;
-	
 
-    return S_OK;
+
+	return S_OK;
 }
 
-void CWalk_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CWalk_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    if (ePrevType == STATE_BOUNCE_WARHAMMER_R)
-        m_fInterPolationTime = 0.05f;
+	if (ePrevType == STATE_BOUNCE_WARHAMMER_R)
+		m_fInterPolationTime = 0.05f;
 
-    /* Owner의 Animator Set Idle로 */
+	/* Owner의 Animator Set Idle로 */
 	m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
 
-    Physics_Setting(m_fMaxSpeed, pOwner);
+	Physics_Setting(m_fMaxSpeed, pOwner);
 
-    __super::Enter(pOwner, pAnimator, ePrevType, pData);
+	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CWalk_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -70,56 +70,56 @@ STATE_TYPE CWalk_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 
 
-    return __super::Tick(pOwner, pAnimator);
+	return __super::Tick(pOwner, pAnimator);
 }
 
 void CWalk_WarHammer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+	/* 할거없음 */
 }
 
 STATE_TYPE CWalk_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Walk로 오는 조건
-    1. 
-    */
+	/* Player가 Walk로 오는 조건
+	1.
+	*/
 
 
-        // 천천히 
-        if (KEY(C, HOLD))
-        {
-            // 걸어간다.
-            if (KEY(W, HOLD) ||
-                KEY(A, HOLD) ||
-                KEY(D, HOLD))
-            {
+	// 천천히 
+	if (KEY(C, HOLD))
+	{
+		// 걸어간다.
+		if (KEY(W, HOLD) ||
+			KEY(A, HOLD) ||
+			KEY(D, HOLD))
+		{
 
-                return m_eStateType;
-            }
+			return m_eStateType;
+		}
 
-        }
+	}
 
-        if (KEY(S, HOLD))
-            return m_eStateType;
+	if (KEY(S, HOLD))
+		return m_eStateType;
 
-        //CTRL 로 바꾸셈.
-      
-      
-
-   
+	//CTRL 로 바꾸셈.
 
 
-    return STATE_END;
+
+
+
+
+	return STATE_END;
 }
 
 void CWalk_WarHammer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
-    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 
-    switch (iSequence)
-    {
-    case 0:
-        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
-        break;
-    }
+	switch (iSequence)
+	{
+	case 0:
+		Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+		break;
+	}
 }
