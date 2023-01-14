@@ -153,7 +153,7 @@ string CFunctor::Get_FileName(string strFilePath)
 
 void	CFunctor::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float4 vPosition, _float fVolume)
 {
-#define SOUND_MAX_RANGE	30.f
+#define SOUND_MAX_RANGE	15.f
 #define SOUND_MIN_RANGE	4.f
 
 	_float fRatio = 0.f;
