@@ -924,7 +924,8 @@ CBehavior* CPlayer::Get_CurBehavior()
 void CPlayer::On_Die()
 {
 	//m_bDie = true;
-	DISABLE_GAMEOBJECT(m_pUnitHUD);
+	if(m_pUnitHUD)
+		DISABLE_GAMEOBJECT(m_pUnitHUD);
 	m_bDieDelay = true;
 
 	if (!m_bIsMainPlayer)
@@ -1497,7 +1498,6 @@ _bool CPlayer::Is_OpenCell()
 		return false;
 
 	_float4 vUnitPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
-
 	CCell* pCell = pNaviComponent->Get_CurCell(vUnitPos, CGameSystem::Get_Instance()->Get_CellLayer());
 
 	if (nullptr == pCell)

@@ -90,67 +90,82 @@ void CNavigation::Set_EndPosition(_float4 vPosition)
 //골리스트 만들고
 //해당리스트가 빌때까지 길찾기 후 셀 위치 넣기
 //A. 연산량 주의
-list<pair<_float4, CCellLayer*>> CNavigation::Get_Goals(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd)
+list<pair<_float4, CCellLayer*>> CNavigation::Get_Goals(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd, CCellLayer* pStartLayer)
 {
 	//시작 위치의 셀레이어부터
 	//도착 위치의 셀레이어까지
 	//각 점의 최단거리의 계단 셀을 도착지리스트에 넣음       
 	list<pair<_float4, CCellLayer*>> GoalList;
-	CCellLayer* pStartLayer = nullptr;
+	//CCellLayer* pStartLayer = nullptr;
 	CCellLayer* pEndLayer = nullptr;
 	for (auto& Layer : Layers)
 	{
 		_float vLayerKey = Layer.first;
-
-		if (vLayerKey <= vStart.y)
-		{
-			_float4 vPosition = _float4(vStart.x, vLayerKey, vStart.z);
-			CCell* pCell = Layer.second->Find_Cell(vPosition);
-
-			if(pCell && !pCell->Check_Attribute(CELL_BLOCKED))
-				pStartLayer = Layer.second;
-		}
-		else
-		{
-			//지형을 뚫고 내려가 있는 녀석들의 경우..
-			if (Layer.first == Layers.begin()->first)
-			{
-				_float4 vPosition = _float4(vStart.x, vLayerKey, vStart.z);
-				CCell* pCell = Layer.second->Find_Cell(vPosition);
-
-				if (pCell && !pCell->Check_Attribute(CELL_BLOCKED))
-					pStartLayer = Layer.second;
-			}
-		}
-
+		_float4 vPosition = _float4(vEnd.x, vLayerKey, vEnd.z);
 		if (vLayerKey <= vEnd.y)
 		{
-			_float4 vPosition = _float4(vEnd.x, vLayerKey, vEnd.z);
 			CCell* pCell = Layer.second->Find_Cell(vPosition);
-
-			if (pCell && !pCell->Check_Attribute(CELL_BLOCKED))
-				pEndLayer = Layer.second;
-		}
-		else
-		{
-			//지형을 뚫고 내려가 있는 녀석들의 경우..
-			if (Layer.first == Layers.begin()->first)
+			if (!pCell)//이런게 존재하면 안됨..
+				assert(0);
+			//현재셀이 Blocked가 아니거나
+			if (!pCell->Check_Attribute(CELL_BLOCKED)) 
 			{
-				_float4 vPosition = _float4(vEnd.x, vLayerKey, vEnd.z);
-				CCell* pCell = Layer.second->Find_Cell(vPosition);
+				pEndLayer = Layer.second;
+			}
+			else 
+			{
+				//바로 이웃하는 셀이 Open일때
+				for (_int i = 0; i < CCell::LINE_END; ++i)
+				{
+					CCell* pNeighborCell = pCell->Get_NeighborCell(CCell::LINE(i));
+					if(pNeighborCell&& !pNeighborCell->Check_Attribute(CELL_BLOCKED))
+						pEndLayer = Layer.second;
 
-				if (pCell && !pCell->Check_Attribute(CELL_BLOCKED))
-					pEndLayer = Layer.second;
+				}
 			}
 		}
 	}
 
-	if (pStartLayer == nullptr || pEndLayer == nullptr)
-		return GoalList;
+	//못찾았으면 높은대서부터 비교..
+	auto InvIter = Layers.rbegin();
+	for (; InvIter != Layers.rend(); ++InvIter)
+	{
+		_float Key = InvIter->first;
+		if (nullptr == pEndLayer)
+		{
+			if (Key > vEnd.y)
+			{
+				pEndLayer = InvIter->second;
+			}
+		}
+		
+	}
+
+	//이론상 무조건 하나의 레이어를 가지고 있어야 함
+	if (nullptr == pEndLayer)
+		assert(0);
+
+	list<CCell*>OutEndCellList;
+	_float4 vEndPos = vEnd;
+	vEndPos.y = pEndLayer->Get_MinHeight();
+	pEndLayer->Find_NearOpenCell(vEnd, OutEndCellList);
+
+	if (OutEndCellList.empty())
+		assert(0);
+
+	OutEndCellList.sort([&vEndPos](auto& Sour, auto& Dest)
+		{
+			_float SourLength = (Sour->Get_Position() - vEndPos).Length();
+			_float DestLength = (Dest->Get_Position() - vEndPos).Length();
+			if (SourLength < DestLength)
+				return true;
+			else return false;
+		});
+	vEndPos = OutEndCellList.front()->Get_Position();
 
 	if (pStartLayer == pEndLayer)
 	{
-		GoalList.push_back(make_pair(vEnd, pEndLayer));
+		GoalList.push_back(make_pair(vEndPos, pEndLayer));
 		return GoalList;
 	}
 
@@ -193,7 +208,8 @@ list<pair<_float4, CCellLayer*>> CNavigation::Get_Goals(map<_float, CCellLayer*>
 			vGoal.y = Key;
 			vStartPos = vGoal;
 		}
-		GoalList.push_back(make_pair(vEnd, pEndLayer));
+		//_float4 vEndPos = pEndLayer->Find_NearOpenCell(vEnd)->Get_Position();
+		GoalList.push_back(make_pair(vEndPos, pEndLayer));
 	}
 
 	return GoalList;
@@ -458,11 +474,27 @@ void CNavigation::Make_Route(list<_float4>* NodeList, map<_float, CCellLayer*>& 
 list<_float4> CNavigation::Get_BestRoute(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd)
 {
 	m_DebugRouteNode.clear();
-	_float4 vStartPos = vStart;
-	list<pair<_float4, CCellLayer*>> GoalList = Get_Goals(Layers, vStartPos, vEnd);
-	CCellLayer::CellList Routes;
-	m_pStartNode->Set_NodePosition(vStart);
+	CCellLayer* pStartCellLayer = nullptr;
+
+	//근처의 열린셀을 기준으로 길찾기
+	CCell* pStartCell = Get_NearOpenCell(vStart, Layers, &pStartCellLayer);
+
+	if (nullptr == pStartCellLayer)
+		assert(0);//타일 모양 한번 확인해봐야함
+
+	if (pStartCell->Check_Attribute(CELL_BLOCKED))
+		assert(0);
+
+	_float4 vStartPos = pStartCell->Get_Position();
+	//GoalList의 목적지들은 모두 열린셀의 위치
+	list<pair<_float4, CCellLayer*>> GoalList = Get_Goals(Layers, vStartPos, vEnd, pStartCellLayer);
 	
+	GoalList.push_front(make_pair(vStartPos, pStartCellLayer));
+
+	CCellLayer::CellList Routes;
+
+	m_pStartNode->Set_NodePosition(vStart);
+	Routes.push_back(pStartCellLayer->Find_Cell(vStart));
 	for (auto value : GoalList)
 	{
 		if (nullptr == value.second)
@@ -481,46 +513,95 @@ list<_float4> CNavigation::Get_BestRoute(map<_float, CCellLayer*>& Layers, _floa
 		m_pStartNode->Set_NodePosition(value.first);
 	}
 	list<_float4> Return;
-	if (!Routes.empty()) 
-	{
-		Routes.pop_front();
-		if(!Routes.empty())
-			Routes.pop_back();
+	//실제 시작위치 넣기
 
-		Return.push_back(vStart);
-		for (auto Cell : Routes)
-		{
-			Return.push_back(Cell->Get_Position());
-		}
-		Return.push_back(vEnd);
+	//if (!Routes.empty()) 
+	//{
+	//	//중복되는 애들을 없애기 위해
+	//	//앞에꺼 제거
+	//	//Routes.pop_front();
+	//	//뒤에꺼 제거 --> 는 지우지마
+	//	//if(!Routes.empty())
+	//	//	Routes.pop_back();
+
+	//	//열린 시작셀 넣기
+	//	Return.push_back(vStartPos);
+	//	for (auto Cell : Routes)
+	//	{
+	//		Return.push_back(Cell->Get_Position());
+	//	}
+	//	Return.push_back(vEnd);
+	//}
+	
+	//시작위치와 끝 위치 근처의 열린 셀을 이음
+	for (auto Cell : Routes)
+	{
+		Return.push_back(Cell->Get_Position());
 	}
 
 	return Return;
 }
 
-CCell* CNavigation::Get_CurCell(_float4 vPosition, map<_float, CCellLayer*>& Layers)
+CCell* CNavigation::Get_CurCell(_float4 vPosition, map<_float, CCellLayer*>& Layers, CCellLayer** ppOutInCellLayer)
 {
 	CCell* pReturn = nullptr;
+	CCellLayer* pCellLayer = nullptr;
+
 	for (auto& Layer : Layers)
 	{
 		_float vLayerKey = Layer.first;
-
+		CCell* pCell = Layer.second->Find_Cell(vPosition);
 		if (vLayerKey <= vPosition.y)
 		{
-			_float4 vTargetPosition = _float4(vPosition.x, vLayerKey, vPosition.z);
-			pReturn = Layer.second->Find_Cell(vTargetPosition);
+			pCellLayer = Layer.second;
+			pReturn = pCell;
 		}
-		else
+
+	}
+
+	return pReturn;
+}
+
+CCell* CNavigation::Get_NearOpenCell(_float4 vPosition, map<_float, CCellLayer*>& Layers, CCellLayer** ppOutInCellLayer)
+{
+	CCell* pReturn = nullptr;
+	CCellLayer* pCellLayer = nullptr;
+
+	for (auto& Layer : Layers)
+	{
+		_float vLayerKey = Layer.first;
+		CCell* pCell = Layer.second->Find_Cell(vPosition);
+		if (vLayerKey <= vPosition.y)
 		{
-			//지형을 뚫고 내려가 있는 녀석들의 경우..
-			if (Layer.first == Layers.begin()->first)
+			if (!pCell->Check_Attribute(CELL_BLOCKED))
 			{
-				_float4 vTargetPosition = _float4(vPosition.x, vLayerKey, vPosition.z);
-				pReturn = Layer.second->Find_Cell(vTargetPosition);
+				pCellLayer = Layer.second;
+				pReturn = pCell;
+			}
+			else
+			{
+				for (_uint i = 0; i < CCell::LINE_END; ++i)
+				{
+					CCell* pNeighborCell = pCell->Get_NeighborCell(CCell::LINE(i));
+					if (pNeighborCell)
+					{
+						if (!pNeighborCell->Check_Attribute(CELL_BLOCKED)
+							&&!pNeighborCell->Check_Attribute(CELL_STAIR))
+						{
+							pCellLayer = Layer.second;
+							pReturn = pNeighborCell;
+							break;
+						}
+					}
+				}
 			}
 		}
 
 	}
+
+	//pReturn이 NULL이면 타일 모양이 이상한거..
+	if (ppOutInCellLayer)
+		(*ppOutInCellLayer) = pCellLayer;
 	return pReturn;
 }
 

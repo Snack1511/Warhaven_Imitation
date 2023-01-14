@@ -2016,10 +2016,11 @@ CCellLayer::CellList CCellLayer::Get_BestRoute(CNode* pStartNode, CNode* pEndNod
 
 	if (Bake_OpenCloseList(OpenList, CloseList, pEndNode))
 	{
+		//Start-End까지..
 		//맨마지막의 노드로 부터 부모노드로 거슬러 올라가면서 경로 구축
 		Bake_BestList(BestRoute, OpenList, CloseList, pEndNode);
-		if (BestRoute.size() > 2)
-			int a = 0;
+		//if (BestRoute.size() > 2)
+		//	int a = 0;
 		BestCellList = Make_CellList(BestRoute);
 		for (auto Node : BestRoute)
 		{
@@ -2272,30 +2273,81 @@ CCellLayer::CellList CCellLayer::Make_CellList(NODES& OutBestList)
 	CellList BestList;
 	CNode* pStartNode = nullptr;
 	CNode* pEndNode = nullptr;
-	auto NodeIter = OutBestList.begin();
+	//auto BeginNodeIter = OutBestList.begin();
+	//auto NodeIter = BeginNodeIter;
+	//NodeIter++;
 
-	for (auto& Node : OutBestList)
+	//Start/End 길이
+	//Cell/End길이
+	//가장 짧은것..
+	auto EndIter= OutBestList.begin();
+	auto StartIter = EndIter;
+	EndIter++;
+	//처음부터 OutBest-1까지만 CellList만듬
+	for (; EndIter != OutBestList.end(); EndIter++)
 	{
-		//pEndNode = Node;
-		//Find_NearCell(pStartNode, pEndNode, BestList);
-		//pStartNode = pEndNode;
-		Find_NearCell(Node, BestList);
-	}
-	_float4 vEndPos = OutBestList.back()->Get_Positon();
-	BestList.sort([&vEndPos](auto Sour, auto Dest) {
-		_float SourLength = (Sour->Get_Position() - vEndPos).Length();
-		_float DestLength = (Dest->Get_Position() - vEndPos).Length();
-		if (SourLength > DestLength)
-			return true;
-		else if (SourLength == DestLength)
+		_float EndToStartLength = ((*EndIter)->Get_Positon() - (*StartIter)->Get_Positon()).Length();
+		_float4 vEndPos = (*EndIter)->Get_Positon();
+		CellList TmpList;
+		Find_NearCell((*StartIter), TmpList);
+
+		if (!TmpList.empty()) 
 		{
-			if (Sour->Get_Index() > Dest->Get_Index())
-				return true;
-			else return false;
+			TmpList.sort([&EndToStartLength, &vEndPos](auto Sour, auto Dest)
+				{
+					_float SourLength = (Sour->Get_Position() - vEndPos).Length();
+					_float DestLength = (Dest->Get_Position() - vEndPos).Length();
+					_float SourDiff = fabsf(EndToStartLength - SourLength);
+					_float DestDiff = fabsf(EndToStartLength - DestLength);
+					//짧은 순으로 정렬
+					if (SourDiff < DestDiff)
+						return true;
+					else return false;
+				});
+			BestList.push_back(TmpList.front());
 		}
-		else return false;
-		});
-	BestList.unique();
+		StartIter = EndIter;
+		//for (auto Cell : TmpList)
+		//	BestList.push_back(Cell);
+	}
+	//마지막 애는 BestList.back위치의 셀
+	CCell* pLastCell = Find_Cell(OutBestList.back()->Get_Positon());
+	BestList.push_back(pLastCell);
+
+	//for (auto& Node : OutBestList)
+	//{
+
+
+	//	CellList TmpList;
+	//	Find_NearCell(Node, TmpList);
+	//	for (auto Cell : TmpList)
+	//		BestList.push_back(Cell);
+	//}
+
+
+	_float4 vEndPos = OutBestList.back()->Get_Positon();
+	//중복 셀 제거
+	auto SourIter = BestList.begin();
+	for (; SourIter != BestList.end();)
+	{
+		_bool bRemove = false;
+		for (auto DestIter = SourIter; DestIter != BestList.end(); ++DestIter)
+		{
+			if (DestIter == SourIter)
+				continue;
+			if ((*SourIter) == (*DestIter)) {
+				bRemove = true;
+				break;
+			}
+		}
+		if (bRemove)
+			SourIter = BestList.erase(SourIter);
+		else
+			SourIter++;
+	}
+
+
+	//BestList.unique();
 	//if (BestList.empty())
 	//	return;
 
@@ -2373,7 +2425,10 @@ void CCellLayer::Find_NearCell(CNode* pNode, CellList& rhsCellList)
 				if (Cell->Check_InCell(vPosition))// && Cell->Check_CrossLines(vStartPosition, vEndPosition, true))
 				{
 					rhsCellList.push_back(Cell);
-					break;
+	///*				if (Cell->Check_Attribute(CELL_STAIR))
+	//					for (_uint i = 0; i < CCell::LINE_END; ++i)*/
+
+	//				break;
 				}
 			}
 		}
@@ -2383,7 +2438,15 @@ void CCellLayer::Find_NearCell(CNode* pNode, CellList& rhsCellList)
 		}
 
 	}
-
+	/*
+				CellList TmpList;
+			for (_uint i = 0; i < CCell::LINE_END; ++i)
+			{
+				CCell* pNeighborCell = pCell->Get_NeighborCell(CCell::LINE(i));
+				if (pNeighborCell && !pNeighborCell->Check_Attribute(CELL_BLOCKED))
+					TmpList.push_back(pNeighborCell);
+			}
+	*/
 
 
 }
@@ -2497,6 +2560,25 @@ list<CCell*> CCellLayer::Find_Cell_InRange(_float4 vPosition, _float fRange)
 	}
 
 	return Return;
+}
+void CCellLayer::Find_NearOpenCell(_float4 vPosition, list<CCell*>& NearOpenCells, _int NeighborLevel)
+{
+	CCell* pCell = Find_Cell(vPosition);
+	if (!pCell->Check_Attribute(CELL_BLOCKED))
+		NearOpenCells.push_back(pCell);
+	if(0 >= NeighborLevel)
+		return;
+
+	for (_uint i = 0; i < CCell::LINE_END; ++i)
+	{
+		CCell* pNeighborCell = pCell->Get_NeighborCell(CCell::LINE(i));
+
+		if (pNeighborCell) 
+		{
+			_int iNeighborLevel = NeighborLevel - 1;
+			Find_NearOpenCell(pNeighborCell->Get_Position(), NearOpenCells, iNeighborLevel);
+		}
+	}
 }
 void CCellLayer::Set_MinHeight(_float Height) 
 {
