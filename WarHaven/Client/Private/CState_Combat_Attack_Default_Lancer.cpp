@@ -75,6 +75,7 @@ HRESULT CState_Combat_Attack_Default_Lancer::Initialize()
 
 void CState_Combat_Attack_Default_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    pOwner->Get_Status().fDamageMultiplier = 2.5f;
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
     pAnimator->Set_CurAnimIndex(ANIM_BASE_R, 5, ANIM_DIVIDE::eBODYLOWER);

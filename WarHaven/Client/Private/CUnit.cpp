@@ -1122,7 +1122,7 @@ void CUnit::Check_MultipleObject_IsInFrustum()
 		// ray쏴서 장애물 판별
 		_float4 vOutPos;
 		_float fOutDist;
-		_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
+		_float4 vCamPos = Get_FollowCam()->Get_Transform()->Get_World(WORLD_POS);//GAMEINSTANCE->Get_ViewPos();
 		_float4 vOtherPos = pUnit->Get_Transform()->Get_World(WORLD_POS);
 		vOtherPos.y += 0.8f;
 		_float4 vRayDir = vOtherPos - vCamPos;

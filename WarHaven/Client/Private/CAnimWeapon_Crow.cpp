@@ -51,24 +51,25 @@ void CAnimWeapon_Crow::Crow_CollisionEnter(CGameObject* pOtherObj, const _uint& 
 	if (m_eCurPhase == eSHOOT)
 	{
 
-
 		switch (eMyColType)
 		{
-		case COL_BLUEFLYATTACKGUARDBREAK:
+		case COL_BLUEGROGGYATTACK:
 
-			if (eOtherColType != COL_REDHITBOX_BODY)
-				return;
+			if (eOtherColType == COL_REDHITBOX_BODY ||
+				eOtherColType == COL_REDGUARD)
+				Boom_Crow();
 
-			Boom_Crow();
+
 
 			break;
 
-		case COL_REDFLYATTACKGUARDBREAK:
+		case COL_REDGROGGYATTACK:
 
-			if (eOtherColType != COL_BLUEHITBOX_BODY)
-				return;
+			if (eOtherColType == COL_BLUEHITBOX_BODY ||
+				eOtherColType == COL_BLUEGUARD)
+				Boom_Crow();
 
-			Boom_Crow();
+			
 
 			break;
 
@@ -211,8 +212,9 @@ void CAnimWeapon_Crow::Shoot_Crow(_float4 vShootPos, _float4 vShootDir)
 
 	ENABLE_COMPONENT(m_pBoneColider);
 
+	m_pCollider = GET_COMPONENT(CCollider_Sphere);
+
 	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
-		//m_pCollider->Set_ColIndex(COL_BLUEFLYATTACKGUARDBREAK);
 		m_pCollider->Set_ColIndex(COL_REDFLYATTACKGUARDBREAK);
 	else
 	{
@@ -220,10 +222,10 @@ void CAnimWeapon_Crow::Shoot_Crow(_float4 vShootPos, _float4 vShootDir)
 
 
 		if (eTeam == eTEAM_TYPE::eBLUE)
-			m_pCollider->Set_ColIndex(COL_BLUEFLYATTACKGUARDBREAK);
+			m_pCollider->Set_ColIndex(COL_BLUEGROGGYATTACK);
 
 		else if(eTeam == eTEAM_TYPE::eRED)
-			m_pCollider->Set_ColIndex(COL_REDFLYATTACKGUARDBREAK);
+			m_pCollider->Set_ColIndex(COL_REDGROGGYATTACK);
 		
 	}
 
@@ -236,6 +238,7 @@ void CAnimWeapon_Crow::Shoot_Crow(_float4 vShootPos, _float4 vShootDir)
 
 	if (m_pOwnerUnit->Get_CurState() == AI_STATE_COMBAT_SHOOT_QANDA)
 	{
+		vShootDir.y -= 0.2f;
 		m_vChaseLook = vShootDir;
 	}
 	else
@@ -288,7 +291,7 @@ HRESULT CAnimWeapon_Crow::Initialize_Prototype()
 	//vOffsetPos.z += fRadius;
 	
 	// ÆÀ ÁöÁ¤ ÇÊ¿ä
-	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, COL_BLUEFLYATTACKGUARDBREAK, vOffsetPos, DEFAULT_TRANS_MATRIX);
+	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, COL_REDFLYATTACKGUARDBREAK, vOffsetPos, DEFAULT_TRANS_MATRIX);
 	vOffsetPos.x += fRadius;
 
 	Add_Component(pCollider);

@@ -49,14 +49,14 @@ HRESULT CState_Combat_Default_Qanda::Initialize()
     m_fMyMaxLerp = 0.4f;
     m_fMyAccel = 10.f;
 
-    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 8;
-    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 9;
-    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 10;
-    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 11;
+    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 18;
+    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 19;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 20;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 21;
     m_iDirectionAnimIndex[STATE_DIRECTION_S] = 22;
     m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 23;
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 24;
-    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 12;
+    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 25;
 
     m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
     m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
@@ -88,7 +88,7 @@ void CState_Combat_Default_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 
 
     
-    m_fMaxSpeed = pOwner->Get_Status().fRunSpeed * 0.8f;
+    m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
     m_iAnimIndex = m_iDirectionAnimIndex[m_iDirectionRand];
 
     m_iStateChangeKeyFrame = 25;
@@ -106,6 +106,9 @@ STATE_TYPE CState_Combat_Default_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator
     if (eAttackState != STATE_END)
         return eAttackState;
 
+
+        
+
     _uint iFrame = pAnimator->Get_CurAnimFrame() + 1;
 
 
@@ -114,8 +117,15 @@ STATE_TYPE CState_Combat_Default_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator
     case 0:
     case 1:
 
-        if (iFrame == m_iStateChangeKeyFrame)
-            return m_eStateType;
+        if (Get_TargetLook_Length(pOwner) < m_fAIMyLength / 2.f)
+        {
+            return AI_STATE_COMBAT_GUARD_QANDA;
+        }
+        else
+        {
+            if (iFrame == m_iStateChangeKeyFrame)
+                return m_eStateType;
+        }
 
         break;
 
@@ -128,6 +138,14 @@ STATE_TYPE CState_Combat_Default_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator
     case 7:
 
     {
+        if (Get_TargetLook_Length(pOwner) < m_fAIMyLength / 2.f)
+        {
+            if (m_iDirectionRand % 2 == 0)
+            {
+                return AI_STATE_COMBAT_SHADOWSTEP_QANDA;
+            }
+        }
+
         CAnimWeapon_Crow::ePhyxState eCrowState = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->Get_Phase();
 
         if (eCrowState == CAnimWeapon_Crow::ePhyxState::eSHOOT  ||
@@ -137,6 +155,7 @@ STATE_TYPE CState_Combat_Default_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator
 
         else
             return AI_STATE_COMBAT_BEGIN_QANDA;
+            
     }
         break;
 
@@ -164,7 +183,7 @@ STATE_TYPE CState_Combat_Default_Qanda::Shoot_State(CUnit* pOwner)
 {
     list<CGameObject*> listFrustumObject = static_cast<CUnit_Qanda*>(pOwner)->Get_MultipleFrustumObject();
 
-    if ((_int)listFrustumObject.size() >= 2)
+    if ((_int)listFrustumObject.size() >= 1)
     {
         if (pOwner->Can_Use(CUnit::SKILL3))
             return AI_STATE_COMBAT_BEGIN_SNIPING_QANDA;

@@ -88,28 +88,7 @@ STATE_TYPE CState_Common_Hit_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
     }
 
     if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
-    {
-        switch (m_iRand)
-        {
-        case 0:
-
-            return AI_STATE_COMBAT_SHADOWSTEP_QANDA;
-
-            
-        case 1:
-
-            return AI_STATE_COMBAT_GUARD_QANDA;
-
-        case 2:
-            m_bAttackTrigger = true;
-            break;
-
-
-        default:
-            break;
-        }
-        
-    }
+        return AI_STATE_COMBAT_SHADOWSTEP_QANDA;
 
 
     return __super::Tick(pOwner, pAnimator);

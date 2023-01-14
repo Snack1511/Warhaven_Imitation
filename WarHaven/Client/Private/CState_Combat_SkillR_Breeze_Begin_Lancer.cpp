@@ -63,7 +63,8 @@ void CState_Combat_SkillR_Breeze_Begin_Lancer::Enter(CUnit* pOwner, CAnimator* p
 {
 	m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed * 1.5f;
 
-
+	m_fDamagePumping = 15.f;
+	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
 
 	
 	pOwner->TurnOn_TrailEffect(true);

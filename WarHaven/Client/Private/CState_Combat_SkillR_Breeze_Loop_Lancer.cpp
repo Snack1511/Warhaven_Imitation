@@ -57,6 +57,8 @@ HRESULT CState_Combat_SkillR_Breeze_Loop_Lancer::Initialize()
 
 void CState_Combat_SkillR_Breeze_Loop_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+	m_fDamagePumping = 15.f;
+	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
 
 	m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed * 1.5f;
 	Physics_Setting(m_fMaxSpeed, pOwner);
@@ -125,6 +127,7 @@ void CState_Combat_SkillR_Breeze_Loop_Lancer::Exit(CUnit* pOwner, CAnimator* pAn
 			continue;
 
 		pNeedle->On_ChangePhase(CLancerNeedle::LANCERNEEDLE_STOP);
+		pNeedle->Enable_Needle(false);
 	}
 
 

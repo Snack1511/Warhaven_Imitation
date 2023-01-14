@@ -73,11 +73,11 @@ void CState_Common_FlyHit_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 STATE_TYPE CState_Common_FlyHit_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Get_CurAnimFrame() > m_tHitInfo.iLandKeyFrame)
-        return AI_STATE_COMMON_FALL_QANDA;
+        return AI_STATE_COMBAT_SHADOWSTEP_QANDA;
 
 
-    if (pAnimator->Is_CurAnimFinished())
-        return AI_STATE_COMMON_FALL_QANDA;
+    if (pAnimator->Is_CurAnimFinished())    
+        return AI_STATE_COMBAT_SHADOWSTEP_QANDA;
 
     return __super::Tick(pOwner, pAnimator);
 }

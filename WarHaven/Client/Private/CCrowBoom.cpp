@@ -23,13 +23,15 @@ void CCrowBoom::Boom(CPlayer* pOwnerPlayer, _float4 vPos)
 
 	if (CUser::Get_Instance()->Get_CurLevel() != LEVEL_TEST)
 	{
+		m_pColliderCom = GET_COMPONENT(CCollider_Sphere);
+
 		if (pOwnerPlayer->Get_Team()->Get_TeamType() == eTEAM_TYPE::eRED)
 			m_pColliderCom->Set_ColIndex(COL_REDGUARDBREAK);
 		else
 			m_pColliderCom->Set_ColIndex(COL_BLUEGUARDBREAK);
 	}
 	else
-		m_pColliderCom->Set_ColIndex(COL_BLUEGUARDBREAK);
+		m_pColliderCom->Set_ColIndex(COL_REDGUARDBREAK);
 
 }
 

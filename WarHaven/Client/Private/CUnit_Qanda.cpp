@@ -243,13 +243,13 @@ void CUnit_Qanda::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		break;
 	case eBehaviorType::eCombat:
 		//상태변경
-	//	eNewState = AI_STATE_COMBAT_DEFAULT_QANDA_R;
+		eNewState = AI_STATE_COMBAT_DEAFULT_QANDA;
 
 		break;
 	case eBehaviorType::eFollowTeam:
 	case eBehaviorType::eGoToTrigger:
 		//상태변경
-	//	eNewState = AI_STATE_PATROL_DEFAULT_QANDA_R;
+		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_QANDA;
 		break;
 
 	case eBehaviorType::eRevive:
@@ -297,9 +297,18 @@ void CUnit_Qanda::Shoot_AnimCrow()
 		CUnit* pMyUnit = m_pOwnerPlayer->Get_CurrentUnit();
 		CUnit* pOtherUnit = m_pOwnerPlayer->Get_CurrentUnit()->Get_TargetUnit();
 
-		_float4 vLook = pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - pMyUnit->Get_Transform()->Get_World(WORLD_POS);
-		vLook.Normalize();
-		vShootDir = vLook;
+		if (pOtherUnit)
+		{
+			_float4 vLook = pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - pMyUnit->Get_Transform()->Get_World(WORLD_POS);
+			vShootDir = vLook;
+		}
+		else
+		{
+			vShootDir = pMyUnit->Get_Transform()->Get_World(WORLD_LOOK);
+			
+		}
+
+		vShootDir.Normalize();
 	}
 		
 
@@ -821,7 +830,11 @@ void CUnit_Qanda::My_Tick()
 {
 	if (m_eCurState == STATE_ATTACK_BEGIN_SNIPING_QANDA ||
 		m_eCurState == STATE_ATTACK_AIMING_SNIPING_QANDA ||
-		m_eCurState == AI_STATE_COMBAT_DEAFULT_QANDA)
+		m_eCurState == AI_STATE_COMBAT_DEAFULT_QANDA ||
+		m_eCurState == AI_STATE_COMBAT_DEAFULT_QANDA ||
+		m_eCurState == AI_STATE_COMBAT_BEGIN_SNIPING_QANDA ||
+		m_eCurState == AI_STATE_COMBAT_AIMING_SNIPING_QANDA ||
+		m_eCurState == AI_STATE_COMBAT_SHOOT_SNIPING_QANDA)
 	{
 
 		__super::Check_MultipleObject_IsInFrustum();

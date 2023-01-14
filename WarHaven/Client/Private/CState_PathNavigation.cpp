@@ -53,7 +53,7 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	}
 
 //#ifdef _DEBUG
-	if (KEY(J, TAP))
+	if (KEY(K, TAP))
 	{
 		pOwner->Get_CurRoute().clear();
 		_float4 vTargetPos = PLAYER->Get_Transform()->Get_World(WORLD_POS);

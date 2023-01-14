@@ -166,6 +166,9 @@ HRESULT CLancer_Attack_Sting::Initialize()
 
 void CLancer_Attack_Sting::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	m_fDamagePumping = 2.5f;
+	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
+
 	m_iAnimIndex = 0;
 
 	pOwner->TurnOn_TrailEffect(true);

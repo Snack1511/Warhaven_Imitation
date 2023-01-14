@@ -60,18 +60,18 @@ HRESULT CState_Combat_Shoot_Qanda::Initialize()
 void CState_Combat_Shoot_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	if (pOwner->Get_Status().eChargeType == CUnit::UNIT_CHARGESTEP1)
-		m_fDamagePumping = 1.5f;
-	else if (pOwner->Get_Status().eChargeType == CUnit::UNIT_CHARGESTEP2)
 		m_fDamagePumping = 2.f;
+	else if (pOwner->Get_Status().eChargeType == CUnit::UNIT_CHARGESTEP2)
+		m_fDamagePumping = 2.5f;
 	else if (pOwner->Get_Status().eChargeType == CUnit::UNIT_CHARGESTEP3)
 	{
 		m_fDamagePumping =	4.f;
 		m_iAnimIndex = 8;
-	}
+	} 
 
 	if (ePrevType == AI_STATE_COMBAT_BEGIN_SNIPING_QANDA ||
 		ePrevType == AI_STATE_COMBAT_BEGIN_QANDA)
-		m_fDamagePumping = 1.f;
+		m_fDamagePumping = 1.5f;
 
 	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
 

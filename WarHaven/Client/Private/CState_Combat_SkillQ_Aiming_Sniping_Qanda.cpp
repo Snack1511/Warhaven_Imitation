@@ -42,7 +42,6 @@ HRESULT CState_Combat_SkillQ_Aiming_Sniping_Qanda::Initialize()
 	m_fInterPolationTime = 0.f;
 	m_fAnimSpeed = 2.f;
 
-
 	return S_OK;
 }
 

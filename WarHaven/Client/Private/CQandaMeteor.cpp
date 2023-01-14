@@ -67,21 +67,8 @@ HRESULT CQandaMeteor::Initialize_Prototype()
 	if (FAILED(SetUp_Projectile(L"../bin/resources/meshes/weapons/ball/CannonBall.fbx")))
 		return E_FAIL;
 
-#ifdef TESTLEVEL_AI_PROJECTILE
-
-
-	if (FAILED(SetUp_Collider(COL_REDGROGGYATTACK, 1.f)))
-		return E_FAIL;
-
-#else
-
-
-
 	if (FAILED(SetUp_Collider(COL_BLUEGROGGYATTACK, 1.f)))
 		return E_FAIL;
-
-#endif // TESTLEVEL_AI_PROJECTILE
-
 
 	m_hcCode = HASHCODE(CQandaMeteor);
 	m_fMaxSpeed = 30.f;
@@ -148,8 +135,10 @@ void CQandaMeteor::OnDisable()
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Meteo_Boom", m_pTransform->Get_World(WORLD_POS),
 		GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE));
 
-	if (m_pTargetUnit)
-		m_pTargetUnit->Get_OwnerHUD()->SetActive_TargetUI(0, false);
-
+	if (m_pOwnerUnit->Is_MainPlayer())
+	{
+		if (m_pTargetUnit)
+			m_pTargetUnit->Get_OwnerHUD()->SetActive_TargetUI(0, false);
+	}
 	__super::OnDisable();
 }
