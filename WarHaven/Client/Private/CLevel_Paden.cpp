@@ -18,6 +18,8 @@
 #include "CUser.h"
 #include "CUI_MiniMap.h"
 
+#include "Functor.h"
+
 
 CLevel_Paden::CLevel_Paden()
 {
@@ -98,7 +100,9 @@ HRESULT CLevel_Paden::Enter()
 
 #endif 
 
-
+	GAMEINSTANCE->Set_ChannelVolume((CHANNEL_GROUP)CHANNEL_BGM, 0.1f);
+	GAMEINSTANCE->Set_ChannelVolume((CHANNEL_GROUP)CHANNEL_UI, 1.f);
+	GAMEINSTANCE->Set_ChannelVolume((CHANNEL_GROUP)CHANNEL_VOICE, 10.f);
 
 	return S_OK;
 }

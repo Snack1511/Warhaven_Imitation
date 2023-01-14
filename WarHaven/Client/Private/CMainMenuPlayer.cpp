@@ -38,7 +38,49 @@ void CMainMenuPlayer::Set_CurClassType(CLASS_TYPE eClassType)
 	ENABLE_GAMEOBJECT(m_pMainMenuUnit[m_eCurClassType]);
 	m_fRotateY[m_eCurClassType] = 180.f;
 
-	
+	wstring strKey = L"Voice_Select";
+	_float fVol = 1.f;
+
+	switch (eClassType)
+	{
+	case Client::WARRIOR:
+		strKey += L"_Warrior";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::ARCHER:
+		strKey += L"_Archer";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::PALADIN:
+		strKey += L"_Paladin";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::PRIEST:
+		strKey += L"_Priest";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::ENGINEER:
+		strKey += L"_Warhammer";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::FIONA:
+		strKey += L"_Fiona";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::QANDA:
+		strKey += L"_Qanda";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::LANCER:
+		strKey += L"_Lancer";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::CLASS_END:
+		break;
+	default:
+		break;
+	}
+
 }
 
 void CMainMenuPlayer::Change_ModelParts(CLASS_TYPE eClassType, MODEL_PART_TYPE eModelPartType)

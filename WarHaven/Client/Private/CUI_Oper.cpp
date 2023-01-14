@@ -756,11 +756,11 @@ void CUI_Oper::Progress_Oper()
 				{
 				case Client::LEVEL_PADEN:
 					CGameSystem::Get_Instance()->On_StartGame();
-					GAMEINSTANCE->Play_BGM(L"BGM_Paden");
+					GAMEINSTANCE->Play_BGM(L"BGM_Paden", 0.1f);
 					break;
 				case Client::LEVEL_HWARA:
 					CGameSystem::Get_Instance()->On_StartGame();
-					GAMEINSTANCE->Play_BGM(L"BGM_Hwara");
+					GAMEINSTANCE->Play_BGM(L"BGM_Hwara", 0.1f);
 					break;
 				}
 

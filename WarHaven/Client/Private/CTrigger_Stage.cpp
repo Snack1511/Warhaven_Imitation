@@ -277,16 +277,29 @@ void CTrigger_Stage::Update_Conquered()
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 0);
 			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 0);
 			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 0);
+
+			if (IsMainPlayerTeam)
+				CFunctor::Play_Sound(L"UI_MainTrigger", CHANNEL_UI, 1.f);
+
 			break;
 		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN:
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 1);
 			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 1);
 			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 1);
+
+			if (IsMainPlayerTeam)
+				CFunctor::Play_Sound(L"UI_RespawnTrigger", CHANNEL_UI, 1.f);
+
 			break;
 		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eCANNON:
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 2);
 			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 2);
 			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 2);
+
+			if(IsMainPlayerTeam)
+				CFunctor::Play_Sound(L"UI_CannonTrigger", CHANNEL_UI, 1.f);
+
+
 			break;
 
 		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER:
@@ -297,6 +310,9 @@ void CTrigger_Stage::Update_Conquered()
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 2);
 			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 2);
 			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 2);
+
+			if (IsMainPlayerTeam)
+				CFunctor::Play_Sound(L"UI_HwaraTrigger", CHANNEL_UI, 1.f);
 
 			break;
 
@@ -311,7 +327,8 @@ void CTrigger_Stage::Update_Conquered()
 
 		}
 
-
+		if (!IsMainPlayerTeam)
+			CFunctor::Play_Sound(L"UI_EnemyTrigger", CHANNEL_UI, 1.f);
 
 		m_pConqueredTeam->Add_Trigger(this);
 

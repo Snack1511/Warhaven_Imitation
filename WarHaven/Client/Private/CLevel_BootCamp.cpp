@@ -110,7 +110,7 @@ HRESULT CLevel_BootCamp::Enter()
 
 	GAMEINSTANCE->Stop_DarkScreen(1.5f);
 
-	CFunctor::Play_Sound(L"BGM_Bootcamp", CHANNEL_BGM, 1.f);
+	CFunctor::Play_Sound(L"BGM_Bootcamp", CHANNEL_BGM, 0.3f);
 
 	return S_OK;
 }

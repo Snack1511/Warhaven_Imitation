@@ -75,6 +75,8 @@ CUnit::~CUnit()
 
 void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
+	
+
 	if (eOtherColType == COL_REVIVE)
 	{
 		if (pOtherObj == m_pOwnerPlayer)
@@ -89,6 +91,9 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 		{
 			if (m_bIsMainPlayer)
 			{
+				if (!m_pAdjRevivalPlayer->Get_UnitHUD())
+					return;
+
 				m_pAdjRevivalPlayer->Get_UnitHUD()->Get_ReviveUI()->Set_ReviveIcon(1);
 			}
 		}
@@ -339,7 +344,7 @@ void CUnit::On_Respawn()
 	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
 
 	if (m_bIsMainPlayer)
-		Get_CurStateP()->Play_Voice(this, L"Voice_Respawn", 1.f);
+		Get_CurStateP()->Play_Voice(this, L"Voice_Respawn", 2.f);
 
 }
 
@@ -1593,7 +1598,9 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 
 	if (!m_bIsMainPlayer)
 	{
-		Get_OwnerHUD()->SetActive(true);
+		if (!Get_OwnerHUD())
+			return;
+
 		Get_OwnerHUD()->SetActive_UnitHP(true);
 	}
 

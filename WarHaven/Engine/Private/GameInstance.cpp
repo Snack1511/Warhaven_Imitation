@@ -267,6 +267,11 @@ void CGameInstance::Play_BGM(const _tchar* strSoundKey)
 	m_pSoundDevice->Play_BGM(strSoundKey);
 }
 
+void CGameInstance::Play_BGM(const _tchar* strSoundKey, _float fVolume)
+{
+	m_pSoundDevice->Play_BGM(strSoundKey, fVolume);
+}
+
 void CGameInstance::Stop_Sound(CHANNEL_GROUP eType)
 {
 	m_pSoundDevice->Stop_Sound(eType);

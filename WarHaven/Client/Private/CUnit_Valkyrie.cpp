@@ -685,9 +685,10 @@ void CUnit_Valkyrie::OnDisable()
 	{
 		for(auto& elem : m_TransformParticles)
 			static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+
+		m_TransformParticles.clear();
 	}
 
-	m_TransformParticles.clear();
 
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	vPos.y += 0.5f;

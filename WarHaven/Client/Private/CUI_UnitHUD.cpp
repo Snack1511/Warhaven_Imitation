@@ -66,6 +66,7 @@ void CUI_UnitHUD::My_Tick()
 {
 	__super::My_Tick();
 
+
 	if (m_fUnitDis > 10.f)
 	{
 		m_vOffset = _float4(0.f, 1.9f, 0.f);
@@ -91,6 +92,10 @@ void CUI_UnitHUD::My_Tick()
 					if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 3)
 						GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(3);
 				}
+			}
+			else
+			{
+				return;
 			}
 		}
 		else
@@ -129,6 +134,10 @@ void CUI_UnitHUD::My_Tick()
 					m_pUnitNameText->Set_Color(m_vColorRed);
 				}
 			}
+			else
+			{
+				return;
+			}
 		}
 
 		if (m_pUnitNameText->Get_FontRender())
@@ -152,6 +161,10 @@ void CUI_UnitHUD::My_Tick()
 				{
 					m_pUnitNameText->Set_Color(m_vColorRed);
 				}
+			}
+			else
+			{
+				return;
 			}
 		}
 	}
@@ -191,10 +204,7 @@ void CUI_UnitHUD::My_Tick()
 		}
 	}
 
-	if (!m_pOwner->IsMainPlayer())
-		cout << CFunctor::To_String(m_pOwner->Get_PlayerName()) << endl;
-
-	Set_ProjPos(m_pOwner->Get_Transform());
+	// Set_ProjPos(m_pOwner->Get_Transform());
 
 	Tick_UnitHP();
 	Tick_TargetUI();
@@ -212,7 +222,8 @@ CUI_UnitHP* CUI_UnitHUD::Get_UnitHP()
 
 CUI_Revive* CUI_UnitHUD::Get_ReviveUI()
 {
-	return static_cast<CUI_Revive*>(m_pUnitUI[UI_Revive]);
+	if (m_pUnitUI[UI_Revive])
+		return static_cast<CUI_Revive*>(m_pUnitUI[UI_Revive]);
 }
 
 void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
@@ -229,6 +240,11 @@ void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
 	vNewPos.y -= 30.f;
 	for (int i = 0; i < Target_End; ++i)
 		m_pTargetUI[i]->Set_Pos(vNewPos);
+}
+
+void CUI_UnitHUD::Set_UnitHP(_float fCurHP, _float fMaxHP)
+{
+	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHP(fCurHP, fMaxHP);
 }
 
 void CUI_UnitHUD::Enable_RevivalUI()
@@ -355,6 +371,10 @@ void CUI_UnitHUD::Init_UnitNameText()
 			m_pUnitNameText->Set_FontColor(m_vColorRed);
 		}
 	}
+	else
+	{
+		return;
+	}
 
 	wstring wstrUnitName = m_pOwner->Get_PlayerName();
 	m_pUnitNameText->Set_FontText(wstrUnitName);
@@ -379,6 +399,10 @@ void CUI_UnitHUD::SetActive_UnitHP(_bool value)
 		{
 			dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorRed);
 		}
+	}
+	else
+	{
+		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorOrigin);
 	}
 
 	if (m_pUnitUI[UI_Hp]->Is_Valid() == !value)

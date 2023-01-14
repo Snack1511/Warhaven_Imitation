@@ -284,7 +284,6 @@ void CEffect::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 	pShader->Set_RawValue("g_fColorPower", &m_fColorPower, sizeof(_float));
 	pShader->Set_RawValue("g_vPlusColor", &m_vPlusColor, sizeof(_float4));
 	pShader->Set_RawValue("g_fDissolvePower", &m_fDissolvePower, sizeof(_float));
-	pShader->Set_RawValue("g_fRimlightPower", &m_fRimlightPower, sizeof(_float));
 }
 
 void CEffect::Set_ColliderOn(_float fRadius, COL_GROUP_CLIENT eColType)

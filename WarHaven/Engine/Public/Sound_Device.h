@@ -27,6 +27,7 @@ public:
 
 
 	void		Play_BGM(const _tchar* strSoundKey);
+	void		Play_BGM(const _tchar* strSoundKey, _float fVolume);
 
 	void		Stop_Sound(CHANNEL_GROUP eType);
 	void		Stop_Sound(const _tchar* strSoundKey);

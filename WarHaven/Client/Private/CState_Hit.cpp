@@ -2,13 +2,17 @@
 #include "CState_Hit.h"
 
 #include "UsefulHeaders.h"
+
 #include "HIerarchyNode.h"
 #include "CUnit_Priest.h"
 #include "CUnit_Paladin.h"
 #include "CUnit_Qanda.h"
+#include "CUnit_Lancer.h"
 #include "Loading_Manager.h"
 #include "CCamera_Follow.h"
+#include "CAnimWeapon_Crow.h"
 
+#include "CLancerNeedle.h"
 
 CState_Hit::CState_Hit()
 {
@@ -95,8 +99,19 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
     case Client::QANDA:
         static_cast<CUnit_Qanda*>(pOwner)->Turn_ChargeEffect(false);
         static_cast<CUnit_Qanda*>(pOwner)->Turn_SteamEffect(false);
+        static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->On_ChangePhase(CAnimWeapon_Crow::eIDLE);
         break;
     case Client::LANCER:
+
+        for (_int i = 0; i < CUnit_Lancer::eNeedle::eNeedle_Max; ++i)
+        {
+            CLancerNeedle* pNeedle = static_cast<CUnit_Lancer*>(pOwner)->Get_Needle(i);
+
+            if (!pNeedle)
+                continue;
+
+            pNeedle->On_ChangePhase(CLancerNeedle::LANCERNEEDLE_STOP);
+        }
         break;
     default:
         break;
