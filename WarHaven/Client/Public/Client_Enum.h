@@ -1494,8 +1494,7 @@ namespace Client
 	enum class eBehaviorType
 	{
 		ePatrol,
-		eGoToTrigger,
-		eFollowTeam,
+		ePathFinding,
 		ePadenCannonInteract,
 		eRevive,
 		eCombat,

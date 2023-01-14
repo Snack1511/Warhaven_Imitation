@@ -38,9 +38,6 @@ void CState_PathNavigation::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (!m_pOwner->Get_OwnerPlayer()->Get_TargetObject())
-		return __super::Tick(pOwner, pAnimator);
-
 	m_fAIDelayTime += fDT(0);
 
 	// 만약에 계속 낀다면 이 로직 한번 사용해보세요.
@@ -52,128 +49,54 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		//	return m_eWalkState;
 	}
 
-//#ifdef _DEBUG
-	if (KEY(K, TAP))
-	{
-		pOwner->Get_CurRoute().clear();
-		_float4 vTargetPos = PLAYER->Get_Transform()->Get_World(WORLD_POS);
-		pOwner->Get_OwnerPlayer()->Make_BestRoute(vTargetPos);
+	/* Path 타기 */
 
-	}
-//#endif
+	_float4 vDir;
+	_float4 vCurPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
 
-	_float4 vTargetPos = m_pOwner->Get_OwnerPlayer()->Get_TargetObjPos();
+	CPath* pCurPath = pOwner->Get_CurPath();
 
-	if (vTargetPos.Is_Zero())
-	{
-		assert(0);
+	if (!pCurPath)
 		return __super::Tick(pOwner, pAnimator);
 
-	}
+	pCurPath->Update_CurrentIndex(vCurPos);
 
-	_float4 vCurPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
-	_float4 vDir = vTargetPos - vCurPos;
+	/* 도착했는지 반드시 확인 */
+	if (pCurPath->Is_Arrived())
+		return __super::Tick(pOwner, pAnimator);
 
-	_bool bFindRoute = true;
 
+	vDir = pCurPath->Get_CurDir(vCurPos, false);
+
+	// 만약 Path 타야하는데 Dir로 Ray쏴서 벽에 막히면, 다른 가장 가까운 Release Path를 찾아야 한다.
+
+	_float4 vRayStartPos = vCurPos;
+	vRayStartPos.y += 0.5f;
+
+	if (GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, pCurPath->Get_CurLength(vCurPos)))
 	{
-		_float fDiffY = fabsf(vTargetPos.y - vCurPos.y);
-
-		if (fDiffY < m_fMaxY)
+		/* 만약 main path 타고있던거면 main path 그냥 다 탄걸로 처리해 */
+		if (m_pOwner->Get_StartMainPath() == pCurPath)
 		{
-			//높이 차 별로 안나면 ray 쏴야함
-			_float4 vOutPos;
-			_float fOutDist;
-
-			_float4 vRayStartPos = vCurPos;
-			vRayStartPos.y += 0.5f;
-			_float4 vRayEndPos = vTargetPos;
-			vRayEndPos.y += 0.5f;
-
-			_float4 vRayDir = vRayEndPos - vRayStartPos;
-
-			if (!GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vRayStartPos, vRayDir, vRayDir.Length()))
-			{
-
-				if (pOwner->Get_OwnerPlayer()->Is_KeepRay())
-				{
-					eBehaviorType eBehaviortype = pOwner->Get_OwnerPlayer()->Get_BehaviorDesc()->eCurType;
-
-					STATE_TYPE ePrevStateType = STATE_END;
-
-					switch (eBehaviortype)
-					{
-					case Client::eBehaviorType::ePatrol:
-						ePrevStateType = pOwner->Get_AIState_Type().eAIPatrolDefaultState;
-						break;
-
-
-					case Client::eBehaviorType::ePadenCannonInteract:
-						ePrevStateType = pOwner->Get_AIState_Type().eAICannonDefaultState;
-						break;
-
-					case Client::eBehaviorType::eRevive:
-						ePrevStateType = pOwner->Get_AIState_Type().eAIReviveDefaultState;
-						break;
-
-					case Client::eBehaviorType::eCombat:
-						ePrevStateType = pOwner->Get_AIState_Type().eAICommbatDefaultState;
-						break;
-
-					}
-
-					if (ePrevStateType != STATE_END)
-						return ePrevStateType;
-				}
-				else
-				{
-					bFindRoute = false;
-				}
-				
-
-			}
+			m_pOwner->Get_StartMainPath()->Set_Arrived();
+			/*현재 Path 갱신해야하고 MainPath 지우면 안되기 때문에 null 처리*/
+			m_pOwner->Get_OwnerPlayer()->Set_CurPathNull();
 		}
+
+
+		pCurPath = CGameSystem::Get_Instance()->Clone_RandomReleasePath(vCurPos);
+		if (!pCurPath)
+		{
+			assert(0);
+			return __super::Tick(pOwner, pAnimator);
+		}
+		
+
+		pOwner->Get_OwnerPlayer()->Set_NewPath(pCurPath);
 	}
 
-	if (bFindRoute)
-	{
-		_float4 vDestination;
-		/* empty면 일단 루트를 만들으라고 해야대*/
-		if (pOwner->Get_CurRoute().empty())
-		{
-			pOwner->Get_OwnerPlayer()->Make_BestRoute(vTargetPos);
-		}
-		else
-		{
-
-			vDestination = pOwner->Get_CurRoute().front();
-			vDestination.y = vCurPos.y;
-			_float4 vDiffPositon = (vDestination - vCurPos);
-			if (vDiffPositon.Length()
-				<= m_pOwner->Get_PhysicsCom()->Get_Physics().fSpeed * fDT(0))
-			{
-				pOwner->Get_CurRoute().pop_front();
-
-				if (pOwner->Get_CurRoute().empty())
-					pOwner->Get_OwnerPlayer()->Set_IsFindRoute(false);
-#ifdef _DEBUG
-				pOwner->Get_OwnerPlayer()->Add_DebugObject(vDestination);
-#endif
-			}
-			vDir = vDiffPositon.Normalize();
-		}
-	}
-	
-
-
-
-	CCellLayer* pTemp = nullptr;
-
-	CCell* pCurCell = pOwner->Get_NaviCom()->Get_CurCell(vCurPos, CGameSystem::Get_Instance()->Get_CellLayer(), &pTemp);
-	if (pCurCell && pCurCell->Check_Attribute(CELL_WALL))
-	{
-		m_iRand = RUN_STATE_JUMP;
-	}
+	/* Path 따라가는 코드 */
+	vDir = pCurPath->Get_CurDir(vCurPos);
 
 	vDir.y = 0.f;
 	pOwner->Get_Transform()->Set_LerpLook(vDir, 0.4f);
@@ -182,8 +105,6 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	vCurDir.y = 0.f;
 	pOwner->Get_PhysicsCom()->Set_Dir(vCurDir);
 	pOwner->Get_PhysicsCom()->Set_Accel(100.f);
-
-	
 
     return __super::Tick(pOwner, pAnimator);
 }

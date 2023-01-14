@@ -543,6 +543,11 @@ CPath* CUnit::Get_CurPath()
 	return m_pOwnerPlayer->Get_CurPath();
 }
 
+CPath* CUnit::Get_StartMainPath()
+{
+	return m_pOwnerPlayer->Get_CurMainPath();
+}
+
 CUnit* CUnit::Get_TargetUnit()
 {
 	if (!m_pOwnerPlayer->Get_TargetPlayer())

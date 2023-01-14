@@ -281,8 +281,8 @@ void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		eNewState = AI_STATE_COMBAT_DEFAULT_WARRIOR_L;
 
 		break;
-	case eBehaviorType::eFollowTeam:
-	case eBehaviorType::eGoToTrigger:
+	 
+	case eBehaviorType::ePathFinding:
 		//상태변경
 		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_WARRIOR_R;
 		break;
@@ -296,6 +296,7 @@ void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		//상태변경
 		eNewState = AI_STATE_COMMON_CHANGE_HERO;
 		break;
+
 	default:
 		assert(0);
 		break;

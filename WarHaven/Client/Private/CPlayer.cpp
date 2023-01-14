@@ -452,8 +452,8 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 					pNewPath = CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType());
 				}
 
-				Set_NewPath(pNewPath);
-				m_strStartPath = m_pCurPath->m_strName;
+				Set_NewMainPath(pNewPath);
+				m_strStartPath = m_pStartMainPath->m_strName;
 
 				/*무조건 중앙으로 모이게 하는 코드*/
 				//m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
@@ -462,11 +462,8 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 			}
 			else
 			{
-
 				CPath* pNewPath = CGameSystem::Get_Instance()->Clone_Path(m_pMySquad->Get_LeaderPlayer()->m_strStartPath, m_pAIController);
-
-
-				Set_NewPath(pNewPath);
+				Set_NewMainPath(pNewPath);
 			}
 		}
 	}
@@ -1121,12 +1118,12 @@ void CPlayer::On_RealChangeBehavior()
 
 		break;
 
-	case eBehaviorType::eGoToTrigger:
+	case eBehaviorType::ePathFinding:
 		pNewTargetObj = m_pCurBehaviorDesc->pTriggerPtr;
 		m_bKeepRay = false;
 		break;
 
-	case eBehaviorType::eFollowTeam:
+	 
 		m_pTargetPlayer = m_pCurBehaviorDesc->pAlliesPlayer;
 		pNewTargetObj = m_pTargetPlayer;
 		m_bKeepRay = false;
@@ -1395,7 +1392,16 @@ void CPlayer::Set_NewPath(CPath* pPath)
 
 	m_pCurPath->m_vPrevPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
 }
+void CPlayer::Set_NewMainPath(CPath* pPath)
+{
+	SAFE_DELETE(m_pStartMainPath);
+	m_pStartMainPath = pPath;
+	if (m_pStartMainPath)
+		m_pStartMainPath->Init_Indices();
 
+	m_pStartMainPath->m_vPrevPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+	m_pCurPath = m_pStartMainPath;
+}
 
 _float4 CPlayer::Get_LookDir()
 {

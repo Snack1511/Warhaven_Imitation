@@ -25,7 +25,7 @@ class CCannon;
 class CGameSystem
 {
 public:
-	enum eSTAGE_TYPE {eSTAGE_PADEN, eSTAGE_HWARA, eSTAGE_CNT};
+	enum eSTAGE_TYPE {eSTAGE_PADEN, eSTAGE_HWARA, ePADEN_RELEASE, eHWARA_RELEASE, eSTAGE_CNT};
 	DECLARE_SINGLETON(CGameSystem)
 
 private:
@@ -103,8 +103,13 @@ public: /* Pathes */
 	CPath*			Clone_RandomRespawnPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType);
 	CPath*			Clone_CenterPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType);
 
+	CPath* Clone_RandomReleasePath(_float4 vCurPos);
+	CPath* Clone_RandomNearestPath(_float4 vCurPos);
+
+
 	CPath* Get_NearPath(_float4 vPosition);
-public:	
+
+public:
 	CTrigger*					Find_Trigger(string strTriggerKey);
 	void						Enable_HwaraFinalTrigger(eTEAM_TYPE eTeamType);
 
@@ -142,11 +147,10 @@ private:
 	/* Path들 map으로 들고 있기. */
 	map<_hashcode, CPath*>	m_mapAllPathes[eSTAGE_CNT];
 
-
 private:
 	HRESULT					SetUp_AllPlayerInfos();
 	HRESULT					SetUp_AllPathes();
-
+	
 #pragma region Personality Functions
 private:
 	HRESULT					SetUp_AllPersonality();

@@ -51,6 +51,11 @@ HRESULT CPlayerInfo_Sub::Initialize()
 #endif // ARCHER_TH
 
 	}
+	else if (g_iSubCnt == 2)
+	{
+		m_tPlayerInfo.wstrName = L"쥬신아카데미가라";
+
+	}
 	else
 	{
 		m_tPlayerInfo.wstrName = L"SubPlayer_";

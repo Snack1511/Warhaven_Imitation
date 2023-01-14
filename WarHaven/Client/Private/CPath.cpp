@@ -78,7 +78,7 @@ void CPath::Update_CurrentIndex(_float4 vCurrentPos)
     
     m_iPrevIndex = m_iCurIndex;
 
-    if (fLength < fCurSpeed + 10.f * fDT(0))
+    if (fLength < fCurSpeed + 40.f * fDT(0))
         m_iCurIndex++;
 
     if (m_pOwnerController)
@@ -99,15 +99,25 @@ void CPath::Release()
 {
 }
 
-_float4 CPath::Get_CurDir(_float4 vCurrentPos)
+_float4 CPath::Get_CurDir(_float4 vCurrentPos, _bool bNoY)
 {
     if (m_iCurIndex == m_iNumPositions)
         return ZERO_VECTOR;
 
     _float4 vDir = m_vecPositions[m_iCurIndex] - vCurrentPos;
-    vDir.y = 0.f;
+
+    if (bNoY)
+     vDir.y = 0.f;
 
     return vDir.Normalize();
+}
+
+_float CPath::Get_CurLength(_float4 vCurrentPos)
+{
+    if (m_iCurIndex == m_iNumPositions)
+        return -1.f;
+
+    return (vCurrentPos - m_vecPositions[m_iCurIndex]).Length();
 }
 
 _float4 CPath::Get_LatestPosition()

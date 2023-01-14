@@ -247,15 +247,29 @@ private: /*AI 추가용*/
 	BEHAVIOR_DESC* m_pCurBehaviorDesc = nullptr;
 	BEHAVIOR_DESC* m_pReserveBehaviorDesc = nullptr;
 
+
+
 	string m_strStartPath;
+
+	/* 리스폰 시 지정된 MainPath */
+	CPath* m_pStartMainPath = nullptr;
+
+	/* 현재 타고 있는 Path. Main일 수도, release Path일 수도 있음 */
 	CPath* m_pCurPath = nullptr;
+
+public:
 	void	Set_NewPath(CPath* pPath);
+	void	Set_NewMainPath(CPath* pPath);
 
 
 public:
 	void Set_MainPlayerStartPath(_uint iTriggerType);
 	void SetStartPathEmpty() { m_strStartPath.clear(); };
+
+	void	Set_CurPathNull() { m_pCurPath = nullptr; }
 	CPath* Get_CurPath();
+	CPath* Get_CurMainPath() { return m_pStartMainPath; };
+
 	_float4 Get_LookDir();
 	_float4 Get_SquadDir();
 

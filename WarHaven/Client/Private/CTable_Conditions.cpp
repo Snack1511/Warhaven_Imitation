@@ -95,6 +95,7 @@ HRESULT CTable_Conditions::SetUp_Conditions()
     Add_WhyCondition(wstring(L"Check_FarAwayLeader"), Check_FarAwayLeader);
     Add_WhyCondition(wstring(L"Check_LookEnemy"), Check_LookEnemy);
     Add_WhyCondition(wstring(L"Check_DeadAllies"), Check_DeadAllies);
+    Add_WhyCondition(wstring(L"Check_ValidPath"), Check_ValidPath);
 #pragma endregion 플레이어 체크
 
 #pragma region 맵 체크
@@ -157,8 +158,7 @@ HRESULT CTable_Conditions::SetUp_Behaviors()
 {
     CBehavior* pBehavior = nullptr; 
     Add_Behavior(pBehavior, wstring(L"Patrol"), eBehaviorType::ePatrol);
-    Add_Behavior(pBehavior, wstring(L"GoToTrigger"), eBehaviorType::eGoToTrigger);
-    Add_Behavior(pBehavior, wstring(L"FollowTeam"), eBehaviorType::eFollowTeam);
+    Add_Behavior(pBehavior, wstring(L"PathFinding"), eBehaviorType::ePathFinding);
     Add_Behavior(pBehavior, wstring(L"PadenCannonInteract"), eBehaviorType::ePadenCannonInteract);
     Add_Behavior(pBehavior, wstring(L"Revive"), eBehaviorType::eRevive);
     Add_Behavior(pBehavior, wstring(L"Combat"), eBehaviorType::eCombat);
@@ -288,6 +288,7 @@ void CTable_Conditions::Check_LookEnemy(_bool& OutCondition, CPlayer* pPlayer, C
 {
     CHECKFALSEOUTCONDITION(OutCondition);
 
+
     //플레이어 Look방향 반원
     _float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
 
@@ -369,6 +370,55 @@ void CTable_Conditions::Check_DeadAllies(_bool& OutCondition, CPlayer* pPlayer, 
     }
 
     OutCondition = true;
+}
+
+void CTable_Conditions::Check_ValidPath(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+    CHECKFALSEOUTCONDITION(OutCondition);
+
+    if (!pPlayer->Get_CurMainPath() || !pPlayer->Get_CurPath())
+    {
+        OutCondition = false;
+        return;
+    }
+
+    CAIPersonality* pPersonality = pAIController->Get_Personality();
+
+    pPersonality->Update_RemainTime(eBehaviorType::ePatrol);
+    /* Patrol에 오래 머물렀으믄 새 Path 주자 */
+    if (pPersonality->Is_LongTimeRemain(eBehaviorType::ePatrol))
+    {
+        pPersonality->Init_RemainTime(eBehaviorType::ePatrol);
+        
+        /*현재 Path 갱신해야하고 MainPath 지우면 안되기 때문에 null 처리*/
+        if (pPlayer->Get_CurMainPath() == pPlayer->Get_CurPath())
+            pPlayer->Set_CurPathNull();
+
+        CPath* pCurPath = CGameSystem::Get_Instance()->Clone_RandomReleasePath(pPlayer->Get_WorldPos());
+        if (!pCurPath)
+        {
+            assert(0);
+            OutCondition = false;
+            return;
+        }
+
+        pPlayer->Set_NewPath(pCurPath);
+        OutCondition = true;
+        return;
+    }
+
+    //일단 MainPath는 다 타야해
+    if (pPlayer->Get_CurMainPath()->Is_Arrived())
+    {
+        OutCondition = false;
+        return;
+    }
+
+
+    
+
+    OutCondition = true;
+
 }
 
 void CTable_Conditions::Check_Paden(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
@@ -509,7 +559,7 @@ void CTable_Conditions::Check_GotoTriggerBehavior(_bool& OutCondition, CPlayer* 
 
     OutCondition = false;
     CBehavior* pBehavior = pAIController->Get_CurBehavior();
-    if (Check_Behavior(pBehavior, eBehaviorType::eGoToTrigger))
+    if (Check_Behavior(pBehavior, eBehaviorType::ePathFinding))
         OutCondition = true;
 }
 
@@ -634,12 +684,35 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
                 return true;
             else return false;
         });
-    CPlayer* pTargetPlayer = Enemies.front();
+    CPlayer* pTargetPlayer = nullptr;
+   
+    //Ray 쏴서 안막힌 애한테 go
+    
+    
+    _float4 vRayStartPos = pPlayer->Get_WorldPos();
+    vRayStartPos.y += 0.5f;
+
+    for (auto& elem : Enemies)
+    {
+        _float4 vDir = elem->Get_WorldPos() - pPlayer->Get_WorldPos();
+        _float fLength = vDir.Length();
+
+        if (!GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, fLength))
+        {
+            pTargetPlayer = elem;
+            break;
+        }
+    }
+
+    if (!pTargetPlayer)
+    {
+        OutCondition = false;
+        return;
+    }
+
     pPlayer->Set_TargetPos(pTargetPlayer->Get_WorldPos());
     OutDesc->pEnemyPlayer = pTargetPlayer;
-
     OutCondition = true;
-
 }
 
 void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
@@ -669,16 +742,6 @@ void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& O
 void CTable_Conditions::Select_MainPlayer(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
     //CHECKFALSEOUTCONDITION(OutCondition);
-    if (KEY(I, HOLD))
-    {
-        OutCondition = true;
-    }
-    else
-    {
-        OutCondition = false;
-        return;
-    }
-
 
     OutCondition = true;
 

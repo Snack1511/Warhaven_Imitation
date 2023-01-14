@@ -235,8 +235,8 @@ void CUnit_Archer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		eNewState = AI_STATE_COMBAT_DEFAULT_ARCHER_R;
 
 		break;
-	case eBehaviorType::eFollowTeam:
-	case eBehaviorType::eGoToTrigger:
+	 
+	case eBehaviorType::ePathFinding:
 		//상태변경
 		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_ARCHER_R;
 		break;

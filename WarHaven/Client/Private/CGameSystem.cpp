@@ -1603,6 +1603,57 @@ CPath* CGameSystem::Clone_CenterPath(CAIController* pOwnerController, eTEAM_TYPE
 	return pClonePath;
 }
 
+CPath* CGameSystem::Clone_RandomReleasePath(_float4 vCurPos)
+{
+	eSTAGE_TYPE eEnum = eSTAGE_TYPE::ePADEN_RELEASE;
+
+	if (m_eCurStageType == eSTAGE_HWARA)
+		eEnum = eHWARA_RELEASE;
+
+	_float fMinDist = 9999.f;
+	CPath* pPath = nullptr;
+	for (auto& elem : m_mapAllPathes[eEnum])
+	{
+		_float4 vFirstPos = elem.second->Get_FirstPos();
+
+		_float fDist = (vCurPos - vFirstPos).Length();
+		if (fMinDist > fDist)
+		{
+			fMinDist = fDist;
+			pPath = elem.second;
+		}
+	}
+
+	if (pPath)
+		return pPath->Clone();
+
+	MessageBox(0, L"Release Path ¾ø", TEXT("System Error"), MB_OK);
+
+	return nullptr;
+}
+
+CPath* CGameSystem::Clone_RandomNearestPath(_float4 vCurPos)
+{
+	_float fMinDist = 9999.f;
+	CPath* pPath = nullptr;
+	for (auto& elem : m_mapAllPathes[m_eCurStageType])
+	{
+		_float4 vFirstPos = elem.second->Get_FirstPos();
+
+		_float fDist = (vCurPos - vFirstPos).Length();
+		if (fMinDist > fDist)
+		{
+			fMinDist = fDist;
+			pPath = elem.second;
+		}
+	}
+
+	if (pPath)
+		return pPath->Clone();
+
+	return nullptr;
+}
+
 CPath* CGameSystem::Get_NearPath(_float4 vPosition)
 {
 	CPath* pReturnPath = nullptr;
@@ -1786,13 +1837,15 @@ HRESULT CGameSystem::SetUp_AllPathes()
 
 			if (iFindKey >= 0)
 				eType = eSTAGE_PADEN;
-			else
-			{
-
-				iFindKey = HashKey.find("Hwara");
+			else if (_int(HashKey.find("Hwara")) >= 0)
 				eType = eSTAGE_HWARA;
 
-			}
+			if (_int(HashKey.find("Release")) >= 0)
+				eType = ePADEN_RELEASE;
+			if (_int(HashKey.find("HwRelease")) >= 0)
+				eType = eHWARA_RELEASE;
+
+
 
 			if (eType == eSTAGE_CNT)
 			{

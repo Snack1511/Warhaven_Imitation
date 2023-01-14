@@ -33,35 +33,6 @@ void CState_Combat::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 
 STATE_TYPE CState_Combat::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	//높이 차 별로 안나면 ray 쏴야함
-	if (!pOwner->Get_OwnerPlayer()->Get_TargetObject())
-		return __super::Tick(pOwner, pAnimator);
-
-	_float4 vOutPos;
-	_float fOutDist;
-
-	_float4 vCurPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
-	_float4 vTargetPos = pOwner->Get_OwnerPlayer()->Get_TargetObjPos();
-
-	//높이 차 별로 안나면 ray 쏴야함
-
-	_float4 vRayStartPos = vCurPos;
-	vRayStartPos.y += 0.5f;
-	_float4 vRayEndPos = vTargetPos;
-	vRayEndPos.y += 0.5f;
-
-	_float4 vRayDir = vRayEndPos - vRayStartPos;
-
-	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vRayStartPos, vRayDir, vRayDir.Length()))
-	{
-		if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame || pAnimator->Is_CurAnimFinished())
-		{
-			STATE_TYPE eAIPathNavigationState = pOwner->Get_AIState_Type().eAIPathFindDefaultState;
-			return eAIPathNavigationState;
-		}			
-
-	}
-
 
     return __super::Tick(pOwner, pAnimator);
 }

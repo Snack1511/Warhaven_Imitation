@@ -55,6 +55,7 @@ private:
     void Check_FarAwayLeader(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_LookEnemy(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_DeadAllies(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_ValidPath(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
 #pragma endregion 플레이어 체크
 
 
@@ -124,6 +125,7 @@ private:
     _bool Check_Behavior(CBehavior* pBehavior, eBehaviorType eType);
     _bool Check_Level(LEVEL_TYPE_CLIENT eLevelType);
     _bool Check_Team(CTeamConnector* pTeamConnector, eTEAM_TYPE eTeam);
+
 private:
     map<_hashcode, function<void(_bool&, CPlayer*, CAIController*)>> m_OtherConditions;
     map<_hashcode, function<void(_bool&, BEHAVIOR_DESC*&, CPlayer*, CAIController*)>> m_WhatConditions;

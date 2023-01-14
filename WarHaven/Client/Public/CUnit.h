@@ -179,6 +179,7 @@ public:
 
 	CAnimWeapon* Get_AnimWeapon() { return m_pAnimWeapon; }
 	class CPath* Get_CurPath();
+	class CPath* Get_StartMainPath();
 
 	UNIT_STATUS& Get_Status() { return m_tUnitStatus; }
 	CPhysics* Get_PhysicsCom() { return m_pPhysics; }

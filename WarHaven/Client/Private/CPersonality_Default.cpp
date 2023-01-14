@@ -40,9 +40,9 @@ HRESULT CPersonality_Default::Initailize()
 	m_tPersonalDesc.tPersonalityData.eCoopPersonality = eCoop_Default;
 	m_tPersonalDesc.tPersonalityData.fRemainMaxTime[_uint(eBehaviorType::ePatrol)] = 5.f;
 
-	m_tPersonalDesc.tPersonalityData.fRemainMaxTime[_uint(eBehaviorType::eGoToTrigger)] = 1.f;
+	//m_tPersonalDesc.tPersonalityData.fRemainMaxTime[_uint(eBehaviorType::eGoToTrigger)] = 1.f;
 	/* 거리 */
-	m_tPersonalDesc.tPersonalityData.fMinMoveAcc[_uint(eBehaviorType::eGoToTrigger)] = 1.f;
+	//m_tPersonalDesc.tPersonalityData.fMinMoveAcc[_uint(eBehaviorType::eGoToTrigger)] = 1.f;
 
 	CBehavior* pBehavior = nullptr;
 	/* pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Follow"))->Clone();
@@ -57,23 +57,19 @@ HRESULT CPersonality_Default::Initailize()
 
 	_uint iPriority = 1;
 
-	/*pBehavior = m_pConditionTable->Find_Behavior(wstring(L"GoToTrigger"))->Clone();
-	pBehavior->Add_OtherCondition(wstring(L"Check_EmptyRoute"));
-	pBehavior->Add_OtherCondition(wstring(L"Check_Need_Conquer"));
-	pBehavior->Add_WhatCondition(wstring(L"Select_ConquerTrigger"));
-	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
-	pBehavior->Initialize();
-	pBehavior->Set_Priority(iPriority++);
-	m_BehaviorList.push_back(pBehavior);*/
-
-	/*pBehavior = m_pConditionTable->Find_Behavior(wstring(L"FollowTeam"))->Clone();
-	pBehavior->Add_OtherCondition(wstring(L"Check_EmptyRoute"));
-	pBehavior->Add_WhatCondition(wstring(L"Select_Leader"));
+	/* Find Main Path : 메인 Path 다 안탔으면 일단 그거 부터 타기. */
+	/* 근데 중간에 바뀌면? 다 탄걸로 처리 해야함.. */
+	/* 1. Path 이미 arrived 인지 확인. */
+	/* arrived면 */
+	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PathFinding"))->Clone();
+	pBehavior->Add_OtherCondition(wstring(L"Check_ValidPath"));
+	pBehavior->Add_WhatCondition(wstring(L"EmptyWhatCondition"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);
 
+	
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PadenCannonInteract"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_Paden"));
 	pBehavior->Add_OtherCondition(wstring(L"Check_Conquer_PadenCannon"));
@@ -83,16 +79,16 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);	
 
-	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Revive"))->Clone();
+	/*pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Revive"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_DeadAllies"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearAllies"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(iPriority++);
-	m_BehaviorList.push_back(pBehavior);
+	m_BehaviorList.push_back(pBehavior);*/
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Combat"))->Clone();
-	pBehavior->Add_OtherCondition(wstring(L"Check_LookEnemy"));
+	pBehavior->Add_OtherCondition(wstring(L"EmptyOtherCondition"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearEnemy"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
@@ -106,7 +102,7 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(iPriority++);
-	m_BehaviorList.push_back(pBehavior);*/
+	m_BehaviorList.push_back(pBehavior);
 
 
 
