@@ -131,6 +131,9 @@ protected:
 	_float				m_fTimeAcc = 0.f;
 	_float				m_fMaxTime = 0.f;
 
+	_float m_fSndTime = 0.f;
+	_float m_fMaxSndTime = 5.f;
+
 	_bool				m_bExecuted = false;
 
 	_uint				m_iStateChangeKeyFrame = 0;
@@ -239,7 +242,7 @@ protected:
 	void	Physics_Setting_Right_AI(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bRight = true);
 
 protected:
-	void Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float fVolume = 1.f);
+	void Play_Sound(wstring wstrFileName, _uint iGroupIndex = CHANNEL_EFFECTS, _float fVolume = 1.f);
 
 protected:
 	void	Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable);
