@@ -666,15 +666,15 @@ HRESULT CUnit::Initialize()
 {
 	if (!m_pOwnerPlayer->IsMainPlayer())
 	{
-		CNavigation* pNavigation = CNavigation::Create(CP_AFTER_TRANSFORM, nullptr, nullptr);
-		Add_Component<CNavigation>(pNavigation);
-		pNavigation->Set_Layers(&CGameSystem::Get_Instance()->Get_CellLayer());
+		m_pNavigation = CNavigation::Create(CP_AFTER_TRANSFORM, nullptr, nullptr);
+		Add_Component<CNavigation>(m_pNavigation);
+		m_pNavigation->Set_Layers(&CGameSystem::Get_Instance()->Get_CellLayer());
 	}
 
 	m_pModelCom = GET_COMPONENT(CModel);
 	m_pAnimator = GET_COMPONENT(CAnimator);
 	m_pPhysics = GET_COMPONENT(CPhysics);
-	m_pNavigation = GET_COMPONENT(CNavigation);
+
 #ifdef PHYSX_ON
 	m_pPhysXCharacter = GET_COMPONENT(CPhysXCharacter);
 	if (!m_pPhysXCharacter)
@@ -691,8 +691,6 @@ HRESULT CUnit::Initialize()
 	if (!m_pPhysics)
 		return E_FAIL;
 
-	if (!m_pNavigation)
-		return E_FAIL;
 
 	if (FAILED(m_pModelCom->SetUp_AnimModel_LOD()))
 		return E_FAIL;
