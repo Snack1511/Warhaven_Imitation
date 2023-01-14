@@ -168,6 +168,8 @@ void CState::Hit_GroundEffect(CUnit* pOwner)
 {
 	pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
 
+	Play_Sound(L"Effect_Bounce");
+
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), pOwner->Get_HitMatrix());
 

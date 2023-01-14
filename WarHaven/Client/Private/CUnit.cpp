@@ -1668,6 +1668,7 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 	case COL_REDGROGGYATTACK:
 		//1. 이펙트
 
+		Play_Sound(L"Effect_Grogy_Warhammer");
 
 		//2. 나와 적 상태 변경
 		Enter_State(m_tHitType.eGroggyState, pHitInfo);

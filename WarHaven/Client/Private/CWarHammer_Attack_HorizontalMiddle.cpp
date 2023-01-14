@@ -178,7 +178,7 @@ void CWarHammer_Attack_HorizontalMiddle::On_KeyFrameEvent(CUnit * pOwner, CAnima
 	switch (iSequence)
 	{
 	case 1:
-		Play_Sound(L"Effect_Swing_Warhammer", CHANNEL_EFFECTS, 1.f);
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS, 1.f);
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;
