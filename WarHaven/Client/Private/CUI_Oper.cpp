@@ -509,9 +509,9 @@ void CUI_Oper::Progress_Oper()
 				m_fAccTime = 0.f;
 				m_iOperProgress++;
 
-				Play_Sound(L"UI_Oper0", 1.f);
+				Play_Sound(L"UI_Oper0", 0.3f);
 
-				GAMEINSTANCE->Play_BGM(L"BGM_Oper");
+				GAMEINSTANCE->Play_BGM(L"BGM_Oper", 0.3f);
 
 				Enable_Fade(m_pTextImg[Text_Oper1], 0.3f);
 				m_pTextImg[Text_Oper1]->DoScale(-512.f, 0.3f);
@@ -757,10 +757,12 @@ void CUI_Oper::Progress_Oper()
 				case Client::LEVEL_PADEN:
 					CGameSystem::Get_Instance()->On_StartGame();
 					GAMEINSTANCE->Play_BGM(L"BGM_Paden", 0.1f);
+					CFunctor::Play_Sound(L"UI_StartPaden", CHANNEL_UI, 1.f);
 					break;
 				case Client::LEVEL_HWARA:
 					CGameSystem::Get_Instance()->On_StartGame();
 					GAMEINSTANCE->Play_BGM(L"BGM_Hwara", 0.1f);
+					CFunctor::Play_Sound(L"UI_StartHwara", CHANNEL_UI, 1.f);
 					break;
 				}
 

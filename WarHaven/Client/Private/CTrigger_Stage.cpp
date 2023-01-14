@@ -319,9 +319,17 @@ void CTrigger_Stage::Update_Conquered()
 		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_FINAL:
 			/* Final 점령 시 게임 종료 */
 			if (m_pConqueredTeam == CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eBLUE))
+			{
 				CGameSystem::Get_Instance()->On_FinishGame(CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eRED));
+
+			}
 			else
+			{
+
 				CGameSystem::Get_Instance()->On_FinishGame(CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eBLUE));
+			}
+
+
 
 			break;
 

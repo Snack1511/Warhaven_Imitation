@@ -30,12 +30,12 @@ return pInstance;\
 
 #define WARRIOR_TH
 #define ARCHER_TH
-//#define FIONA_TH
-//#define PALADIN_TH
-//#define ENGINEER_TH
-//#define PRIEST_TH
-//#define QANDA_TH
-//#define LANCER_TH
+#define FIONA_TH
+#define PALADIN_TH
+#define ENGINEER_TH
+#define PRIEST_TH
+#define QANDA_TH
+#define LANCER_TH
 
 BEGIN(Client)
 

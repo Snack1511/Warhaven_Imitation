@@ -1161,7 +1161,7 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 	m_tKdaStat.iCurKillCount++;
 	m_tKdaStat.iKillStreak++;
 	m_tKdaStat.iTotalKillCount++;
-
+		
 	if (CLoading_Manager::Get_Instance()->Get_LoadLevel() >= LEVEL_PADEN)
 	{
 		m_pScoreInfo->Update_KillCnt(m_tKdaStat.iTotalKillCount);
@@ -1170,6 +1170,9 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 
 	if (m_bIsMainPlayer)
 	{
+		GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)CHANNEL_VOICE);
+		m_pCurrentUnit->Play_Voice(L"Voice_Kill", 1.f, false);
+
 		if (pOtherPlayer->Get_PlayerName() == L"Jusin_Burger")
 		{
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eBURGERKING);
@@ -1519,12 +1522,6 @@ void CPlayer::Update_KDA()
 
 	if (m_tKdaStat.iKillStreak > 0)
 	{
-		if (m_bKillVoice)
-		{
-			m_pCurrentUnit->Get_CurStateP()->Play_Voice(m_pCurrentUnit, L"Voice_Kill", 1.f);
-			m_bKillVoice = false;
-		}
-
 		m_fKillStreakTimeAcc += fDT(0);
 
 		if (m_fKillStreakTimeAcc >= m_fKillStreakTime)
@@ -1605,7 +1602,7 @@ void CPlayer::On_AbleHero()
 
 	if (m_bIsMainPlayer)
 	{
-		m_pCurrentUnit->Get_CurStateP()->Play_Voice(m_pCurrentUnit, L"Voice_Transform", 1.f);
+		m_pCurrentUnit->Get_CurStateP()->Play_Voice(m_pCurrentUnit, L"Voice_Transform", 0.5f);
 
 		CUser::Get_Instance()->Set_HeroPort(0);
 		CUser::Get_Instance()->Turn_HeroGaugeFire(true);

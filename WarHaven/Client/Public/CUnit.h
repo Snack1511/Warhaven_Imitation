@@ -449,6 +449,9 @@ public:
 		_float fFadeInTime, _float fDuration, _float fFadeOutTime, _float4 Diffuse, _bool bLoop);
 	virtual void	Effect_HeroToDefaultUnit(CUnit* pOwner);
 
+public:
+		void Play_Voice(wstring strName, _float fVol, _bool bDist);
+
 protected:
 	void	Set_ShaderNoSpec(const _tchar* pModelPath);
 
