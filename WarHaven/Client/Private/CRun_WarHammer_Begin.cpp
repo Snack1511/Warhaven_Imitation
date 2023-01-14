@@ -27,9 +27,9 @@ HRESULT CRun_WarHammer_Begin::Initialize()
 
 	Init_CommonState_Player();
 
-    m_iStateChangeKeyFrame = 0;
+	m_iStateChangeKeyFrame = 0;
 
-    m_fInterPolationTime = 0.f;
+	m_fInterPolationTime = 0.f;
 
 
 	m_fMyAccel = 10.f;
@@ -39,9 +39,9 @@ HRESULT CRun_WarHammer_Begin::Initialize()
 
 	m_fInterPolationTime = 0.1f;
 
-	Add_KeyFrame(9, 0);
+	Add_KeyFrame(9, 0, true);
 
-    return S_OK;
+	return S_OK;
 }
 
 void CRun_WarHammer_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
@@ -50,7 +50,7 @@ void CRun_WarHammer_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 	m_fMyAccel = 10.f;
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
-    __super::Enter(pOwner, pAnimator, ePrevType, pData);
+	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CRun_WarHammer_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -65,7 +65,7 @@ STATE_TYPE CRun_WarHammer_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		m_iCurDirection = iDirection;
 
 
-    return __super::Tick(pOwner, pAnimator);
+	return __super::Tick(pOwner, pAnimator);
 }
 
 void CRun_WarHammer_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
@@ -76,17 +76,17 @@ void CRun_WarHammer_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 STATE_TYPE CRun_WarHammer_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-    // 뛰어갈 준비를 한다.
-    if (KEY(W, HOLD) ||
-        KEY(A, HOLD) ||
-        KEY(D, HOLD))
-    {
+	// 뛰어갈 준비를 한다.
+	if (KEY(W, HOLD) ||
+		KEY(A, HOLD) ||
+		KEY(D, HOLD))
+	{
 
-        return m_eStateType;
-    }
+		return m_eStateType;
+	}
 
 
-    return STATE_END;
+	return STATE_END;
 }
 
 

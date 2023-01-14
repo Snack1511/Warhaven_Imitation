@@ -59,6 +59,8 @@ HRESULT CJump_WarHammer_Land_R::Initialize()
 
     Init_CommonState_Player();
 
+    Add_KeyFrame(10, 0);
+
     return S_OK;
 }
 
@@ -108,4 +110,16 @@ STATE_TYPE CJump_WarHammer_Land_R::Check_Condition(CUnit* pOwner, CAnimator* pAn
 		return m_eStateType;
 
     return STATE_END;
+}
+
+void CJump_WarHammer_Land_R::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_LandingGround", CHANNEL_ENVIRONMENT, 0.4f);
+        break;
+    }
 }

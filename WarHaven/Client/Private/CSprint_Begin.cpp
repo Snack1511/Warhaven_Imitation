@@ -61,12 +61,12 @@ HRESULT CSprint_Begin::Initialize()
     m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
 
 
-	Add_KeyFrame(23, 0);
-	Add_KeyFrame(42, 0);
-	Add_KeyFrame(58, 0);
-	Add_KeyFrame(75, 0);
-	Add_KeyFrame(93, 0);
-	Add_KeyFrame(108, 0);
+	Add_KeyFrame(23, 0, true);
+	Add_KeyFrame(42, 0, true);
+	Add_KeyFrame(58, 0, true);
+	Add_KeyFrame(75, 0, true);
+	Add_KeyFrame(93, 0, true);
+	Add_KeyFrame(108, 0, true);
 
     return S_OK;
 }

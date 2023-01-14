@@ -59,10 +59,10 @@ HRESULT CSprint_Loop::Initialize()
     //m_vecAdjState.push_back(STATE_DASH);
     //m_vecAdjState.push_back(STATE_WALK);
 
-    Add_KeyFrame(9, 0);
-    Add_KeyFrame(24, 0);
-    Add_KeyFrame(44, 0);
-    Add_KeyFrame(57, 0);
+    Add_KeyFrame(9, 0, true);
+    Add_KeyFrame(24, 0, true);
+    Add_KeyFrame(44, 0, true);
+    Add_KeyFrame(57, 0, true);
 
     return S_OK;
 }

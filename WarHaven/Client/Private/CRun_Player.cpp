@@ -29,8 +29,8 @@ HRESULT CRun_Player::Initialize()
 
 	Init_CommonState_Player();
 
-	Add_KeyFrame(2, 0);
-	Add_KeyFrame(27, 0);
+	Add_KeyFrame(2, 0,true);
+	Add_KeyFrame(27, 0,true);
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;

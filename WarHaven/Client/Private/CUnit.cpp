@@ -75,7 +75,7 @@ CUnit::~CUnit()
 
 void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
-	
+
 
 	if (eOtherColType == COL_REVIVE)
 	{
@@ -426,6 +426,7 @@ _bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot, _uint iDm
 	{
 		if (bHeadShot)
 		{
+			Play_Sound(L"Effect_HeadShot");
 			CUser::Get_Instance()->Enable_DamageFont(0, fHp);
 		}
 		else
@@ -643,8 +644,8 @@ HRESULT CUnit::Initialize_Prototype()
 
 	Add_Component(CPhysics::Create(0));
 
-	
-	
+
+
 
 #ifdef PHYSX_ON
 
@@ -853,7 +854,6 @@ void CUnit::Enable_GuardBreakCollider(UNITCOLLIDER ePartType, _bool bEnable)
 				DISABLE_COMPONENT(m_pWeaponCollider_R);
 		}
 	}
-
 	else if (ePartType == GUARDBREAK_L)
 	{
 		if (bEnable)
@@ -1441,7 +1441,7 @@ void CUnit::Effect_Parring(_float4 vHitPos)
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), vHitPos);*/
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Parring_Particle", vHitPos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
 
-	CFunctor::Play_Sound(L"Effect_CollisionIron", CHANNEL_EFFECTS, vHitPos);
+	CFunctor::Play_Sound(L"Effect_Guard", CHANNEL_EFFECTS, vHitPos);
 }
 
 void CUnit::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
@@ -1592,7 +1592,7 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 
 	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot, 3);
 
-	CFunctor::Play_Sound(L"Effect_Blood", CHANNEL_UI, Get_Transform()->Get_World(WORLD_POS));
+	CFunctor::Play_Sound(L"Effect_Blood", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS));
 
 	if (!m_bIsMainPlayer)
 	{
@@ -1701,11 +1701,8 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 	_float fDamage = pOtherUnit->Calculate_Damage(tInfo.bHeadShot, true);
 
 	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot, 1);
-
 	if (!bDie)
-	{
 		m_tUnitStatus.fHP = 1.f;
-	}
 
 
 	switch (iOtherColType)
@@ -1729,6 +1726,8 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 	case COL_REDGUARDBREAK:
 		//1. 이펙트
 		Effect_Parring(vHitPos);
+
+		Play_Sound(L"Effect_GuardBreak");
 
 		//2. 나와 적 상태 변경
 		Enter_State(m_tHitType.eGuardBreakState, pHitInfo);

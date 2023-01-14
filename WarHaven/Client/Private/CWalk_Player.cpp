@@ -43,8 +43,8 @@ HRESULT CWalk_Player::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
-    Add_KeyFrame(34, 0);
-    Add_KeyFrame(75, 0);
+    Add_KeyFrame(34, 0, true);
+    Add_KeyFrame(75, 0, true);
 
     Init_CommonState_Player();
 
