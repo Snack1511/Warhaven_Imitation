@@ -80,6 +80,8 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Load_SoundFile()))
 		return E_FAIL;
 
+	GAMEINSTANCE->Set_ChannelVolume(CH_BGM, 0.1f);
+	GAMEINSTANCE->Set_ChannelVolume((CHANNEL_GROUP)CHANNEL_VOICE, 0.5f);
 
 	return S_OK;
 }

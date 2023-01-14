@@ -751,7 +751,6 @@ void CUI_Oper::Progress_Oper()
 				}
 
 				CFunctor::Stop_Sound(CHANNEL_BGM);
-				GAMEINSTANCE->Set_ChannelVolume(CH_BGM, 0.3f);
 
 				switch (m_eLoadLevel)
 				{
