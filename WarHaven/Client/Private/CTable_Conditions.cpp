@@ -15,6 +15,7 @@
 #include "CPlayer.h"
 #include "CNavigation.h"
 #include "CGameSystem.h"
+#include "CTrigger_Stage.h"
 #define CHECKFALSEOUTCONDITION(OutCondition)\
 if (OutCondition == false)\
 {\
@@ -802,6 +803,16 @@ void CTable_Conditions::Select_RandomConquerTrigger(_bool& OutCondition, BEHAVIO
     CHECKFALSEOUTCONDITION(OutCondition);
     OutCondition = false;
     CTrigger* pTargetTrigger = nullptr;
+
+    if (OutDesc->pTriggerPtr)
+    {
+        if (!pPlayer->Get_Team()->Has_Trigger((_uint)static_cast<CTrigger_Stage*> (OutDesc->pTriggerPtr)->Get_TriggerType() - 1))
+        {
+            OutCondition = true;
+            return;
+        }
+    }
+
     OutDesc->pTriggerPtr = nullptr;
     CTeamConnector* pTeamConnector = pPlayer->Get_Team();
 

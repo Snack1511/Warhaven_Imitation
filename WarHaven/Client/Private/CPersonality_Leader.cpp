@@ -56,7 +56,7 @@ HRESULT CPersonality_Leader::Initailize()
 	}
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"GoToTrigger"))->Clone();
-	pBehavior->Add_OtherCondition(wstring(L"Check_EmptyRoute"));
+	//pBehavior->Add_OtherCondition(wstring(L"Check_EmptyRoute"));
 	pBehavior->Add_OtherCondition(wstring(L"Check_Need_Conquer"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_RandomConquerTrigger"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));

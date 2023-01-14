@@ -42,7 +42,7 @@ public:
 	eTEAM_TYPE	Get_TeamType() { return m_eTeamType; }
 	_bool	IsMainPlayerTeam() { return m_bIsMainPlayerTeam; }
 	_bool	Minus_Score();
-
+	_bool	Has_Trigger(_uint iIndex) { return m_bHasTrigger[iIndex]; }
 	_bool	Has_MainTrigger() { return m_bHasTrigger[0]; }
 	_bool	Has_RespawnTrigger() { return m_bHasTrigger[1]; }
 	_bool	Has_CannonTrigger() { return m_bHasTrigger[2]; }
