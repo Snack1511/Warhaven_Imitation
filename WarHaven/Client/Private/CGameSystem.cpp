@@ -18,6 +18,7 @@
 #include "CPlayerInfo_SandBack.h"
 #include "CPlayerInfo_Default.h"
 #include "CPlayerInfo_Leader.h"
+#include "CPlayerInfo_Sub.h"
 
 #include "CSquad.h"
 #include "CTeamConnector.h"
@@ -1203,9 +1204,10 @@ void CGameSystem::On_StartGame()
 #else
 	for (auto& elem : m_mapAllPlayers)
 	{
-		/* Default가 아니면 건너 뛰기 */
-		if (!dynamic_cast<CPlayerInfo_Default*>(elem.second))
+		/* Default나 Sub가 아니면 건너 뛰기 */
+		if (!dynamic_cast<CPlayerInfo_Default*>(elem.second) && !dynamic_cast<CPlayerInfo_Sub*>(elem.second))
 			continue;
+
 
 		/*static _uint g_iIndex = 0;
 
@@ -1672,12 +1674,21 @@ HRESULT CGameSystem::SetUp_AllPlayerInfos()
 	m_vecPlayerInfoNames.push_back(pPlayerInfo->m_tPlayerInfo.wstrName)
 
 	_uint iDefaultCnt = 0;
-	for (_uint i = 0; i < 12; ++i)
+	for (_uint i = 0; i < 6; ++i)
 	{
-		wstring wstrName = L"DefaultPlayer_";
-		wstrName += to_wstring(iDefaultCnt++);
-		ADD_DEFAULTINFO(wstrName);
+		pPlayerInfo = CPlayerInfo_Default::Create(); 
+		m_mapAllPlayers.emplace(Convert_ToHash(pPlayerInfo->m_tPlayerInfo.wstrName), pPlayerInfo); 
+		m_vecPlayerInfoNames.push_back(pPlayerInfo->m_tPlayerInfo.wstrName);
 	}
+
+
+	for (_uint i = 0; i < 6; ++i)
+	{
+		pPlayerInfo = CPlayerInfo_Sub::Create();
+		m_mapAllPlayers.emplace(Convert_ToHash(pPlayerInfo->m_tPlayerInfo.wstrName), pPlayerInfo);
+		m_vecPlayerInfoNames.push_back(pPlayerInfo->m_tPlayerInfo.wstrName);
+	}
+
 
 	/* 분대장급 AI들 */
 #define ADD_LEADERINFO pPlayerInfo = CPlayerInfo_Leader::Create();\

@@ -312,7 +312,7 @@ void CMainMenuUnit::My_Tick()
 
 	
 		
-	}
+	
 
 	if (m_eClassType == PALADIN)
 	{
