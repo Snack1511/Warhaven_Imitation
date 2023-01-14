@@ -1185,7 +1185,7 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eBURGERKING);
 		}
 		else if (m_tKdaStat.iHeadShotKillCount == 3)
-		{
+		{	
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eHEADHUNTER);
 		}
 		else if (pOtherPlayer->Get_CurClass() >= CLASS_TYPE::FIONA)
