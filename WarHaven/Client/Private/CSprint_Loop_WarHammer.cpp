@@ -55,6 +55,12 @@ HRESULT CSprint_Loop_WarHammer::Initialize()
 
     m_vecAdjState.push_back(STATE_GROGGYATTACK_WARHAMMER);
     m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
+
+    Add_KeyFrame(12, 0);
+    Add_KeyFrame(28, 0);
+    Add_KeyFrame(45, 0);
+    Add_KeyFrame(60, 0);
+
     return S_OK;
 }
 
@@ -166,4 +172,19 @@ STATE_TYPE CSprint_Loop_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAn
 
    
     return STATE_END;
+}
+
+void CSprint_Loop_WarHammer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS);
+        break;
+
+    default:
+        break;
+    }
+
+
 }

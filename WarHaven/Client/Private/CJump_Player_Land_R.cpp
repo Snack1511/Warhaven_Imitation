@@ -63,7 +63,7 @@ HRESULT CJump_Player_Land_R::Initialize()
 
 	Init_CommonState_Player();
 
-	Add_KeyFrame(4, 0);
+	Add_KeyFrame(3, 0);
 
 	return S_OK;
 }
