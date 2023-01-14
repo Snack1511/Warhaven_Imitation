@@ -203,7 +203,7 @@ HRESULT CAIPersonality::SetUp_DefaultBehavior()
 		CBehavior* pBehavior = nullptr;
 		pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Patrol"))->Clone();
 		pBehavior->Initialize();
-		pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
+		pBehavior->Add_BehaviorTick(wstring(L"Callback_Tick_UpdatePatrol"));
 		pBehavior->Set_Priority(0);
 		m_pDefaultBehavior = pBehavior;
 	}

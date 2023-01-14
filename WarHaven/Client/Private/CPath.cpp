@@ -66,20 +66,36 @@ void CPath::Update_CurrentIndex(_float4 vCurrentPos)
         return;
     }
 
-    _float4 vTargetPos = m_vecPositions[m_iCurIndex];
-    
-    _float fLength = (vCurrentPos - vTargetPos).Length();
     _float fCurSpeed = 0.1f;
 
-    if (m_pOwnerController) 
+    if (m_pOwnerController)
     {
         fCurSpeed = GET_COMPONENT_FROM(m_pOwnerController->Get_OwnerPlayer()->Get_CurrentUnit(), CPhysics)->Get_Physics().fSpeed * fDT(0);
     }
-    
-    m_iPrevIndex = m_iCurIndex;
 
-    if (fLength < fCurSpeed + 40.f * fDT(0))
-        m_iCurIndex++;
+    while (1)
+    {
+        _float4 vTargetPos = m_vecPositions[m_iCurIndex];
+
+        _float fLength = (vCurrentPos - vTargetPos).Length();
+
+        m_iPrevIndex = m_iCurIndex;
+
+        if (fLength < fCurSpeed + 100.f * fDT(0))
+        {
+            m_iCurIndex++;
+
+            if (m_iCurIndex >= (m_iNumPositions))
+            {
+                m_iCurIndex = m_iNumPositions - 1;
+                return;
+            }
+        }
+        else
+            break;
+    }
+
+   
 
     if (m_pOwnerController)
     {

@@ -1612,9 +1612,18 @@ CPath* CGameSystem::Clone_RandomReleasePath(_float4 vCurPos)
 
 	_float fMinDist = 9999.f;
 	CPath* pPath = nullptr;
+
 	for (auto& elem : m_mapAllPathes[eEnum])
 	{
 		_float4 vFirstPos = elem.second->Get_FirstPos();
+
+		/* Ray 쏴서 가능한지 확인 */
+		_float4 vRayStartPos = vCurPos;
+		_float4 vDir = vFirstPos - vRayStartPos;
+		vRayStartPos.y += 0.5f;
+
+		if (GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, vDir.Length()))
+			continue;
 
 		_float fDist = (vCurPos - vFirstPos).Length();
 		if (fMinDist > fDist)
@@ -1627,7 +1636,7 @@ CPath* CGameSystem::Clone_RandomReleasePath(_float4 vCurPos)
 	if (pPath)
 		return pPath->Clone();
 
-	MessageBox(0, L"Release Path 없", TEXT("System Error"), MB_OK);
+	//MessageBox(0, L"Release Path 없", TEXT("System Error"), MB_OK);
 
 	return nullptr;
 }
@@ -1639,6 +1648,14 @@ CPath* CGameSystem::Clone_RandomNearestPath(_float4 vCurPos)
 	for (auto& elem : m_mapAllPathes[m_eCurStageType])
 	{
 		_float4 vFirstPos = elem.second->Get_FirstPos();
+
+		/* Ray 쏴서 가능한지 확인 */
+		_float4 vRayStartPos = vCurPos;
+		_float4 vDir = vFirstPos - vRayStartPos;
+		vRayStartPos.y += 0.5f;
+
+		if (GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, vDir.Length()))
+			continue;
 
 		_float fDist = (vCurPos - vFirstPos).Length();
 		if (fMinDist > fDist)
@@ -1840,7 +1857,7 @@ HRESULT CGameSystem::SetUp_AllPathes()
 			else if (_int(HashKey.find("Hwara")) >= 0)
 				eType = eSTAGE_HWARA;
 
-			if (_int(HashKey.find("Release")) >= 0)
+			if (_int(HashKey.find("PaRelease")) >= 0)
 				eType = ePADEN_RELEASE;
 			if (_int(HashKey.find("HwRelease")) >= 0)
 				eType = eHWARA_RELEASE;

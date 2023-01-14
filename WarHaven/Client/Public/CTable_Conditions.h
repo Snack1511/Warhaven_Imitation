@@ -127,6 +127,9 @@ private:
     _bool Check_Team(CTeamConnector* pTeamConnector, eTEAM_TYPE eTeam);
 
 private:
+    void Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIController* pAIController);
+
+private:
     map<_hashcode, function<void(_bool&, CPlayer*, CAIController*)>> m_OtherConditions;
     map<_hashcode, function<void(_bool&, BEHAVIOR_DESC*&, CPlayer*, CAIController*)>> m_WhatConditions;
     map<_hashcode, function<void(CPlayer*, CAIController*)>> m_BehaviorTick;

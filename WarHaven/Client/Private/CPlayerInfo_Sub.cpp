@@ -45,7 +45,7 @@ HRESULT CPlayerInfo_Sub::Initialize()
 		m_tPlayerInfo.wstrName = L"고양이좋아";
 #ifdef ARCHER_TH
 		m_vecPrefClassType.push_back(ARCHER);
-#elif
+#else
 		m_vecPrefClassType.push_back(WARRIOR);
 
 #endif // ARCHER_TH
