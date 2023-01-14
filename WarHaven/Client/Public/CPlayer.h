@@ -317,6 +317,8 @@ private:
 private:
 	CUI_UnitHUD* m_pUnitHUD = nullptr;
 
+	_float m_fHUDTime = 0.f;
+
 private:
 	_float m_fEnable_UnitHUDis = 35.f;
 

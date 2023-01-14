@@ -82,11 +82,11 @@ void CUI_Paden::Set_Shader_PointGauge_E(CShader* pShader, const char* pConstName
 
 void CUI_Paden::Set_Shader_SocreGauge_Red(CShader* pShader, const char* pConstName)
 {
-	//m_fScoreRatio[Team_Red] = 1 - m_fScoreRatio[Team_Red];
+	m_fScoreRatio[Team_Red] = 1 - m_fScoreRatio[Team_Red];
 	pShader->Set_RawValue("g_fValue", &m_fScoreRatio[Team_Red], sizeof(_float));
 
 	_bool bFlip = true;
-	pShader->Set_RawValue("bFlip", &bFlip, sizeof(_bool));
+	pShader->Set_RawValue("g_bFlip", &bFlip, sizeof(_bool));
 }
 
 void CUI_Paden::Set_Shader_SocreGauge_Blue(CShader* pShader, const char* pConstName)
@@ -95,7 +95,7 @@ void CUI_Paden::Set_Shader_SocreGauge_Blue(CShader* pShader, const char* pConstN
 	pShader->Set_RawValue("g_fValue", &m_fScoreRatio[Team_Blue], sizeof(_float));
 
 	_bool bFlip = false;
-	pShader->Set_RawValue("bFlip", &bFlip, sizeof(_bool));
+	pShader->Set_RawValue("g_bFlip", &bFlip, sizeof(_bool));
 }
 
 void CUI_Paden::Set_Shader_HwaraArrow_Blue(CShader* pShader, const char* pConstName)
@@ -354,7 +354,7 @@ void CUI_Paden::Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam)
 		vColor = m_vColorRed;
 	}
 
-	for (int i = 0; i < PU_Text; ++i)
+	for (int i = 0; i < PU_End; ++i)
 	{
 		if (strPointName == "Paden_Trigger_A" || strPointName == "Hwara_Final_Red")
 		{
@@ -521,8 +521,18 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 
 				m_pArrPointUI[Point_A][i]->DoScale(-10.f, fDuration);
 
-				_float4 vPos = m_pArrPointUI[Point_A][i]->Get_Pos();
-				vPos.x = m_eTeam == eTEAM_TYPE::eBLUE ? -50.f : 50.f;
+				_float4 vPos;
+				if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_HWARA)
+				{
+					vPos = m_pArrPointUI[Point_A][i]->Get_Pos();
+					vPos.x = m_eTeam == eTEAM_TYPE::eBLUE ? -50.f : 50.f;
+				}
+				else
+				{
+					vPos = m_pArrPointUI[Point_R][i]->Get_Pos();
+					vPos -= 50.f;
+				}
+
 				vPos.y = m_fPointUIPosY;
 				m_pArrPointUI[Point_A][i]->DoMove(vPos, fDuration, 0);
 
@@ -551,7 +561,7 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 				else
 				{
 					vPos = m_pArrPointUI[Point_R][i]->Get_Pos();
-					vPos -= 50.f;
+					vPos += 50.f;
 				}
 
 				vPos.y = m_fPointUIPosY;

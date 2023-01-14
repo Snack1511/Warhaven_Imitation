@@ -338,9 +338,9 @@ void CUnit::On_Respawn()
 	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
 	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
 
-	if(m_bIsMainPlayer)
+	if (m_bIsMainPlayer)
 		Get_CurStateP()->Play_Voice(this, L"Voice_Respawn", 1.f);
-		
+
 }
 
 void CUnit::On_Reborn()
@@ -386,7 +386,7 @@ void CUnit::On_Die()
 		GAMEINSTANCE->Start_GrayScale(1.f);
 	}
 
-	
+
 }
 
 _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
@@ -1282,6 +1282,9 @@ HRESULT CUnit::SetUp_Navigation(CCell* pStartCell)
 
 void CUnit::My_Tick()
 {
+	if (Get_OwnerHUD())
+		Get_OwnerHUD()->Set_UnitHP(m_tUnitStatus.fHP, m_tUnitStatus.fMaxHP);
+
 	for (_int i = 0; i < COOL_END; ++i)
 	{
 		if (m_fCoolAcc[i] > 0.f)
@@ -1582,7 +1585,10 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 	CFunctor::Play_Sound(L"Effect_Blood", CHANNEL_UI, Get_Transform()->Get_World(WORLD_POS));
 
 	if (!m_bIsMainPlayer)
+	{
+		Get_OwnerHUD()->SetActive(true);
 		Get_OwnerHUD()->SetActive_UnitHP(true);
+	}
 
 	/*블러드 오버레이*/
 	if (m_bIsMainPlayer)
@@ -1773,11 +1779,11 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 			CUser::Get_Instance()->Add_KillName(wstrEnemyName);
 		}
 	}
-	
+
 
 	Get_CurStateP()->Play_Voice(this, L"Voice_Dead", 1.f);
 
-	
+
 }
 
 void CUnit::On_Bounce(void* pHitInfo)
