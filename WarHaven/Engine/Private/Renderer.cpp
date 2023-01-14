@@ -23,6 +23,7 @@ CRenderer::CRenderer(const CRenderer& _origin)
 	, m_vOffsetPos(_origin.m_vOffsetPos)
 	, m_vFinalPos(_origin.m_vFinalPos)
 	, m_bRectEffects(_origin.m_bRectEffects)
+	, m_bOrtho(_origin.m_bOrtho)
 {
 }
 
@@ -32,13 +33,14 @@ CRenderer::~CRenderer()
 	Release();
 }
 
-CRenderer* CRenderer::Create(_uint iGroupID, const RENDER_GROUP& eRenderGroup, const _uint& iCurPass, const _float4& vOffsetPos)
+CRenderer* CRenderer::Create(_uint iGroupID, const RENDER_GROUP& eRenderGroup, const _uint& iCurPass, const _float4& vOffsetPos, const _bool& bOrtho)
 {
 	CRenderer* pRenderer = new CRenderer(iGroupID);
 
 	pRenderer->m_iCurPass = iCurPass;
 	pRenderer->m_vOffsetPos = vOffsetPos;
 	pRenderer->m_eRenderGroup = eRenderGroup;
+	pRenderer->m_bOrtho = bOrtho;
 
 	if (FAILED(pRenderer->Initialize_Prototype()))
 	{

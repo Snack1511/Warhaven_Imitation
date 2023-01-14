@@ -18,7 +18,7 @@ protected:
 	virtual ~CRenderer();
 
 public:
-	static CRenderer* Create(_uint iGroupID, const RENDER_GROUP& eRenderGroup, const _uint& iCurPass, const _float4& vOffsetPos = _float4(0.f, 0.f, 0.f, 1.f));
+	static CRenderer* Create(_uint iGroupID, const RENDER_GROUP& eRenderGroup, const _uint& iCurPass, const _float4& vOffsetPos = _float4(0.f, 0.f, 0.f, 1.f), const _bool& bOrtho = false);
 
 public:
 	CShader* Get_ShaderCom() { return m_pShaderCom; }
@@ -26,6 +26,8 @@ public:
 	void		Set_RenderGroup(RENDER_GROUP	eRenderGroup) { m_eRenderGroup = eRenderGroup; }
 	void		Set_Pass(const _uint& iCurPass) { m_iCurPass = iCurPass; }
 	void		Set_RectEffects() { m_bRectEffects = true; }
+	void		Set_Ortho(_bool bOrtho) { m_bOrtho = bOrtho; }
+	_bool		Get_Ortho() { return m_bOrtho; }
 
 	_float4				Get_WorldPosition();
 	void				Set_FinalPos(_float4 vPos) { m_vFinalPos = vPos; }
@@ -55,7 +57,7 @@ protected:
 	_float4						m_vFinalPos;
 
 	_bool						m_bRectEffects = false;
-	
+	_bool						m_bOrtho = false;
 	
 	//_uint						m_iShaderFlags;
 

@@ -16,6 +16,8 @@
 #include "CMesh_Rect.h"
 #include "Texture.h"
 
+#include "Level.h"
+
 #define SHADOW_ON
 
 IMPLEMENT_SINGLETON(CRender_Manager)
@@ -888,18 +890,11 @@ void CRender_Manager::Update()
 
 HRESULT CRender_Manager::Render()
 {
-	if (FAILED(CCamera_Manager::Get_Instance()->SetUp_ShaderResources()))
+
+	if (FAILED(Render_Priority()))
 		return E_FAIL;
 
-	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_SkyBox"))))
-		return E_FAIL;
-
-	if (FAILED(Render_Group(RENDER_PRIORITY)))
-		return E_FAIL;
-
-	if (FAILED(m_pTarget_Manager->End_MRT()))
-		return E_FAIL;
-
+	
 	/* Shadow Baking */
 #ifdef SHADOW_ON
 	if (FAILED(Bake_Shadow()))
@@ -1716,6 +1711,38 @@ HRESULT CRender_Manager::Render_DOF()
 
 	if (FAILED(m_pTarget_Manager->End_MRT()))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_Priority()
+{
+	for (auto& elem : m_Renderers[RENDER_PRIORITY])
+	{
+		if (elem->Get_Ortho())
+		{
+			if (FAILED(CCamera_Manager::Get_Instance()->SetUp_ShaderResources(true)))
+				return E_FAIL;
+
+		}
+		else
+		{
+			if (FAILED(CCamera_Manager::Get_Instance()->SetUp_ShaderResources()))
+				return E_FAIL;
+
+		}
+
+		if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_SkyBox"))))
+			return E_FAIL;
+
+		elem->Render();
+
+		if (FAILED(m_pTarget_Manager->End_MRT()))
+			return E_FAIL;
+
+	}
+
+	m_Renderers[RENDER_PRIORITY].clear();
 
 	return S_OK;
 }
