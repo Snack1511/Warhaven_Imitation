@@ -1478,6 +1478,7 @@ void CPlayer::Update_HeroGauge()
 				m_fGauge = m_fMaxGauge;
 
 				On_AbleHero();
+				
 			}
 
 		}
@@ -1499,14 +1500,23 @@ void CPlayer::Update_HeroGauge()
 
 void CPlayer::Update_KDA()
 {
+	
+
 	if (m_tKdaStat.iKillStreak > 0)
 	{
+		if (m_bKillVoice)
+		{
+			m_pCurrentUnit->Get_CurStateP()->Play_Voice(m_pCurrentUnit, L"Voice_Kill", 1.f);
+			m_bKillVoice = false;
+		}
+
 		m_fKillStreakTimeAcc += fDT(0);
 
 		if (m_fKillStreakTimeAcc >= m_fKillStreakTime)
 		{
 			m_fKillStreakTimeAcc = 0.f;
 			m_tKdaStat.iKillStreak = 0;
+			m_bKillVoice = true;
 		}
 	}
 }
@@ -1581,6 +1591,8 @@ void CPlayer::On_AbleHero()
 
 	if (m_bIsMainPlayer)
 	{
+		m_pCurrentUnit->Get_CurStateP()->Play_Voice(m_pCurrentUnit, L"Voice_Transform", 1.f);
+
 		CUser::Get_Instance()->Set_HeroPort(0);
 		CUser::Get_Instance()->Turn_HeroGaugeFire(true);
 		CUser::Get_Instance()->Turn_AbleHeroFire();

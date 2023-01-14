@@ -96,6 +96,7 @@ void CPaladin_Rush_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, 
 	{
 	case 0:
 		Physics_Setting(pOwner->Get_Status().fDashAttackSpeed, pOwner, false);
+		Play_Voice(pOwner, L"Voice_Rush", 1.f);
 		break;
 
 	default:

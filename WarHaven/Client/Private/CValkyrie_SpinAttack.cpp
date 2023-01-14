@@ -129,6 +129,7 @@ void CValkyrie_SpinAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 
 		m_bAttackTrigger = true;
 		pOwner->Enable_GroggyCollider(true);
+		Play_Voice(pOwner, L"Voice_ShieldAttack", 1.f);
 		break;
 
 	case 1:

@@ -242,6 +242,7 @@ void CPaladin_Attack_ShieldSlam::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAni
 	{
 	case 1:
 		pOwner->Enable_FlyAttackCollider(true);
+		Play_Voice(pOwner, L"Voice_Slam", 1.f);
 		break;
 	case 2:
 		pOwner->Enable_FlyAttackCollider(false);

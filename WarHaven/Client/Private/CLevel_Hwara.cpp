@@ -10,6 +10,7 @@
 
 #include "CUnit.h"
 #include "CPlayer.h"
+#include "Functor.h"
 
 CLevel_Hwara::CLevel_Hwara()
 {
@@ -81,6 +82,7 @@ HRESULT CLevel_Hwara::Enter()
 		return E_FAIL;
 
 #endif 
+
 
 	return S_OK;
 }

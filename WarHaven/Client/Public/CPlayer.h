@@ -403,5 +403,6 @@ public:
 	_bool Is_OpenCell();
 
 	_bool m_bIsInFrustum = false;
+	_bool m_bKillVoice = true;
 };
 END

@@ -333,7 +333,9 @@ void CUnit::On_Respawn()
 	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
 	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
 
-
+	if(m_bIsMainPlayer)
+		Get_CurStateP()->Play_Voice(this, L"Voice_Respawn", 1.f);
+		
 }
 
 void CUnit::On_Reborn()
@@ -378,6 +380,8 @@ void CUnit::On_Die()
 	{
 		GAMEINSTANCE->Start_GrayScale(1.f);
 	}
+
+	
 }
 
 _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
@@ -1757,6 +1761,11 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 			CUser::Get_Instance()->Add_KillName(wstrEnemyName);
 		}
 	}
+	
+
+	Get_CurStateP()->Play_Voice(this, L"Voice_Dead", 1.f);
+
+	
 }
 
 void CUnit::On_Bounce(void* pHitInfo)

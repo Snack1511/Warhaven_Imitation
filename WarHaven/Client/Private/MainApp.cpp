@@ -77,11 +77,9 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 	//Sound
-	/*if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/ingame")))
+	if (FAILED(Load_SoundFile()))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/ui")))
-		return E_FAIL;*/
 
 	return S_OK;
 }
@@ -305,6 +303,41 @@ HRESULT CMainApp::SetUp_Font()
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Font(L"DefaultFont", L"../bin/resources/fonts/128.spritefont")))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Load_SoundFile()
+{
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/BGM")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/UI")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Warrior")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Warhammer")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Paladin")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Archer")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Priest")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Valkyrie")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Qanda")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Lancer")))
 		return E_FAIL;
 
 	return S_OK;

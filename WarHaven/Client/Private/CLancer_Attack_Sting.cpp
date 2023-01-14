@@ -209,6 +209,8 @@ void CLancer_Attack_Sting::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 	case 0:
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		Play_Voice(pOwner, L"Voice_Attack", 1.f);
+
 		break;
 
 	case 1:

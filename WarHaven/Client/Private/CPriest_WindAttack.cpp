@@ -250,6 +250,7 @@ void CPriest_WindAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, c
 		else
 			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Wind_Attack", pOwner->Get_Transform()->Get_WorldMatrix(MATRIX_NOSCALE));
 
+		Play_Voice(pOwner, L"Voice_Wind", 1.f);
 		break;
 
 	case 1:

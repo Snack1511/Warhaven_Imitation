@@ -11,7 +11,7 @@
 #include "CSword_Effect.h"
 #include "Transform.h"
 #include "CColorController.h"
-
+#include "Functor.h"
 
 CWarrior_Attack_Sting_L::CWarrior_Attack_Sting_L()
 {
@@ -167,7 +167,6 @@ void CWarrior_Attack_Sting_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 {
 	pOwner->Set_BounceState(STATE_BOUNCE_PLAYER_L);
 	
-
     /* OwnerÀÇ Animator Set Idle·Î */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -207,6 +206,7 @@ void		CWarrior_Attack_Sting_L::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnima
 	case 0:
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		Play_Voice(pOwner, L"Voice_Attack", 1.f);
 		break;
 
 	case 1:

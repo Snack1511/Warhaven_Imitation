@@ -9,6 +9,7 @@
 #include "CUnit.h"
 
 #include "CUser.h"
+#include "Functor.h"
 
 CWarrior_Attack_HorizontalUp::CWarrior_Attack_HorizontalUp()
 {
@@ -58,6 +59,7 @@ void CWarrior_Attack_HorizontalUp::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 {
 	pOwner->On_Attack	(this);
 
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -103,6 +105,7 @@ void CWarrior_Attack_HorizontalUp::On_KeyFrameEvent(CUnit * pOwner, CAnimator * 
 	case 1:
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		Play_Voice(pOwner, L"Voice_Attack", 1.f);
 		break;
 
 	case 2:

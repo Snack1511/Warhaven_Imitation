@@ -5,6 +5,7 @@
 #include "CFader.h"
 #include "CUser.h"
 #include "Loading_Manager.h"
+#include "Functor.h"
 
 CUI_Popup::CUI_Popup()
 {
@@ -38,6 +39,7 @@ HRESULT CUI_Popup::Start()
 
 void CUI_Popup::Enable_Popup(ePOPUP_TYPE ePopupType)
 {
+	GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)CHANNEL_UI);
 	switch (ePopupType)
 	{
 	case Client::CUI_Popup::eConquest:
@@ -45,24 +47,31 @@ void CUI_Popup::Enable_Popup(ePOPUP_TYPE ePopupType)
 		break;
 	case Client::CUI_Popup::eKILL:
 		Enable_KillPopup(L"2연속 처치", ePopupType);
+		CFunctor::Play_Sound(L"UI_Killstreak2", CHANNEL_UI, 1.f);
 		break;
 	case Client::CUI_Popup::eKILL2:
 		Enable_KillPopup(L"3연속 처치", ePopupType);
+		CFunctor::Play_Sound(L"UI_Killstreak3", CHANNEL_UI, 1.f);
 		break;
 	case Client::CUI_Popup::eKILL3:
 		Enable_KillPopup(L"4연속 처치", ePopupType);
+		CFunctor::Play_Sound(L"UI_Killstreak4", CHANNEL_UI, 1.f);
 		break;
 	case Client::CUI_Popup::eKILL4:
 		Enable_KillPopup(L"전장의 화신", ePopupType);
+		CFunctor::Play_Sound(L"UI_Killstreak5", CHANNEL_UI, 1.f);
 		break;
 	case Client::CUI_Popup::eBURGERKING:
 		Enable_ConquestPopup(L"버거킹", ePopupType);
+		CFunctor::Play_Sound(L"UI_BurgerKing", CHANNEL_UI, 1.f);
 		break;
 	case Client::CUI_Popup::eHEADHUNTER:
 		Enable_ConquestPopup(L"헤드 헌터", ePopupType);
+		CFunctor::Play_Sound(L"UI_HeadShot", CHANNEL_UI, 1.f);
 		break;
 	case Client::CUI_Popup::eKILLELITE:
 		Enable_ConquestPopup(L"영웅 처치", ePopupType);
+		CFunctor::Play_Sound(L"UI_KillHero", CHANNEL_UI, 1.f);
 		break;
 	case Client::CUI_Popup::eCNT:
 		break;

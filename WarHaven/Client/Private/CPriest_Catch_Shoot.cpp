@@ -174,7 +174,7 @@ void CPriest_Catch_Shoot::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 		pOwner->Get_Status().fDamageMultiplier = 7.f;
 	}
 		
- 
+	Play_Voice(pOwner, L"Voice_Attack", 1.f);
 }
 
 STATE_TYPE CPriest_Catch_Shoot::Tick(CUnit* pOwner, CAnimator* pAnimator)

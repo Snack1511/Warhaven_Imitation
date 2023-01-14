@@ -219,6 +219,8 @@ void CPriest_Cure_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 	//pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
 
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
+
+	Play_Voice(pOwner, L"Voice_Cure", 1.f);
 }
 
 void CPriest_Cure_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)

@@ -129,6 +129,7 @@ void	CSprintAttack_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator
 		cout << "Attack Begin " << endl;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		m_bAttackTrigger = true;
+		Play_Voice(pOwner, L"Voice_Attack", 1.f, 1);
 	}
 
 	//Attack Done

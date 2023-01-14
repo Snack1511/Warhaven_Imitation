@@ -136,6 +136,7 @@ void	CSprintAttack_WarHammer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimat
 	{
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		m_bAttackTrigger = true;
+		Play_Voice(pOwner, L"Voice_Attack", 1.f);
 	}
 
 	//Attack Done

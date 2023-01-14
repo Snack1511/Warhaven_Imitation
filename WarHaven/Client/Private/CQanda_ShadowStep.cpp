@@ -117,6 +117,8 @@ void CQanda_ShadowStep::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
     m_fWalkSpeed = pOwner->Get_Status().fWalkSpeed; //기존 걷는 속도
     pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fSprintSpeed;
     //D3D11_RENDER_TARGET_BLEND_DESC
+
+    Play_Voice(pOwner, L"Voice_Shadow", 1.f);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
