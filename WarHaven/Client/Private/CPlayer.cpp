@@ -1173,6 +1173,7 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 
 	if (m_bIsMainPlayer)
 	{
+		GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)CHANNEL_VOICE);
 		m_pCurrentUnit->Play_Voice(L"Voice_Kill", 1.f, false);
 
 		if (pOtherPlayer->Get_PlayerName() == L"Jusin_Burger")
