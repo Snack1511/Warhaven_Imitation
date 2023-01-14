@@ -114,10 +114,10 @@ public:
 	eSTAGE_TYPE m_eCurStageType = eSTAGE_TYPE::eSTAGE_CNT;
 
 public:
-	CGameObject* Get_Cannon() { return m_pCannon; }
+	CCannon* Get_Cannon() { return m_pCannon; }
 
 private:
-	CGameObject* m_pCannon = nullptr;
+	CCannon* m_pCannon = nullptr;
 
 private:
 	CPositionTable* m_pPositionTable = nullptr;

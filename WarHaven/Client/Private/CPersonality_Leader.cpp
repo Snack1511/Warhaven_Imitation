@@ -30,7 +30,7 @@ HRESULT CPersonality_Leader::Initailize()
 	m_tPersonalDesc.strPersonalityName = wstring(L"Leader_Personal");
 	m_tPersonalDesc.tPersonalityData.fChangeDelayTime = 0.01f;
 	m_tPersonalDesc.tPersonalityData.fDelayWeight = 0.0f;
-	m_tPersonalDesc.tPersonalityData.fSIghtRadius = 10.0f;
+	m_tPersonalDesc.tPersonalityData.fSIghtRadius = 13.0f;
 	m_tPersonalDesc.tPersonalityData.fSightRadiusWeight = 0.0f;
 	m_tPersonalDesc.tPersonalityData.fCheckedHP = 30.f;
 	m_tPersonalDesc.tPersonalityData.fHPWeight = 0.f;
@@ -58,8 +58,8 @@ HRESULT CPersonality_Leader::Initailize()
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"GoToTrigger"))->Clone();
 	//pBehavior->Add_OtherCondition(wstring(L"Check_EmptyRoute"));
 	pBehavior->Add_OtherCondition(wstring(L"Check_Need_Conquer"));
-	//pBehavior->Add_WhatCondition(wstring(L"Select_RandomConquerTrigger"));
-	pBehavior->Add_WhatCondition(wstring(L"Select_ConquerTrigger"));
+	pBehavior->Add_WhatCondition(wstring(L"Select_RandomConquerTrigger"));
+	//pBehavior->Add_WhatCondition(wstring(L"Select_ConquerTrigger"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(1);

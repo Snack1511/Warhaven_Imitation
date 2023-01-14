@@ -30,7 +30,7 @@ HRESULT CPersonality_Sub::Initailize()
 	m_tPersonalDesc.strPersonalityName = wstring(L"Sub_Personal");
 	m_tPersonalDesc.tPersonalityData.fChangeDelayTime = 0.01f;
 	m_tPersonalDesc.tPersonalityData.fDelayWeight = 0.0f;
-	m_tPersonalDesc.tPersonalityData.fSIghtRadius = 10.0f;
+	m_tPersonalDesc.tPersonalityData.fSIghtRadius = 13.0f;
 	m_tPersonalDesc.tPersonalityData.fSightRadiusWeight = 0.0f;
 	m_tPersonalDesc.tPersonalityData.fCheckedHP = 30.f;
 	m_tPersonalDesc.tPersonalityData.fHPWeight = 0.f;

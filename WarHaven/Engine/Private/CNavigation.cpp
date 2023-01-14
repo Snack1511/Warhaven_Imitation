@@ -144,7 +144,6 @@ list<pair<_float4, CCellLayer*>> CNavigation::Get_Goals(map<_float, CCellLayer*>
 				pEndLayer = InvIter->second;
 			}
 		}
-		
 	}
 
 	//이론상 무조건 하나의 레이어를 가지고 있어야 함

@@ -76,7 +76,6 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	_bool bFindRoute = true;
 
-	if (pOwner->Get_OwnerPlayer()->Is_KeepRay())
 	{
 		_float fDiffY = fabsf(vTargetPos.y - vCurPos.y);
 
@@ -96,33 +95,41 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			if (!GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vRayStartPos, vRayDir, vRayDir.Length()))
 			{
 
-				eBehaviorType eBehaviortype = pOwner->Get_OwnerPlayer()->Get_BehaviorDesc()->eCurType;
-				
-				STATE_TYPE ePrevStateType = STATE_END;  
-
-				switch (eBehaviortype)
+				if (pOwner->Get_OwnerPlayer()->Is_KeepRay())
 				{
-				case Client::eBehaviorType::ePatrol:
-					ePrevStateType = pOwner->Get_AIState_Type().eAIPatrolDefaultState;
-					break;
+					eBehaviorType eBehaviortype = pOwner->Get_OwnerPlayer()->Get_BehaviorDesc()->eCurType;
+
+					STATE_TYPE ePrevStateType = STATE_END;
+
+					switch (eBehaviortype)
+					{
+					case Client::eBehaviorType::ePatrol:
+						ePrevStateType = pOwner->Get_AIState_Type().eAIPatrolDefaultState;
+						break;
 
 
-				case Client::eBehaviorType::ePadenCannonInteract:
-					ePrevStateType = pOwner->Get_AIState_Type().eAICannonDefaultState;
-					break;
+					case Client::eBehaviorType::ePadenCannonInteract:
+						ePrevStateType = pOwner->Get_AIState_Type().eAICannonDefaultState;
+						break;
 
-				case Client::eBehaviorType::eRevive:
-					ePrevStateType = pOwner->Get_AIState_Type().eAIReviveDefaultState;
-					break;
+					case Client::eBehaviorType::eRevive:
+						ePrevStateType = pOwner->Get_AIState_Type().eAIReviveDefaultState;
+						break;
 
-				case Client::eBehaviorType::eCombat:
-					ePrevStateType = pOwner->Get_AIState_Type().eAICommbatDefaultState;
-					break;
+					case Client::eBehaviorType::eCombat:
+						ePrevStateType = pOwner->Get_AIState_Type().eAICommbatDefaultState;
+						break;
 
+					}
+
+					if (ePrevStateType != STATE_END)
+						return ePrevStateType;
+				}
+				else
+				{
+					bFindRoute = false;
 				}
 				
-				if(ePrevStateType != STATE_END)
-					return ePrevStateType;
 
 			}
 		}

@@ -16,6 +16,10 @@
 #include "CNavigation.h"
 #include "CGameSystem.h"
 #include "CTrigger_Stage.h"
+#include "CCannon.h"
+
+#define    MAX_FOLLOW_LENGTH 3.f
+
 #define CHECKFALSEOUTCONDITION(OutCondition)\
 if (OutCondition == false)\
 {\
@@ -337,7 +341,7 @@ void CTable_Conditions::Check_DeadAllies(_bool& OutCondition, CPlayer* pPlayer, 
     for (auto iter = Enemies.begin(); iter != Enemies.end();)
     {
         _bool bAlliesDead = ((*iter)->Is_Died());
-        _bool bRevival = !((*iter)->Is_EndRevivalTime());
+        _bool bRevival = !((*iter)->Is_AbleRevival());
         //돌이 안됬거나 부활 가능한 아군이 아니면 삭제
         if (RemovePlayer((!bAlliesDead || !bRevival), Enemies, iter))
         {
@@ -689,7 +693,7 @@ void CTable_Conditions::Select_Teammate(_bool& OutCondition, BEHAVIOR_DESC*& Out
         _float4 vPlayerPos = pTargetPlayer->Get_WorldPos();
         _float fLength = (vPlayerPos - vMyPos).Length();
 
-        if (fLength < 2.f)
+        if (fLength < 3.f)
         {
             OutCondition = false;
             return;
@@ -711,7 +715,7 @@ void CTable_Conditions::Select_Teammate(_bool& OutCondition, BEHAVIOR_DESC*& Out
         _float4 vPlayerPos = pTargetPlayer->Get_WorldPos();
         _float fLength = (vPlayerPos - vMyPos).Length();
 
-        if (fLength < 2.f)
+        if (fLength < MAX_FOLLOW_LENGTH)
         {
             OutCondition = false;
             return;
@@ -740,7 +744,7 @@ void CTable_Conditions::Select_Teammate(_bool& OutCondition, BEHAVIOR_DESC*& Out
         _float4 vPlayerPos = elem->Get_WorldPos();
         _float fLength = (vPlayerPos - vMyPos).Length();
 
-        if (fLength < 2.f)
+        if (fLength < MAX_FOLLOW_LENGTH)
         {
             OutCondition = false;
             return;
@@ -843,13 +847,13 @@ void CTable_Conditions::Select_RandomConquerTrigger(_bool& OutCondition, BEHAVIO
     CTrigger* pTargetTrigger = nullptr;
     _float4 vMyPos = pPlayer->Get_WorldPos();
 
-    if (OutDesc->pTriggerPtr)
+    if (pPlayer->Get_BehaviorDesc() && pPlayer->Get_BehaviorDesc()->pTriggerPtr)
     {
-        if (!pPlayer->Get_Team()->Has_Trigger((_uint)static_cast<CTrigger_Stage*> (OutDesc->pTriggerPtr)->Get_TriggerType() - 1))
+        if (!pPlayer->Get_Team()->Has_Trigger((_uint)static_cast<CTrigger_Stage*> (pPlayer->Get_BehaviorDesc()->pTriggerPtr)->Get_TriggerType() - 1))
         {
             OutCondition = true;
 
-            if ((OutDesc->pTriggerPtr->Get_Transform()->Get_World(WORLD_POS) - vMyPos).Length() < 2.f)
+            if ((pPlayer->Get_BehaviorDesc()->pTriggerPtr->Get_Transform()->Get_World(WORLD_POS) - vMyPos).Length() < 2.f)
                 OutCondition = false;
 
 
@@ -930,12 +934,12 @@ void CTable_Conditions::Select_PadenCannonTrigger(_bool& OutCondition, BEHAVIOR_
     if (nullptr == pTargetTrigger)
     {
         OutCondition = false;
+        return;
     }
-    else
-    {
-        OutCondition = true;
-    }
+
     OutDesc->pTriggerPtr = pTargetTrigger;
+    OutCondition = CGameSystem::Get_Instance()->Get_Cannon()->Can_ControlCannon(pPlayer);
+
 
 }
 

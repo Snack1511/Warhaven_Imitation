@@ -215,7 +215,6 @@ void CCannon::Shoot_Cannon()
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cannon_Smoke", this, m_pTransform->Get_World(WORLD_POS));
 
 	m_pCannonBall->Shoot_Cannon(m_pCurOwnerPlayer, vFirePos, vBoneLook);
-
 }
 
 _bool CCannon::Can_ControlCannon(CPlayer* pPlayer)

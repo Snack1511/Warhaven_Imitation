@@ -1000,6 +1000,7 @@ HRESULT CGameSystem::On_ReadyDestructible_Paden(vector<pair<CGameObject*, _uint>
 	pCannon->Get_Transform()->Set_World(WORLD_POS, vPos);
 	pCannon->Get_Transform()->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
 	pCannon->Get_Transform()->Make_WorldMatrix();
+	m_pCannon = pCannon;
 	vecReadyObjects.push_back(make_pair(pCannon, GROUP_PROP));
 
 
