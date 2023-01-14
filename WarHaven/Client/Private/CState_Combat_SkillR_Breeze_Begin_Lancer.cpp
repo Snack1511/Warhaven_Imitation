@@ -89,7 +89,7 @@ STATE_TYPE CState_Combat_SkillR_Breeze_Begin_Lancer::Tick(CUnit* pOwner, CAnimat
 	if (pAnimator->Is_CurAnimFinished())
 		return AI_STATE_COMBAT_BREEZE_LOOP_LANCER;
 
-	Wall_Detection(pOwner);
+	//Wall_Detection(pOwner);
 	Straight_Move(pOwner);
 
 	return __super::Tick(pOwner, pAnimator);

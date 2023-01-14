@@ -678,11 +678,13 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 		_float4 vDir = elem->Get_WorldPos() - pPlayer->Get_WorldPos();
 		_float fLength = vDir.Length();
 
-		if (!GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, fLength))
+		/*if (!GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, fLength))
 		{
 			pTargetPlayer = elem;
 			break;
-		}
+		}*/
+		pTargetPlayer = elem;
+
 	}
 
 	if (!pTargetPlayer)

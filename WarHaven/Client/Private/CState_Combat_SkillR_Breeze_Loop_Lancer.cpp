@@ -109,7 +109,7 @@ STATE_TYPE CState_Combat_SkillR_Breeze_Loop_Lancer::Tick(CUnit* pOwner, CAnimato
 	if (m_fTimeAcc > m_fMaxTime)
 		return AI_STATE_COMBAT_STOP_LANCER;
 
-	Wall_Detection(pOwner);
+	//Wall_Detection(pOwner);
 	Straight_Move(pOwner);
 
 	return __super::Tick(pOwner, pAnimator);

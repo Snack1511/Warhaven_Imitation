@@ -66,7 +66,7 @@ void CQanda_Attack_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 	
 	static_cast<CUnit_Qanda*>(pOwner)->Turn_ChargeEffect(true);
-
+	//Play_Sound(L"Effect_Charge_Qanda", CHANNEL_UI);
 }
 
 STATE_TYPE CQanda_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -132,7 +132,7 @@ STATE_TYPE CQanda_Attack_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnima
 
 	if (KEY(LBUTTON, HOLD))
 	{
-		Play_Sound(L"Effect_Charge_Qanda", CHANNEL_UI);
+		
 
 		CAnimWeapon_Crow::ePhyxState eAnimWeaponState = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->Get_Phase();
 
@@ -158,6 +158,7 @@ void CQanda_Attack_Begin::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator
 	{
 	case 1:
 		m_bAttackTrigger = true;
+
 		break;
 
 	case 2:
