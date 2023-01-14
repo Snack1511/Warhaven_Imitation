@@ -128,6 +128,8 @@ void CWarHammer_Attack_Sting::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Voice(pOwner, L"Voice_Attack", 1.f);
 }
 
 STATE_TYPE CWarHammer_Attack_Sting::Tick(CUnit* pOwner, CAnimator* pAnimator)

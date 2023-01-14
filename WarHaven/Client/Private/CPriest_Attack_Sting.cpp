@@ -169,6 +169,8 @@ void CPriest_Attack_Sting::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
     /* Owner¿« Animator Set Idle∑Œ */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Voice(pOwner, L"Voice_Attack", 1.f);
 }
 
 STATE_TYPE CPriest_Attack_Sting::Tick(CUnit* pOwner, CAnimator* pAnimator)

@@ -67,6 +67,8 @@ void CArcher_Attack_Begin_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 
 	GAMEINSTANCE->Start_RadialBlur(0.01f);
+
+	Play_Voice(pOwner, L"Voice_Sniping", 1.f);
 }
 
 STATE_TYPE CArcher_Attack_Begin_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)

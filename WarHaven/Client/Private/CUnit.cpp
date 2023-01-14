@@ -380,6 +380,8 @@ void CUnit::On_Die()
 	{
 		GAMEINSTANCE->Start_GrayScale(1.f);
 	}
+
+	
 }
 
 _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
@@ -1758,7 +1760,9 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 		}
 	}
 	
+
 	Get_CurStateP()->Play_Voice(this, L"Voice_Dead", 1.f);
+
 	
 }
 

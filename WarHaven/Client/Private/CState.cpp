@@ -219,7 +219,7 @@ void CState::Play_Voice(CUnit* pOwner, wstring strName, _float fVol, _int iRand)
 		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, vPos, fVol);
 		break;
 	case Client::ENGINEER:
-		strKey += L"_Engineer";
+		strKey += L"_Warhammer";
 		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, vPos, fVol);
 		break;
 	case Client::FIONA:

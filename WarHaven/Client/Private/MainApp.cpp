@@ -319,10 +319,25 @@ HRESULT CMainApp::Load_SoundFile()
 	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Warrior")))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Warhammer")))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Paladin")))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Archer")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Priest")))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Valkyrie")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Qanda")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Lancer")))
 		return E_FAIL;
 
 	return S_OK;

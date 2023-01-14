@@ -225,6 +225,7 @@ void CArcher_ClawAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, c
 	case 1:
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		Play_Voice(pOwner, L"Voice_Attack", 1.f);
 		break;
 
 	case 2:

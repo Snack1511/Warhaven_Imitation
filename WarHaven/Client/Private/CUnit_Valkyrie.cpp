@@ -16,6 +16,7 @@
 #include "CTrailBuffer.h"
 #include "CRectEffects.h"
 #include "HIerarchyNode.h"
+#include "CState.h"
 
 
 CUnit_Valkyrie::CUnit_Valkyrie()

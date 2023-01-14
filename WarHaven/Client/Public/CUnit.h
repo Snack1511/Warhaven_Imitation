@@ -444,6 +444,9 @@ protected:
 	_float		m_fDeadTime = 0.05f;
 
 protected:
+	_bool		m_bTransformDie = false;
+
+protected:
 	list<CGameObject*>	m_DeathStones;
 	void	Add_DeathStones(const list<CGameObject*>& StoneParticleList);
 
@@ -479,6 +482,8 @@ private:
 	/* 딱 체력 0된 시점에 호출되는 함수 */
 	void		On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos);
 	void		On_Bounce(void* pHitInfo);
+
+
 
 };
 END

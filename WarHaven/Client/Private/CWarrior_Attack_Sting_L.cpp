@@ -206,7 +206,7 @@ void		CWarrior_Attack_Sting_L::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnima
 	case 0:
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
-		Play_Voice(pOwner, L"Voice_Attack", 1.f, 1);
+		Play_Voice(pOwner, L"Voice_Attack", 1.f);
 		break;
 
 	case 1:

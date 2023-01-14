@@ -74,6 +74,8 @@ void CQanda_Attack_Begin_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
 
+	Play_Voice(pOwner, L"Voice_Sniping", 1.f);
+
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

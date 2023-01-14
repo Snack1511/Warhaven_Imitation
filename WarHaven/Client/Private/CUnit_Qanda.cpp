@@ -65,7 +65,6 @@ void CUnit_Qanda::On_Die()
 	m_bDie = false;
 	m_fDeadTimeAcc = 0.f;
 	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
-
 }
 
 void CUnit_Qanda::TurnOn_Trail(_bool bOn)

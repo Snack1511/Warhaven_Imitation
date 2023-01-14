@@ -136,6 +136,8 @@ void CWarHammer_Attack_VerticalAttack::Enter(CUnit* pOwner, CAnimator* pAnimator
 	pOwner->On_Attack(this);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Voice(pOwner, L"Voice_Attack", 1.f);
 }
 
 STATE_TYPE CWarHammer_Attack_VerticalAttack::Tick(CUnit* pOwner, CAnimator* pAnimator)

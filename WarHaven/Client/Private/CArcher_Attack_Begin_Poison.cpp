@@ -58,6 +58,8 @@ void CArcher_Attack_Begin_Poison::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 {
 	__super::Enter_Attack_Begin(pOwner);
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Voice(pOwner, L"Voice_Poison", 1.f);
 }
 
 STATE_TYPE CArcher_Attack_Begin_Poison::Tick(CUnit* pOwner, CAnimator* pAnimator)

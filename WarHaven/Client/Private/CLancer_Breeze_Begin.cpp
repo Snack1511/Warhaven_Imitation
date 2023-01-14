@@ -117,6 +117,7 @@ void CLancer_Breeze_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 	{
 	case 0:
 		Physics_Setting(m_fMaxSpeed, pOwner);
+		Play_Voice(pOwner, L"Voice_Breeze", 1.f);
 		break;
 
 	default:

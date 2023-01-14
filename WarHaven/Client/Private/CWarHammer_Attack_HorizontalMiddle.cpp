@@ -135,6 +135,8 @@ void CWarHammer_Attack_HorizontalMiddle::Enter(CUnit* pOwner, CAnimator* pAnimat
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Voice(pOwner, L"Voice_Attack", 1.f);
 }
 
 STATE_TYPE CWarHammer_Attack_HorizontalMiddle::Tick(CUnit* pOwner, CAnimator* pAnimator)

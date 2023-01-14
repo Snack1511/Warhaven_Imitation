@@ -163,6 +163,8 @@ void CPriest_Catch_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 	static_cast<CUnit_Priest*>(pOwner)->Turn_CatchEffet(true);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Voice(pOwner, L"Voice_Catch", 1.f);
 }
 
 STATE_TYPE CPriest_Catch_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
