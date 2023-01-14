@@ -5,6 +5,7 @@
 #include "CUnit.h"
 
 #include "CPersonality_Leader.h"
+#include "CPersonality_Default.h"
 
 #include "CGameSystem.h"
 

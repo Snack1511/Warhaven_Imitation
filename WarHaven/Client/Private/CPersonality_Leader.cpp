@@ -89,7 +89,7 @@ HRESULT CPersonality_Leader::Initailize()
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(4);
-	//m_BehaviorList.push_back(pBehavior);
+	m_BehaviorList.push_back(pBehavior);
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Change"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_CombatBehavior"));

@@ -186,6 +186,7 @@ void CAIPersonality::Release()
 	for (auto& elem : m_BehaviorList)
 		SAFE_DELETE(elem);
 
+	m_BehaviorList.clear();
 	SAFE_DELETE(m_pDefaultBehavior);
 }
 

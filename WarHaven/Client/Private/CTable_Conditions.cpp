@@ -76,7 +76,6 @@ HRESULT CTable_Conditions::Initialize()
 {
     if (FAILED(SetUp_Conditions()))
         return E_FAIL;    
-    
 
     if (FAILED(SetUp_Behaviors()))
         return E_FAIL;

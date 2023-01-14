@@ -58,6 +58,7 @@ HRESULT CPhysX_Manager::Initialize()
 	}
 
 	m_listAllStatics.clear();
+	m_pTerrainStatic = nullptr;
 
 	return S_OK;
 }
@@ -196,6 +197,9 @@ PxRigidStatic * CPhysX_Manager::Create_StaticActor(const PxTransform & Transform
 
 	m_pCurScene->addActor(*pStatic);
 	m_listAllStatics.push_back(pStatic);
+
+	if (Geometry.getType() == PxGeometryType::eTRIANGLEMESH)
+		m_pTerrainStatic = pStatic;
 
 	return pStatic;
 }
@@ -587,5 +591,13 @@ _bool CPhysX_Manager::Shoot_RaytoControllers(list<PxController*>& listController
 
 	*pOutPos = vFinalHitPos;
 	return true;
+}
+
+_bool CPhysX_Manager::Shoot_RaytoTerrain(_float4* pOutPos, _float* pOutDist, _float4 vStartPos, _float4 vStartDir)
+{
+	if (!m_pTerrainStatic)
+		return false;
+
+	return _bool();
 }
 
