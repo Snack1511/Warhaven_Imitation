@@ -249,14 +249,27 @@ void CState::Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator)
 
     for (_uint i = 0; i < iSize; ++i)
     {
-        if (iCurKeyFrame == m_vecKeyFrameEvent[i].iKeyFrame)
+		if (iCurKeyFrame <= 1)
+		{
+			if (m_vecKeyFrameEvent[i].bLoop)
+			{
+				m_vecKeyFrameEvent[i].bExecuted = false;
+			}
+		}
+
+        if (iCurKeyFrame >= m_vecKeyFrameEvent[i].iKeyFrame)
         {
             if (m_vecKeyFrameEvent[i].bExecuted)
                 continue;
 
             On_KeyFrameEvent(pOwner, pAnimator, m_vecKeyFrameEvent[i], m_vecKeyFrameEvent[i].iSequence);
-            // m_vecKeyFrameEvent[i].bExecuted = true;
+
+			
+            m_vecKeyFrameEvent[i].bExecuted = true;
+
         }
+
+		
     }
 }
 _uint CState::Get_Direction()
@@ -1060,11 +1073,12 @@ void CState::Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable)
 }
 
 
-void CState::Add_KeyFrame(_uint iKeyFrameIndex, _uint iSequence)
+void CState::Add_KeyFrame(_uint iKeyFrameIndex, _uint iSequence, _bool bLoop)
 {
     KEYFRAME_EVENT  tEvent;
     tEvent.iKeyFrame = iKeyFrameIndex;
 	tEvent.iSequence = iSequence;
+	tEvent.bLoop = bLoop;
     m_vecKeyFrameEvent.push_back(tEvent);
 
 	_uint iSize = (_uint)m_vecKeyFrameEvent.size();

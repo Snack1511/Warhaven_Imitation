@@ -36,8 +36,8 @@ HRESULT CRun_WarHammer::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.7f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.7f;
 	
-	Add_KeyFrame(25, 0);
-	Add_KeyFrame(49, 0);
+	Add_KeyFrame(25, 0, true);
+	Add_KeyFrame(49, 0, true);
 
 
 	// 선형 보간 시간

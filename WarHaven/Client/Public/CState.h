@@ -53,6 +53,7 @@ public:
 		//EVENT_TYPE	eEventType = EVENT_END;
 		_uint	iSequence = 0;
 		_bool	bExecuted = false;
+		_bool	bLoop = false;
 
 	};
 
@@ -252,7 +253,7 @@ protected:
 
 
 protected:
-	void					Add_KeyFrame(_uint iKeyFrameIndex, _uint iSequence);
+	void					Add_KeyFrame(_uint iKeyFrameIndex, _uint iSequence, _bool bLoop = false);
 	void					Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator);
 	virtual		void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence) {};
 
