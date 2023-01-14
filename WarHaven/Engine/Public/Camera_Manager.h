@@ -14,6 +14,9 @@ private:
 	virtual ~CCamera_Manager();
 
 public:
+	void	Set_LoadFinish() { m_bOnceCheck = true; }
+
+public:
 	_float4x4	Get_View() { return m_tView.matView; }
 	_float4x4	Get_Proj() { return m_tProj.matProj; }
 	_float4x4	Get_ViewProj() { return m_tView.matView * m_tProj.matProj; }

@@ -35,6 +35,12 @@ CNavigation* CNavigation::Create(_uint iGroupIdx, CCell* pStartCell, CPhysics* p
 	return pInstance;
 }
 
+_bool CNavigation::Is_BlockedCell(_float4 vPosition)
+{
+	CCell* pCurCell = Get_CurCell(vPosition, *m_pLayers, nullptr);
+	return pCurCell->IsBlocked();
+}
+
 _bool CNavigation::Is_InWall()
 {
 	return m_pCurCell->IsWall();
@@ -148,7 +154,7 @@ list<pair<_float4, CCellLayer*>> CNavigation::Get_Goals(map<_float, CCellLayer*>
 	list<CCell*>OutEndCellList;
 	_float4 vEndPos = vEnd;
 	vEndPos.y = pEndLayer->Get_MinHeight();
-	pEndLayer->Find_NearOpenCell(vEnd, OutEndCellList);
+	pEndLayer->Find_NearOpenCell(vEnd, OutEndCellList, 3);
 
 	if (OutEndCellList.empty())
 	{
@@ -392,6 +398,8 @@ int CNavigation::Func_MakeRoute(list<_float4>* NodeList, map<_float, CCellLayer*
 	/* Locked 체크 */
 	pNaviCom->m_bThreadOn = true;
 
+	pNaviCom->Get_NearOpenCell(vStart, *Layers, &pNaviCom->m_pStartLayer);
+
 	while (1)
 	{
 		_bool bBreak = false;
@@ -421,55 +429,26 @@ int CNavigation::Func_MakeRoute(list<_float4>* NodeList, map<_float, CCellLayer*
 	pNaviCom->m_bThreadOn = false;
 
 	return 0;
-
-	/*list<pair<_float4, CCellLayer*>> GoalList = CNavigation::Get_Goals(*Layers, vStart, vEnd);
-	CCellLayer::CellList Routes;
-
-	pNaviCom->m_pStartNode->Set_NodePosition(vStart);
-
-	for (auto value : GoalList)
-	{
-		if (nullptr == value.second)
-			continue;
-		pNaviCom->m_pEndNode->Set_NodePosition(value.first);
-
-		_bool bFind = false;
-		list<_float4> listTemp;
-		CCellLayer::CellList List = value.second->Get_BestRoute(pNaviCom->m_pStartNode, pNaviCom->m_pEndNode, bFind, listTemp);
-
-		for (auto Cell : List)
-			Routes.push_back(Cell);
-
-		pNaviCom->m_pStartNode->Clear_Node();
-		pNaviCom->m_pEndNode->Clear_Node();
-
-		pNaviCom->m_pStartNode->Set_NodePosition(value.first);
-	}
-
-
-
-	list<_float4> Return;
-	if (!Routes.empty())
-	{
-		Routes.pop_front();
-		if (!Routes.empty())
-			Routes.pop_back();
-
-		NodeList->push_back(vStart);
-		for (auto Cell : Routes)
-		{
-			NodeList->push_back(Cell->Get_Position());
-		}
-		NodeList->push_back(vEnd);
-	}*/
 }
+
+int CNavigation::Func_GetStartCell(list<_float4>* NodeList, map<_float, CCellLayer*>* Layers, _float4 vStart, _float4 vEnd, CNavigation* pNaviCom)
+{
+	pNaviCom->Get_NearOpenCell(vStart, *Layers, &pNaviCom->m_pStartLayer);
+
+	return 0;
+
+}
+
 
 void CNavigation::Make_Route(list<_float4>* NodeList, map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd)
 {
 	if (m_bThreadOn)
 		return;
 
-	std::future<int> result = std::async(bind(Func_MakeRoute, NodeList, &Layers, vStart, vEnd, this));
+	//std::future<int> result = std::async(bind(Func_GetStartCell, NodeList, &Layers, vStart, vEnd, this));
+
+
+	std::future<int> result2 = std::async(bind(Func_MakeRoute, NodeList, &Layers, vStart, vEnd, this));
 
 	//*NodeList = Get_BestRoute(Layers, vStart, vEnd);
 }
@@ -477,27 +456,31 @@ void CNavigation::Make_Route(list<_float4>* NodeList, map<_float, CCellLayer*>& 
 list<_float4> CNavigation::Get_BestRoute(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd)
 {
 	m_DebugRouteNode.clear();
-	CCellLayer* pStartCellLayer = nullptr;
 
-	//근처의 열린셀을 기준으로 길찾기
-	CCell* pStartCell = Get_NearOpenCell(vStart, Layers, &pStartCellLayer);
+	/*while (1)
+	{
+		if (m_pStartLayer && m_pStartCell)
+			break;
+	}*/
 
-	if (nullptr == pStartCellLayer)
-		assert(0);//타일 모양 한번 확인해봐야함
+	if (nullptr == m_pStartLayer)
+	{
+		return list<_float4>();
+	}
 
-	if (pStartCell->Check_Attribute(CELL_BLOCKED))
+	if (m_pStartCell->Check_Attribute(CELL_BLOCKED))
 		assert(0);
 
-	_float4 vStartPos = pStartCell->Get_Position();
+	_float4 vStartPos = m_pStartCell->Get_Position();
 	//GoalList의 목적지들은 모두 열린셀의 위치
-	list<pair<_float4, CCellLayer*>> GoalList = Get_Goals(Layers, vStartPos, vEnd, pStartCellLayer);
+	list<pair<_float4, CCellLayer*>> GoalList = Get_Goals(Layers, vStartPos, vEnd, m_pStartLayer);
 	
-	GoalList.push_front(make_pair(vStartPos, pStartCellLayer));
+	GoalList.push_front(make_pair(vStartPos, m_pStartLayer));
 
 	CCellLayer::CellList Routes;
 
 	m_pStartNode->Set_NodePosition(vStart);
-	Routes.push_back(pStartCellLayer->Find_Cell(vStart));
+	Routes.push_back(m_pStartLayer->Find_Cell(vStart));
 	for (auto value : GoalList)
 	{
 		if (nullptr == value.second)
@@ -554,12 +537,19 @@ CCell* CNavigation::Get_CurCell(_float4 vPosition, map<_float, CCellLayer*>& Lay
 	{
 		_float vLayerKey = Layer.first;
 		CCell* pCell = Layer.second->Find_Cell(vPosition);
+
+
 		if (vLayerKey <= vPosition.y)
 		{
 			pCellLayer = Layer.second;
 			pReturn = pCell;
 		}
 
+	}
+
+	if (pReturn->IsBlocked())
+	{
+		pReturn = Layers.begin()->second->Find_Cell(vPosition);
 	}
 
 	return pReturn;
@@ -570,10 +560,22 @@ CCell* CNavigation::Get_NearOpenCell(_float4 vPosition, map<_float, CCellLayer*>
 	CCell* pReturn = nullptr;
 	CCellLayer* pCellLayer = nullptr;
 
+	pReturn = Get_CurCell(vPosition, Layers);
+
+	if (!pReturn->IsBlocked())
+	{
+		ppOutInCellLayer = &Layers.find(pReturn->Get_Position().y)->second;
+		m_pStartLayer = *ppOutInCellLayer;
+		return m_pStartCell = pReturn;
+	}
+
+
 	for (auto& Layer : Layers)
 	{
 		_float vLayerKey = Layer.first;
 		CCell* pCell = Layer.second->Find_Cell(vPosition);
+
+
 		if (vLayerKey <= vPosition.y)
 		{
 			if (!pCell->Check_Attribute(CELL_BLOCKED))
@@ -583,6 +585,8 @@ CCell* CNavigation::Get_NearOpenCell(_float4 vPosition, map<_float, CCellLayer*>
 			}
 			else
 			{
+				
+
 				for (_uint i = 0; i < CCell::LINE_END; ++i)
 				{
 					CCell* pNeighborCell = pCell->Get_NeighborCell(CCell::LINE(i));
@@ -602,9 +606,48 @@ CCell* CNavigation::Get_NearOpenCell(_float4 vPosition, map<_float, CCellLayer*>
 
 	}
 
+	if (nullptr == pReturn)
+	{
+		for (auto& Layer : Layers)
+		{
+			_float vLayerKey = Layer.first;
+			CCell* pCell = Layer.second->Find_Cell(vPosition);
+			if (vLayerKey <= vPosition.y)
+			{
+				pCellLayer = Layer.second;
+				pReturn = pCell;
+				
+			}
+		}
+
+		list<CCell*> TmpList;
+		_int LevelInCrease = 1;
+		while (TmpList.empty())
+		{
+			pCellLayer->Find_NearOpenCell(vPosition, TmpList, LevelInCrease);
+			LevelInCrease++;
+		}
+
+		TmpList.sort([&vPosition](auto Sour, auto Dest)
+			{
+
+				_float SourLeng = (Sour->Get_Position()- vPosition).Length();
+				_float DestLeng = (Dest->Get_Position() - vPosition).Length();
+				if (SourLeng < DestLeng)
+					return true;
+				else return false;
+			});
+
+		pReturn = TmpList.front();
+	}
+
 	//pReturn이 NULL이면 타일 모양이 이상한거..
 	if (ppOutInCellLayer)
 		(*ppOutInCellLayer) = pCellLayer;
+
+	m_pStartLayer = pCellLayer;
+	m_pStartCell = pReturn;
+
 	return pReturn;
 }
 

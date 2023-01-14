@@ -583,7 +583,7 @@ void CTable_Conditions::Check_EmptyRoute(_bool& OutCondition, CPlayer* pPlayer, 
 
 void CTable_Conditions::Select_Leader(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
-    CHECKFALSEOUTCONDITION(OutCondition);
+    //CHECKFALSEOUTCONDITION(OutCondition);
 
 
     CSquad* pSquad = pPlayer->Get_Squad();
@@ -615,7 +615,7 @@ void CTable_Conditions::Select_Leader(_bool& OutCondition, BEHAVIOR_DESC*& OutDe
 
 void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
-    CHECKFALSEOUTCONDITION(OutCondition);
+    //CHECKFALSEOUTCONDITION(OutCondition);
 
     _float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
 
@@ -641,7 +641,7 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 
 void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
-    CHECKFALSEOUTCONDITION(OutCondition);
+    //CHECKFALSEOUTCONDITION(OutCondition);
 
     _float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
 
@@ -665,7 +665,7 @@ void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& O
 
 void CTable_Conditions::Select_MainPlayer(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
-    CHECKFALSEOUTCONDITION(OutCondition);
+    //CHECKFALSEOUTCONDITION(OutCondition);
 
     OutCondition = true;
 
@@ -678,24 +678,54 @@ void CTable_Conditions::Select_Teammate(_bool& OutCondition, BEHAVIOR_DESC*& Out
 {
     //CHECKFALSEOUTCONDITION(OutCondition);
     CTeamConnector* pTeamConnector = pPlayer->Get_Team();
+    CPlayer* pTargetPlayer = nullptr;
+    _float4 vMyPos = pPlayer->Get_WorldPos();
 
-    if (pTeamConnector->Get_SquadList().front()->Get_LeaderPlayer()->Get_CurrentUnit()->Is_Valid())
+ 
+    CPlayer* pMyLeaderPlayer = pPlayer->Get_Squad()->Get_LeaderPlayer();
+    pTargetPlayer = pMyLeaderPlayer;
+
+    if (pTargetPlayer->Get_CurrentUnit()->Is_Valid() && pTargetPlayer != pPlayer)
     {
+        _float4 vPlayerPos = pTargetPlayer->Get_WorldPos();
+        _float fLength = (vPlayerPos - vMyPos).Length();
+
+        if (fLength < 2.f)
+        {
+            OutCondition = false;
+            return;
+        }
+
+
         OutCondition = true;
-        OutDesc->pAlliesPlayer = pTeamConnector->Get_SquadList().front()->Get_LeaderPlayer();
+        OutDesc->pAlliesPlayer = pTargetPlayer;
+
         return;
     }
     
-    if (pTeamConnector->Get_SquadList().back()->Get_LeaderPlayer()->Get_CurrentUnit()->Is_Valid())
+    pTargetPlayer = pTeamConnector->Get_SquadList().back()->Get_LeaderPlayer();
+    if (pTargetPlayer == pMyLeaderPlayer)
+        pTargetPlayer = pTeamConnector->Get_SquadList().front()->Get_LeaderPlayer();
+
+    if (pTargetPlayer->Get_CurrentUnit()->Is_Valid() && pTargetPlayer != pPlayer)
     {
+        _float4 vPlayerPos = pTargetPlayer->Get_WorldPos();
+        _float fLength = (vPlayerPos - vMyPos).Length();
+
+        if (fLength < 2.f)
+        {
+            OutCondition = false;
+            return;
+        }
+
+
         OutCondition = true;
-        OutDesc->pAlliesPlayer = pTeamConnector->Get_SquadList().back()->Get_LeaderPlayer();
+        OutDesc->pAlliesPlayer = pTargetPlayer;
         return;
     }
 
+    pTargetPlayer = nullptr;
     _float fMinDist = 9999.f;
-    CPlayer* pTargetPlayer = nullptr;
-    _float4 vMyPos = pPlayer->Get_WorldPos();
 
     for (auto& elem : (pTeamConnector->Get_AllPlayers()))
     {
@@ -739,7 +769,7 @@ void CTable_Conditions::Select_Teammate(_bool& OutCondition, BEHAVIOR_DESC*& Out
 
 void CTable_Conditions::Select_ConquerTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
-    CHECKFALSEOUTCONDITION(OutCondition);
+    //CHECKFALSEOUTCONDITION(OutCondition);
     OutCondition = false;
     CTrigger* pTargetTrigger = nullptr;
     OutDesc->pTriggerPtr = nullptr;
@@ -809,15 +839,21 @@ void CTable_Conditions::Select_ConquerTrigger(_bool& OutCondition, BEHAVIOR_DESC
 
 void CTable_Conditions::Select_RandomConquerTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
-    CHECKFALSEOUTCONDITION(OutCondition);
+    //CHECKFALSEOUTCONDITION(OutCondition);
     OutCondition = false;
     CTrigger* pTargetTrigger = nullptr;
+    _float4 vMyPos = pPlayer->Get_WorldPos();
 
     if (OutDesc->pTriggerPtr)
     {
         if (!pPlayer->Get_Team()->Has_Trigger((_uint)static_cast<CTrigger_Stage*> (OutDesc->pTriggerPtr)->Get_TriggerType() - 1))
         {
             OutCondition = true;
+
+            if ((OutDesc->pTriggerPtr->Get_Transform()->Get_World(WORLD_POS) - vMyPos).Length() < 2.f)
+                OutCondition = false;
+
+
             return;
         }
     }
@@ -890,7 +926,7 @@ void CTable_Conditions::Select_RandomConquerTrigger(_bool& OutCondition, BEHAVIO
 
 void CTable_Conditions::Select_PadenCannonTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
-    CHECKFALSEOUTCONDITION(OutCondition);
+    //CHECKFALSEOUTCONDITION(OutCondition);
     CTrigger* pTargetTrigger = CGameSystem::Get_Instance()->Find_Trigger("Paden_Trigger_C");
     if (nullptr == pTargetTrigger)
     {
@@ -906,7 +942,7 @@ void CTable_Conditions::Select_PadenCannonTrigger(_bool& OutCondition, BEHAVIOR_
 
 void CTable_Conditions::Select_RespawnTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
-    CHECKFALSEOUTCONDITION(OutCondition);
+    //CHECKFALSEOUTCONDITION(OutCondition);
 
     CTrigger* pTargetTrigger = nullptr;
     if (Check_Level(LEVEL_PADEN))
@@ -935,7 +971,7 @@ void CTable_Conditions::Select_RespawnTrigger(_bool& OutCondition, BEHAVIOR_DESC
 
 void CTable_Conditions::Select_MainTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
-    CHECKFALSEOUTCONDITION(OutCondition);
+    //CHECKFALSEOUTCONDITION(OutCondition);
     CTrigger* pTargetTrigger = nullptr;
     if (Check_Level(LEVEL_PADEN))
     {
@@ -961,7 +997,7 @@ void CTable_Conditions::Select_MainTrigger(_bool& OutCondition, BEHAVIOR_DESC*& 
 
 void CTable_Conditions::Select_HwaraFinalTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
-    CHECKFALSEOUTCONDITION(OutCondition);
+    //CHECKFALSEOUTCONDITION(OutCondition);
     CTeamConnector* pMyTeam = pPlayer->Get_Team();
     if (nullptr == pMyTeam)
         OutCondition = false;

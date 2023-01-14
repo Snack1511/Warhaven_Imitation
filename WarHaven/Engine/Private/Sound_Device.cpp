@@ -143,6 +143,50 @@ void CSound_Device::Play_Sound(const _tchar* strSoundKey, CHANNEL_GROUP iGroupIn
 	iter->second.push_back(pSound);
 }
 
+_uint CSound_Device::Play_LoopSound(const _tchar* strSoundKey, CHANNEL_GROUP iGroupIndex, _float fVolumeRatio)
+{
+
+	auto iter = m_mapSound.find(Convert_ToHash(strSoundKey));
+
+	if (iter == m_mapSound.end())
+	{
+		Call_MsgBox(L"Failed to find SoundKey : CSound_Device");
+		return;
+	}
+
+	FMOD_BOOL bPlay = FALSE;
+
+	_uint iCurChannel = m_iCurChannelIndex[iGroupIndex];
+
+	FMOD_SOUND* pSound = iter->second.front();
+
+
+	//if (FMOD_Channel_IsPlaying(m_pChannelArr[iGroupIndex][iCurChannel], &bPlay))
+	{
+		FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, pSound, FALSE, &m_pChannelArr[iGroupIndex][iCurChannel]);
+		Set_ChannelVolume(iGroupIndex, iCurChannel, m_fChannelVolume[iGroupIndex] * fVolumeRatio);
+	}
+
+	_uint iCurIndex = m_iCurChannelIndex[iGroupIndex];
+
+	++m_iCurChannelIndex[iGroupIndex];
+
+	if (m_iCurChannelIndex[iGroupIndex] >= m_iChannelNumbers[iGroupIndex])
+		m_iCurChannelIndex[iGroupIndex] = 0;
+
+	iter->second.pop_front();
+	iter->second.push_back(pSound);
+
+	return iCurIndex;
+}
+
+void CSound_Device::Stop_Sound(CHANNEL_GROUP eType, _uint iIndex)
+{
+	FMOD_Channel_Stop(m_pChannelArr[eType][iIndex]);
+	FMOD_System_Update(m_pSystem);
+
+}
+
 void CSound_Device::Stop_Sound(CHANNEL_GROUP eType)
 {
 	for (_uint i = 0; i < m_iChannelNumbers[eType]; ++ i)

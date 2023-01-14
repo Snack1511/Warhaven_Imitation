@@ -5,6 +5,7 @@ BEGIN(Engine)
 
 class CPhysics;
 class CHierarchyNode;
+class CNavigation;
 
 class ENGINE_DLL CPhysXCharacter
 	: public CPhysXCollider, PxUserControllerHitReport
@@ -66,6 +67,9 @@ protected:
 	_float4			m_vHitNormal;
 	_float			m_fTimeAcc = 0.f;
 	_float			m_fColTime = 0.1f;
+
+protected:
+	CNavigation* m_pNaviCom = nullptr;
 
 protected:
 	void			Update_Colliders();

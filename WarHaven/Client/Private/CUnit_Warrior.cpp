@@ -522,7 +522,7 @@ void CUnit_Warrior::My_LateTick()
 	{		
 		//if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_TEST)
 		{
-			if (KEY(J, TAP))
+			if (KEY(K, TAP))
 			{
 				Enter_State(AI_STATE_COMMON_CHANGE_HERO, nullptr);
 			}

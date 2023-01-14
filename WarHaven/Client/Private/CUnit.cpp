@@ -26,7 +26,7 @@
 #include "CTrailBuffer.h"
 #include "Loading_Manager.h"
 #include "CMesh_Particle.h"
-
+#include "CGameSystem.h"
 #include "CScript_FollowCam.h"
 
 #include "CEffects_Factory.h"
@@ -638,8 +638,8 @@ HRESULT CUnit::Initialize_Prototype()
 
 	Add_Component(CPhysics::Create(0));
 
-	CNavigation* pNavigation = CNavigation::Create(CP_AFTER_TRANSFORM, nullptr, nullptr);
-	Add_Component<CNavigation>(pNavigation);
+	
+	
 
 #ifdef PHYSX_ON
 
@@ -659,6 +659,13 @@ HRESULT CUnit::Initialize_Prototype()
 
 HRESULT CUnit::Initialize()
 {
+	if (!m_pOwnerPlayer->IsMainPlayer())
+	{
+		CNavigation* pNavigation = CNavigation::Create(CP_AFTER_TRANSFORM, nullptr, nullptr);
+		Add_Component<CNavigation>(pNavigation);
+		pNavigation->Set_Layers(&CGameSystem::Get_Instance()->Get_CellLayer());
+	}
+
 	m_pModelCom = GET_COMPONENT(CModel);
 	m_pAnimator = GET_COMPONENT(CAnimator);
 	m_pPhysics = GET_COMPONENT(CPhysics);

@@ -41,6 +41,7 @@ class ENGINE_DLL CNavigation
 {
 public:
 	static int Func_MakeRoute(list<_float4>* NodeList, map<_float, CCellLayer*>* Layers, _float4 vStart, _float4 vEnd, CNavigation* pNaviCom);
+	static int Func_GetStartCell(list<_float4>* NodeList, map<_float, CCellLayer*>* Layers, _float4 vStart, _float4 vEnd, CNavigation* pNaviCom);
 
 public:
 	enum CELL_TYPE {DEFAULT, WALL, BLOCKED, CELL_END};
@@ -52,6 +53,10 @@ protected:
 
 public:
 	static CNavigation* Create(_uint iGroupIdx, CCell* pStartCell, CPhysics* pPhysicsCom);
+
+public:
+	void		Set_Layers(map<_float, CCellLayer*>* Layers) { m_pLayers = Layers; }
+	_bool		Is_BlockedCell(_float4 vPosition);
 
 public:
 	void		Set_StartCell(CCell* pStartCell) { m_pCurCell = pStartCell; }
@@ -99,6 +104,9 @@ public:
 	virtual void Release() override;
 
 protected:
+	map<_float, CCellLayer*>* m_pLayers = nullptr;
+
+protected:
 	CNode* m_pStartNode = nullptr;
 	CNode* m_pEndNode = nullptr;
 	CCell*		m_pCurCell = nullptr;
@@ -118,6 +126,10 @@ protected:
 	_bool		m_bInWall = false;
 	_bool		m_bBlocked = false;
 
+protected:
+	CCellLayer* m_pStartLayer = nullptr;
+	CCell* m_pStartCell = nullptr;
+
 
 protected:
 	//_float4		Correct_Move(_float4 vPos);
@@ -130,6 +142,7 @@ protected:
 	_float4		Get_NewPosFromCell(CCell* pCell, _vector vPos);
 	_float4		Get_NewDirFromCellLine(CCell* pCell, _uint eOutLine, _vector vPos, _float4 _vDir, _float _fSpeed);
 	_float4		Get_NewPosFromWall(CCell* pCell, _float4 vRayPos, _float4 vRayDir);
+
 public:
 	list<_float4> m_DebugRouteNode;
 

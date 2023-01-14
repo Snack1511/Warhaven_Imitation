@@ -65,34 +65,21 @@ HRESULT CCamera_Manager::SetUp_ShaderResources(_bool Ortho)
 		matView = m_tView.matView;
 		matProj = m_tProj.matProj;
 
-		if (!m_bOnceCheck)
-		{
-			m_bOnceCheck = true;
-			/*_float4 vCamPos = Get_ViewPos();
-
-			if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(7, "g_vCamPosition", &vCamPos, sizeof(_float4))))
-				return E_FAIL;
-
-			if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(8, "g_vCamPosition", &vCamPos, sizeof(_float4))))
-				return E_FAIL;
-
-			if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(9, "g_vCamPosition", &vCamPos, sizeof(_float4))))
-				return E_FAIL;
-
-			if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(12, "g_vCamPosition", &vCamPos, sizeof(_float4))))
-				return E_FAIL;*/
-		}
+	
 		
 	}
 
 	matView.Transpose();
 	matProj.Transpose();
 
-	if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue_All("g_ViewMatrix", (&matView), sizeof(_float4x4))))
-		return E_FAIL;
+	{
+		if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue_All("g_ViewMatrix", (&matView), sizeof(_float4x4))))
+			return E_FAIL;
 
-	if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue_All("g_ProjMatrix", (&matProj), sizeof(_float4x4))))
-		return E_FAIL;
+		if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue_All("g_ProjMatrix", (&matProj), sizeof(_float4x4))))
+			return E_FAIL;
+	}
+	
 
 	
 

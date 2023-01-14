@@ -4,7 +4,7 @@
 #include "CPlayer.h"
 #include "CUnit.h"
 
-#include "CPersonality_Default.h"
+#include "CPersonality_Leader.h"
 
 #include "CGameSystem.h"
 
@@ -116,7 +116,7 @@ HRESULT CPlayerInfo_Leader::Initialize()
 
 HRESULT CPlayerInfo_Leader::SetUp_AIPersonality()
 {
-	CAIPersonality* pPersonality = CPersonality_Default::Create(CGameSystem::Get_Instance()->Get_BXTable());
+	CAIPersonality* pPersonality = CPersonality_Leader::Create(CGameSystem::Get_Instance()->Get_BXTable());
 	m_pPersonality = pPersonality;
 
 	m_iUnitType = ((_uint)CUnit::UNIT_TYPE::eAI_Default);

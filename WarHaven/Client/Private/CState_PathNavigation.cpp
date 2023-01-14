@@ -63,6 +63,14 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 //#endif
 
 	_float4 vTargetPos = m_pOwner->Get_OwnerPlayer()->Get_TargetObjPos();
+
+	if (vTargetPos.Is_Zero())
+	{
+		assert(0);
+		return __super::Tick(pOwner, pAnimator);
+
+	}
+
 	_float4 vCurPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
 	_float4 vDir = vTargetPos - vCurPos;
 

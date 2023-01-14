@@ -993,6 +993,9 @@ _float4 CPlayer::Get_TargetObjPos()
 	if (!m_pTargetObj)
 		return ZERO_VECTOR;
 
+	if (dynamic_cast<CPlayer*>(m_pTargetObj))
+		return static_cast<CPlayer*>(m_pTargetObj)->Get_WorldPos();
+
 	return m_pTargetObj->Get_Transform()->Get_World(WORLD_POS);
 }
 

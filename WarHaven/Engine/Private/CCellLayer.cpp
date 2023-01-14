@@ -2566,6 +2566,8 @@ void CCellLayer::Find_NearOpenCell(_float4 vPosition, list<CCell*>& NearOpenCell
 	CCell* pCell = Find_Cell(vPosition);
 	if (!pCell->Check_Attribute(CELL_BLOCKED))
 		NearOpenCells.push_back(pCell);
+	else
+		int a = 0;
 	if(0 >= NeighborLevel)
 		return;
 
@@ -2579,6 +2581,7 @@ void CCellLayer::Find_NearOpenCell(_float4 vPosition, list<CCell*>& NearOpenCell
 			Find_NearOpenCell(pNeighborCell->Get_Position(), NearOpenCells, iNeighborLevel);
 		}
 	}
+
 }
 void CCellLayer::Set_MinHeight(_float Height) 
 {

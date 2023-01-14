@@ -27,7 +27,7 @@ CPersonality_Leader* CPersonality_Leader::Create(CTable_Conditions* pConditionTa
 HRESULT CPersonality_Leader::Initailize()
 {
 	//PersonalDesc¼ÂÆÃ
-	m_tPersonalDesc.strPersonalityName = wstring(L"Default_Personal");
+	m_tPersonalDesc.strPersonalityName = wstring(L"Leader_Personal");
 	m_tPersonalDesc.tPersonalityData.fChangeDelayTime = 0.01f;
 	m_tPersonalDesc.tPersonalityData.fDelayWeight = 0.0f;
 	m_tPersonalDesc.tPersonalityData.fSIghtRadius = 10.0f;
@@ -58,11 +58,13 @@ HRESULT CPersonality_Leader::Initailize()
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"GoToTrigger"))->Clone();
 	//pBehavior->Add_OtherCondition(wstring(L"Check_EmptyRoute"));
 	pBehavior->Add_OtherCondition(wstring(L"Check_Need_Conquer"));
-	pBehavior->Add_WhatCondition(wstring(L"Select_RandomConquerTrigger"));
+	//pBehavior->Add_WhatCondition(wstring(L"Select_RandomConquerTrigger"));
+	pBehavior->Add_WhatCondition(wstring(L"Select_ConquerTrigger"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(1);
 	m_BehaviorList.push_back(pBehavior);
+
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PadenCannonInteract"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_Paden"));
@@ -87,7 +89,7 @@ HRESULT CPersonality_Leader::Initailize()
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(4);
-	m_BehaviorList.push_back(pBehavior);
+	//m_BehaviorList.push_back(pBehavior);
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Change"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_CombatBehavior"));
