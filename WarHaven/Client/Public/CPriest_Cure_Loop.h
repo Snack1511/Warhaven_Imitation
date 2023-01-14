@@ -89,6 +89,8 @@ protected:
 	_uint	m_iKeyAwayAnimIndex = 0; // 뗄 때 애니메이션 인덱스
 	_uint	m_iMinCancelAnimIndex = 0;  // 애니메이션 바뀌는 최소값
 
+	_uint m_iSndIdx = 0;
+
 protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
