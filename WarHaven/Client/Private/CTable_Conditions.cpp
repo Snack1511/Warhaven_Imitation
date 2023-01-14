@@ -670,7 +670,7 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 	_float4 vRayStartPos = pPlayer->Get_WorldPos();
 	vRayStartPos.y += 0.5f;
 
-	/*for (auto& elem : Enemies)
+	for (auto& elem : Enemies)
 	{
 		if (!elem->Is_Valid())
 			continue;
