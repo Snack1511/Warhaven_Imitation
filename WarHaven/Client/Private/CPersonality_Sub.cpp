@@ -57,13 +57,14 @@ HRESULT CPersonality_Sub::Initailize()
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"FollowTeam"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"EmptyOtherCondition"));
-	pBehavior->Add_WhatCondition(wstring(L"Select_Teammate"));
+	//pBehavior->Add_WhatCondition(wstring(L"Select_Teammate"));
+	pBehavior->Add_WhatCondition(wstring(L"Select_MainPlayer"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(1);
 	m_BehaviorList.push_back(pBehavior);
 
-	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PadenCannonInteract"))->Clone();
+	/*pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PadenCannonInteract"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_Paden"));
 	pBehavior->Add_OtherCondition(wstring(L"Check_Conquer_PadenCannon"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_PadenCannonTrigger"));
@@ -95,7 +96,7 @@ HRESULT CPersonality_Sub::Initailize()
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(5);
-	m_BehaviorList.push_back(pBehavior);
+	m_BehaviorList.push_back(pBehavior);*/
 
 
 

@@ -669,6 +669,16 @@ void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& O
 void CTable_Conditions::Select_MainPlayer(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
     //CHECKFALSEOUTCONDITION(OutCondition);
+    if (KEY(I, HOLD))
+    {
+        OutCondition = true;
+    }
+    else
+    {
+        OutCondition = false;
+        return;
+    }
+
 
     OutCondition = true;
 

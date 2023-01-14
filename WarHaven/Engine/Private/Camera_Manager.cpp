@@ -7,6 +7,8 @@
 
 #include "CShader_Manager.h"
 
+#include "PhysX_Manager.h"
+
 IMPLEMENT_SINGLETON(CCamera_Manager)
 
 
@@ -150,6 +152,24 @@ void CCamera_Manager::Make_ViewProj()
 
 	Make_ViewMatrix();
 	Make_ProjMatrix();
+
+
+
+	/* For Test */
+	if (KEY(N, TAP))
+	{
+		_float4 pOutPos;
+		_float fOutDist;
+
+		if (CPhysX_Manager::Get_Instance()->Shoot_RaytoTerrain(&pOutPos, &fOutDist, m_pCurCam->Get_Transform()->Get_World(WORLD_POS)))
+		{
+			wstring wstrTemp = to_wstring(fOutDist);
+			MessageBox(0, wstrTemp.c_str(), TEXT("System Error"), MB_OK);
+		}
+	}
+	
+
+
 }
 
 CCamera * CCamera_Manager::Change_Camera(wstring strKey)

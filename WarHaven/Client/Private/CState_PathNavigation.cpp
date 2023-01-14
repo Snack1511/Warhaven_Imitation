@@ -167,8 +167,9 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 
 
+	CCellLayer* pTemp = nullptr;
 
-	CCell* pCurCell = pOwner->Get_NaviCom()->Get_CurCell(vCurPos, CGameSystem::Get_Instance()->Get_CellLayer());
+	CCell* pCurCell = pOwner->Get_NaviCom()->Get_CurCell(vCurPos, CGameSystem::Get_Instance()->Get_CellLayer(), &pTemp);
 	if (pCurCell && pCurCell->Check_Attribute(CELL_WALL))
 	{
 		m_iRand = RUN_STATE_JUMP;

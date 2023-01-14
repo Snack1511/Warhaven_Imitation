@@ -598,6 +598,31 @@ _bool CPhysX_Manager::Shoot_RaytoTerrain(_float4* pOutPos, _float* pOutDist, _fl
 	if (!m_pTerrainStatic)
 		return false;
 
-	return _bool();
+	vStartPos.y += 0.5f;
+
+	PxRaycastHit hitInfo;
+	PxShape* pCurShape = nullptr;
+	m_pTerrainStatic->getShapes(&pCurShape, sizeof(PxShape));
+
+	PxU32 hitCount = PxGeometryQuery::raycast(
+		CUtility_PhysX::To_PxVec3(vStartPos),
+		CUtility_PhysX::To_PxVec3(vStartDir),
+		pCurShape->getGeometry().any(),
+		m_pTerrainStatic->getGlobalPose(),
+		1000.f, PxHitFlag::ePOSITION, 1, &hitInfo
+	);
+
+	if (hitCount > 0)
+	{
+		_float4 vHitPos = CUtility_PhysX::To_Vector(hitInfo.position);
+		_float fLength = (vHitPos - vStartPos).Length();
+
+		*pOutDist = fLength - 0.5f;
+		*pOutPos = vHitPos;
+		return true;
+	}
+
+
+	return false;
 }
 

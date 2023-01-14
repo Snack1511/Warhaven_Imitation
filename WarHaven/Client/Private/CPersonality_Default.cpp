@@ -66,7 +66,7 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);*/
 
-	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"FollowTeam"))->Clone();
+	/*pBehavior = m_pConditionTable->Find_Behavior(wstring(L"FollowTeam"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_EmptyRoute"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_Leader"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
@@ -106,7 +106,7 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(iPriority++);
-	m_BehaviorList.push_back(pBehavior);
+	m_BehaviorList.push_back(pBehavior);*/
 
 
 
