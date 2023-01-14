@@ -41,7 +41,7 @@ HRESULT CState_Combat_SkillQ_Shoot_Priest::Initialize()
 
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
 	m_iAnimIndex = 11;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-	m_eStateType = STATE_PROJECTILECATCH_SHOOT_PRIEST;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+	m_eStateType = AI_STATE_COMBAT_CATCH_SHOOT_PRIEST;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
 
@@ -71,7 +71,7 @@ void CState_Combat_SkillQ_Shoot_Priest::Enter(CUnit* pOwner, CAnimator* pAnimato
 		pOwner->Get_Status().fDamageMultiplier = 7.f;
 	}
 		
-	Play_Voice(pOwner, L"Voice_Attack", 1.f);
+	Play_Voice(pOwner, L"Voice_Attack", m_fAIDelayTime);
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -79,7 +79,7 @@ void CState_Combat_SkillQ_Shoot_Priest::Enter(CUnit* pOwner, CAnimator* pAnimato
 STATE_TYPE CState_Combat_SkillQ_Shoot_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	if (pAnimator->Is_CurAnimFinished())
-		return STATE_IDLE_PRIEST;
+		return pOwner->Get_DefaultState();
 
     return __super::Tick(pOwner, pAnimator);
 }
@@ -97,17 +97,41 @@ STATE_TYPE CState_Combat_SkillQ_Shoot_Priest::Check_Condition(CUnit* pOwner, CAn
 
 void CState_Combat_SkillQ_Shoot_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
+	CUnit* pTargetUnit = pOwner->Get_TargetUnit();
+	_float4 vLook = ZERO_VECTOR;
+
 	switch (iSequence)
 	{
 	case 0:
 		if (m_bCatchBall)
 		{
-			pOwner->Get_CatchedBall()->Shoot_CatchedCannon(GAMEINSTANCE->Get_CurCamLook());
+			CUnit* pTargetUnit = pOwner->Get_TargetUnit();
+
+			if(!pTargetUnit)
+				pOwner->Get_CatchedBall()->Shoot_CatchedCannon(pOwner->Get_FollowCamLook());
+			else
+			{
+				m_tHitInfo.bFly = true;
+				m_tHitInfo.iLandKeyFrame = 100;
+				m_tHitInfo.fJumpPower = 6.f;
+				m_tHitInfo.bGuardBreak = true;
+
+				vLook = pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+				pOwner->Get_CatchedBall()->Shoot_CatchedCannon(vLook.Normalize());
+			}
+
 			pOwner->Catch_CannonBall(nullptr);
 		}
 		else
 		{
-			pOwner->Get_CatchProjectileObject()->Get_Transform()->Set_Right(pOwner->Get_FollowCamLook());
+			if (pTargetUnit)
+				vLook = pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+			else
+				vLook = pOwner->Get_FollowCamLook();
+
+			vLook.Normalize();
+
+			pOwner->Get_CatchProjectileObject()->Get_Transform()->Set_Right(vLook);
 			pOwner->Get_CatchProjectileObject()->Get_Transform()->Make_WorldMatrix();
 
 			pOwner->Get_CatchProjectileObject()->On_ShootProjectile();

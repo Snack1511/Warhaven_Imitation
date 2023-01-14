@@ -1888,9 +1888,6 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\01. Warrior">
       <UniqueIdentifier>{16efa1aa-c9fa-49dc-8238-42b63355a611}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR">
-      <UniqueIdentifier>{bee4c77f-9a92-4385-9ef9-a006879a8272}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack">
       <UniqueIdentifier>{26635496-5fbd-42e4-a44e-a34c4b073ce2}</UniqueIdentifier>
     </Filter>
@@ -2494,9 +2491,6 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. Fiona">
       <UniqueIdentifier>{f2bc622f-c22a-4700-8a7a-c7ab8621759d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\03. Fiona">
-      <UniqueIdentifier>{af27d291-44b7-46f9-925a-08d122845e26}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\03. Fiona">
       <UniqueIdentifier>{8e4a4793-5db4-4fd4-b7fd-a48f02fa7ed1}</UniqueIdentifier>
     </Filter>
@@ -2625,9 +2619,6 @@
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\04. Paladin">
       <UniqueIdentifier>{3af7cab1-2135-4578-a0a0-4d012e18d7b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\04. Paladin">
-      <UniqueIdentifier>{7fcba7af-b851-46de-a9e4-7613ceb83907}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\04. Paladin">
       <UniqueIdentifier>{cf4b848c-22b0-4601-9b5d-b75ab85c33a2}</UniqueIdentifier>
@@ -2976,9 +2967,6 @@
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\05. Archer">
       <UniqueIdentifier>{cd2e07b4-7ba8-44f9-bdf9-72fa515ab955}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\05. Archer">
-      <UniqueIdentifier>{6a20d7b2-5b3f-49fd-955e-f760c5e5bd14}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\05. Archer">
       <UniqueIdentifier>{0df59c1e-cbbf-48e2-a1d2-d92a1a2293fc}</UniqueIdentifier>
@@ -3448,9 +3436,6 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\06. Priest\02. Loop">
       <UniqueIdentifier>{1d0b20bd-4e72-4c05-bb09-9db4672b35a8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\06. Priest">
-      <UniqueIdentifier>{6cc3aec1-0f1f-4330-92e9-740c9fd0b209}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\06. Priest">
       <UniqueIdentifier>{9839532c-4d31-4886-9b91-ac1952febbec}</UniqueIdentifier>
     </Filter>
@@ -3820,9 +3805,6 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\08. Lancer">
       <UniqueIdentifier>{aaa1a05c-a04e-4993-9657-37895642a186}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\08. Lancer">
-      <UniqueIdentifier>{728f58d9-4cc1-4d76-bb03-e65930eac304}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\08. Lancer">
       <UniqueIdentifier>{bd943c95-60a1-402b-81c7-998bd85bd019}</UniqueIdentifier>
     </Filter>
@@ -3852,12 +3834,6 @@
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\08. Lancer\02. Sting">
       <UniqueIdentifier>{c113bac4-1a12-4baa-bf5d-d7a906e6f54b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\08. Lancer\01. Begin">
-      <UniqueIdentifier>{c86b2ad6-f583-45e0-91cd-91b7261abaa7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\08. Lancer\02. Loop">
-      <UniqueIdentifier>{6951cbb2-ac75-421c-833b-3ab043e3d7db}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\06. Stop">
       <UniqueIdentifier>{cfad8704-45e4-4267-b027-bcfba673b112}</UniqueIdentifier>
@@ -3939,6 +3915,30 @@
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\06. Priest\04. Shoot">
       <UniqueIdentifier>{f64ee1e2-9442-4ef2-aede-c66ef3637ddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR">
+      <UniqueIdentifier>{bee4c77f-9a92-4385-9ef9-a006879a8272}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\03. Fiona">
+      <UniqueIdentifier>{af27d291-44b7-46f9-925a-08d122845e26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\04. Paladin">
+      <UniqueIdentifier>{7fcba7af-b851-46de-a9e4-7613ceb83907}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\05. Archer">
+      <UniqueIdentifier>{6a20d7b2-5b3f-49fd-955e-f760c5e5bd14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\06. Priest">
+      <UniqueIdentifier>{6cc3aec1-0f1f-4330-92e9-740c9fd0b209}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\08. Lancer">
+      <UniqueIdentifier>{728f58d9-4cc1-4d76-bb03-e65930eac304}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\08. Lancer\01. Begin">
+      <UniqueIdentifier>{c86b2ad6-f583-45e0-91cd-91b7261abaa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\08. Lancer\02. Loop">
+      <UniqueIdentifier>{6951cbb2-ac75-421c-833b-3ab043e3d7db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -5485,7 +5485,7 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_SkillR.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_Attack_Warrior.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior</Filter>
@@ -6007,7 +6007,7 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. Fiona</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_SkillR_SpinAttack_Fiona.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\03. Fiona</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\03. Fiona</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_GuardCancel_Fiona.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\03. Fiona</Filter>
@@ -6232,7 +6232,7 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\04. Paladin\ShieldWall\02. Loop</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_SkillR_Paladin_ShieldSlam.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\04. Paladin</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\04. Paladin</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_GuardEnd_Paladin.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\04. Paladin\03. End</Filter>
@@ -6784,7 +6784,7 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\06. Priest\03. End</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_SkillR_AirDash_Priest.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\06. Priest</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\06. Priest</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_SkillE_Priest_WindAttack.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\06. Priest</Filter>
@@ -6922,7 +6922,7 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\05. Archer</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_SkillR_Archer_Swing.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\05. Archer</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\05. Archer</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_MoveStateUtility.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility</Filter>
@@ -7006,10 +7006,10 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\08. Lancer</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_SkillR_Breeze_Begin_Lancer.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\08. Lancer\01. Begin</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\08. Lancer\01. Begin</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_SkillR_Breeze_Loop_Lancer.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\08. Lancer\02. Loop</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\08. Lancer\02. Loop</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_Stop_Lancer.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\06. Stop\08. Lancer</Filter>
@@ -8624,7 +8624,7 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_SkillR.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_Attack_Warrior.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior</Filter>
@@ -9149,7 +9149,7 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. Fiona</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_SkillR_SpinAttack_Fiona.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\03. Fiona</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\03. Fiona</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_GuardCancel_Fiona.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\03. Fiona</Filter>
@@ -9371,7 +9371,7 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\04. Paladin\ShieldWall\02. Loop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_SkillR_Paladin_ShieldSlam.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\04. Paladin</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\04. Paladin</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_GuardEnd_Paladin.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\04. Paladin\03. End</Filter>
@@ -9923,7 +9923,7 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\06. Priest\02. Loop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_SkillR_AirDash_Priest.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\06. Priest</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\06. Priest</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_SkillE_Priest_WindAttack.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\06. Priest</Filter>
@@ -10061,7 +10061,7 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\05. Archer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_SkillR_Archer_Swing.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\05. Archer</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\05. Archer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_MoveStateUtility.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility</Filter>
@@ -10145,10 +10145,10 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\08. Lancer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_SkillR_Breeze_Begin_Lancer.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\08. Lancer\01. Begin</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\08. Lancer\01. Begin</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_SkillR_Breeze_Loop_Lancer.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\08. Lancer\02. Loop</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\08. Lancer\02. Loop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_Stop_Lancer.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\06. Stop\08. Lancer</Filter>

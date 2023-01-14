@@ -44,19 +44,21 @@ HRESULT CState_Combat_SkillQ_Catching_Priest::Initialize()
 
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
 	m_iAnimIndex = 10;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-	m_eStateType = STATE_PROJECTILECATCH_HIT_PRIEST;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+	m_eStateType = AI_STATE_COMBAT_CATCHING_PRIEST;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
 	m_fInterPolationTime = 0.f;
 	m_fAnimSpeed = 2.f;
 
 	//enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-	m_iStateChangeKeyFrame = 0;
+	m_iStateChangeKeyFrame = 99;
 
 	m_fMyAccel = 20.f;
 	m_fMyMaxLerp = 0.1f;
 
 	m_fMaxTime = 0.05f;
+
+	m_iDirectionRand = STATE_DIRECTION_N;
 
 	return S_OK;
 }
@@ -69,14 +71,21 @@ void CState_Combat_SkillQ_Catching_Priest::Enter(CUnit* pOwner, CAnimator* pAnim
 	pAnimator->Set_AnimSpeed(ANIM_BASE_R, 31, m_fAnimSpeed);
 	pAnimator->Set_InterpolationTime(ANIM_BASE_R, 31, m_fInterPolationTime);
 
+	CUnit* pTargetUnit = pOwner->Get_TargetUnit();
+
+	if(pTargetUnit)
+		pOwner->Get_Status().fDamageMultiplier = pTargetUnit->Get_CurStateP()->Get_DamagePumping();
+
+
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
 }
 
 STATE_TYPE CState_Combat_SkillQ_Catching_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (pAnimator->Get_CurAnimFrame() > 5)
+		return AI_STATE_COMBAT_CATCH_SHOOT_PRIEST;
 
-	if (KEY(Q, AWAY))
-		return STATE_PROJECTILECATCH_SHOOT_PRIEST;
+	DoMove_AI(pOwner, pAnimator);
 
 	return __super::Tick(pOwner, pAnimator);
 }

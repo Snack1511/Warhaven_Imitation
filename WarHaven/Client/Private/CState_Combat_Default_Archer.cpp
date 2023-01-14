@@ -105,9 +105,7 @@ STATE_TYPE CState_Combat_Default_Archer::Tick(CUnit* pOwner, CAnimator* pAnimato
 			case 0:
 			case 1:
 			case 2:
-			case 3:
-			case 4:
-			case 5:
+
 
 
 				if (pOwner->Get_SkillTrigger().bSkillQTrigger && !pOwner->Get_SkillTrigger().bSkillETrigger)
@@ -134,6 +132,9 @@ STATE_TYPE CState_Combat_Default_Archer::Tick(CUnit* pOwner, CAnimator* pAnimato
 
 			case 6:
 			case 7:
+			case 3:
+			case 4:
+			case 5:
 
 				return m_eStateType;
 
@@ -178,8 +179,12 @@ STATE_TYPE CState_Combat_Default_Archer::Near_Enemy(CUnit* pOwner, CAnimator* pA
 	{
 		if (pOwner->Get_TargetUnit()->Get_Status().fHP <= 40.f || m_iRand == 7)
 		{
-			if (eArrowStateType != STATE_END)
-				return eArrowStateType;
+			if (pOwner->Get_TargetUnit()->Get_Status().fHP > 0.f)
+			{
+				if (eArrowStateType != STATE_END)
+					return eArrowStateType;
+			}
+
 		}
 	}
 

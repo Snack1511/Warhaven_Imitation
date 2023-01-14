@@ -74,13 +74,32 @@ STATE_TYPE CState_Common_ChangeHero_AI::Tick(CUnit* pOwner, CAnimator* pAnimator
 
 	if (pAnimator->Is_CurAnimFinished())
 	{
-		switch (m_iRand)
+		CLASS_TYPE eClassType = pOwner->Get_OwnerPlayer()->Get_CurClass();
+
+		switch (eClassType)
 		{
-		case 0:
+		case Client::WARRIOR:
+			m_eChangeClassType = FIONA;
+			break;
+
+		case Client::ARCHER:
 			m_eChangeClassType = QANDA;
 			break;
-		default:
+
+		case Client::PALADIN:
+			m_eChangeClassType = FIONA;
+			break;
+		case Client::PRIEST:
+			m_eChangeClassType = QANDA;
+
+			break;
+		case Client::ENGINEER:
 			m_eChangeClassType = LANCER;
+			break;
+
+
+
+		default:
 			break;
 		}
 

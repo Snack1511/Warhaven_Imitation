@@ -117,7 +117,7 @@ STATE_TYPE CState_Combat_Shoot_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	if (m_bAttackTrigger)
 	{
-		if (m_iRand == 0)
+		if (m_iRand != 0)
 			return AI_STATE_COMBAT_DEFAULT_ARCHER_R;
 		else
 		{

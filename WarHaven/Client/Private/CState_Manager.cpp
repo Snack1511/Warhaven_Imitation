@@ -958,6 +958,10 @@
 #include "CState_Common_Groggy_Priest.h"
 #include "CState_Common_Sting_Priest.h"
 #include "CState_Common_FlyHit_Priest.h"
+#include "CState_Combat_SkillQ_Catch_Begin_Priest.h"
+#include "CState_Combat_SkillQ_Catch_Loop_Priest.h"
+#include "CState_Combat_SkillQ_Catching_Priest.h"
+#include "CState_Combat_SkillQ_Shoot_Priest.h"
 
 
 #include "CState_Common_Fall_Qanda.h"
@@ -2362,6 +2366,11 @@ void CState_Manager::Priest_State_AI()
 	m_arrStates[AI_STATE_COMBAT_CURE_BEGIN_PRIEST] = CState_Combat_Cure_Begin_Priest::Create();
 	m_arrStates[AI_STATE_COMBAT_CURE_LOOP_PRIEST] = CState_Combat_Cure_Loop_Priest::Create();
 	m_arrStates[AI_STATE_COMBAT_CURE_END_PRIEST] = CState_Combat_Cure_End_Priest::Create();
+
+	m_arrStates[AI_STATE_COMBAT_CATCH_BEGIN_PRIEST] = CState_Combat_SkillQ_Catch_Begin_Priest::Create();
+	m_arrStates[AI_STATE_COMBAT_CATCH_LOOP_PRIEST] = CState_Combat_SkillQ_Catch_Loop_Priest::Create();
+	m_arrStates[AI_STATE_COMBAT_CATCHING_PRIEST] = CState_Combat_SkillQ_Catching_Priest::Create();
+	m_arrStates[AI_STATE_COMBAT_CATCH_SHOOT_PRIEST] = CState_Combat_SkillQ_Shoot_Priest::Create();
 
 	m_arrStates[AI_STATE_COMBAT_WINDATTACK_PRIEST] = CState_Combat_SkillE_Priest_WindAttack::Create();
 

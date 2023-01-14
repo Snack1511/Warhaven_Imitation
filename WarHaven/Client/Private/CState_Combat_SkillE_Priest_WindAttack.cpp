@@ -66,6 +66,7 @@ HRESULT CState_Combat_SkillE_Priest_WindAttack::Initialize()
 
 void CState_Combat_SkillE_Priest_WindAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Get_Status().fDamageMultiplier = 1.f;
 	pOwner->On_Use(CUnit::SKILL2);
 
 	CColorController::COLORDESC tColorDesc;
