@@ -73,31 +73,29 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	_float4 vRayStartPos = vCurPos;
 	vRayStartPos.y += 0.5f;
 
-	if (GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, pCurPath->Get_CurLength(vCurPos) * 0.8f))
-	{
-		/* 만약 main path 타고있던거면 main path 그냥 다 탄걸로 처리해 */
-		if (m_pOwner->Get_StartMainPath() == pCurPath)
-		{
-			m_pOwner->Get_StartMainPath()->Set_Arrived();
-			/*현재 Path 갱신해야하고 MainPath 지우면 안되기 때문에 null 처리*/
-			m_pOwner->Get_OwnerPlayer()->Set_CurPathNull();
-		}
+	//if (GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, pCurPath->Get_CurLength(vCurPos) * 0.8f))
+	//{
+	//	/* 만약 main path 타고있던거면 main path 그냥 다 탄걸로 처리해 */
+	//	if (m_pOwner->Get_StartMainPath() == pCurPath)
+	//	{
+	//		m_pOwner->Get_StartMainPath()->Set_Arrived();
+	//		/*현재 Path 갱신해야하고 MainPath 지우면 안되기 때문에 null 처리*/
+	//		m_pOwner->Get_OwnerPlayer()->Set_CurPathNull();
+	//	}
 
-		pCurPath = CGameSystem::Get_Instance()->Clone_RandomReleasePath(vCurPos);
+	//	pCurPath = CGameSystem::Get_Instance()->Clone_RandomReleasePath(vCurPos);
 
-		if (!pCurPath)
-		{
-			/* Path 못찾았으면 main path 다시 */
-			pCurPath = m_pOwner->Get_StartMainPath();
-			m_pOwner->Get_OwnerPlayer()->Set_NewPath(pCurPath);
-		}
-		else
-		{
-			pOwner->Get_OwnerPlayer()->Set_NewPath(pCurPath);
-		}
-		
-
-	}
+	//	if (!pCurPath)
+	//	{
+	//		/* Path 못찾았으면 main path 다시 */
+	//		pCurPath = m_pOwner->Get_StartMainPath();
+	//		m_pOwner->Get_OwnerPlayer()->Set_NewPath(pCurPath);
+	//	}
+	//	else
+	//	{
+	//		pOwner->Get_OwnerPlayer()->Set_NewPath(pCurPath);
+	//	}
+	//}
 
 	/* Path 따라가는 코드 */
 	vDir = pCurPath->Get_CurDir(vCurPos);

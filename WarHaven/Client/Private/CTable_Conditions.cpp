@@ -670,7 +670,7 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 	_float4 vRayStartPos = pPlayer->Get_WorldPos();
 	vRayStartPos.y += 0.5f;
 
-	for (auto& elem : Enemies)
+	/*for (auto& elem : Enemies)
 	{
 		if (!elem->Is_Valid())
 			continue;
@@ -683,7 +683,7 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 			pTargetPlayer = elem;
 			break;
 		}
-	}
+	}*/
 
 	if (!pTargetPlayer)
 	{
@@ -1132,6 +1132,9 @@ _bool CTable_Conditions::Check_Team(CTeamConnector* pTeamConnector, eTEAM_TYPE e
 
 void CTable_Conditions::Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIController* pAIController)
 {
+	if (!pPlayer->Get_CurrentUnit()->Is_Valid())
+		return;
+
 	CAIPersonality* pPersonality = pAIController->Get_Personality();
 	pPersonality->Update_RemainTime(eBehaviorType::ePatrol);
 
@@ -1140,9 +1143,6 @@ void CTable_Conditions::Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIControll
 	{
 		pPersonality->Init_RemainTime(eBehaviorType::ePatrol);
 
-		/*현재 Path 갱신해야하고 MainPath 지우면 안되기 때문에 null 처리*/
-		if (pPlayer->Get_CurMainPath() == pPlayer->Get_CurPath())
-			pPlayer->Set_CurPathNull();
 
 		CPath* pCurPath = CGameSystem::Get_Instance()->Clone_RandomNearestPath(pPlayer->Get_WorldPos());
 

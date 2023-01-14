@@ -15,6 +15,9 @@ bool		g_bPBR;
 float g_fUVPlusX;
 float g_fUVPlusY;
 
+vector g_vOutLineFlag = vector(0.f, 0.f, 0.f, 0.f);
+vector g_vRimLightFlag = vector(0.f, 0.f, 0.f, 0.f);
+
 
 struct VS_IN
 {

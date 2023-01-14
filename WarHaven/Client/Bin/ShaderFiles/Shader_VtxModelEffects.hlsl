@@ -29,6 +29,8 @@ vector		g_vCamPosition;
 float		g_fOutlinePower = 1.f;
 
 float		g_fRimlightPower;
+vector		g_vOutLineFlag;
+vector		g_vRimLightFlag;
 
 
 struct VS_IN

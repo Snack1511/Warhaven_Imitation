@@ -92,7 +92,14 @@ CPlayer::CPlayer()
 CPlayer::~CPlayer()
 {
 	m_DeadLights.clear();
+	if (m_pCurPath == m_pStartMainPath)
+	{
+		SAFE_DELETE(m_pCurPath);
+		m_pStartMainPath = nullptr;
+	}
 	SAFE_DELETE(m_pCurPath);
+	SAFE_DELETE(m_pStartMainPath);
+
 #ifdef _DEBUG
 	Clear_DebugObject();
 #endif
@@ -1373,7 +1380,6 @@ void CPlayer::My_LateTick()
 		_float4 vUnitPosition = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
 		m_pTransform->Set_World(WORLD_POS, vUnitPosition);
 	}
-
 }
 
 void CPlayer::Update_HP()
@@ -1388,6 +1394,14 @@ void CPlayer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 
 void CPlayer::Set_NewPath(CPath* pPath)
 {
+	if (m_pStartMainPath)
+	{
+		if (m_pStartMainPath == m_pCurPath)
+		{
+			m_pCurPath = nullptr;
+		}
+	}
+
 	SAFE_DELETE(m_pCurPath);
 	m_pCurPath = pPath;
 	if (m_pCurPath)
@@ -1397,13 +1411,25 @@ void CPlayer::Set_NewPath(CPath* pPath)
 }
 void CPlayer::Set_NewMainPath(CPath* pPath)
 {
+	if (m_pStartMainPath == m_pCurPath)
+	{
+		SAFE_DELETE(m_pCurPath);
+		m_pStartMainPath = nullptr;
+		m_pCurPath = nullptr;
+	}
+
+
+	SAFE_DELETE(m_pCurPath);
 	SAFE_DELETE(m_pStartMainPath);
 	m_pStartMainPath = pPath;
 	if (m_pStartMainPath)
 		m_pStartMainPath->Init_Indices();
 
 	m_pStartMainPath->m_vPrevPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+
+
 	m_pCurPath = m_pStartMainPath;
+	
 }
 
 _float4 CPlayer::Get_LookDir()
