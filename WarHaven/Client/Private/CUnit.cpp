@@ -344,7 +344,7 @@ void CUnit::On_Respawn()
 	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
 
 	if (m_bIsMainPlayer)
-		Get_CurStateP()->Play_Voice(this, L"Voice_Respawn", 2.f);
+		Play_Voice(L"Voice_Respawn", 1.f, false);
 
 }
 
@@ -476,12 +476,17 @@ void CUnit::On_FallDamage(_float fFallPower)
 
 	if (m_tUnitStatus.fHP <= 0.f)
 	{
+		Get_CurStateP()->Play_Voice(this, L"Voice_Dead", 1.f);
 		m_tUnitStatus.fHP = 0.f;
 		On_Die();
 	}
 	else if (m_tUnitStatus.fHP >= m_tUnitStatus.fMaxHP)
 	{
 		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
+	}
+	else
+	{
+		Get_CurStateP()->Play_Voice(this, L"Voice_Hit", 1.f);
 	}
 
 	if (m_bIsMainPlayer)
@@ -1554,6 +1559,53 @@ void CUnit::On_FinishGame(_bool bWin)
 {
 	Enter_State((bWin) ? STATE_VICTORY : STATE_DEFEAT);
 	m_eReserveState = STATE_END;
+}
+
+void CUnit::Play_Voice(wstring strName, _float fVol, _bool bDist)
+{
+
+
+	CLASS_TYPE eClass = Get_OwnerPlayer()->Get_CurClass();
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	wstring strKey = strName;
+
+
+	switch (eClass)
+	{
+	case Client::WARRIOR:
+		strKey += L"_Warrior";
+		break;
+	case Client::ARCHER:
+		strKey += L"_Archer";
+		break;
+	case Client::PALADIN:
+		strKey += L"_Paladin";
+		break;
+	case Client::PRIEST:
+		strKey += L"_Priest";
+		break;
+	case Client::ENGINEER:
+		strKey += L"_Warhammer";
+		break;
+	case Client::FIONA:
+		strKey += L"_Fiona";
+		break;
+	case Client::QANDA:
+		strKey += L"_Qanda";
+		break;
+	case Client::LANCER:
+		strKey += L"_Lancer";
+		break;
+	case Client::CLASS_END:
+		break;
+	default:
+		break;
+	}
+
+	if (bDist)
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, vPos, fVol);
+	else
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
 }
 
 void CUnit::Set_AnimWeaponIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed)

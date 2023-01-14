@@ -1107,8 +1107,13 @@ HRESULT CGameSystem::On_Update_Paden()
 		}
 	}
 
+	
+
 	if (pMinusScoreTeam)
 	{
+		if (KEY(H, TAP))
+			pMinusScoreTeam->Minus_Score();
+
 		m_fScoreAcc += fDT(0);
 
 		if (m_fScoreAcc >= m_fScoreMinusTime)
@@ -1136,11 +1141,11 @@ HRESULT CGameSystem::On_Update_Paden()
 				{
 					if (iScore == 50)
 					{
-						CFunctor::Play_Sound(L"", CHANNEL_UI, 1.f);
+						CFunctor::Play_Sound(L"UI_EnemyRemain50", CHANNEL_UI, 1.f);
 					}
 					if (iScore == 20)
 					{
-						CFunctor::Play_Sound(L"", CHANNEL_UI, 1.f);
+						CFunctor::Play_Sound(L"UI_EnemyRemain20", CHANNEL_UI, 1.f);
 					}
 				}
 			}
@@ -1286,11 +1291,14 @@ void CGameSystem::On_FinishGame(CTeamConnector* pTeamConnector)
 	{
 		// ÆÐ¹è
 		CUser::Get_Instance()->SetActive_Result(1, true);
+		CFunctor::Play_Sound(L"UI_Lose", CHANNEL_UI, 1.f);
 	}
 	else
 	{
 		// ½Â¸®
 		CUser::Get_Instance()->SetActive_Result(0, true);
+		CFunctor::Play_Sound(L"UI_Win", CHANNEL_UI, 1.f);
+
 	}
 }
 

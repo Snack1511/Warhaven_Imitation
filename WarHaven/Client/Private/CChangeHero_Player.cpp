@@ -73,7 +73,11 @@ void CChangeHero_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 	/* 히트박스 끄기 */
 	pOwner->Enable_HitBoxColliders(false);
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinFlare", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));//henshin flare
+	
+	_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinFlare", pOwner, vPos);//henshin flare
+	CFunctor::Play_Sound(L"Effect_OnChangeHero", CHANNEL_EFFECTS, vPos, 1.f);
 
 	/* Owner의 Animator Set Idle로 */
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);

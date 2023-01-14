@@ -80,7 +80,7 @@ void CRevive_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
     CUser::Get_Instance()->SetActive_HUD_RevivalUI(true);
 
-    Play_Voice(pOwner, L"Voice_Revival", 1.f);
+    Play_Voice(pOwner, L"Voice_Revival", 1.f);  
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

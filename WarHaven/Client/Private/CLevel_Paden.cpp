@@ -103,12 +103,17 @@ HRESULT CLevel_Paden::Enter()
 	GAMEINSTANCE->Set_ChannelVolume((CHANNEL_GROUP)CHANNEL_BGM, 0.1f);
 	GAMEINSTANCE->Set_ChannelVolume((CHANNEL_GROUP)CHANNEL_UI, 1.f);
 	GAMEINSTANCE->Set_ChannelVolume((CHANNEL_GROUP)CHANNEL_VOICE, 10.f);
+	GAMEINSTANCE->Set_ChannelVolume((CHANNEL_GROUP)CHANNEL_ENVIRONMENT, 1.f);
 
 	return S_OK;
 }
 
 void CLevel_Paden::Tick()
 {
+	BirdSound();
+
+
+
 	__super::Tick();
 }
 
@@ -129,4 +134,27 @@ HRESULT CLevel_Paden::Render()
 HRESULT CLevel_Paden::Exit()
 {
 	return __super::Exit();;
+}
+
+void CLevel_Paden::BirdSound()
+{
+	m_fBirdTimeAcc += fDT(0);
+
+	if (m_fBird <= m_fBirdTimeAcc)
+	{
+		CFunctor::Play_Sound(L"Env_Ggugi", CHANNEL_ENVIRONMENT, _float4(48.6f, 5.5f, -0.f), 1.f);
+		
+		m_fBirdTimeAcc = 0.f;
+	}
+}
+
+void CLevel_Paden::WindSound()
+{
+	m_fWindTimeAcc += fDT(0);
+
+	if (18.f <= m_fWindTimeAcc)
+	{
+		CFunctor::Play_Sound(L"Env_CannonWind", CHANNEL_ENVIRONMENT, _float4(-61.8f, 20.4f, 0.2f), 10.f);
+		m_fWindTimeAcc = 0.f;
+	}
 }

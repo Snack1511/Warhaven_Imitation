@@ -118,7 +118,7 @@ HRESULT CLevel_Test::Enter()
 	CGameInstance::Get_Instance()->Change_Camera(L"PlayerCam");
 
 	
-
+	
 	return S_OK;
 }
 
@@ -130,6 +130,9 @@ void CLevel_Test::Tick()
 void CLevel_Test::Late_Tick()
 {
 	__super::Late_Tick();
+
+	CUser::Get_Instance()->Set_FixCursor(false);
+	ShowCursor(true);
 }
 
 HRESULT CLevel_Test::Render()
