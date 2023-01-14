@@ -197,6 +197,16 @@ void CUnit_WarHammer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_ENGINEER;
 		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_ENGINEER;
 
+		m_tAIChangeType.eAIPathFindDefaultState = AI_STATE_PATHNAVIGATION_DEFAULT_ENGINEER_R;
+		m_tAIChangeType.eAICommbatDefaultState = AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
+		m_tAIChangeType.eAIReviveDefaultState = AI_STATE_COMMON_REVIVE_AI;
+		m_tAIChangeType.eAICannonDefaultState = AI_STATE_CANNON_AI;
+		m_tAIChangeType.eAIGlidingDefaultState = AI_STATE_GLIDING_AI;
+		m_tAIChangeType.eAIPatrolDefaultState = AI_STATE_PATROL_DEFAULT_ENGINEER_R;
+		m_tAIChangeType.eAIGoTirrgerDefaultState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_ENGINEER;
+		m_tAIChangeType.eAIChangeDeafultState = AI_STATE_COMMON_CHANGE_HERO;
+
+
 		break;
 
 

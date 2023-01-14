@@ -116,6 +116,9 @@ protected:
 	CUnit* m_pOwner = nullptr;
 
 protected:
+	CUnit* m_pCurrentTargetUnit = nullptr; // AI 용 변수 타겟을 쫒아간다.
+
+protected:
 	vector<STATE_TYPE>		m_vecAdjState;
 	STATE_TYPE			m_eStateType = STATE_END;
 	ANIM_DIVIDE			m_eAnimDivide = ANIM_DIVIDE::eDEFAULT;

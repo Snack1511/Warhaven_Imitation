@@ -661,7 +661,7 @@ void CState::DoMove_AI(CUnit* pOwner, CAnimator* pAnimator)
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-	CUnit* pUnit = pOwner->Get_TargetUnit();
+	CUnit* pUnit = m_pCurrentTargetUnit;
 	if (!pUnit)
 		return;
 
@@ -670,7 +670,10 @@ void CState::DoMove_AI(CUnit* pOwner, CAnimator* pAnimator)
 	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
 	_float4 vRight = pOwner->Get_Transform()->Get_World(WORLD_RIGHT);
 
-	_float fLength = vLook.Length();
+	if (vLook.Is_Zero())
+		return;
+
+		_float fLength = vLook.Length();
 
 
 	vLook.Normalize();
@@ -742,8 +745,10 @@ void CState::DoMove_AI(CUnit* pOwner, CAnimator* pAnimator)
 
 	vDir.y = 0.f;
 
-	if (!vDir.Is_Zero())
-		pMyPhysicsCom->Set_Dir(vDir);
+	_float4 vMyLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
+	vMyLook.y = 0.f;
+
+	pMyPhysicsCom->Set_Dir(vMyLook);
 
 	pMyPhysicsCom->Set_Accel(m_fMyAccel);
 

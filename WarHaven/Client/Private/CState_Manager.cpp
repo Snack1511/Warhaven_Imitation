@@ -760,6 +760,12 @@
 #include "CState_Combat_SkillR_AirDash_Priest.h"
 #include "CState_Combat_SkillE_Priest_WindAttack.h"
 
+#include "CState_Combat_Default_Lancer.h"
+#include "CState_Combat_Attack_Default_Lancer.h"
+#include "CState_Combat_Attack_Sting_Lancer.h"
+#include "CState_Combat_SkillR_Breeze_Begin_Lancer.h"
+#include "CState_Combat_SkillR_Breeze_Loop_Lancer.h"
+#include "CState_Combat_Stop_Lancer.h"
 
 #pragma endregion
 
@@ -847,6 +853,10 @@
 #include "CState_PathNavigation_Jump_Priest.h"
 #include "CState_PathNavigation_Walk_Priest.h"
 #include "CState_PathNavigation_Fall_Priest.h"
+
+#include "CState_PathNavigation_Default_Lancer.h"
+#include "CState_PathNavigation_Jump_Lancer.h"
+#include "CState_PathNavigation_Stop_Lancer.h"
 
 
 #pragma endregion
@@ -2355,12 +2365,24 @@ void CState_Manager::Lancer_State_AI()
 #pragma endregion
 
 #pragma region Combat
+	
+	m_arrStates[AI_STATE_COMBAT_DEAFULT_LANCER] = CState_Combat_Default_Lancer::Create();
+	m_arrStates[AI_STATE_COMBAT_ATTACKSWING_LANCER] = CState_Combat_Attack_Default_Lancer::Create();
+	m_arrStates[AI_STATE_COMBAT_STING_LANCER] = CState_Combat_Attack_Sting_Lancer::Create();
 
+	m_arrStates[AI_STATE_COMBAT_BREEZE_BEGIN_LANCER] = CState_Combat_SkillR_Breeze_Begin_Lancer::Create();
+	m_arrStates[AI_STATE_COMBAT_BREEZE_LOOP_LANCER] = CState_Combat_SkillR_Breeze_Loop_Lancer::Create();
+	m_arrStates[AI_STATE_COMBAT_STOP_LANCER] = CState_Combat_Stop_Lancer::Create();
 
 #pragma endregion
 
 
 #pragma region PathNavigation
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_LANCER] = CState_PathNavigation_Default_Lancer::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_LANCER] = CState_PathNavigation_Jump_Lancer::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_STOP_LANCER] = CState_PathNavigation_Stop_Lancer::Create();
+
 #pragma endregion
 
 #pragma region Common

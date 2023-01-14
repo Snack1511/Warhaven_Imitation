@@ -202,8 +202,15 @@ void CUnit_Qanda::SetUp_ReserveState(UNIT_TYPE eUnitType)
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
 		m_eDefaultState = AI_STATE_PATROL_DEFAULT_QANDA;
-		//m_eDefaultState = AI_STATE_COMBAT_DEFAULT_QANDA_R;
-		//m_eSprintEndState = AI_STATE_PATROL_DEFAULT_QANDA_R;
+
+		//m_tAIChangeType.eAIPathFindDefaultState = AI_STATE_PATHNAVIGATION_DEFAULT_PRIEST;
+		//m_tAIChangeType.eAICommbatDefaultState = AI_STATE_COMBAT_DEFAULT_PRIEST;
+		//m_tAIChangeType.eAIReviveDefaultState = AI_STATE_COMMON_REVIVE_AI;
+		//m_tAIChangeType.eAICannonDefaultState = AI_STATE_CANNON_AI;
+		//m_tAIChangeType.eAIGlidingDefaultState = AI_STATE_GLIDING_AI;
+		//m_tAIChangeType.eAIPatrolDefaultState = AI_STATE_PATROL_DEFAULT_PRIEST;
+		//m_tAIChangeType.eAIGoTirrgerDefaultState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_PRIEST;
+		//m_tAIChangeType.eAIChangeDeafultState = AI_STATE_COMMON_CHANGE_HERO;
 
 		break;
 

@@ -194,7 +194,12 @@
     <ClInclude Include="..\Public\CHit_Groggy_Lancer.h" />
     <ClInclude Include="..\Public\CHit_GuardHit_Lancer.h" />
     <ClInclude Include="..\Public\CHit_Lancer.h" />
+    <ClInclude Include="..\Public\CState_Combat_SkillR_Breeze_Begin_Lancer.h" />
+    <ClInclude Include="..\Public\CState_Combat_SkillR_Breeze_Loop_Lancer.h" />
     <ClInclude Include="..\public\CMainMenuPlayer.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_Sting_Lancer.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_Default_Lancer.h" />
+    <ClInclude Include="..\Public\CState_Combat_Default_Lancer.h" />
     <ClInclude Include="..\Public\CState_Common_Bounce_Lancer.h" />
     <ClInclude Include="..\Public\CState_Common_Cannon_AI.h" />
     <ClInclude Include="..\Public\CState_Common_Fall_Lancer.h" />
@@ -212,9 +217,11 @@
     <ClInclude Include="..\Public\CState_Common_Land_Lancer.h" />
     <ClInclude Include="..\Public\CState_Common_Land_Qanda.h" />
     <ClInclude Include="..\Public\CState_Common_Sting_Qanda.h" />
+    <ClInclude Include="..\Public\CState_PathNavigation_Default_Lancer.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Archer.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Archer_L.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Archer_R.h" />
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Lancer.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Run_Archer.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Run_Archer_L.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Run_Archer_R.h" />
@@ -224,6 +231,8 @@
     <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Archer_Fall.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Archer_Jump.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Archer_Loop.h" />
+    <ClInclude Include="..\Public\CState_Combat_Stop_Lancer.h" />
+    <ClInclude Include="..\Public\CState_PathNavigation_Stop_Lancer.h" />
     <ClInclude Include="..\Public\CState_Patrol_Default_Lancer.h" />
     <ClInclude Include="..\Public\CState_Patrol_Default_Qanda.h" />
     <ClInclude Include="..\Public\CState_Patrol_Walk_Lancer.h" />
@@ -1212,7 +1221,12 @@
     <ClCompile Include="..\Private\CHit_Groggy_Lancer.cpp" />
     <ClCompile Include="..\Private\CHit_GuardHit_Lancer.cpp" />
     <ClCompile Include="..\Private\CHit_Lancer.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_SkillR_Breeze_Begin_Lancer.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_SkillR_Breeze_Loop_Lancer.cpp" />
     <ClCompile Include="..\private\CMainMenuPlayer.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_Attack_Sting_Lancer.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_Attack_Default_Lancer.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_Default_Lancer.cpp" />
     <ClCompile Include="..\Private\CState_Common_Bounce_Lancer.cpp" />
     <ClCompile Include="..\Private\CState_Common_Cannon_AI.cpp" />
     <ClCompile Include="..\Private\CState_Common_Fall_Lancer.cpp" />
@@ -1230,9 +1244,11 @@
     <ClCompile Include="..\Private\CState_Common_Land_Lancer.cpp" />
     <ClCompile Include="..\Private\CState_Common_Land_Qanda.cpp" />
     <ClCompile Include="..\Private\CState_Common_Sting_Qanda.cpp" />
+    <ClCompile Include="..\Private\CState_PathNavigation_Default_Lancer.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Archer.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Archer_L.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Archer_R.cpp" />
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Lancer.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Run_Archer.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Run_Archer_L.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Run_Archer_R.cpp" />
@@ -1242,6 +1258,8 @@
     <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Archer_Fall.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Archer_Jump.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Archer_Loop.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_Stop_Lancer.cpp" />
+    <ClCompile Include="..\Private\CState_PathNavigation_Stop_Lancer.cpp" />
     <ClCompile Include="..\Private\CState_Patrol_Default_Lancer.cpp" />
     <ClCompile Include="..\Private\CState_Patrol_Default_Qanda.cpp" />
     <ClCompile Include="..\Private\CState_Patrol_Walk_Lancer.cpp" />

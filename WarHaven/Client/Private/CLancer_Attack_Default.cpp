@@ -165,7 +165,7 @@ HRESULT CLancer_Attack_Default::Initialize()
 
 void CLancer_Attack_Default::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-
+	pOwner->TurnOn_TrailEffect(true);
 	m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
 	pOwner->Set_BounceState(STATE_BOUNCE_LANCER);
@@ -185,6 +185,7 @@ STATE_TYPE CLancer_Attack_Default::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CLancer_Attack_Default::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->TurnOn_TrailEffect(false);
     pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }

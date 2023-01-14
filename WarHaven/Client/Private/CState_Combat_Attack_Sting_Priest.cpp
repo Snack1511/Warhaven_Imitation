@@ -65,6 +65,8 @@ void CState_Combat_Attack_Sting_Priest::Enter(CUnit* pOwner, CAnimator* pAnimato
 {
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
+    pOwner->Set_BounceState(m_eBounceState);
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

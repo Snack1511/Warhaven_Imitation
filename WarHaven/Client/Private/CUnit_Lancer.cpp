@@ -129,7 +129,7 @@ void CUnit_Lancer::SetUp_Colliders(_bool bPlayer)
 
 	for (_uint i = 0; i < iWeaponSphereNum; ++i)
 	{
-		tWeaponUnitColDesc[i].fRadius = 0.2f;
+		tWeaponUnitColDesc[i].fRadius = 0.3f;
 		tWeaponUnitColDesc[i].vOffsetPos.z = -10.f * _float(i) - 10.f;
 		tWeaponUnitColDesc[i].eColType = (_uint)eAttack;
 	}
@@ -199,12 +199,22 @@ void CUnit_Lancer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 		m_eBreezeBegin = STATE_ATTACK_BREEZE_BEGIN_LANCER;
 		m_eBreezeLoop = STATE_ATTACK_BREEZE_LOOP_LANCER;
 
+		m_eSprintEndState = STATE_STOP_LANCER;
+
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
-		m_eDefaultState = AI_STATE_PATROL_DEFAULT_LANCER; // ÄÄ¹îÀ¸·Î ¹Ù²Ü ¿¹Á¤
-		//m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+		m_eDefaultState = AI_STATE_COMBAT_DEAFULT_LANCER; 
+		m_eBreezeBegin = AI_STATE_COMBAT_BREEZE_BEGIN_LANCER;
+		m_eBreezeLoop = AI_STATE_COMBAT_BREEZE_LOOP_LANCER;
+
+		m_eSprintEndState = AI_STATE_PATHNAVIGATION_STOP_LANCER;
+
+		m_tAIChangeType.eAIPathFindDefaultState = AI_STATE_PATHNAVIGATION_DEFAULT_LANCER;
+		m_tAIChangeType.eAICommbatDefaultState = AI_STATE_COMBAT_DEAFULT_LANCER;
+		m_tAIChangeType.eAIPatrolDefaultState = AI_STATE_PATROL_DEFAULT_LANCER;
+		m_tAIChangeType.eAIGoTirrgerDefaultState = AI_STATE_PATHNAVIGATION_DEFAULT_LANCER;
 
 		break;
 
@@ -245,12 +255,12 @@ void CUnit_Lancer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		break;
 	case eBehaviorType::eCombat:
 		//»óÅÂº¯°æ
-		eNewState = AI_STATE_COMBAT_DEFAULT_WARRIOR_L;
+		eNewState = AI_STATE_COMBAT_DEAFULT_LANCER;
 
 		break;
 	case eBehaviorType::eGoToTrigger:
 		//»óÅÂº¯°æ
-		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_WARRIOR_R;
+		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_LANCER;
 		break;
 
 	case eBehaviorType::eRevive:
@@ -620,7 +630,7 @@ HRESULT CUnit_Lancer::Initialize_Prototype()
 	// Ä® ±æÀÌ
 	tDesc.fHeight = 1.5f;
 	// Ä® µÎ²²
-	tDesc.fRadius = 0.08f;
+	tDesc.fRadius = 0.1f;
 	// Ä® ºÙÀÏ »À
 	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1");
 

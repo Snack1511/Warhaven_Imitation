@@ -50,8 +50,8 @@ void CState_Common_Bounce_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 
 STATE_TYPE CState_Common_Bounce_Lancer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    //if (pAnimator->Is_CurAnimFinished())
-    //    return AI_STATE_COMBAT_DEFAULT_PRIEST;
+    if (pAnimator->Is_CurAnimFinished())
+        return AI_STATE_COMBAT_DEAFULT_LANCER;
 
     return __super::Tick(pOwner, pAnimator);
 }

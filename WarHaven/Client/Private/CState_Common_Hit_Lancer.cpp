@@ -76,8 +76,8 @@ void CState_Common_Hit_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_
 
 STATE_TYPE CState_Common_Hit_Lancer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-   /* if (m_bAttackTrigger)
-        return AI_STATE_COMBAT_STINGATTACK_PRIEST;
+    if (m_bAttackTrigger)
+        return AI_STATE_COMBAT_STING_LANCER;
 
     if (pAnimator->Is_CurAnimFinished())
     {
@@ -93,8 +93,10 @@ STATE_TYPE CState_Common_Hit_Lancer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
             if (pOwner->Get_TargetUnit())
             {
-                if (pOwner->Can_Use(CUnit::SKILL1))
-                    return AI_STATE_COMBAT_AIRDASH_PRIEST;
+           /*     if (pOwner->Can_Use(CUnit::SKILL1))
+                    return AI_STATE_;
+                    */
+                return AI_STATE_COMBAT_STING_LANCER;
             }
 
 
@@ -102,11 +104,7 @@ STATE_TYPE CState_Common_Hit_Lancer::Tick(CUnit* pOwner, CAnimator* pAnimator)
             
         case 1:
 
-            if (pOwner->Get_TargetUnit())
-            {
-                if (pOwner->Can_Use(CUnit::SKILL2))
-                    return AI_STATE_COMBAT_WINDATTACK_PRIEST;
-            }
+              return AI_STATE_COMBAT_DEAFULT_LANCER;
 
         case 2:
             m_bAttackTrigger = true;
@@ -117,7 +115,7 @@ STATE_TYPE CState_Common_Hit_Lancer::Tick(CUnit* pOwner, CAnimator* pAnimator)
             break;
         }
         
-    }*/
+    }
 
 
     return __super::Tick(pOwner, pAnimator);

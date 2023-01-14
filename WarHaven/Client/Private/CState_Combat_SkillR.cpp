@@ -44,3 +44,21 @@ STATE_TYPE CState_Combat_SkillR::Check_Condition(CUnit* pOwner, CAnimator* pAnim
     return STATE_END;
 }
 
+void CState_Combat_SkillR::Wall_Detection(CUnit* pOwner)
+{
+	_float4 vCurPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+
+	CCell* pCurCell = pOwner->Get_NaviCom()->Get_CurCell(vCurPos, CGameSystem::Get_Instance()->Get_CellLayer());
+
+	if (pCurCell && pCurCell->Check_Attribute(CELL_WALL))
+	{
+		CUnit* pTargetUnit = pOwner->Get_TargetUnit();
+
+		if (pTargetUnit)
+		{
+			m_vAIRandLook = pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+			m_vAIRandLook.Normalize();
+		}
+	}
+}
+

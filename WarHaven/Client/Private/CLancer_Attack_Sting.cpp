@@ -168,6 +168,7 @@ void CLancer_Attack_Sting::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 {
 	m_iAnimIndex = 0;
 
+	pOwner->TurnOn_TrailEffect(true);
 	pOwner->Set_BounceState(STATE_BOUNCE_LANCER);
 
     /* Owner의 Animator Set Idle로 */
@@ -184,7 +185,7 @@ STATE_TYPE CLancer_Attack_Sting::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CLancer_Attack_Sting::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+	pOwner->TurnOn_TrailEffect(false);
 	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }

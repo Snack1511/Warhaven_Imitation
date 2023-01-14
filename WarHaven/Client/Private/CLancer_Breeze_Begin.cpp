@@ -68,6 +68,7 @@ void CLancer_Breeze_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 	GAMEINSTANCE->Start_RadialBlur(0.015f);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_RUSH);
+	pOwner->TurnOn_TrailEffect(true);
 
 	for (_int i = 0; i < CUnit_Lancer::eNeedle::eNeedle_Max; ++i)
 	{
@@ -79,7 +80,8 @@ void CLancer_Breeze_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 		pNeedle->On_ChangePhase(CLancerNeedle::LANCERNEEDLE_ATTACKBEGIN);
 	}
 
-	 
+	
+ 
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -94,6 +96,7 @@ STATE_TYPE CLancer_Breeze_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CLancer_Breeze_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->TurnOn_TrailEffect(false);
 	GAMEINSTANCE->Stop_RadialBlur();
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_LANCER);
 }

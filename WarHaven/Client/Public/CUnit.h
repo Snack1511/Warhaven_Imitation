@@ -192,6 +192,21 @@ public:
 	const STATE_TYPE& Get_SprintEndState() { return m_eSprintEndState; }
 	const STATE_TYPE& Get_SprintFallState() { return m_eSprintFallState; }
 
+	struct STATE_AI_TYPE
+	{
+		STATE_TYPE		eAIPathFindDefaultState = STATE_END;
+		STATE_TYPE		eAICommbatDefaultState = STATE_END;
+		STATE_TYPE		eAIReviveDefaultState = STATE_END;
+		STATE_TYPE		eAICannonDefaultState = STATE_END;
+		STATE_TYPE		eAIGlidingDefaultState = STATE_END;
+		STATE_TYPE		eAIPatrolDefaultState = STATE_END;
+		STATE_TYPE		eAIGoTirrgerDefaultState = STATE_END;
+		STATE_TYPE		eAIChangeDeafultState = STATE_END;
+	};
+
+	const STATE_AI_TYPE& Get_AIState_Type() { return m_tAIChangeType; }
+
+
 	SKILL_TRIGGER& Get_SkillTrigger() {
 		return m_tSkillTrigger;
 	}
@@ -380,6 +395,7 @@ protected:
 	STATE_TYPE		m_eSprintEndState = STATE_END;
 	STATE_TYPE		m_eSprintFallState = STATE_END;
 
+
 	CState* m_pCurState = nullptr;
 
 protected:
@@ -400,6 +416,7 @@ protected:
 
 protected:
 	STATE_HIT_TYPE	m_tHitType;
+	STATE_AI_TYPE	m_tAIChangeType;
 
 	_uint			m_iDefaultType = 0;
 	_float			m_fHitDelayAcc = 0.f;

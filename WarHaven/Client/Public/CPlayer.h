@@ -264,6 +264,8 @@ public:
 	{
 		if (m_pUnitHUD)
 			return m_pUnitHUD;
+
+		return nullptr;
 	}
 
 private:

@@ -22,6 +22,8 @@ public:
 
 public:
 	CLancerNeedle* Get_Needle(_int iIndex) { return m_pNeedle[iIndex]; }
+	_uint Get_NeedleNums() { return m_iNeedleNums + 1; }
+	
 	void Reset_NeedleNums() { m_iNeedleNums = 0; }
 
 

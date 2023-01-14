@@ -3841,6 +3841,30 @@
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\11. Window_Shader">
       <UniqueIdentifier>{945e2d95-b834-402f-a4bb-a5fb0ff147e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\06. Stop">
+      <UniqueIdentifier>{330fdf6b-cb33-402e-ae20-48438016edf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\06. Stop\08. Lancer">
+      <UniqueIdentifier>{5a7d3320-784a-4ded-bd01-7ddf1d1d212c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\08. Lancer\01. Default">
+      <UniqueIdentifier>{5215909b-0cef-470b-b5d2-b48ec94bef3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\08. Lancer\02. Sting">
+      <UniqueIdentifier>{c113bac4-1a12-4baa-bf5d-d7a906e6f54b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\08. Lancer\01. Begin">
+      <UniqueIdentifier>{c86b2ad6-f583-45e0-91cd-91b7261abaa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\08. Lancer\02. Loop">
+      <UniqueIdentifier>{6951cbb2-ac75-421c-833b-3ab043e3d7db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\06. Stop">
+      <UniqueIdentifier>{cfad8704-45e4-4267-b027-bcfba673b112}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\06. Stop\08. Lancer">
+      <UniqueIdentifier>{a8a2b65b-ed10-404f-b816-82530e769e25}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6888,6 +6912,33 @@
     <ClInclude Include="..\public\CWindow_Shader.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\11. Window_Shader</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Default_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\08. Lancer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\08. Lancer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Stop_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\06. Stop\08. Lancer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Default_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\08. Lancer\01. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Sting_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\08. Lancer\02. Sting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Default_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\08. Lancer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillR_Breeze_Begin_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\08. Lancer\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillR_Breeze_Loop_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\08. Lancer\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Stop_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\06. Stop\08. Lancer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9915,6 +9966,33 @@
     </ClCompile>
     <ClCompile Include="..\private\CWindow_Shader.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\11. Window_Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Default_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\08. Lancer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\08. Lancer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Stop_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\06. Stop\08. Lancer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Default_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\08. Lancer\01. Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Sting_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\08. Lancer\02. Sting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Default_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\08. Lancer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillR_Breeze_Begin_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\08. Lancer\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillR_Breeze_Loop_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\08. Lancer\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Stop_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\06. Stop\08. Lancer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
