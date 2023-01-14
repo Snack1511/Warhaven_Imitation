@@ -151,7 +151,7 @@ _uint CSound_Device::Play_LoopSound(const _tchar* strSoundKey, CHANNEL_GROUP iGr
 	if (iter == m_mapSound.end())
 	{
 		Call_MsgBox(L"Failed to find SoundKey : CSound_Device");
-		return;
+		return 0;
 	}
 
 	FMOD_BOOL bPlay = FALSE;

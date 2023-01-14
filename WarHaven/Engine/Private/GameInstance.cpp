@@ -241,6 +241,16 @@ _long CGameInstance::Get_DIMouseMoveState(MOUSEMOVE eMouseMove)
 	return m_pInputDevice->Get_DIMouseMoveState(eMouseMove);
 }
 
+_uint CGameInstance::Play_LoopSound(const _tchar* strSoundKey, CHANNEL_GROUP iGroupIndex, _float fVolumeRatio)
+{
+	return m_pSoundDevice->Play_LoopSound(strSoundKey, iGroupIndex, fVolumeRatio);
+}
+
+void CGameInstance::Stop_Sound(CHANNEL_GROUP eType, _uint iIndex)
+{
+	return m_pSoundDevice->Stop_Sound(eType, iIndex);
+}
+
 HRESULT CGameInstance::Load_SoundFile(wstring wstrFolderPath)
 {
 	return m_pSoundDevice->Load_SoundFile(wstrFolderPath);

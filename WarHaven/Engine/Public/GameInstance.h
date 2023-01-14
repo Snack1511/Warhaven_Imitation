@@ -66,6 +66,10 @@ public: /* For. Input_Device */
 	_long	Get_DIMouseMoveState(MOUSEMOVE eMouseMove);
 
 public: /* For. Sound_Device */
+
+	_uint		Play_LoopSound(const _tchar* strSoundKey, CHANNEL_GROUP iGroupIndex, _float fVolumeRatio = 1.f);
+	void		Stop_Sound(CHANNEL_GROUP eType, _uint iIndex);
+
 	HRESULT		Load_SoundFile(wstring wstrFolderPath);
 
 	void		Play_Sound(const _tchar* strSoundKey, CHANNEL_GROUP iGroupIndex, _float fVolumeRatio = 1.f);
