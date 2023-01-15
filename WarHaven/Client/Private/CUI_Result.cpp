@@ -51,6 +51,17 @@ void CUI_Result::SetActive_Result(_uint iResult, _bool value)
 {
 	m_iResult = iResult;
 
+	switch (m_iResult)
+	{
+	case 1:
+		Play_Sound(L"BGM_Win");
+		break;
+
+	case 2:
+		Play_Sound(L"BGM_Lose");
+		break;
+	}
+
 	CUser::Get_Instance()->SetActive_PadenUI(false);
 
 	GET_COMPONENT_FROM(m_pResultUI[Result_BG], CTexture)->Set_CurTextureIndex(iResult);
@@ -92,6 +103,8 @@ void CUI_Result::My_Tick()
 void CUI_Result::OnEnable()
 {
 	__super::OnEnable();
+
+	GAMEINSTANCE->Stop_Sound(CH_BGM);
 
 	SetActive_Result(m_iResult, true);
 }
