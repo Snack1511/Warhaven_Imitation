@@ -157,6 +157,8 @@ void CPriest_Catch_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 {
     /* Owner¿« Animator Set Idle∑Œ */
     CState::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Sound(L"Effect_Catch_Priest");
 }
 
 STATE_TYPE CPriest_Catch_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
