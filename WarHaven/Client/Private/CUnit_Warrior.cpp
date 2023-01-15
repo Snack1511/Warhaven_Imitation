@@ -550,7 +550,7 @@ HRESULT CUnit_Warrior::Start()
 		0.f,
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
-		4,
+		8,
 		"0B_Face_L_Eye"
 	);
 

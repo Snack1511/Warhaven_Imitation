@@ -157,9 +157,10 @@ void CAIController::Tick()
 
 void CAIController::Late_Tick()
 {
-
-
+	m_NearAlliesList.clear();
+	m_NearTriggerList.clear();
 	m_NearObjectList.clear();
+	m_NearEnemyList.clear();
 }
 
 void CAIController::Release()
