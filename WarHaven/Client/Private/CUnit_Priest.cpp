@@ -725,6 +725,22 @@ HRESULT CUnit_Priest::Start()
 		14,
 		"0B_L_Bag02"
 	);
+
+	fUpperSize = 2.f;
+
+	SetUp_EyeTrail(
+		_float4(2.f, fUpperSize, 0.f, 1.f),	//Weapon R
+		_float4(2.f, -fUpperSize, 0.f, 1.f),					//Weapon R
+		_float4(fUpperSize + 2.f, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize + 2.f, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		RGBA(255, 255, 255, 0.7f),
+		0.f,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		20,
+		"0B_Face_L_Eye"
+	);
 	
 	SetUp_CureEffect();
 		
@@ -734,8 +750,10 @@ HRESULT CUnit_Priest::Start()
 
 void CUnit_Priest::OnEnable()
 {
-	
 	__super::OnEnable();
+
+	Turn_EyeFlare(true, L"Priest_Eye");
+	Turn_EyeTrail(true);
 }
 
 void CUnit_Priest::OnDisable()
@@ -743,6 +761,9 @@ void CUnit_Priest::OnDisable()
 	__super::OnDisable();
 
 	TurnOff_AllEffect();
+
+	Turn_EyeFlare(false);
+	Turn_EyeTrail(false);
 }
 
 void CUnit_Priest::My_Tick()

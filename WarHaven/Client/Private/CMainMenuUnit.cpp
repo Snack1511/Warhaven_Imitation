@@ -316,14 +316,15 @@ void CMainMenuUnit::OnEnable()
 		wstrKey = L"Priest_Eye";
 		break;
 	case Client::ENGINEER:
+		wstrKey = L"WarHammer_Eye";
 		break;
 	case Client::FIONA:
 		if (m_TransformParticle.empty())
-			m_TransformParticle = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this, ZERO_VECTOR);
+			m_TransformParticle = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Main_Transform", this, m_pTransform->Get_World(WORLD_POS));
 		break;
 	case Client::QANDA:
 		if (m_TransformParticle.empty())
-			m_TransformParticle = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this, ZERO_VECTOR);
+			m_TransformParticle = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Main_Transform", this, m_pTransform->Get_World(WORLD_POS));
 		break;
 	case Client::HOEDT:
 		break;
@@ -438,16 +439,17 @@ void CMainMenuUnit::Set_EyeEffect()
 		vColor = RGBA(255, 255, 255, 0.7f);
 		break;
 	case Client::ENGINEER:
-		
-		vColor = RGBA(255, 0, 0, 0.7f);
+		wstrKey = L"WarHammer_Eye";
+		vColor = RGBA(255, 40, 40, 0.7f);
+		strBoneName = "0B_Face_R_Eye";
 		break;
 	case Client::FIONA:
 		
-		vColor = RGBA(255, 140, 0, 0.7f);
+		vColor = RGBA(255, 140, 0, 0.f);
 		break;
 	case Client::QANDA:
 		
-		vColor = RGBA(255, 30, 30, 0.7f);
+		vColor = RGBA(255, 30, 30, 0.f);
 		break;
 	case Client::HOEDT:
 		break;
