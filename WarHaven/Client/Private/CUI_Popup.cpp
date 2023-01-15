@@ -146,6 +146,8 @@ void CUI_Popup::My_Tick()
 		{
 			m_fAccTime = 0.f;
 
+			Play_Sound(L"Effect_GetSkin");
+
 			SetActive_SkinPopup(true);
 
 			m_bEnableSkinPopup = false;
