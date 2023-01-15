@@ -41,6 +41,14 @@ HRESULT CState_PathNavigation_Sprint_Fiona_Begin::Initialize()
 
     m_fAnimSpeed = 2.5f;
 
+
+    Add_KeyFrame(10, 0);
+    Add_KeyFrame(25, 1);
+    Add_KeyFrame(44, 1);
+    Add_KeyFrame(60, 1);
+    Add_KeyFrame(77, 1);
+    Add_KeyFrame(94, 1);
+    Add_KeyFrame(113, 1);
     return S_OK;
 }
 

@@ -45,6 +45,8 @@ HRESULT CState_PathNavigation_Sprint_Archer_Loop::Initialize()
 
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_ARCHER_R;
 
+    Add_KeyFrame(12, 0, true);
+    Add_KeyFrame(26, 0, true);
     return S_OK;
 }
 

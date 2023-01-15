@@ -41,6 +41,11 @@ HRESULT CState_PathNavigation_Sprint_Paladin_Begin::Initialize()
 
     m_fAnimSpeed = 2.5f;
 
+    Add_KeyFrame(10, 0, true);
+    Add_KeyFrame(28, 1, true);
+    Add_KeyFrame(50, 1, true);
+    Add_KeyFrame(72, 1, true);
+    Add_KeyFrame(95, 1, true);
     return S_OK;
 }
 
