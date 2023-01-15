@@ -132,6 +132,8 @@ void CState_Combat_SkillR_Paladin_ShieldSlam::On_KeyFrameEvent(CUnit* pOwner, CA
 		}
 
 		pOwner->Enable_FlyAttackCollider(true);
+		Play_Sound(L"Effect_ShiledAttack_Fiona");
+		Play_Voice(pOwner, L"Voice_Slam", 1.f);
 		break;
 	case 2:
 		pOwner->Enable_FlyAttackCollider(false);

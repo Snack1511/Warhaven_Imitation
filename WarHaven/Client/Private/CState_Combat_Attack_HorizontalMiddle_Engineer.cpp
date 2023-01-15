@@ -35,9 +35,8 @@ HRESULT CState_Combat_Attack_HorizontalMiddle_Engineer::Initialize()
 
 	m_iStopIndex = 80;
 
-	Add_KeyFrame(58, 1);
+	Add_KeyFrame(58, 3);
 	Add_KeyFrame(m_iStopIndex, 2);
-	Add_KeyFrame(80, 1);
 	Add_KeyFrame(69, 999);
 
 	return __super::Initialize();

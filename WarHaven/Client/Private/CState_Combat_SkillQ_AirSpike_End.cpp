@@ -149,6 +149,7 @@ void CState_Combat_SkillQ_AirSpike_End::On_KeyFrameEvent(CUnit* pOwner, CAnimato
 	switch (iSequence)
 	{
 	case 0:
+		Play_Sound(L"Effect_AirStrikeDown_Warhammer");
 		pOwner->Shake_Camera(pOwner->Get_Status().fCamPower , pOwner->Get_Status().fCamTime);
 		m_bAttackTrigger = true;
 		pOwner->Enable_FlyAttackCollider(true);

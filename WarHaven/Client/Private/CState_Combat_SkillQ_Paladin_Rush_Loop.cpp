@@ -135,6 +135,13 @@ STATE_TYPE CState_Combat_SkillQ_Paladin_Rush_Loop::Tick(CUnit* pOwner, CAnimator
 	if (m_fTimeAcc > 2.5f)
 		return AI_STATE_COMBAT_RUSH_END_PALADIN;
 
+	if (m_fSndTime <= 0.f)
+		m_iSoundIdx = CFunctor::Play_LoopSound(L"Effect_ShieldRush_Step", CHANNEL_EFFECTS);
+
+	m_fSndTime += fDT(0);
+	if (m_fSndTime >= 0.3f)
+		m_fSndTime = 0.f;
+
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 

@@ -32,7 +32,8 @@ private:
 	
 private:
 	list<CGameObject*> m_RushEffects;
-
+	_uint m_iSoundIdx = 0;
+	_float m_fSndTime = 0.f;
 };
 
 END

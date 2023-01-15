@@ -136,6 +136,8 @@ void CState_Combat_SkillE_Priest_WindAttack::On_KeyFrameEvent(CUnit* pOwner, CAn
 	{
 
 	case 0:
+		Play_Sound(L"Effect_WindAttack_Priest", CHANNEL_EFFECTS);
+		Play_Voice(pOwner, L"Voice_Wind", 1.f);
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::FLYATTACK, true);
 
