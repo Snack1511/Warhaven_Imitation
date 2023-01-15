@@ -59,7 +59,7 @@ void CState_PathNavigation_Sprint_Qanda_End::Enter(CUnit* pOwner, CAnimator* pAn
 STATE_TYPE CState_PathNavigation_Sprint_Qanda_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-    if (pAnimator->Is_CurAnimFinished())
+    if ((m_iEscapeFrame < pAnimator->Get_CurAnimFrame()) || pAnimator->Is_CurAnimFinished())
         return AI_STATE_PATHNAVIGATION_DEFAULT_QANDA;
 
 
