@@ -18,7 +18,7 @@
 
 #include "Level.h"
 
-//#define SHADOW_ON
+#define SHADOW_ON
 
 IMPLEMENT_SINGLETON(CRender_Manager)
 

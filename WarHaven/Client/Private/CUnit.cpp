@@ -393,7 +393,6 @@ void CUnit::On_Die()
 		GAMEINSTANCE->Start_GrayScale(1.f);
 	}
 
-
 }
 
 _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
@@ -1520,7 +1519,7 @@ void CUnit::Turn_EyeFlare(_bool bOnOff, wstring wstrKey)
 		{
 			for (auto& elem : m_EyeFlare)
 			{
-				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+				DISABLE_GAMEOBJECT(elem);
 			}
 			m_EyeFlare.clear();
 		}
