@@ -14,6 +14,7 @@ CTrigger_Glider* CTrigger_Glider::Create(string strPositionKey, _float fRadius)
 	CTrigger_Glider* pInstance = new CTrigger_Glider;
 
 	pInstance->m_strTriggerName = strPositionKey;
+	pInstance->m_eColGroup = COL_TRIGGER;
 	pInstance->m_vPosition = CGameSystem::Get_Instance()->Find_Position(strPositionKey);
 	pInstance->m_pTransform->Set_World(WORLD_POS, pInstance->m_vPosition);
 	pInstance->m_pTransform->Make_WorldMatrix();

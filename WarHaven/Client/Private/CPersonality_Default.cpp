@@ -70,21 +70,22 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);	
 	
-	/*pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Gliding"))->Clone();
+	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Gliding"))->Clone();
+	pBehavior->Add_OtherCondition(wstring(L"Check_GlidePath"));
 	pBehavior->Add_OtherCondition(wstring(L"Check_GriderTrigger"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearGliderTrigger"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(iPriority++);
-	m_BehaviorList.push_back(pBehavior);*/
+	m_BehaviorList.push_back(pBehavior);
 
-	/*pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Revive"))->Clone();
+	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Revive"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_DeadAllies"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearAllies"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(iPriority++);
-	m_BehaviorList.push_back(pBehavior);*/
+	m_BehaviorList.push_back(pBehavior);
 
 	//캐논점령지에 있고, 캐논 근처에, 캐논사용가능할 때
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PadenCannonInteract"))->Clone();
@@ -116,27 +117,18 @@ HRESULT CPersonality_Default::Initailize()
 	//pBehavior->Set_Priority(iPriority++);
 	//m_BehaviorList.push_back(pBehavior);
 
-	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Change"))->Clone();
-	pBehavior->Add_OtherCondition(wstring(L"Check_CombatBehavior"));
-	pBehavior->Add_OtherCondition(wstring(L"Check_AbleHero"));
-	pBehavior->Add_WhatCondition(wstring(L"EmptyWhatCondition"));
-	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
-	pBehavior->Initialize();
-	pBehavior->Set_Priority(iPriority++);
-	m_BehaviorList.push_back(pBehavior);
-
-
-
-
-
-	//m_BehaviorList.push_back(pBehavior);
-// 
-	//CBehavior* pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Attack"))->Clone();
+	//pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Change"))->Clone();
+	//pBehavior->Add_OtherCondition(wstring(L"Check_CombatBehavior"));
+	//pBehavior->Add_OtherCondition(wstring(L"Check_AbleHero"));
+	//pBehavior->Add_WhatCondition(wstring(L"EmptyWhatCondition"));
+	//pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	//pBehavior->Initialize();
-	//pBehavior->Add_OtherCondition(wstring(L"Check_FarAwayLeader"));
-	//pBehavior->Add_WhatCondition(wstring(L"Select_Leader"));
-	//pBehavior->SetUp_StateType(STATE_IDLE_WARRIOR_L_AI_ENEMY);
+	//pBehavior->Set_Priority(iPriority++);
 	//m_BehaviorList.push_back(pBehavior);
+
+
+
+
 
 
 	return S_OK;
