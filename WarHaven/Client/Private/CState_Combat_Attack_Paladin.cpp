@@ -55,6 +55,7 @@ void CState_Combat_Attack_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pA
 	switch (iSequence)
 	{
 	case 1:
+		Play_Sound(L"Effect_Swing_Blunt");
 		m_bAttackTrigger = true;
 		m_fMyMaxLerp = 0.01f;
 		pOwner->Set_LookToTarget();
