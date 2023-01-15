@@ -305,6 +305,8 @@ void CMainMenuUnit::OnEnable()
 	case Client::SPEAR:
 		break;
 	case Client::ARCHER:
+		if (m_EyeFlare.empty())
+			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Archer_Eye", this, ZERO_VECTOR);
 		break;
 	case Client::PALADIN:
 		break;
@@ -392,6 +394,7 @@ void CMainMenuUnit::ReFresh_Animation()
 
 void CMainMenuUnit::Set_EyeEffect()
 {
+
 	string strBoneName = "0B_Face_L_Eye";
 	_float4 vColor = RGB(255, 0, 0);
 
@@ -413,7 +416,10 @@ void CMainMenuUnit::Set_EyeEffect()
 		break;
 	case Client::ARCHER:
 
-		vColor = RGBA(255, 30, 255, 0.7f);
+		if (m_EyeFlare.empty())
+			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Archer_Eye", this, ZERO_VECTOR);
+
+		vColor = RGBA(255, 140, 0, 0.7f);
 		strBoneName = "0B_Face_R_Eye";
 
 		break;
@@ -431,7 +437,7 @@ void CMainMenuUnit::Set_EyeEffect()
 		break;
 	case Client::FIONA:
 		
-		vColor = RGBA(255, 30, 30, 0.7f);
+		vColor = RGBA(255, 140, 0, 0.7f);
 		break;
 	case Client::QANDA:
 		

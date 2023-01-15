@@ -473,9 +473,6 @@ protected:
 	_float		m_fDeadTime = 0.05f;
 
 protected:
-	_bool		m_bTransformDie = false;
-
-protected:
 	list<CGameObject*>	m_DeathStones;
 	void	Add_DeathStones(const list<CGameObject*>& StoneParticleList);
 

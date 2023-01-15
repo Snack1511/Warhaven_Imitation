@@ -755,6 +755,10 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Warrior_Eye"), "Warrior_Eye")))
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Archer_Eye"), "Archer_Eye")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Priest_Eye"), "Priest_Eye")))
+		return E_FAIL;
 		/*cat*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"PoisonTest"), "PoisonTest")))
 		return E_FAIL;

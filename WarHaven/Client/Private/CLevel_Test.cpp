@@ -130,9 +130,6 @@ void CLevel_Test::Tick()
 void CLevel_Test::Late_Tick()
 {
 	__super::Late_Tick();
-
-	CUser::Get_Instance()->Set_FixCursor(false);
-	ShowCursor(true);
 }
 
 HRESULT CLevel_Test::Render()

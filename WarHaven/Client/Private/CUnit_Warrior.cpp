@@ -390,8 +390,6 @@ void CUnit_Warrior::Turn_EyeFlare(_bool bOnOff)
 	{
 		if (m_EyeFlare.empty())
 			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Warrior_Eye", this, ZERO_VECTOR);
-
-		Turn_EyeTrail(bOnOff);
 	}
 	else
 	{
@@ -404,7 +402,6 @@ void CUnit_Warrior::Turn_EyeFlare(_bool bOnOff)
 			m_EyeFlare.clear();
 		}
 
-		Turn_EyeTrail(bOnOff);
 	}
 }
 
@@ -544,7 +541,8 @@ HRESULT CUnit_Warrior::Start()
 		"0B_Face_L_Eye"
 	);
 
-	m_EyeFlare.clear();
+	Turn_EyeFlare(false);
+
 
 	return S_OK;
 }
@@ -554,6 +552,7 @@ void CUnit_Warrior::OnEnable()
 	__super::OnEnable();
 
 	Turn_EyeFlare(true);
+	Turn_EyeTrail(true);
 	
 }
 
@@ -561,8 +560,8 @@ void CUnit_Warrior::OnDisable()
 {
 	__super::OnDisable();
 
+	Turn_EyeTrail(false);
 	Turn_EyeFlare(false);
-	
 }
 
 void CUnit_Warrior::My_LateTick()
