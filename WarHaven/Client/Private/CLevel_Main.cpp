@@ -128,12 +128,9 @@ HRESULT CLevel_Main::Exit()
 {
 	__super::Exit();
 	CUser::Get_Instance()->On_ExitLevel();
-
-	return S_OK;
-}
-
-HRESULT CLevel_Main::OnExit()
-{
 	CEffects_Factory::Get_Instance()->On_ExitLevel();
+
 	return S_OK;
 }
+
+
