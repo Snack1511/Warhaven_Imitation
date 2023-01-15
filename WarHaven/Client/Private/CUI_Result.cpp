@@ -9,6 +9,7 @@
 #include "CPlayerInfo.h"
 #include "CUI_Renderer.h"
 #include "CShader.h"
+#include "Functor.h"
 
 CUI_Result::CUI_Result()
 {
@@ -51,14 +52,16 @@ void CUI_Result::SetActive_Result(_uint iResult, _bool value)
 {
 	m_iResult = iResult;
 
+	Play_Sound(L"Env_Cheers", CHANNEL_ENVIRONMENT);
+
 	switch (m_iResult)
 	{
 	case 1:
-		Play_Sound(L"BGM_Win");
+		Play_Sound(L"BGM_Win", CHANNEL_BGM);
 		break;
 
 	case 2:
-		Play_Sound(L"BGM_Lose");
+		Play_Sound(L"BGM_Lose", CHANNEL_BGM);
 		break;
 	}
 
@@ -633,5 +636,10 @@ void CUI_Result::Progress_Result()
 
 			CUser::Get_Instance()->Enable_SkinPopup(1);
 		}
+	}
+	else if (m_iResultProgressCnt == 7)
+	{
+		if (KEY(SPACE, TAP))
+			Disable_Fade(m_pBG, 0.3f);
 	}
 }
