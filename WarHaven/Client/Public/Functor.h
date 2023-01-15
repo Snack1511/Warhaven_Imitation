@@ -27,6 +27,7 @@ public:
 
 	/* 1인자 : 사운드 이름, 2인자 : 채널 enum, 3인자 : 사운드 발생한 월드 포지션, 4인자 : 볼륨 크기 (default : 1)*/
 	static void		Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float4 vPosition, _float fVolume = 1.f);
+	static void		Play_Sound_SetRange(wstring wstrFileName, _uint iGroupIndex, _float4 vPosition, _float fMaxRange = 20.f, _float fVolume = 1.f);
 	/* 1인자 : 사운드 이름, 2인자 : 채널 enum, 4인자 : 볼륨 크기 (default : 1)*/
 	static void		Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float fVolume = 1.f);
 

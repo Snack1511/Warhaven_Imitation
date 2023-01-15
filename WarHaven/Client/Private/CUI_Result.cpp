@@ -9,6 +9,8 @@
 #include "CPlayerInfo.h"
 #include "CUI_Renderer.h"
 #include "CShader.h"
+#include "Functor.h"
+#include "Loading_Manager.h"
 
 CUI_Result::CUI_Result()
 {
@@ -51,6 +53,20 @@ void CUI_Result::SetActive_Result(_uint iResult, _bool value)
 {
 	m_iResult = iResult;
 
+
+	switch (m_iResult)
+	{
+	case 1:
+		Play_Sound(L"Env_Cheers", CHANNEL_ENVIRONMENT);
+		Play_Sound(L"BGM_Win", CHANNEL_BGM);
+		break;
+
+	case 2:
+		Play_Sound(L"Env_Cheers", CHANNEL_ENVIRONMENT);
+		Play_Sound(L"BGM_Lose", CHANNEL_BGM);
+		break;
+	}
+
 	CUser::Get_Instance()->SetActive_PadenUI(false);
 
 	GET_COMPONENT_FROM(m_pResultUI[Result_BG], CTexture)->Set_CurTextureIndex(iResult);
@@ -92,6 +108,8 @@ void CUI_Result::My_Tick()
 void CUI_Result::OnEnable()
 {
 	__super::OnEnable();
+
+	GAMEINSTANCE->Stop_Sound(CH_BGM);
 
 	SetActive_Result(m_iResult, true);
 }
@@ -620,5 +638,18 @@ void CUI_Result::Progress_Result()
 
 			CUser::Get_Instance()->Enable_SkinPopup(1);
 		}
+	}
+	else if (m_iResultProgressCnt == 7)
+	{
+		if (KEY(SPACE, TAP))
+		{
+			m_iResultProgressCnt++;
+			Disable_Fade(m_pBG, 0.3f);
+		}
+	}
+	else if (m_iResultProgressCnt == 8)
+	{
+		if (KEY(ENTER, TAP))
+			CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_MAINMENU);
 	}
 }

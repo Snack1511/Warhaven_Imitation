@@ -200,7 +200,8 @@ void CCannon::Shoot_Cannon()
 	m_pAnimator->Set_CurAnimIndex(0, 0);
 	m_pAnimator->Set_InterpolationTime(0, 0, 0.1f);
 	m_pAnimator->Set_AnimSpeed(0,0,1.f);
-
+	
+	CFunctor::Play_Sound(L"Effect_CannonShoot", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS));
 
 	_float4x4 BoneMatrix = m_pBonePitch->Get_BoneMatrix();
 	_float4 vFirePos = BoneMatrix.XMLoad().r[3];

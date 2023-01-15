@@ -1081,9 +1081,7 @@ void CPlayer::On_Reborn()
 	else
 	{
 		if (Get_Team()->IsMainPlayerTeam())
-		{
 			m_pUnitHUD->Disable_RevivalUI();
-		}
 	}
 
 	m_bReborn = true;

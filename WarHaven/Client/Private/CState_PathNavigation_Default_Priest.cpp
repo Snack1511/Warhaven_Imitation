@@ -65,6 +65,7 @@ void CState_PathNavigation_Default_Priest::Enter(CUnit* pOwner, CAnimator* pAnim
 {
     m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_N];
 
+    cout << "프리스트 : " << m_iAnimIndex << endl;
     m_iStateChangeKeyFrame = 25;
 
     
