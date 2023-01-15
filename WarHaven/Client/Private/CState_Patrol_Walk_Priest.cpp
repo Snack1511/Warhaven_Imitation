@@ -60,6 +60,8 @@ HRESULT CState_Patrol_Walk_Priest::Initialize()
 
     m_fAnimSpeed = 2.5f;
 
+    Add_KeyFrame(15, 0, true);
+    Add_KeyFrame(50, 0, true);
     return __super::Initialize();
 }
 

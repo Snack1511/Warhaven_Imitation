@@ -235,7 +235,7 @@ void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
 			for (int i = SB_Outline; i < SB_Lock; ++i)
 				Enable_Fade(m_pArrSkinBtn[0][i], m_fDuration);
 
-			CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomBody((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_BODY::eDEFAULT);
+			CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomBody((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_BODY::eBODY1);
 			CUser::Get_Instance()->Change_ModelParts(m_iSelectClass, MODEL_PART_BODY);
 			break;
 
@@ -273,7 +273,7 @@ void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
 				for (int i = SB_Outline; i < SB_Lock; ++i)
 					Enable_Fade(m_pArrSkinBtn[0][i], m_fDuration);
 
-				CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomHead((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_HEAD::eDEFAULT);
+				CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomHead((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_HEAD::eHEAD1);
 				CUser::Get_Instance()->Change_ModelParts(m_iSelectClass, MODEL_PART_HEAD);
 				break;
 

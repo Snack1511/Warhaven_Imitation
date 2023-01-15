@@ -31,6 +31,9 @@ HRESULT CState_Patrol_Walk_Engineer::Initialize()
 	m_fAnimSpeed = 1.f;
 	
 
+	Add_KeyFrame(14, 0, true);
+	Add_KeyFrame(59, 0, true);
+
     return S_OK;
 }
 

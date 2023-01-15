@@ -37,6 +37,9 @@ HRESULT CState_Patrol_Walk_Paladin::Initialize()
 
 	m_fAnimSpeed = 2.5f;
 
+	Add_KeyFrame(33, 0, true);
+	Add_KeyFrame(67, 0, true);
+
     return S_OK;
 }
 

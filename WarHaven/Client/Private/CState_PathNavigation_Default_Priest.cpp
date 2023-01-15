@@ -56,6 +56,8 @@ HRESULT CState_PathNavigation_Default_Priest::Initialize()
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_PRIEST;
     m_eSprintBeginState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_PRIEST;
 
+    Add_KeyFrame(20, 0, true);
+    Add_KeyFrame(44, 0, true);
     return S_OK;
 }
 

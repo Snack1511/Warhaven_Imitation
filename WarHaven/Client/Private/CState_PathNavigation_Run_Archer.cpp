@@ -33,6 +33,8 @@ HRESULT CState_PathNavigation_Run_Archer::Initialize()
 	m_fAnimSpeed = 1.f;
 	
 
+	Add_KeyFrame(12, 0, true);
+	Add_KeyFrame(34, 0, true);
     return S_OK;
 }
 

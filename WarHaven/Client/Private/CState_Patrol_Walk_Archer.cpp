@@ -37,6 +37,8 @@ HRESULT CState_Patrol_Walk_Archer::Initialize()
 
 	m_fAnimSpeed = 2.5f;
 
+	Add_KeyFrame(37, 0, true);
+	Add_KeyFrame(60, 0, true);
     return S_OK;
 }
 
