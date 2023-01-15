@@ -130,6 +130,10 @@ HRESULT CTable_Conditions::SetUp_Conditions()
 	Add_WhyCondition(wstring(L"Check_EmptyRoute"), Check_EmptyRoute);
 #pragma endregion 플레이어 상태 체크
 
+#pragma region 패스 체크
+	Add_WhyCondition(wstring(L"Check_GlidePath"), Check_GlidePath);
+#pragma endregion 패스 체크
+
 
 	Add_WhatCondition(wstring(L"EmptyWhatCondition"), EmptyWhatCondition);
 #pragma region 플레이어 선택
@@ -688,6 +692,18 @@ void CTable_Conditions::Check_EmptyRoute(_bool& OutCondition, CPlayer* pPlayer, 
 	}*/
 
 	//OutCondition = !pPlayer->Get_CurRoute().empty();
+}
+
+void CTable_Conditions::Check_GlidePath(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+	CHECKFALSEOUTCONDITION(OutCondition);
+	CPath* pPath = pPlayer->Get_CurPath();
+	if (nullptr == pPath) 
+	{
+		OutCondition = false;
+		return;
+	}
+	OutCondition = (0 <= _int(pPath->Get_PathName().find("_Glide")));
 }
 
 void CTable_Conditions::Select_Leader(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
@@ -1264,7 +1280,7 @@ int	Find_Path(CPlayer* pPathOwner)
 {
 	//Path 사용중이면 대기 시키기
 	
-		CPath* pCurPath = CGameSystem::Get_Instance()->Clone_RandomNearestPath(pPathOwner->Get_WorldPos());
+		CPath* pCurPath = CGameSystem::Get_Instance()->Clone_RandomNearestPath(pPathOwner->Get_WorldPos(), pPathOwner);
 		if (pCurPath)
 		{
 			while (1)

@@ -6,6 +6,7 @@
 
 #include "CTrigger_BootCamp.h"
 #include "CTrigger_Stage.h"
+#include "CTrigger_Glider.h"
 
 #include "CPlayer.h"
 
@@ -1366,6 +1367,13 @@ HRESULT CGameSystem::On_ReadyTriggers_Hwara(vector<pair<CGameObject*, _uint>>& v
     m_mapAllTriggers.emplace(Convert_ToHash(strTriggerName), pTrigger);\
     READY_GAMEOBJECT(pTrigger, GROUP_TRIGGER);
 
+#define ADD_GLIDETRIGGER(name, radius)   strTriggerName = name;\
+    pTrigger = CTrigger_Glider::Create(strTriggerName, radius);\
+    if (!pTrigger)\
+        return E_FAIL;\
+    m_mapAllTriggers.emplace(Convert_ToHash(strTriggerName), pTrigger);\
+    READY_GAMEOBJECT(pTrigger, GROUP_TRIGGER);
+
 	_float fTriggerSize = 6.f;
 
 	ADD_TRIGGER("Hwara_RedTeam_Start", 2.f, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eSTART);
@@ -1373,7 +1381,6 @@ HRESULT CGameSystem::On_ReadyTriggers_Hwara(vector<pair<CGameObject*, _uint>>& v
 
 	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_BlueTeam_Start")]);
 	m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_RedTeam_Start")]);
-
 
 	//1. 메인 거점
 	ADD_TRIGGER("Hwara_Center", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER);
@@ -1409,6 +1416,14 @@ HRESULT CGameSystem::On_ReadyTriggers_Hwara(vector<pair<CGameObject*, _uint>>& v
 	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_Final_Red")]);
 
 	m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_Final_Blue")]);
+
+
+	//1. 글라이딩 트리거
+	ADD_GLIDETRIGGER("Glide_Center_0", 1.f);
+	ADD_GLIDETRIGGER("Glide_Side_0", 1.f);
+	ADD_GLIDETRIGGER("Glide_Side_1", 1.f);
+	ADD_GLIDETRIGGER("Glide_Side_2", 1.f);
+	ADD_GLIDETRIGGER("Glide_Side_3", 1.f);
 
 	return S_OK;
 }
@@ -1587,8 +1602,10 @@ CPath* CGameSystem::Clone_RandomRespawnPath(CAIController* pOwnerController, eTE
 
 		}
 		else
-			strPathName = "Hwara_Respawn_ToCenter";
+			strPathName = "Hwara_Respawn_ToCenter_Glide_0";
 	}
+
+
 
 	CPath* pClonePath = Clone_Path(strPathName, pOwnerController);
 
@@ -1667,8 +1684,10 @@ CPath* CGameSystem::Clone_RandomReleasePath(_float4 vCurPos)
 	return nullptr;
 }
 
-CPath* CGameSystem::Clone_RandomNearestPath(_float4 vCurPos)
+CPath* CGameSystem::Clone_RandomNearestPath(_float4 vCurPos, CPlayer* pPlayer)
 {
+
+
 	_float fMinDist = 9999.f;
 	CPath* pPath = nullptr;
 	for (auto& elem : m_mapAllPathes[m_eCurStageType])
@@ -1694,6 +1713,44 @@ CPath* CGameSystem::Clone_RandomNearestPath(_float4 vCurPos)
 			pPath = elem.second;
 		}
 	}
+
+	
+	_bool bHwara = (m_eCurStageType == eSTAGE_HWARA);
+
+	if (pPath && bHwara)
+	{
+		string strPathName = pPath->Get_PathName();
+		_bool bCenterStart = (0 <= _int(strPathName.find("Center_To")));//못찾음 --> 넘겨
+		CTeamConnector* pTeamConnector = pPlayer->Get_Team();
+		_bool bConquerCenter = pTeamConnector->Has_CenterTrigger();
+		if ((bCenterStart && bConquerCenter))
+		{
+			//팀 찾고
+			_bool bRedTeam = (pTeamConnector->Get_TeamType() == eTEAM_TYPE::eRED);
+			//목적지가 맞는지
+			string strTargetName = (bRedTeam) ? "ToBlue" : "ToRed";
+			//찾고
+			_bool bGoToTarget = (0 <= _int(strPathName.find(strTargetName.c_str())));
+			auto ReUpdatePath = [](string strTargetName, map<_hashcode, CPath*>& PathMap, CPath*& pPath) {
+				auto Elem = PathMap.find(Convert_ToHash(strTargetName));
+				if (Elem != PathMap.end())
+				{
+					CPath* NewPath = Elem->second;
+					if (NewPath)
+						pPath = NewPath;
+				}
+			};
+			if (bCenterStart &&!bGoToTarget)
+			{
+				string ResultName = "Hwara_Center_";
+				ResultName += strTargetName;
+				ResultName += "_0";
+				ReUpdatePath(ResultName, m_mapAllPathes[eSTAGE_HWARA], pPath);
+			}
+
+		}
+	}
+
 
 	if (pPath)
 		return pPath->Clone();
