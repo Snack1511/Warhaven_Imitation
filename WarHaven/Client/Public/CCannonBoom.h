@@ -34,7 +34,6 @@ public:
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT	Initialize();
 	virtual HRESULT	Start();
-
 protected:
 	CPlayer* m_pOwnerPlayer = nullptr;
 	CCollider_Sphere* m_pColliderCom = nullptr;
