@@ -90,7 +90,6 @@ HRESULT CSnipeArrow::Initialize_Prototype()
 	m_fMaxSpeed = 50.f;
 	m_fMaxDistance = 100.f;
 
-
     return CProjectile::Initialize_Prototype();
 }
 
@@ -110,7 +109,7 @@ void CSnipeArrow::OnEnable()
 {
 	__super::OnEnable();
 
-	
+	m_bEffect = true;
 }
 
 void CSnipeArrow::OnDisable()
@@ -141,7 +140,6 @@ void CSnipeArrow::Turn_Effect(_bool bOnOff)
 				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
 			}
 			m_Test.clear();
-			m_bEffect = true;
 		}
 	}
 }

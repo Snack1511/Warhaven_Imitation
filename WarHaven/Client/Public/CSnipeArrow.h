@@ -22,7 +22,7 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
-private:
+public:
 	void Turn_Effect(_bool bOnOff);
 
 private:
