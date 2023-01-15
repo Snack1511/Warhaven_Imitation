@@ -235,6 +235,8 @@ void CArcher_Swap::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const
 
 void CArcher_Swap::Choice_Arrow(CUnit* pOwner)
 {
+	Play_Sound(L"Effect_SwapArrow");
+
 	if (pOwner->Get_SkillTrigger().bSkillQTrigger)
 	{
 		static_cast<CUnit_Archer*>(pOwner)->Create_SnipeArrow(); // 스나이핑 화살이 나올 수 있도록 설정

@@ -70,6 +70,8 @@ void CWarrior_Oxen_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
  
     /* Owner¿« Animator Set Idle∑Œ */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+    Play_Sound(L"Effect_Oxen_Begin");
 }
 
 STATE_TYPE CWarrior_Oxen_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)

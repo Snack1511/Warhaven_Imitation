@@ -1731,16 +1731,16 @@ void CGameSystem::Enable_HwaraFinalTrigger(eTEAM_TYPE eTeamType)
 		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Red"));
 		ENABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Blue"));
 
-		if (!bConquestEnemy)
-			CUser::Get_Instance()->Enable_ConquestPopup(2);
+		/*if (!bConquestEnemy)
+			CUser::Get_Instance()->Enable_ConquestPopup(2);*/
 	}
 	else
 	{
 		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Blue"));
 		ENABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Red"));
 
-		if (!bConquestEnemy)
-			CUser::Get_Instance()->Enable_ConquestPopup(2);
+		/*if (!bConquestEnemy)
+			CUser::Get_Instance()->Enable_ConquestPopup(2);*/
 	}
 }
 

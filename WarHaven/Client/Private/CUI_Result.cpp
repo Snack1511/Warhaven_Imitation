@@ -52,15 +52,16 @@ void CUI_Result::SetActive_Result(_uint iResult, _bool value)
 {
 	m_iResult = iResult;
 
-	Play_Sound(L"Env_Cheers", CHANNEL_ENVIRONMENT);
 
 	switch (m_iResult)
 	{
 	case 1:
+		Play_Sound(L"Env_Cheers", CHANNEL_ENVIRONMENT);
 		Play_Sound(L"BGM_Win", CHANNEL_BGM);
 		break;
 
 	case 2:
+		Play_Sound(L"Env_Cheers", CHANNEL_ENVIRONMENT);
 		Play_Sound(L"BGM_Lose", CHANNEL_BGM);
 		break;
 	}
@@ -640,6 +641,9 @@ void CUI_Result::Progress_Result()
 	else if (m_iResultProgressCnt == 7)
 	{
 		if (KEY(SPACE, TAP))
+		{
+			m_iResultProgressCnt++;
 			Disable_Fade(m_pBG, 0.3f);
+		}
 	}
 }
