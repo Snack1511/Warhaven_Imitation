@@ -1262,6 +1262,10 @@ void CRectEffects::Select_UVTexture(_uint iIndex)
 
 _bool CRectEffects::FrustumCheck(_uint iIndex)
 {
+	if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_MAINMENU)
+	{
+		return true;
+	}
 	_float4 vPos;
 	vPos = m_pDatas[iIndex].RectInstance.vTranslation;
 	

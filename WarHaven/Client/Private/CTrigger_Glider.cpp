@@ -24,6 +24,8 @@ CTrigger_Glider* CTrigger_Glider::Create(string strPositionKey, _float fRadius)
 		Call_MsgBox(L"Failed to Initialize_Prototype : CTrigger_Glider");
 		SAFE_DELETE(pInstance);
 	}
+
+	return pInstance;
 }
 
 void CTrigger_Glider::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)

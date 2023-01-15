@@ -214,14 +214,11 @@ HRESULT CMainMenuUnit::Start()
 	vMyPos.x += 0.2f;
 	vMyPos.y -= 1.4f;
 
-	m_EyeFlare.clear();
-
 	switch (m_eClassType)
 	{
 	case Client::WARRIOR:
-		if (m_EyeFlare.empty())
-			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Warrior_Eye", this, ZERO_VECTOR);
 		break;
+
 	case Client::SPEAR:
 		break;
 	case Client::ARCHER:
@@ -284,6 +281,8 @@ HRESULT CMainMenuUnit::Start()
 	m_pTransform->Set_World(WORLD_POS, vMyPos);
 	m_pTransform->Set_Look(GAMEINSTANCE->Get_CurCamLook() * -1.f);
 
+	Set_EyeEffect();
+
 	return S_OK;
 }
 
@@ -327,7 +326,7 @@ void CMainMenuUnit::OnEnable()
 		break;
 	}
 
-
+	Turn_EyeEffect(true);
 }
 
 void CMainMenuUnit::OnDisable()
@@ -340,14 +339,7 @@ void CMainMenuUnit::OnDisable()
 	if (m_pAnimWeapon)
 		DISABLE_GAMEOBJECT(m_pAnimWeapon);
 
-	if (!m_EyeFlare.empty())
-	{
-		for (auto& elem : m_EyeFlare)
-		{
-			static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
-		}
-		m_EyeFlare.clear();
-	}
+	Turn_EyeEffect(false);
 }
 
 void CMainMenuUnit::My_Tick()
@@ -396,4 +388,104 @@ void CMainMenuUnit::ReFresh_Animation()
 	m_pAnimator->Set_CurAnimIndex(m_eBaseType, m_iAnimIndex, ANIM_DIVIDE::eDEFAULT);
 	m_pAnimator->Set_InterpolationTime(m_eBaseType, m_iAnimIndex, 0.f);
 	m_pAnimator->Set_AnimSpeed(m_eBaseType, m_iAnimIndex, m_fAnimSpeed);
+}
+
+void CMainMenuUnit::Set_EyeEffect()
+{
+	string strBoneName = "0B_Face_L_Eye";
+	_float4 vColor = RGB(255, 0, 0);
+
+	m_EyeFlare.clear();
+
+	switch (m_eClassType)
+	{
+	case Client::WARRIOR:
+
+		vColor = RGBA(255, 30, 30, 0.7f);
+		strBoneName = "0B_Face_L_Eye";
+
+		if (m_EyeFlare.empty())
+			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Warrior_Eye", this, ZERO_VECTOR);
+
+		break;
+
+	case Client::SPEAR:
+		break;
+	case Client::ARCHER:
+
+		vColor = RGBA(255, 30, 255, 0.7f);
+		strBoneName = "0B_Face_R_Eye";
+
+		break;
+	case Client::PALADIN:
+		
+		vColor = RGBA(255, 30, 30, 0.f);
+		break;
+	case Client::PRIEST:
+	
+		vColor = RGBA(255, 255, 255, 0.7f);
+		break;
+	case Client::ENGINEER:
+		
+		vColor = RGBA(255, 0, 0, 0.7f);
+		break;
+	case Client::FIONA:
+		
+		vColor = RGBA(255, 30, 30, 0.7f);
+		break;
+	case Client::QANDA:
+		
+		vColor = RGBA(255, 30, 30, 0.7f);
+		break;
+	case Client::HOEDT:
+		break;
+	case Client::LANCER:
+		break;
+	case Client::CLASS_END:
+		break;
+	default:
+		break;
+	}
+
+	wstring strMask = L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds";
+	_float fAlpha = 0.7f;
+	_float fUpperSize = 2.f;
+
+	SetUp_EyeTrail(
+		_float4(2.f, fUpperSize, 0.f, 1.f),	//Weapon R
+		_float4(2.f, -fUpperSize, 0.f, 1.f),					//Weapon R
+		_float4(fUpperSize + 2.f, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize + 2.f, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		vColor, //vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		20,
+		strBoneName
+	);
+
+	Turn_EyeEffect(true);
+}
+
+void CMainMenuUnit::Turn_EyeEffect(_bool bValue)
+{
+	if (bValue)
+	{
+		Turn_EyeTrail(true);
+	}
+	else
+	{
+		if (!m_EyeFlare.empty())
+		{
+			for (auto& elem : m_EyeFlare)
+			{
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+			}
+			m_EyeFlare.clear();
+		}
+
+		Turn_EyeTrail(false);
+	}
+
 }

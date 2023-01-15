@@ -1205,6 +1205,32 @@ void CUnit::TurnOn_TrailEffect(_bool bOn)
 
 
 
+void CUnit::SetUp_EyeTrail(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pEyeTrail = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pEyeTrail2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pEyeTrail)
+		return;
+
+	CREATE_GAMEOBJECT(m_pEyeTrail, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pEyeTrail, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pEyeTrail2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pEyeTrail2, CMesh))->Set_NoCurve();
+
+	m_pEyeTrail->Set_EffectFlag(SH_EFFECT_NONE);
+	m_pEyeTrail2->Set_EffectFlag(SH_EFFECT_NONE);
+
+	m_pEyeTrail->TurnOn_TrailEffect(false);
+	m_pEyeTrail2->TurnOn_TrailEffect(false);
+}
+
 void CUnit::SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
 {
 	m_pTrailEffect = CTrailEffect::Create(0, iTrailCount, vWeaponLow, vWeaponHigh,
@@ -1466,6 +1492,15 @@ void CUnit::Effect_Fall(_float fFallPower)
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Fall_Particle", m_pTransform->Get_World(WORLD_POS));
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", this, m_pTransform->Get_World(WORLD_POS));
 
+}
+
+void CUnit::Turn_EyeTrail(_bool bOnOff)
+{
+	if (!m_pEyeTrail)
+		return;
+
+	m_pEyeTrail->TurnOn_TrailEffect(bOnOff);
+	m_pEyeTrail2->TurnOn_TrailEffect(bOnOff);
 }
 
 void CUnit::Effect_HeroToDefaultUnit(CUnit* pOwner)

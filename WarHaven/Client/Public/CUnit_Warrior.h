@@ -27,11 +27,7 @@ public:
 protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
 
-	void SetUp_EyeTrail(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
-		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
-
 public:
-	void Turn_EyeTrail(_bool bOn);
 	void Turn_EyeFlare(_bool bOnOff);
 
 

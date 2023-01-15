@@ -429,6 +429,8 @@ protected:
 
 
 protected:
+	void SetUp_EyeTrail(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
 	void SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
 		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
 	void SetUp_DistortionTrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
@@ -444,6 +446,8 @@ protected:
 	virtual void	Effect_Parring(_float4 vHitPos);
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos);
 	virtual void	Effect_Fall(_float fFallPower);
+	virtual void	Turn_EyeTrail(_bool bOnOff);
+
 public:
 	void Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _float fFadeInTime, _float fDuration,
 		_float fFadeOutTime, _float4 Diffuse, LIGHTDESC::EASING_TYPE eInEasingType = LIGHTDESC::EASING_TYPE::EAS_Linear,
