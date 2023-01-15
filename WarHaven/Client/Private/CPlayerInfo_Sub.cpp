@@ -95,9 +95,9 @@ HRESULT CPlayerInfo_Sub::Initialize()
 
 HRESULT CPlayerInfo_Sub::SetUp_AIPersonality()
 {
-	CAIPersonality* pPersonality = CAIPersonality::Create(CGameSystem::Get_Instance()->Get_BXTable());
-	pPersonality->Load(L"Glide");
-	//CAIPersonality* pPersonality = CPersonality_Sub::Create(CGameSystem::Get_Instance()->Get_BXTable());
+	//CAIPersonality* pPersonality = CAIPersonality::Create(CGameSystem::Get_Instance()->Get_BXTable());
+	//pPersonality->Load(L"Glide");
+	CAIPersonality* pPersonality = CPersonality_Sub::Create(CGameSystem::Get_Instance()->Get_BXTable());
 	m_pPersonality = pPersonality;
 
 	m_iUnitType = ((_uint)CUnit::UNIT_TYPE::eAI_Default);
