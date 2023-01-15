@@ -61,6 +61,8 @@
 #include "CGlider.h"
 #include "CUI_UnitHP.h"	
 
+#include "CRectEffects.h"
+
 #define PHYSX_ON
 
 
@@ -760,6 +762,8 @@ HRESULT CUnit::Start()
 
 	if (m_pGlider)
 		m_pGlider->SetUp_GliderTrail();
+
+	m_EyeFlare.clear();
 
 	return S_OK;
 }

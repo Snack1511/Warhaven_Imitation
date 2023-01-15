@@ -296,21 +296,21 @@ void CMainMenuUnit::OnEnable()
 	if (m_pAnimWeapon)
 		ENABLE_GAMEOBJECT(m_pAnimWeapon);
 
+	wstring wstrKey;
 	switch (m_eClassType)
 	{
 	case Client::WARRIOR:
-		if (m_EyeFlare.empty())
-			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Warrior_Eye", this, ZERO_VECTOR);
+		wstrKey = L"Warrior_Eye";
 		break;
 	case Client::SPEAR:
 		break;
 	case Client::ARCHER:
-		if (m_EyeFlare.empty())
-			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Archer_Eye", this, ZERO_VECTOR);
+		wstrKey = L"Archer_Eye";
 		break;
 	case Client::PALADIN:
 		break;
 	case Client::PRIEST:
+		wstrKey = L"Priest_Eye";
 		break;
 	case Client::ENGINEER:
 		break;
@@ -327,6 +327,9 @@ void CMainMenuUnit::OnEnable()
 	default:
 		break;
 	}
+
+	if (m_EyeFlare.empty())
+		m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(wstrKey, this, ZERO_VECTOR);
 
 	Turn_EyeEffect(true);
 }
@@ -394,7 +397,7 @@ void CMainMenuUnit::ReFresh_Animation()
 
 void CMainMenuUnit::Set_EyeEffect()
 {
-
+	wstring wstrKey = L"Warrior_Eye";
 	string strBoneName = "0B_Face_L_Eye";
 	_float4 vColor = RGB(255, 0, 0);
 
@@ -403,32 +406,24 @@ void CMainMenuUnit::Set_EyeEffect()
 	switch (m_eClassType)
 	{
 	case Client::WARRIOR:
-
+		wstrKey = L"Warrior_Eye";
 		vColor = RGBA(255, 30, 30, 0.7f);
 		strBoneName = "0B_Face_L_Eye";
-
-		if (m_EyeFlare.empty())
-			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Warrior_Eye", this, ZERO_VECTOR);
-
 		break;
 
 	case Client::SPEAR:
 		break;
 	case Client::ARCHER:
-
-		if (m_EyeFlare.empty())
-			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Archer_Eye", this, ZERO_VECTOR);
-
+		wstrKey = L"Archer_Eye";
 		vColor = RGBA(255, 140, 0, 0.7f);
 		strBoneName = "0B_Face_R_Eye";
-
 		break;
 	case Client::PALADIN:
 		
 		vColor = RGBA(255, 30, 30, 0.f);
 		break;
 	case Client::PRIEST:
-	
+		wstrKey = L"Priest_Eye";
 		vColor = RGBA(255, 255, 255, 0.7f);
 		break;
 	case Client::ENGINEER:
@@ -470,6 +465,9 @@ void CMainMenuUnit::Set_EyeEffect()
 		20,
 		strBoneName
 	);
+
+	if (m_EyeFlare.empty())
+		m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(wstrKey, this, ZERO_VECTOR);
 
 	Turn_EyeEffect(true);
 }

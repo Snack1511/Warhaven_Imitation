@@ -384,22 +384,28 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	}
 }
 
+void CUnit_Warrior::Turn_EyeEffect(_bool bOnOff)
+{
+	Turn_EyeFlare(bOnOff);
+	Turn_EyeTrail(bOnOff);
+}
+
 void CUnit_Warrior::Turn_EyeFlare(_bool bOnOff)
 {
 	if (bOnOff)
 	{
-		if (m_EyeFlare.empty())
-			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Warrior_Eye", this, ZERO_VECTOR);
+		if (m_WarriorEye.empty())
+			m_WarriorEye = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Warrior_Eye", this, ZERO_VECTOR);
 	}
 	else
 	{
-		if (!m_EyeFlare.empty())
+		if (!m_WarriorEye.empty())
 		{
-			for (auto& elem : m_EyeFlare)
+			for (auto& elem : m_WarriorEye)
 			{
 				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
 			}
-			m_EyeFlare.clear();
+			m_WarriorEye.clear();
 		}
 
 	}
@@ -523,26 +529,24 @@ HRESULT CUnit_Warrior::Start()
 		"0B_R_WP1"
 	);
 
-	wstring strMask = L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds";
-	_float fAlpha = 0.7f;
-	_float fUpperSize = 4.f;
+
+	_float fUpperSize = 2.f;
 
 	SetUp_EyeTrail(
-		_float4(0.f, 0.f, fUpperSize, 1.f),	//Weapon R
-		_float4(-0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
-		_float4(fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
-		_float4(-fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(2.f, fUpperSize, 0.f, 1.f),	//Weapon R
+		_float4(2.f, -fUpperSize, 0.f, 1.f),					//Weapon R
+		_float4(fUpperSize + 2.f, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize + 2.f, 0.f, 0.f, 1.f),					//Right	L
 		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
-		_float4(1.f, 0.3f, 0.3f, fAlpha), //vColor
+		RGBA(255, 30, 30, 0.7f),
 		0.f,
-		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
-		12,
+		20,
 		"0B_Face_L_Eye"
 	);
 
-	Turn_EyeFlare(false);
-
+	m_WarriorEye.clear();
 
 	return S_OK;
 }
@@ -551,8 +555,7 @@ void CUnit_Warrior::OnEnable()
 {
 	__super::OnEnable();
 
-	Turn_EyeFlare(true);
-	Turn_EyeTrail(true);
+	Turn_EyeEffect(true);
 	
 }
 
@@ -560,8 +563,7 @@ void CUnit_Warrior::OnDisable()
 {
 	__super::OnDisable();
 
-	Turn_EyeTrail(false);
-	Turn_EyeFlare(false);
+	Turn_EyeEffect(false);
 }
 
 void CUnit_Warrior::My_LateTick()

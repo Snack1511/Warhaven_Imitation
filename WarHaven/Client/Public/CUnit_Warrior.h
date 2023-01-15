@@ -26,10 +26,8 @@ public:
 
 protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
-
-public:
 	void Turn_EyeFlare(_bool bOnOff);
-
+	void Turn_EyeEffect(_bool bOnOff);
 
 public:
 	// CGameObject을(를) 통해 상속됨
@@ -39,6 +37,9 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 	virtual void My_LateTick();
+
+private:
+	list<CGameObject*> m_WarriorEye;
 
 };
 

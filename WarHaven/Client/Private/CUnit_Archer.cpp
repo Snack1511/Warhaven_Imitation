@@ -25,6 +25,7 @@
 #include "CColorController.h"
 
 #include "CUI_Trail.h"
+#include "CRectEffects.h"
 
 CUnit_Archer::CUnit_Archer()
 {
@@ -324,6 +325,33 @@ void CUnit_Archer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	}
 }
 
+void CUnit_Archer::Turn_EyeFlare(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (m_ArcherEye.empty())
+			m_ArcherEye = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Archer_Eye", this, ZERO_VECTOR);
+	}
+	else
+	{
+		if (!m_ArcherEye.empty())
+		{
+			for (auto& elem : m_ArcherEye)
+			{
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+			}
+			m_ArcherEye.clear();
+		}
+
+	}
+}
+
+void CUnit_Archer::Turn_EyeEffect(_bool bOnOff)
+{
+	Turn_EyeFlare(bOnOff);
+	Turn_EyeTrail(bOnOff);
+}
+
 void CUnit_Archer::Enable_Arrow(_bool bEnable)
 {
 	if (bEnable)
@@ -609,6 +637,25 @@ HRESULT CUnit_Archer::Start()
 	);
 
 
+	_float fUpperSize = 2.f;
+
+	SetUp_EyeTrail(
+		_float4(2.f, fUpperSize, 0.f, 1.f),	//Weapon R
+		_float4(2.f, -fUpperSize, 0.f, 1.f),					//Weapon R
+		_float4(fUpperSize + 2.f, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize + 2.f, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		RGBA(255, 140, 0, 0.7f),
+		0.f,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		20,
+		"0B_Face_R_Eye"
+	);
+
+	m_ArcherEye.clear();
+
+
 	return S_OK;
 }
 
@@ -617,6 +664,7 @@ void CUnit_Archer::OnEnable()
 	__super::OnEnable();
 	Create_DefaultArrow();
 
+	Turn_EyeEffect(true);
 }
 
 void CUnit_Archer::OnDisable()
@@ -627,6 +675,8 @@ void CUnit_Archer::OnDisable()
 
 	if (m_pUI_Trail)
 		DISABLE_GAMEOBJECT(m_pUI_Trail);
+
+	Turn_EyeEffect(false);
 }
 
 void CUnit_Archer::My_Tick()
