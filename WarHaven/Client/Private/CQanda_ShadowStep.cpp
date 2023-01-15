@@ -17,6 +17,8 @@
 #include "CEffects_Factory.h"
 #include "CRectEffects.h"
 #include "CAnimWeapon.h"
+#include "Transform.h"
+#include "Functor.h"
 
 CQanda_ShadowStep::CQanda_ShadowStep()
 {
@@ -114,15 +116,16 @@ void CQanda_ShadowStep::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 
 	m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
-    m_fWalkSpeed = pOwner->Get_Status().fWalkSpeed; //기존 걷는 속도
-    pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fSprintSpeed;
-    //D3D11_RENDER_TARGET_BLEND_DESC
+	m_fWalkSpeed = pOwner->Get_Status().fWalkSpeed; //기존 걷는 속도
+	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fSprintSpeed;
+	//D3D11_RENDER_TARGET_BLEND_DESC
 
-    Play_Voice(pOwner, L"Voice_Shadow", 1.f);
-    __super::Enter(pOwner, pAnimator, ePrevType, pData);
+	Play_Voice(pOwner, L"Voice_Shadow", 1.f);
+	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 
 	Play_Sound(L"Effect_ShadowStep_Begin_Qanda", CHANNEL_EFFECTS);
 }
+
 
 STATE_TYPE CQanda_ShadowStep::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
@@ -140,8 +143,12 @@ STATE_TYPE CQanda_ShadowStep::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower);
 	}
 
+	if (m_fSndTime < 0.f)
+		m_iSndIdx = CFunctor::Play_LoopSound(L"Effect_ShadowStep_Loop", CHANNEL_EFFECTS, pOwner->Get_Transform()->Get_World(WORLD_POS));
 
-
+	m_fSndTime += fDT(0);
+	if (m_fSndTime >= 3.f)
+		m_fSndTime = 0.f;
 
 	m_fCurGuageMinusTime += fDT(0);
 

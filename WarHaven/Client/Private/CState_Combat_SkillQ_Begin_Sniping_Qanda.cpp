@@ -74,6 +74,8 @@ void CState_Combat_SkillQ_Begin_Sniping_Qanda::Enter(CUnit* pOwner, CAnimator* p
 	
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Voice(pOwner, L"Voice_Sniping", 1.f);
 }
 
 STATE_TYPE CState_Combat_SkillQ_Begin_Sniping_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)

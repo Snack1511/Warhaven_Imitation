@@ -103,6 +103,12 @@ STATE_TYPE CState_Combat_Attack_Default_Aiming_Qanda::Tick(CUnit* pOwner, CAnima
         return eShootState;
     }
 	
+    if (m_fSndTime <= 0.f)
+        m_iSndIdx = CFunctor::Play_LoopSound(L"Effect_Charge01_Qanda", CHANNEL_EFFECTS);
+
+    m_fSndTime += fDT(0);
+    if (m_fSndTime >= 3.f)
+        m_fSndTime = 0.f;
 		
 	return __super::Tick(pOwner, pAnimator);
 }
@@ -111,6 +117,8 @@ void CState_Combat_Attack_Default_Aiming_Qanda::Exit(CUnit* pOwner, CAnimator* p
 {	
 	__super::Exit_Aiming(pOwner, pAnimator);
 	__super::Exit(pOwner, pAnimator);
+
+    GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)CHANNEL_EFFECTS, m_iSndIdx);
 
     if(!m_bShoot)
         static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->ChangeColor_End();

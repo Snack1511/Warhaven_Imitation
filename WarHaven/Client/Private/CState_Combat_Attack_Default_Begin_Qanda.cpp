@@ -61,6 +61,8 @@ void CState_Combat_Attack_Default_Begin_Qanda::Enter(CUnit* pOwner, CAnimator* p
 {
 	__super::Enter_Attack_Begin(pOwner);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Sound(L"Effect_Charge01_Qanda");
 }
 
 STATE_TYPE CState_Combat_Attack_Default_Begin_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
