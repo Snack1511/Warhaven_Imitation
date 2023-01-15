@@ -132,12 +132,12 @@ void CWarHammer_GroggyAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimat
 	{
 	case 0:
 		Physics_Setting(m_fMaxSpeed, pOwner);
-		Play_Sound(L"Effect_GroryBegin");
 		break;
 
 	case 1:
 		pOwner->Enable_GroggyCollider(true);
 		Play_Voice(pOwner, L"Voice_GroggyAttack", 1.f);
+		Play_Sound(L"Effect_GroryBegin");
 		break;
 
 	case 2:

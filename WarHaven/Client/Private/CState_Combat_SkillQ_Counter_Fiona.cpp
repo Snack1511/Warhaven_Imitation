@@ -61,6 +61,7 @@ void CState_Combat_SkillQ_Counter_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimat
 	pOwner->Enable_GuardCollider(true);
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+	Play_Sound(L"Effect_CounterEnter_Fiona");
 }
 
 STATE_TYPE CState_Combat_SkillQ_Counter_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
