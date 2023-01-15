@@ -51,6 +51,9 @@ private:
 
 	CUnit_Lancer_Head* m_pMyLancerHead = nullptr;
 	CAnimWeapon* m_pAnimWeapon = nullptr;
+
+private:
+	list<CGameObject*> m_TransformParticle;
 };
 
 END

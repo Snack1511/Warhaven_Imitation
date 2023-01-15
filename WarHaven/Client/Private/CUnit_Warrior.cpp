@@ -386,30 +386,30 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 
 void CUnit_Warrior::Turn_EyeEffect(_bool bOnOff)
 {
-	Turn_EyeFlare(bOnOff);
+	Turn_EyeFlare(bOnOff, L"Warrior_Eye");
 	Turn_EyeTrail(bOnOff);
 }
 
-void CUnit_Warrior::Turn_EyeFlare(_bool bOnOff)
-{
-	if (bOnOff)
-	{
-		if (m_WarriorEye.empty())
-			m_WarriorEye = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Warrior_Eye", this, ZERO_VECTOR);
-	}
-	else
-	{
-		if (!m_WarriorEye.empty())
-		{
-			for (auto& elem : m_WarriorEye)
-			{
-				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
-			}
-			m_WarriorEye.clear();
-		}
-
-	}
-}
+//void CUnit_Warrior::Turn_EyeFlare(_bool bOnOff)
+//{
+//	/*if (bOnOff)
+//	{
+//		if (m_EyeFlare.empty())
+//			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Warrior_Eye", this, ZERO_VECTOR);
+//	}
+//	else
+//	{
+//		if (!m_EyeFlare.empty())
+//		{
+//			for (auto& elem : m_EyeFlare)
+//			{
+//				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+//			}
+//			m_EyeFlare.clear();
+//		}
+//
+//	}*/
+//}
 
 HRESULT CUnit_Warrior::Initialize_Prototype()
 {
@@ -545,8 +545,6 @@ HRESULT CUnit_Warrior::Start()
 		20,
 		"0B_Face_L_Eye"
 	);
-
-	m_WarriorEye.clear();
 
 	return S_OK;
 }

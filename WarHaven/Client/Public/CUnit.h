@@ -447,6 +447,7 @@ protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos);
 	virtual void	Effect_Fall(_float fFallPower);
 	virtual void	Turn_EyeTrail(_bool bOnOff);
+	virtual void	Turn_EyeFlare(_bool bOnOff, wstring wstrKey = L"");
 
 public:
 	void Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _float fFadeInTime, _float fDuration,

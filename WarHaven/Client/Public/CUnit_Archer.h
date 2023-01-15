@@ -31,8 +31,6 @@ public:
 
 protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
-	void Turn_EyeFlare(_bool bOnOff);
-	void Turn_EyeEffect(_bool bOnOff);
 
 public:
 	void			Enable_Arrow(_bool bEnable);
@@ -71,9 +69,6 @@ private:
 
 	_float4x4	m_CoreMat;
 	CUI_Trail* m_pUI_Trail = nullptr;
-
-private:
-	list<CGameObject*> m_ArcherEye;
 
 };
 

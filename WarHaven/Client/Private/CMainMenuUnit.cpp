@@ -283,6 +283,8 @@ HRESULT CMainMenuUnit::Start()
 
 	Set_EyeEffect();
 
+	m_TransformParticle.clear();
+
 	return S_OK;
 }
 
@@ -296,7 +298,8 @@ void CMainMenuUnit::OnEnable()
 	if (m_pAnimWeapon)
 		ENABLE_GAMEOBJECT(m_pAnimWeapon);
 
-	wstring wstrKey;
+	wstring wstrKey = L"";
+
 	switch (m_eClassType)
 	{
 	case Client::WARRIOR:
@@ -315,8 +318,12 @@ void CMainMenuUnit::OnEnable()
 	case Client::ENGINEER:
 		break;
 	case Client::FIONA:
+		if (m_TransformParticle.empty())
+			m_TransformParticle = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this, ZERO_VECTOR);
 		break;
 	case Client::QANDA:
+		if (m_TransformParticle.empty())
+			m_TransformParticle = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this, ZERO_VECTOR);
 		break;
 	case Client::HOEDT:
 		break;
@@ -328,8 +335,12 @@ void CMainMenuUnit::OnEnable()
 		break;
 	}
 
-	if (m_EyeFlare.empty())
-		m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(wstrKey, this, ZERO_VECTOR);
+
+	if (wstrKey != L"")
+	{
+		if (m_EyeFlare.empty())
+			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(wstrKey, this, ZERO_VECTOR);
+	}
 
 	Turn_EyeEffect(true);
 }
@@ -487,6 +498,15 @@ void CMainMenuUnit::Turn_EyeEffect(_bool bValue)
 				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
 			}
 			m_EyeFlare.clear();
+		}
+
+		if (!m_TransformParticle.empty())
+		{
+			for (auto& elem : m_TransformParticle)
+			{
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+			}
+			m_TransformParticle.clear();
 		}
 
 		Turn_EyeTrail(false);

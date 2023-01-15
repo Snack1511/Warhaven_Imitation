@@ -1507,6 +1507,27 @@ void CUnit::Turn_EyeTrail(_bool bOnOff)
 	m_pEyeTrail2->TurnOn_TrailEffect(bOnOff);
 }
 
+void CUnit::Turn_EyeFlare(_bool bOnOff, wstring wstrKey)
+{
+	if (bOnOff)
+	{
+		if (m_EyeFlare.empty())
+			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(wstrKey, this, ZERO_VECTOR);
+	}
+	else
+	{
+		if (!m_EyeFlare.empty())
+		{
+			for (auto& elem : m_EyeFlare)
+			{
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+			}
+			m_EyeFlare.clear();
+		}
+
+	}
+}
+
 void CUnit::Effect_HeroToDefaultUnit(CUnit* pOwner)
 {
 
