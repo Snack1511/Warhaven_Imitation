@@ -89,6 +89,7 @@ void CState_Combat_SkillQ_AirSpike_Begin::Enter(CUnit* pOwner, CAnimator* pAnima
 	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+	Play_Sound(L"Effect_AirStrikeUp_Warhammer");
 }
 
 STATE_TYPE CState_Combat_SkillQ_AirSpike_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)

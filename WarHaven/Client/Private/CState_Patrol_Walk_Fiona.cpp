@@ -38,6 +38,10 @@ HRESULT CState_Patrol_Walk_Fiona::Initialize()
 	m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 35;
 	m_iDirectionAnimIndex[STATE_DIRECTION_W] = 36;
 
+
+	Add_KeyFrame(0, 0, true);
+	Add_KeyFrame(40, 0, true);
+
     return S_OK;
 }
 

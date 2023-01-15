@@ -52,6 +52,8 @@ HRESULT CState_PathNavigation_Walk_Paladin::Initialize()
 	m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
 	m_iDirectionAnimIndex[STATE_DIRECTION_W] = 37;
 
+	Add_KeyFrame(33, 0, true);
+	Add_KeyFrame(67, 0, true);
     return S_OK;
 }
 

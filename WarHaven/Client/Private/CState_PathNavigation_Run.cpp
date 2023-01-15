@@ -92,6 +92,11 @@ void CState_PathNavigation_Run::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnim
 	case 0:
 		Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS, m_fAIDeafultVolume);
 		break;
+
+	case 1:
+
+		Play_Sound(L"Env_FootStepHorse", CHANNEL_ENVIRONMENT);
+		break;
 	}
 }
 

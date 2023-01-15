@@ -43,6 +43,8 @@ HRESULT CState_PathNavigation_Sprint_Paladin_Loop::Initialize()
 
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_PALADIN_R;
 
+    Add_KeyFrame(13, 0, true);
+    Add_KeyFrame(37, 0, true);
     return S_OK;
 }
 

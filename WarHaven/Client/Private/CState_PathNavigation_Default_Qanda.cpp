@@ -60,6 +60,8 @@ HRESULT CState_PathNavigation_Default_Qanda::Initialize()
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_QANDA;
     m_eSprintBeginState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_QANDA;
 
+    Add_KeyFrame(32, 0, true);
+    Add_KeyFrame(60, 0, true);
     return S_OK;
 }
 

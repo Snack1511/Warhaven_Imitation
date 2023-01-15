@@ -106,6 +106,8 @@ void CState_Combat_SkillR_SpinAttack_Fiona::On_KeyFrameEvent(CUnit* pOwner, CAni
 
 		m_bAttackTrigger = true;
 		pOwner->Enable_GroggyCollider(true);
+		Play_Sound(L"Effect_Counter_Fiona");
+		Play_Voice(pOwner, L"Voice_ShieldAttack", 1.f);
 		break;
 
 	case 1:

@@ -40,7 +40,9 @@ private:
 	_float m_fWalkSpeed = 0.f;
 
 	list<CGameObject*>	m_EffectsList;
-	
+
+	_float m_fSndTime = 0.f;
+	_float m_iSndIdx = 0;
 };
 
 END

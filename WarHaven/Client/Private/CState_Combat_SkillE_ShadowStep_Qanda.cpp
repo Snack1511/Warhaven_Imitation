@@ -18,6 +18,7 @@
 #include "CEffects_Factory.h"
 #include "CRectEffects.h"
 #include "CAnimWeapon.h"
+#include "Functor.h"
 
 CState_Combat_SkillE_ShadowStep_Qanda::CState_Combat_SkillE_ShadowStep_Qanda()
 {
@@ -98,6 +99,9 @@ void CState_Combat_SkillE_ShadowStep_Qanda::Enter(CUnit* pOwner, CAnimator* pAni
     Physics_Setting_AI(m_fMaxSpeed, pOwner);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+    Play_Voice(pOwner, L"Voice_Shadow", 1.f);
+    Play_Sound(L"Effect_ShadowStep_Begin_Qanda", CHANNEL_EFFECTS);
 }
 
 STATE_TYPE CState_Combat_SkillE_ShadowStep_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -116,7 +120,12 @@ STATE_TYPE CState_Combat_SkillE_ShadowStep_Qanda::Tick(CUnit* pOwner, CAnimator*
         
         vLook = pOwner->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_TargetUnit()->Get_Transform()->Get_World(WORLD_POS);
     }
+    if (m_fSndTime < 0.f)
+        m_iSndIdx = CFunctor::Play_LoopSound(L"Effect_ShadowStep_Loop", CHANNEL_EFFECTS, pOwner->Get_Transform()->Get_World(WORLD_POS));
 
+    m_fSndTime += fDT(0);
+    if (m_fSndTime >= 3.f)
+        m_fSndTime = 0.f;
     vLook.Normalize();
 
     CTransform* pMyTransform = pOwner->Get_Transform();

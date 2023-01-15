@@ -29,7 +29,8 @@ public:
 private:
 	CGameObject* m_pTargetObject = nullptr;
 
-
+	_float m_fSndTime = 0.f;
+	_uint m_iSndIdx = 0;
 };
 
 END

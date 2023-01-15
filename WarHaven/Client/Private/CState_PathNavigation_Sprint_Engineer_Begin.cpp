@@ -43,6 +43,12 @@ HRESULT CState_PathNavigation_Sprint_Engineer_Begin::Initialize()
 
     m_fInterPolationTime = 0.1f;
 
+
+    Add_KeyFrame(10, 0, true);
+    Add_KeyFrame(20, 1, true);
+    Add_KeyFrame(51, 1, true);
+    Add_KeyFrame(79, 1, true);
+    Add_KeyFrame(103, 1, true);
     return S_OK;
 }
 

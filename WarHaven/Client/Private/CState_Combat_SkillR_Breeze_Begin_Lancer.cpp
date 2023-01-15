@@ -53,6 +53,9 @@ HRESULT CState_Combat_SkillR_Breeze_Begin_Lancer::Initialize()
 	m_fMyAccel = 10.f;
 
 	Add_KeyFrame(3, 0);
+	Add_KeyFrame(16, 1, true);
+	Add_KeyFrame(32, 1, true);
+	Add_KeyFrame(54, 1, true);
 
 
 	// return __super::Initialize();
@@ -82,6 +85,8 @@ void CState_Combat_SkillR_Breeze_Begin_Lancer::Enter(CUnit* pOwner, CAnimator* p
 
 	__super::Set_StraightLook(pOwner);
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Sound(L"Effect_LancerBreeze_Begin");
 }
 
 STATE_TYPE CState_Combat_SkillR_Breeze_Begin_Lancer::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -113,7 +118,9 @@ void CState_Combat_SkillR_Breeze_Begin_Lancer::On_KeyFrameEvent(CUnit* pOwner, C
 	case 0:
 		Physics_Setting(m_fMaxSpeed, pOwner);
 		break;
-
+	case 1:
+		Play_Sound(L"Env_FootStepHorse", CHANNEL_ENVIRONMENT);
+		break;
 	default:
 		break;
 	}

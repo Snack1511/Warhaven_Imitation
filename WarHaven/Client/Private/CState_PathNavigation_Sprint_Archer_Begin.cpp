@@ -43,6 +43,13 @@ HRESULT CState_PathNavigation_Sprint_Archer_Begin::Initialize()
 
     m_fInterPolationTime = 0.1f;
 
+    Add_KeyFrame(10, 0, true);
+    Add_KeyFrame(24, 1, true);
+    Add_KeyFrame(44, 1, true);
+    Add_KeyFrame(62, 1, true);
+    Add_KeyFrame(80, 1, true);
+    Add_KeyFrame(93, 1, true);
+    Add_KeyFrame(116, 1, true);
     return S_OK;
 }
 

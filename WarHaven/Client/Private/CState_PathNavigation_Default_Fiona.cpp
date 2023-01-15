@@ -31,7 +31,9 @@ HRESULT CState_PathNavigation_Default_Fiona::Initialize()
 
 	// 애니메이션의 전체 속도를 올려준다.
 	m_fAnimSpeed = 1.f;
-	
+
+	Add_KeyFrame(7, 0, true);
+	Add_KeyFrame(31, 0, true);
 
     return S_OK;
 }

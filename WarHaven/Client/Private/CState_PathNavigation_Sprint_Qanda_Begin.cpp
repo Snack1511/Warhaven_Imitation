@@ -41,6 +41,13 @@ HRESULT CState_PathNavigation_Sprint_Qanda_Begin::Initialize()
 
     m_fAnimSpeed = 2.5f;
 
+    Add_KeyFrame(10, 0, true);
+    Add_KeyFrame(21, 0, true);
+    Add_KeyFrame(28, 0, true);
+    Add_KeyFrame(46, 0, true);
+    Add_KeyFrame(62, 0, true);
+    Add_KeyFrame(76, 0, true);
+    Add_KeyFrame(92, 0, true);
     return S_OK;
 }
 

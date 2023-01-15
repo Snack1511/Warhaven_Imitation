@@ -55,6 +55,7 @@ void CState_Combat_Attack_Fiona::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAni
 	switch (iSequence)
 	{
 	case 1:
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS);
 		m_bAttackTrigger = true;
 		m_fMyMaxLerp = 0.01f;
 		pOwner->Set_LookToTarget();

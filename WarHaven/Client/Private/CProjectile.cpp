@@ -541,6 +541,8 @@ void CProjectile::My_LateTick()
 
 		if (1.5f < m_fTimeAcc)
 		{
+			CFunctor::Play_Sound(L"Effect_Meteor_Shoot", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS));
+
 			On_ChangePhase(eChase);
 			m_fTimeAcc = 0.f;
 

@@ -33,6 +33,9 @@ private:
 private:
 	_bool	m_bReturn = false;
 
+	_float m_fSndTime = 0.f;
+	_uint m_iSndIdx = 0;
+
 };
 
 END

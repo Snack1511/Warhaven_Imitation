@@ -56,8 +56,9 @@ void CQanda_Shoot::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 {
     __super::Enter(pOwner, pAnimator, ePrevType, pData);	
 
-    Play_Sound(L"Effect_ChargeShoot");
+    Play_Sound(L"Effect_Attack_Qanda");
     Play_Voice(pOwner, L"Voice_Attack", 1.f);
+
     static_cast<CUnit_Qanda*>(pOwner)->Turn_ChargeEffect(false);
 }
 

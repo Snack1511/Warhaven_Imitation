@@ -135,6 +135,8 @@ void CQandaMeteor::OnDisable()
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Meteo_Boom", m_pTransform->Get_World(WORLD_POS),
 		GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE));
 
+	CFunctor::Play_Sound(L"Effect_Meteor_Collision", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS));
+
 	if (m_pOwnerUnit->Is_MainPlayer())
 	{
 		if (m_pTargetUnit)

@@ -41,6 +41,11 @@ HRESULT CState_PathNavigation_Sprint_Priest_Begin::Initialize()
 
     m_fAnimSpeed = 2.5f;
 
+    Add_KeyFrame(4, 1, true);
+    Add_KeyFrame(27, 1, true);
+    Add_KeyFrame(39, 1, true);
+    Add_KeyFrame(68, 1, true);
+    Add_KeyFrame(90, 1, true);
     return S_OK;
 }
 

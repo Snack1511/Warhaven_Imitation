@@ -214,6 +214,7 @@ void CLancer_Attack_Sting::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		Play_Voice(pOwner, L"Voice_Attack", 1.f);
+		Play_Sound(L"Effect_Sting_Warrior");
 
 		break;
 

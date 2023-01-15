@@ -52,6 +52,7 @@ HRESULT CState_Combat_SkillR_Breeze_Loop_Lancer::Initialize()
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
 
+	Add_KeyFrame(3, 0, true);
 	return S_OK;
 }
 
@@ -140,4 +141,18 @@ void CState_Combat_SkillR_Breeze_Loop_Lancer::Exit(CUnit* pOwner, CAnimator* pAn
 STATE_TYPE CState_Combat_SkillR_Breeze_Loop_Lancer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
 	return STATE_END;
+}
+void CState_Combat_SkillR_Breeze_Loop_Lancer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	switch (iSequence)
+	{
+	case 0:
+		Play_Sound(L"Env_FootStepHorse", CHANNEL_ENVIRONMENT);
+		break;
+
+	default:
+		break;
+	}
+
+
 }
