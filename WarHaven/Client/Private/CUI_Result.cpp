@@ -10,6 +10,7 @@
 #include "CUI_Renderer.h"
 #include "CShader.h"
 #include "Functor.h"
+#include "Loading_Manager.h"
 
 CUI_Result::CUI_Result()
 {
@@ -645,5 +646,10 @@ void CUI_Result::Progress_Result()
 			m_iResultProgressCnt++;
 			Disable_Fade(m_pBG, 0.3f);
 		}
+	}
+	else if (m_iResultProgressCnt == 8)
+	{
+		if (KEY(ENTER, TAP))
+			CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_MAINMENU);
 	}
 }

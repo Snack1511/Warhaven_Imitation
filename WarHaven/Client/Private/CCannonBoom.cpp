@@ -21,6 +21,8 @@ void CCannonBoom::Boom(CPlayer* pOwnerPlayer, _float4 vPos)
 	m_pOwnerPlayer = pOwnerPlayer;
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cannon_Ground", vPos);
 
+	CFunctor::Play_Sound_SetRange(L"Effect_CannonShoot", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS), 100.f);
+
 	if (pOwnerPlayer->Get_Team()->Get_TeamType() == eTEAM_TYPE::eBLUE)
 		m_pColliderCom->Set_ColIndex(COL_BLUEFLYATTACKGUARDBREAK);
 	else

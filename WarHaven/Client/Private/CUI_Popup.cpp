@@ -174,12 +174,6 @@ void CUI_Popup::My_Tick()
 			DISABLE_GAMEOBJECT(this);
 
 		}
-
-		if (KEY(ENTER, TAP))
-		{
-			CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_MAINMENU);
-		}
-
 	}
 }
 
