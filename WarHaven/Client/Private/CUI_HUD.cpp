@@ -96,6 +96,8 @@ void CUI_HUD::My_Tick()
 
 	if (KEY(ESC, TAP))
 	{
+		Play_Sound(L"UI_BtnEvent");
+
 		_bool bEscActive = m_pUI_EscMenu->Is_Valid();
 		if (!bEscActive)
 		{
