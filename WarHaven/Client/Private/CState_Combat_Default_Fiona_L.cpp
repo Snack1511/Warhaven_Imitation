@@ -32,9 +32,6 @@ CState_Combat_Default_Fiona_L* CState_Combat_Default_Fiona_L::Create()
 }
 HRESULT CState_Combat_Default_Fiona_L::Initialize()
 {
-    __super::Initialize();
-
-
     m_eAnimType = ANIM_BASE_L;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 20;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_COMBAT_DEFAULT_FIONA_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -53,8 +50,9 @@ HRESULT CState_Combat_Default_Fiona_L::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 22;
 
     m_iAINextState = AI_STATE_COMBAT_HORIZONTALMIDDLE_FIONA_L;
+    m_eJumpFallStateType = AI_STATE_COMMON_LAND_FIONA_L;
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_Combat_Default_Fiona_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )

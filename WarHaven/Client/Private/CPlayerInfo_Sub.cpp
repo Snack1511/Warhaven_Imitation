@@ -56,6 +56,11 @@ HRESULT CPlayerInfo_Sub::Initialize()
 		m_tPlayerInfo.wstrName = L"쥬신아카데미가라";
 
 	}
+	//else if (g_iSubCnt == 3)
+	//{
+	//	m_tPlayerInfo.wstrName = L"명품수제돈가스";
+	//	m_vecPrefClassType.push_back(ENGINEER);
+	//}
 	else
 	{
 		m_tPlayerInfo.wstrName = L"SubPlayer_";

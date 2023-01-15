@@ -6,6 +6,7 @@
 
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CBehavior.h"
 
 #include "CUser.h"
 
@@ -43,7 +44,37 @@ STATE_TYPE CState_Common_Land::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
     {
-        STATE_TYPE eNewState = pOwner->Get_DefaultState();
+        eBehaviorType  BehavType = pOwner->Get_OwnerPlayer()->Get_CurBehavior()->Get_BehaviorType();
+        STATE_TYPE eNewState = STATE_END;
+
+        switch (BehavType)
+        {
+        case Client::eBehaviorType::ePatrol:
+        case Client::eBehaviorType::eChange:
+        case Client::eBehaviorType::eRevive:
+        case Client::eBehaviorType::ePadenCannonInteract:
+        default:
+            
+            eNewState = pOwner->Get_AIState_Type().eAIPatrolDefaultState;
+            
+            break;
+
+        case Client::eBehaviorType::ePathFinding:
+        case Client::eBehaviorType::eGliding:
+
+            eNewState = pOwner->Get_AIState_Type().eAIPathFindDefaultState;
+
+            break;
+
+        case Client::eBehaviorType::eCombat:
+        case Client::eBehaviorType::eCatchCannon:
+
+            eNewState = pOwner->Get_AIState_Type().eAICommbatDefaultState;
+
+            break;
+
+        }
+
         return eNewState;
     }
 

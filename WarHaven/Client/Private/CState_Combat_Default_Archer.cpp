@@ -20,8 +20,6 @@ CState_Combat_Default_Archer::~CState_Combat_Default_Archer()
 
 HRESULT CState_Combat_Default_Archer::Initialize()
 {
-	__super::Initialize();
-
 	m_fMyMaxLerp = 1.2f;
 	m_fMyAccel = 100.f;
 
@@ -29,10 +27,10 @@ HRESULT CState_Combat_Default_Archer::Initialize()
 	m_fInterPolationTime = 0.1f;
 
 	// 애니메이션의 전체 속도를 올려준다.
-	m_fAnimSpeed = 1.f;
+	m_fAnimSpeed = 2.f;
 	m_fAIMyLength = 2.5f;
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_Combat_Default_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -42,13 +40,14 @@ void CState_Combat_Default_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 
 	m_iRand = random(0, 7);
 	m_iDirectionRand = random(0, 7);
-	m_fRand = frandom(1.f, 3.f);
+	m_fRand = frandom(0.2f, 0.5f);
 
 	
+	CUnit* pTargetUnit = pOwner->Get_TargetUnit();
 
-	if (pOwner->Get_TargetUnit())
+	if (pTargetUnit)
 	{
-		if (fabs(Get_TargetLook_Length(pOwner)) > m_fAIMyLength * 1.5f)
+		if (fabs(Get_TargetLook_Length(pOwner)) > m_fAIMyLength * 2.5f && pTargetUnit->Get_CurState() != AI_STATE_COMMON_CHANGE_HERO)
 			Set_Direction_Front_AI(m_iDirectionRand);
 
 		else
@@ -75,9 +74,13 @@ void CState_Combat_Default_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 
 STATE_TYPE CState_Combat_Default_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	DoMove_AI(pOwner, pAnimator);
 
-	if (pOwner->Get_TargetUnit()->Get_Status().fHP <= 0.f)
+	CUnit* pTargetUnit = pOwner->Get_TargetUnit();
+
+	if(!pTargetUnit)
+		return __super::Tick(pOwner, pAnimator);
+
+	if (pTargetUnit->Get_Status().fHP <= 0.f)
 	{
 		if (pAnimator->Is_CurAnimFinished())
 			return m_eStateType;
@@ -94,20 +97,20 @@ STATE_TYPE CState_Combat_Default_Archer::Tick(CUnit* pOwner, CAnimator* pAnimato
 
 
 	// 공격 코드
-	if (m_fTimeAcc < m_fRand)
+
+
+	if (fabs(Get_TargetLook_Length(pOwner)) > m_fAIMyLength)
 	{
 
-		if (fabs(Get_TargetLook_Length(pOwner)) > m_fAIMyLength)
+		switch (m_iRand)
 		{
+		case 0:
+		case 1:
+		case 2:
 
-			switch (m_iRand)
+
+			if (m_fTimeAcc > m_fRand)
 			{
-			case 0:
-			case 1:
-			case 2:
-
-
-
 				if (pOwner->Get_SkillTrigger().bSkillQTrigger && !pOwner->Get_SkillTrigger().bSkillETrigger)
 				{
 					pOwner->Get_SkillTrigger().bSkillQTrigger = false;
@@ -126,30 +129,39 @@ STATE_TYPE CState_Combat_Default_Archer::Tick(CUnit* pOwner, CAnimator* pAnimato
 				}
 				else
 					return m_eStateType;
+			}
+			else 
+			{
+				if(pAnimator->Is_CurAnimFinished())
+					return m_eStateType;
+			}
 
-				break;
+
+			break;
 
 
-			case 6:
-			case 7:
-			case 3:
-			case 4:
-			case 5:
-
+		case 6:
+		case 7:
+		case 3:
+		case 4:
+		case 5:
+			
+			if(pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
 				return m_eStateType;
 
-			default:
-				break;
-			}
-		}
-		else
-		{
-			STATE_TYPE eStateType = Near_Enemy(pOwner, pAnimator);;
-			
-			if (eStateType != STATE_END)
-				return eStateType;
+		default:
+			break;
 		}
 	}
+	else
+	{
+		STATE_TYPE eStateType = Near_Enemy(pOwner, pAnimator);;
+			
+		if (eStateType != STATE_END)
+			return eStateType;
+	}
+
+	DoMove_AI(pOwner, pAnimator);
 
     return __super::Tick(pOwner, pAnimator);
 }
@@ -162,7 +174,7 @@ void CState_Combat_Default_Archer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Combat_Default_Archer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
 }
 
 void CState_Combat_Default_Archer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
@@ -175,11 +187,14 @@ STATE_TYPE CState_Combat_Default_Archer::Near_Enemy(CUnit* pOwner, CAnimator* pA
 {
 	STATE_TYPE eArrowStateType = Choose_Arrow(pOwner);
 
-	if (!pOwner->Get_TargetUnit())
+	CUnit* pTargetUnit = pOwner->Get_TargetUnit();
+
+
+	if (!pTargetUnit)
 	{
-		if (pOwner->Get_TargetUnit()->Get_Status().fHP <= 40.f || m_iRand == 7)
+		if (pTargetUnit->Get_Status().fHP <= 40.f || m_iRand == 7)
 		{
-			if (pOwner->Get_TargetUnit()->Get_Status().fHP > 0.f)
+			if (pTargetUnit->Get_Status().fHP > 0.f)
 			{
 				if (eArrowStateType != STATE_END)
 					return eArrowStateType;

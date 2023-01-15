@@ -236,6 +236,9 @@ protected:
 	_float	Move_Direction_Loop_AI(CUnit* pOwner);
 
 	_float	Get_TargetLook_Length(CUnit* pOwner);
+	_float4 Get_TargetLook(CGameObject* pSourObject, CGameObject* pDestUnit, _bool bFixY = true);
+
+	void	Follow_Move(CGameObject* pSourObject, CGameObject* pDestUnit, _bool bFixY = true);
 
 	void	DoMove_AI(CUnit* pOwner, CAnimator* pAnimator);
 	void	DoMove_AI_NoTarget(CUnit* pOwner, CAnimator* pAnimator);

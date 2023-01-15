@@ -464,11 +464,11 @@ void CPlayerInfo::Set_CustomBody_Fiona(eCUSTOM_BODY eBodyEnum)
 		break;
 	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
 		//m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0004_Body_A00_50.fbx";
-		m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0001_Body_A00.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0001_Body_A00_20.fbx";
 		break;
 
 	default:
-		m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0001_Body_A00.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0001_Body_A00_20.fbx";
 		break;
 	}
 }

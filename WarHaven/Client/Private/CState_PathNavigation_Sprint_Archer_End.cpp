@@ -64,13 +64,10 @@ void CState_PathNavigation_Sprint_Archer_End::Enter(CUnit* pOwner, CAnimator* pA
 
 STATE_TYPE CState_PathNavigation_Sprint_Archer_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
-
-    if (m_fAIDelayTime > m_fRand)
+    if(pAnimator->Is_CurAnimFinished())
         return AI_STATE_PATHNAVIGATION_DEFAULT_ARCHER_R;
 
-
-    return __super::Tick(pOwner, pAnimator);
+    return CState::Tick(pOwner, pAnimator);
 }
 
 void CState_PathNavigation_Sprint_Archer_End::Exit(CUnit* pOwner, CAnimator* pAnimator)

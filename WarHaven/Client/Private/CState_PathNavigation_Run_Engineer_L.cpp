@@ -30,8 +30,6 @@ CState_PathNavigation_Run_Engineer_L* CState_PathNavigation_Run_Engineer_L::Crea
 }
 HRESULT CState_PathNavigation_Run_Engineer_L::Initialize()
 {
-    __super::Initialize();
-
 
     m_eAnimType = ANIM_BASE_L;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 19;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
@@ -54,7 +52,7 @@ HRESULT CState_PathNavigation_Run_Engineer_L::Initialize()
     m_eJumpFallStateType = AI_STATE_COMMON_FALL_ENGINEER_L;
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_ENGINEER_L;
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Run_Engineer_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )

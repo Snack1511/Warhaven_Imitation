@@ -32,8 +32,6 @@ CState_PathNavigation_Sprint_Warrior_Jump* CState_PathNavigation_Sprint_Warrior_
 }
 HRESULT CState_PathNavigation_Sprint_Warrior_Jump::Initialize()
 {
-    __super::Initialize();
-
 
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 58;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
@@ -43,7 +41,7 @@ HRESULT CState_PathNavigation_Sprint_Warrior_Jump::Initialize()
 
     m_fAnimSpeed = 2.5f;
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Sprint_Warrior_Jump::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )

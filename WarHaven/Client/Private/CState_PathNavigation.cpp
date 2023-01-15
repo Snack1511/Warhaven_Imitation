@@ -22,7 +22,7 @@ CState_PathNavigation::~CState_PathNavigation()
 
 HRESULT CState_PathNavigation::Initialize()
 {
-	if(m_eJumpFallStateType != STATE_END)
+	if(m_eJumpFallStateType != STATE_END && m_eStateType != m_eJumpFallStateType)
 		m_vecAdjState.push_back(m_eJumpFallStateType);
 
     return S_OK;

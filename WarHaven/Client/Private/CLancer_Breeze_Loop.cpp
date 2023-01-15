@@ -55,6 +55,8 @@ HRESULT CLancer_Breeze_Loop::Initialize()
 
 void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+	pOwner->Enable_HitBoxColliders(false);
+
 	m_fDamagePumping = 15.f;
 	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
 
@@ -126,6 +128,8 @@ STATE_TYPE CLancer_Breeze_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CLancer_Breeze_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Enable_HitBoxColliders(true);
+
 	static_cast<CUnit_Lancer*>(pOwner)->Reset_NeedleNums();
 
 	for (_int i = 0; i < CUnit_Lancer::eNeedle::eNeedle_Max; ++i)

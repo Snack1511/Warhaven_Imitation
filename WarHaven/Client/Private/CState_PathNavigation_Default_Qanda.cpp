@@ -30,9 +30,6 @@ CState_PathNavigation_Default_Qanda* CState_PathNavigation_Default_Qanda::Create
 }
 HRESULT CState_PathNavigation_Default_Qanda::Initialize()
 {
-
-    __super::Initialize();
-
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 19;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_PATHNAVIGATION_DEFAULT_QANDA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -60,7 +57,7 @@ HRESULT CState_PathNavigation_Default_Qanda::Initialize()
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_QANDA;
     m_eSprintBeginState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_QANDA;
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Default_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)

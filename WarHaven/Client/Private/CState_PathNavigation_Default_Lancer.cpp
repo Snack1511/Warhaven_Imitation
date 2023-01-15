@@ -30,9 +30,6 @@ CState_PathNavigation_Default_Lancer* CState_PathNavigation_Default_Lancer::Crea
 }
 HRESULT CState_PathNavigation_Default_Lancer::Initialize()
 {
-
-    __super::Initialize();
-
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 5;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_PATHNAVIGATION_DEFAULT_LANCER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -48,7 +45,7 @@ HRESULT CState_PathNavigation_Default_Lancer::Initialize()
     m_eWalkState = AI_STATE_PATHNAVIGATION_DEFAULT_LANCER;
     m_eSprintBeginState = AI_STATE_PATHNAVIGATION_DEFAULT_LANCER;
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Default_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)

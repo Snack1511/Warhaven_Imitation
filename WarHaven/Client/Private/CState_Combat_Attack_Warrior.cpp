@@ -72,7 +72,7 @@ void CState_Combat_Attack_Warrior::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pA
 
 		if (!pOwner->Is_Air())
 		{
-			pOwner->Get_PhysicsCom()->Set_MaxSpeed(pOwner->Get_Status().fShortDashSpeed);
+			pOwner->Get_PhysicsCom()->Set_MaxSpeed(pOwner->Get_Status().fShortDashSpeed * 0.5f);
 			pOwner->Get_PhysicsCom()->Set_SpeedasMax();
 			pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.7f;
 			pOwner->Get_PhysicsCom()->Set_Dir(pOwner->Get_Transform()->Get_World(WORLD_LOOK));

@@ -48,6 +48,7 @@ HRESULT CState_Combat_Default_Lancer::Initialize()
     m_fMyMaxLerp = 0.4f;
     m_fMyAccel = 30.f;
     m_iDirectionRand = STATE_DIRECTION_N;
+    //m_eJumpFallStateType = AI_STATE_COMMON_FALL_LANCER;
 
     m_fAIMyLength = 10.f;
 

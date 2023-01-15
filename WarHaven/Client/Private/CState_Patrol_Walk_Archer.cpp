@@ -76,7 +76,7 @@ void CState_Patrol_Walk_Archer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Patrol_Walk_Archer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
 }
 
 void CState_Patrol_Walk_Archer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
