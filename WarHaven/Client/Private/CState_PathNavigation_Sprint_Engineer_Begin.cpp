@@ -30,9 +30,6 @@ CState_PathNavigation_Sprint_Engineer_Begin* CState_PathNavigation_Sprint_Engine
 }
 HRESULT CState_PathNavigation_Sprint_Engineer_Begin::Initialize()
 {
-    __super::Initialize();
-
-
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 56;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_ENGINEER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -49,7 +46,7 @@ HRESULT CState_PathNavigation_Sprint_Engineer_Begin::Initialize()
     Add_KeyFrame(51, 1, true);
     Add_KeyFrame(79, 1, true);
     Add_KeyFrame(103, 1, true);
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Sprint_Engineer_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )

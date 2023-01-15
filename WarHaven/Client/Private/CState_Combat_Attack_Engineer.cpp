@@ -35,6 +35,17 @@ void CState_Combat_Attack_Engineer::Enter(CUnit* pOwner, CAnimator* pAnimator, S
 
 STATE_TYPE CState_Combat_Attack_Engineer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+	_float4 vLook = pOwner->Get_TargetUnit()->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+	vLook.Normalize();
+	vLook.y = 0.f;
+
+	if (!vLook.Is_Zero())
+		pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
+	pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
+
     return __super::Tick(pOwner, pAnimator);
 }
 
@@ -59,7 +70,7 @@ void CState_Combat_Attack_Engineer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* p
 		Play_Sound(L"Effect_Swing_Blunt", CHANNEL_EFFECTS, 1.f);
 		m_bAttackTrigger = true;
 		m_fMyMaxLerp = 0.01f;
-		pOwner->Set_LookToTarget();
+		//pOwner->Set_LookToTarget();
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		Play_Voice(pOwner, L"Voice_Attack", 1.f);
 
@@ -74,7 +85,7 @@ void CState_Combat_Attack_Engineer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* p
 
 		if (!pOwner->Is_Air())
 		{
-			pOwner->Get_PhysicsCom()->Set_MaxSpeed(pOwner->Get_Status().fShortDashSpeed);
+			pOwner->Get_PhysicsCom()->Set_MaxSpeed(pOwner->Get_Status().fShortDashSpeed * 0.5f);
 			pOwner->Get_PhysicsCom()->Set_SpeedasMax();
 			pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.7f;
 			pOwner->Get_PhysicsCom()->Set_Dir(pOwner->Get_Transform()->Get_World(WORLD_LOOK));

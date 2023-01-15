@@ -299,6 +299,14 @@ void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		eNewState = AI_STATE_COMMON_CHANGE_HERO;
 		break;
 
+	case eBehaviorType::eGliding:
+		eNewState = AI_STATE_GLIDING_AI;
+		break;
+
+	case eBehaviorType::eCatchCannon:
+		//eNewState = AI_STATE_BOUNE_WARRIOR_R;
+		break;
+
 	default:
 		assert(0);
 		break;

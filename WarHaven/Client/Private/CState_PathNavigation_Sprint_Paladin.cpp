@@ -21,14 +21,12 @@ CState_PathNavigation_Sprint_Paladin::~CState_PathNavigation_Sprint_Paladin()
 
 HRESULT CState_PathNavigation_Sprint_Paladin::Initialize()
 {
-	__super::Initialize();
-
-	m_eJumpFallStateType = AI_STATE_PATHNAVIGATION_SPRINTEND_PALADIN;
+	m_eJumpFallStateType = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_PALADIN;
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Sprint_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -51,7 +49,7 @@ void CState_PathNavigation_Sprint_Paladin::Exit(CUnit* pOwner, CAnimator* pAnima
 
 STATE_TYPE CState_PathNavigation_Sprint_Paladin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
 }
 
 void CState_PathNavigation_Sprint_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)

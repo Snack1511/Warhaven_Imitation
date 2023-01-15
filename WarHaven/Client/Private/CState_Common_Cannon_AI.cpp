@@ -69,17 +69,13 @@ void CState_Common_Cannon_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
     // 현재 인접한 타겟오브젝트가 대포가 아닐 시
     if (pCannon != pTargetObj)
     {
-        m_bNoAdjTrigger = true;
+        m_eCannonState = CANNON_NOENTER;
         return;
     }
+    else
+        m_eCannonState = CANNON_FOLLOW;
 
-    if (pCannon)
-    {
-        pOwner->Get_PhysicsCom()->Set_Speed(0.f);
-        pCannon->Control_Cannon(pOwner->Get_OwnerPlayer());
-        pOwner->Get_Transform()->Set_LerpLook(pCannon->Get_Transform()->Get_World(WORLD_LOOK), 0.4f);
-        pOwner->Teleport_Unit(pCannon->Get_ControlPos());
-    }
+
 
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -88,8 +84,59 @@ void CState_Common_Cannon_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 STATE_TYPE CState_Common_Cannon_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-    if (m_bNoAdjTrigger)
+    CCannon* pCannon = pOwner->Get_AdjCannon();
+    CGameObject* pTargetObject = pOwner->Get_TargetObject();
+
+
+    switch (m_eCannonState)
     {
+    case Client::CState_Common_Cannon_AI::CANNON_FOLLOW:
+
+        if (pCannon)
+            m_eCannonState = CANNON_ENTER;
+
+        else
+            Follow_Move(pOwner, pTargetObject);
+
+
+        break;
+
+    case Client::CState_Common_Cannon_AI::CANNON_ENTER:
+
+        m_fTimeAcc += fDT(0);
+
+        if (pCannon)
+        {
+            if (m_fTimeAcc > 0.2f)
+            {
+                pOwner->Get_PhysicsCom()->Set_Speed(0.f);
+                pCannon->Control_Cannon(pOwner->Get_OwnerPlayer());
+                pOwner->Get_Transform()->Set_LerpLook(pCannon->Get_Transform()->Get_World(WORLD_LOOK), 0.4f);
+                pOwner->Teleport_Unit(pCannon->Get_ControlPos());
+                m_fTimeAcc = 4.5f;
+                m_eCannonState = CANNON_CONTROL;
+            }
+        }
+        else
+            m_eCannonState = CANNON_FOLLOW;
+
+        break;
+
+    case Client::CState_Common_Cannon_AI::CANNON_CONTROL:
+
+        m_fTimeAcc += fDT(0);
+
+        if (m_fTimeAcc > 5.f)
+            pCannon->Shoot_Cannon();
+
+        break;
+
+    case Client::CState_Common_Cannon_AI::CANNON_STOP:
+
+        break;
+
+    case Client::CState_Common_Cannon_AI::CANNON_NOENTER:
+
         if (m_ePreStateType != STATE_END)
             return m_ePreStateType;
         else
@@ -97,14 +144,10 @@ STATE_TYPE CState_Common_Cannon_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
             STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
             return eDefaultState;
         }
-    }
-        
-    CCannon* pCannon = pOwner->Get_AdjCannon();     
-    
-    m_fTimeAcc += fDT(0);
 
-    if(m_fTimeAcc > 5.f)
-        pCannon->Shoot_Cannon();
+    default:
+        break;
+    }
 
 
     return __super::Tick(pOwner, pAnimator);
@@ -112,7 +155,10 @@ STATE_TYPE CState_Common_Cannon_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CState_Common_Cannon_AI::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    pOwner->Get_AdjCannon()->Exit_Cannon();
+
+    if(m_eCannonState != CANNON_NOENTER)
+        pOwner->Get_AdjCannon()->Exit_Cannon();
+
 }
 
 STATE_TYPE CState_Common_Cannon_AI::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

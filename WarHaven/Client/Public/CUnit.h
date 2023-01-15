@@ -185,6 +185,7 @@ public:
 	CPhysics* Get_PhysicsCom() { return m_pPhysics; }
 
 	CUnit* Get_TargetUnit();
+	CGameObject* Get_TargetObject();
 
 	STATE_TYPE	Get_CurState() { return m_eCurState; }
 	CState* Get_CurStateP() { return m_pCurState; }

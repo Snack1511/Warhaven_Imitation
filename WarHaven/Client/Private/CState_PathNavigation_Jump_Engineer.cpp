@@ -32,6 +32,7 @@ HRESULT CState_PathNavigation_Jump_Engineer::Initialize()
 	// 애니메이션의 전체 속도를 올려준다.
 	m_fAnimSpeed = 1.f;
 	
+	m_eJumpFallStateType = AI_STATE_COMMON_FALL_ENGINEER_R;
 
     return S_OK;
 }

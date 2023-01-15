@@ -65,6 +65,8 @@ HRESULT CState_Combat_Default_Priest::Initialize()
     m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
     m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
+    m_eJumpFallStateType = AI_STATE_COMMON_LAND_PRIEST;
+
     return __super::Initialize();
 }
 
@@ -75,8 +77,16 @@ void CState_Combat_Default_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 
     m_iRand = random(0, 7);
     m_iDirectionRand = random(0, 7);
+    
+    CUnit* pTargetUnit = pOwner->Get_TargetUnit();
+    CLASS_TYPE eClassType = CLASS_END;
+    
+    if (pTargetUnit)
+        eClassType = pOwner->Get_OwnerPlayer()->Get_CurClass();
+    
 
-    if(Get_TargetLook_Length(pOwner) < 4.f)
+
+    if(Get_TargetLook_Length(pOwner) < 4.f || eClassType == ARCHER)
         Set_Direction_Front_AI(m_iDirectionRand);
         
     else 
@@ -96,6 +106,7 @@ void CState_Combat_Default_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 
 STATE_TYPE CState_Combat_Default_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
     STATE_TYPE eAttackState = Random_State(pOwner, pAnimator);
 
     if (eAttackState != STATE_END)

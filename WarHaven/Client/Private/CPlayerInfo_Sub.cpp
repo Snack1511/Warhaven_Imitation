@@ -6,6 +6,7 @@
 
 #include "UsefulHeaders.h"
 #include "CPersonality_Sub.h"
+#include "CPersonality_Default.h"
 
 CPlayerInfo_Sub::CPlayerInfo_Sub()
 {
@@ -56,6 +57,11 @@ HRESULT CPlayerInfo_Sub::Initialize()
 		m_tPlayerInfo.wstrName = L"쥬신아카데미가라";
 
 	}
+	//else if (g_iSubCnt == 3)
+	//{
+	//	m_tPlayerInfo.wstrName = L"명품수제돈가스";
+	//	m_vecPrefClassType.push_back(ENGINEER);
+	//}
 	else
 	{
 		m_tPlayerInfo.wstrName = L"SubPlayer_";
@@ -89,7 +95,9 @@ HRESULT CPlayerInfo_Sub::Initialize()
 
 HRESULT CPlayerInfo_Sub::SetUp_AIPersonality()
 {
-	CAIPersonality* pPersonality = CPersonality_Sub::Create(CGameSystem::Get_Instance()->Get_BXTable());
+	CAIPersonality* pPersonality = CAIPersonality::Create(CGameSystem::Get_Instance()->Get_BXTable());
+	pPersonality->Load(L"Glide");
+	//CAIPersonality* pPersonality = CPersonality_Sub::Create(CGameSystem::Get_Instance()->Get_BXTable());
 	m_pPersonality = pPersonality;
 
 	m_iUnitType = ((_uint)CUnit::UNIT_TYPE::eAI_Default);

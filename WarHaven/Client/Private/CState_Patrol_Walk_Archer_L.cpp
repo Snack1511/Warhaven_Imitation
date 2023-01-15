@@ -43,6 +43,8 @@ HRESULT CState_Patrol_Walk_Archer_L::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 34;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 35;
 
+    m_eJumpFallStateType = AI_STATE_COMMON_LAND_ARCHER_L;
+
     return __super::Initialize();
 }
 

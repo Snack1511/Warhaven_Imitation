@@ -19,9 +19,7 @@ CState_PathNavigation_Jump::~CState_PathNavigation_Jump()
 
 HRESULT CState_PathNavigation_Jump::Initialize()
 {
-    __super::Initialize();
-
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Jump::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )

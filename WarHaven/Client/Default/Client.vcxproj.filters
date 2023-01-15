@@ -3712,9 +3712,6 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\08. Gliding">
       <UniqueIdentifier>{deba2fe0-5706-406e-9d4f-fe0a95379dac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\09. Cannon">
-      <UniqueIdentifier>{4edf7d8d-e453-4c98-949c-e6ee2ef67bb2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\07. Qanda">
       <UniqueIdentifier>{e2196713-b68a-4186-a8c9-d9a72b1001b6}</UniqueIdentifier>
     </Filter>
@@ -3942,6 +3939,9 @@
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. SkillR\08. Lancer\02. Loop">
       <UniqueIdentifier>{6951cbb2-ac75-421c-833b-3ab043e3d7db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\09. Cannon">
+      <UniqueIdentifier>{4edf7d8d-e453-4c98-949c-e6ee2ef67bb2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -6931,7 +6931,7 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Common_Cannon_AI.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\09. Cannon</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\09. Cannon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Common_Gliding_AI.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\08. Gliding</Filter>
@@ -10073,7 +10073,7 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Common_Cannon_AI.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\09. Cannon</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\09. Cannon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Common_Gliding_AI.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\08. Gliding</Filter>

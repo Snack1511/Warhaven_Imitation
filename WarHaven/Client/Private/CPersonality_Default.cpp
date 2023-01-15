@@ -70,13 +70,14 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);	
 	
-	/*pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Gliding"))->Clone();
+	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Gliding"))->Clone();
+	pBehavior->Add_OtherCondition(wstring(L"Check_GlidePath"));
 	pBehavior->Add_OtherCondition(wstring(L"Check_GriderTrigger"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearGliderTrigger"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(iPriority++);
-	m_BehaviorList.push_back(pBehavior);*/
+	m_BehaviorList.push_back(pBehavior);
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Revive"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"EmptyOtherCondition"));
@@ -130,15 +131,6 @@ HRESULT CPersonality_Default::Initailize()
 
 
 
-
-	//m_BehaviorList.push_back(pBehavior);
-// 
-	//CBehavior* pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Attack"))->Clone();
-	//pBehavior->Initialize();
-	//pBehavior->Add_OtherCondition(wstring(L"Check_FarAwayLeader"));
-	//pBehavior->Add_WhatCondition(wstring(L"Select_Leader"));
-	//pBehavior->SetUp_StateType(STATE_IDLE_WARRIOR_L_AI_ENEMY);
-	//m_BehaviorList.push_back(pBehavior);
 
 
 	return S_OK;

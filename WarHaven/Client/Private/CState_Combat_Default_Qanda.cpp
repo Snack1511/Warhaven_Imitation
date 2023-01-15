@@ -67,6 +67,8 @@ HRESULT CState_Combat_Default_Qanda::Initialize()
     m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
     m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
+    m_eJumpFallStateType = AI_STATE_COMMON_LAND_QANDA;
+
     return __super::Initialize();
 }
 

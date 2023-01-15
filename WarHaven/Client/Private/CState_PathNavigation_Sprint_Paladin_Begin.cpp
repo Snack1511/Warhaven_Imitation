@@ -30,9 +30,6 @@ CState_PathNavigation_Sprint_Paladin_Begin* CState_PathNavigation_Sprint_Paladin
 }
 HRESULT CState_PathNavigation_Sprint_Paladin_Begin::Initialize()
 {
-    __super::Initialize();
-
-
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 45;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_PALADIN;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -46,7 +43,7 @@ HRESULT CState_PathNavigation_Sprint_Paladin_Begin::Initialize()
     Add_KeyFrame(50, 1, true);
     Add_KeyFrame(72, 1, true);
     Add_KeyFrame(95, 1, true);
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Sprint_Paladin_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )

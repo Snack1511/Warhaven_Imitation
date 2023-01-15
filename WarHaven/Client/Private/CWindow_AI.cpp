@@ -12,6 +12,7 @@
 #include "CPath.h"
 #include "CDebugObject.h"
 #include "Transform.h"
+#include "CUnit.h"
 CWindow_AI::CWindow_AI()
 {
 }
@@ -186,20 +187,24 @@ void CWindow_AI::Func_AISetting()
     string strBehaviorName;
     string strPathName;
 
-    if (pBehavior) {
+    if (pBehavior) 
         strBehaviorName = CFunctor::To_String(pBehavior->Get_BehaviorName());
-    }
-    else
-    {
-        strBehaviorName = u8"행동 없음";
-    }
+    else strBehaviorName = u8"행동 없음";
+  
     if (pPath)
-    {
         strPathName = pPath->Get_PathName();
-    }
+    else strPathName = u8"패스 없음";
+
+    CUnit* CurUnit = m_pCurSelectPlayer->Get_CurrentUnit();
+    _int StateIndex = -1;
+    if (CurUnit)
+        StateIndex = _uint(CurUnit->Get_CurState());
+
     Display_Data(string(u8"현재 행동"), strBehaviorName.c_str());
 
     Display_Data(string(u8"현재 패스"), strPathName.c_str());
+
+    Display_Data(string(u8"현재 상태"), to_string(StateIndex).c_str());
     
     if (ImGui::CollapsingHeader(u8"경로찾기 테스트"))
     {

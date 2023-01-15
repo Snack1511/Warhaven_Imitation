@@ -633,7 +633,7 @@ HRESULT CUnit_Lancer::Initialize_Prototype()
 
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// Ä® ±æÀÌ
-	tDesc.fHeight = 1.5f;
+	tDesc.fHeight = 1.2f;
 	// Ä® µÎ²²
 	tDesc.fRadius = 0.1f;
 	// Ä® ºÙÀÏ »À

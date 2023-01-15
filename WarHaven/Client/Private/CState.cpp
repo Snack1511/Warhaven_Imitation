@@ -935,6 +935,53 @@ _float CState::Get_TargetLook_Length(CUnit* pOwner)
 	return vLook.Length();
 }
 
+_float4 CState::Get_TargetLook(CGameObject* pSourObject, CGameObject* pDestUnit, _bool bFixY)
+{
+	if (!pSourObject)
+	{
+		Call_MsgBox(L"PlayerUnit Is Null");
+		return _float4(0.f, 0.f, 0.f);
+	}
+
+	if (!pDestUnit)
+	{
+		Call_MsgBox(L"OtherUnit Is Null");
+		return _float4(0.f, 0.f, 0.f);
+	}
+
+	_float4 vLook = pDestUnit->Get_Transform()->Get_World(WORLD_POS) - pSourObject->Get_Transform()->Get_World(WORLD_POS);
+	vLook.Normalize();
+
+	if (bFixY)
+		vLook.y = 0.f;
+
+	return vLook;
+}
+
+void CState::Follow_Move(CGameObject* pSourObject, CGameObject* pDestUnit, _bool bFixY)
+{
+	_float4 vLook = Get_TargetLook(pSourObject, pDestUnit, bFixY);
+
+	CTransform* pMyTransform = pSourObject->Get_Transform();
+	
+	CPhysics* pMyPhysicsCom = nullptr;
+	pMyPhysicsCom = dynamic_cast<CUnit*>(pSourObject)->Get_PhysicsCom();
+
+	if (pMyPhysicsCom)
+	{
+		Call_MsgBox(L"SourObject is not unit");
+		return;
+	}
+
+	if (!vLook.Is_Zero())
+		pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
+
+	pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
+
+	pMyPhysicsCom->Set_Dir(vLook);
+	pMyPhysicsCom->Set_Accel(m_fMyAccel);
+}
+
 void CState::Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax, _bool bBackStep)
 {
 

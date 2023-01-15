@@ -79,18 +79,18 @@ STATE_TYPE CState_Common_ChangeHero_AI::Tick(CUnit* pOwner, CAnimator* pAnimator
 		switch (eClassType)
 		{
 		case Client::WARRIOR:
-			m_eChangeClassType = FIONA;
+			m_eChangeClassType = LANCER;
 			break;
 
 		case Client::ARCHER:
-			m_eChangeClassType = QANDA;
+			m_eChangeClassType = LANCER;
 			break;
 
 		case Client::PALADIN:
-			m_eChangeClassType = FIONA;
+			m_eChangeClassType = LANCER;
 			break;
 		case Client::PRIEST:
-			m_eChangeClassType = QANDA;
+			m_eChangeClassType = LANCER;
 
 			break;
 		case Client::ENGINEER:

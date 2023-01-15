@@ -77,6 +77,9 @@ void CState_Patrol_Walk_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_
 
     m_iWalkDelay = 20;
 
+    m_eJumpFallStateType = AI_STATE_COMMON_LAND_QANDA;
+
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

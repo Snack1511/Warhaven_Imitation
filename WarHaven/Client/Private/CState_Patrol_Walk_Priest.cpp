@@ -77,6 +77,8 @@ void CState_Patrol_Walk_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 
     m_iWalkDelay = 20;
 
+    m_eJumpFallStateType = AI_STATE_COMMON_LAND_PRIEST;
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

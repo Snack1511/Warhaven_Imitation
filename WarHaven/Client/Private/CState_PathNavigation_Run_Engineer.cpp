@@ -21,7 +21,6 @@ CState_PathNavigation_Run_Engineer::~CState_PathNavigation_Run_Engineer()
 
 HRESULT CState_PathNavigation_Run_Engineer::Initialize()
 {
-	__super::Initialize();
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;
@@ -35,7 +34,7 @@ HRESULT CState_PathNavigation_Run_Engineer::Initialize()
 	Add_KeyFrame(25, 0, true);
 	Add_KeyFrame(49, 0, true);
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Run_Engineer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -62,7 +61,7 @@ void CState_PathNavigation_Run_Engineer::Exit(CUnit* pOwner, CAnimator* pAnimato
 
 STATE_TYPE CState_PathNavigation_Run_Engineer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
 }
 
 void CState_PathNavigation_Run_Engineer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)

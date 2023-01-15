@@ -56,7 +56,7 @@ HRESULT CState_Combat_Shoot_Archer::Initialize()
 
 void CState_Combat_Shoot_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	m_iRand = random(0, 2);
+	m_iRand = random(0, 4);
 
 	if (m_iRand == 1)
 		m_fMaxTime = 0.2f;

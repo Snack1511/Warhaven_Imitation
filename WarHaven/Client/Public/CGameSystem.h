@@ -104,7 +104,7 @@ public: /* Pathes */
 	CPath*			Clone_CenterPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType);
 
 	CPath* Clone_RandomReleasePath(_float4 vCurPos);
-	CPath* Clone_RandomNearestPath(_float4 vCurPos);
+	CPath* Clone_RandomNearestPath(_float4 vCurPos, CPlayer* pPlayer);
 
 
 	CPath* Get_NearPath(_float4 vPosition);

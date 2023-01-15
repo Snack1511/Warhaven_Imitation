@@ -50,6 +50,7 @@ HRESULT CState_Patrol_Walk_Warrior_L::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 37;
 
+    m_eJumpFallStateType = AI_STATE_COMMON_LAND_WARRIOR_L;
 
     return S_OK;
 }

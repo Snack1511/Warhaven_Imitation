@@ -13,6 +13,9 @@ class CState_Common_Gliding_AI
 	DECLARE_STATE(CState_Common_Gliding_AI);
 
 private:
+	enum Glide_State { GLIDE_JUMP, GLIDE_LOOP, GLIDE_STOP, GLIDE_LAND, GLIDE_NOENTER, GLIDE_END };
+
+private:
 	CState_Common_Gliding_AI();
 	virtual ~CState_Common_Gliding_AI();
 
@@ -30,8 +33,17 @@ public:
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
+	STATE_TYPE Glide_Land(CUnit* pOwner);
+	STATE_TYPE Glide_Cancel(CUnit* pOwner);
+
+private:
+	void Move_Gliding(CGameObject* pSourObject, string strTargetPos, _bool bGilde);
+
 private:
 	_bool	m_bReturn = false;
+
+private:
+	Glide_State m_eGlideState = GLIDE_END;
 
 };
 

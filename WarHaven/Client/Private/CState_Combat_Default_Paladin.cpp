@@ -19,8 +19,6 @@ CState_Combat_Default_Paladin::~CState_Combat_Default_Paladin()
 
 HRESULT CState_Combat_Default_Paladin::Initialize()
 {
-	__super::Initialize();
-
 	m_fMyMaxLerp = 1.2f;
 	m_fMyAccel = 100.f;
 
@@ -35,7 +33,8 @@ HRESULT CState_Combat_Default_Paladin::Initialize()
 
 	m_fAnimSpeed = 2.f;
 
-    return S_OK;
+
+    return __super::Initialize();
 }
 
 void CState_Combat_Default_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -112,7 +111,7 @@ void CState_Combat_Default_Paladin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Combat_Default_Paladin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
 }
 
 void CState_Combat_Default_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)

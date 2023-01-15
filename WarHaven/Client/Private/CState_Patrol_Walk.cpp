@@ -41,6 +41,9 @@ void CState_Patrol_Walk::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Patrol_Walk::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pOwner->Is_Air())
+        return m_eJumpFallStateType;
+
     return STATE_END;
 }
 

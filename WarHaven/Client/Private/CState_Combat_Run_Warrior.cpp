@@ -19,8 +19,6 @@ CState_Combat_Run_Warrior::~CState_Combat_Run_Warrior()
 
 HRESULT CState_Combat_Run_Warrior::Initialize()
 {
-	__super::Initialize();
-
 	m_fMyMaxLerp = 1.2f;
 	m_fMyAccel = 100.f;
 
@@ -28,12 +26,12 @@ HRESULT CState_Combat_Run_Warrior::Initialize()
 	m_fInterPolationTime = 0.1f;
 
 	// 애니메이션의 전체 속도를 올려준다.
-	m_fAnimSpeed = 1.f;
+	m_fAnimSpeed = 2.5f;
 	
 	Add_KeyFrame(2, 0, true);
 	Add_KeyFrame(27, 0, true);
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_Combat_Run_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -107,7 +105,7 @@ void CState_Combat_Run_Warrior::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Combat_Run_Warrior::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+    return __super::Check_Condition(pOwner, pAnimator);
 }
 
 void CState_Combat_Run_Warrior::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)

@@ -34,6 +34,8 @@ HRESULT CState_Patrol_Walk_Fiona_L::Initialize()
     m_iAnimIndex = 30;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_PATROL_WALK_FIONA_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
+    m_eJumpFallStateType = AI_STATE_COMMON_LAND_FIONA_L;
+
     return __super::Initialize();
 }
 

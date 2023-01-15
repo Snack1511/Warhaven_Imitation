@@ -21,8 +21,6 @@ CState_PathNavigation_Run_Warrior::~CState_PathNavigation_Run_Warrior()
 
 HRESULT CState_PathNavigation_Run_Warrior::Initialize()
 {
-	__super::Initialize();
-
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;
 
@@ -44,7 +42,7 @@ HRESULT CState_PathNavigation_Run_Warrior::Initialize()
 	Add_KeyFrame(2, 0, true);
 	Add_KeyFrame(27, 0, true);
 
-    return S_OK;
+    return __super::Initialize();;
 }
 
 void CState_PathNavigation_Run_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -71,7 +69,7 @@ void CState_PathNavigation_Run_Warrior::Exit(CUnit* pOwner, CAnimator* pAnimator
 
 STATE_TYPE CState_PathNavigation_Run_Warrior::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
 }
 
 void CState_PathNavigation_Run_Warrior::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)

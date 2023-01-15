@@ -99,8 +99,8 @@ STATE_TYPE CJump_Lancer::Tick(CUnit* pOwner, CAnimator* pAnimator)
     if (!pOwner->Is_Air())
         return STATE_RUN_LANCER;
 
-    Follow_MouseLook(pOwner);
-    pOwner->Set_DirAsLook();
+    //Follow_MouseLook(pOwner);
+    //pOwner->Set_DirAsLook();
 
     return __super::Tick(pOwner, pAnimator);
     

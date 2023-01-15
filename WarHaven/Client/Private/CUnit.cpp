@@ -577,6 +577,15 @@ CUnit* CUnit::Get_TargetUnit()
 	return m_pOwnerPlayer->Get_TargetPlayer()->Get_CurrentUnit();
 }
 
+CGameObject* CUnit::Get_TargetObject()
+{
+	if (!m_pOwnerPlayer->Get_TargetObject())
+		return nullptr;
+
+	return m_pOwnerPlayer->Get_TargetPlayer()->Get_TargetObject();
+}
+
+
 void CUnit::Enter_State(STATE_TYPE eType, void* pData)
 {
 	if (!m_bControlable)
@@ -771,7 +780,7 @@ HRESULT CUnit::Start()
 
 	/* PASS */
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
-	m_pModelCom->Set_ShaderPass(MODEL_PART_FACE, VTXANIM_PASS_FACE);
+	//m_pModelCom->Set_ShaderPass(MODEL_PART_FACE, VTXANIM_PASS_FACE);
 
 	if (m_pGlider)
 		m_pGlider->SetUp_GliderTrail();

@@ -21,8 +21,6 @@ CState_PathNavigation_Default_Paladin::~CState_PathNavigation_Default_Paladin()
 
 HRESULT CState_PathNavigation_Default_Paladin::Initialize()
 {
-	__super::Initialize();
-
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;
 
@@ -35,7 +33,7 @@ HRESULT CState_PathNavigation_Default_Paladin::Initialize()
 	Add_KeyFrame(6, 0);
 	Add_KeyFrame(31, 0);
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Default_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -62,7 +60,7 @@ void CState_PathNavigation_Default_Paladin::Exit(CUnit* pOwner, CAnimator* pAnim
 
 STATE_TYPE CState_PathNavigation_Default_Paladin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
 }
 
 void CState_PathNavigation_Default_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)

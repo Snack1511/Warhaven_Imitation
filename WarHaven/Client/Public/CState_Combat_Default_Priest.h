@@ -27,6 +27,7 @@ private:
 
 private:
 	STATE_TYPE Random_State(CUnit* pOwner, CAnimator* pAnimator);
+	
 
 };
 

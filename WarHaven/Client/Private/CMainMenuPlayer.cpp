@@ -272,10 +272,19 @@ HRESULT CMainMenuPlayer::Initialize_Prototype()
 		if (wstrModeSkel[i].empty())
 			continue;
 
+
 		tModelData[i].strModelPaths[MODEL_PART_SKEL] = wstrModeSkel[i];
 		tModelData[i].strModelPaths[MODEL_PART_BODY] = wstrModeBody[i];
 		tModelData[i].strModelPaths[MODEL_PART_FACE] = wstrModeFace[i];
 		tModelData[i].strModelPaths[MODEL_PART_HEAD] = wstrModeHead[i];
+
+		if (i == FIONA)
+		{
+			tModelData[i].strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/Characters/Valkyrie/Body/SK_Fiona0001_Main_Body.fbx";
+			tModelData[i].strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Main_Face.fbx";
+			tModelData[i].strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Main_Head.fbx";
+		}
+
 
 		if (wstrModeWeapon_R[i] != L"")
 		{

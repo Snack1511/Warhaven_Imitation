@@ -19,10 +19,7 @@ CState_PathNavigation_Sprint::~CState_PathNavigation_Sprint()
 
 HRESULT CState_PathNavigation_Sprint::Initialize()
 {
-    __super::Initialize();
-
-
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Sprint::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -44,6 +41,9 @@ void CState_PathNavigation_Sprint::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_PathNavigation_Sprint::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pOwner->Is_Air())
+        return m_eJumpFallStateType;
+
     return STATE_END;
 }
 
