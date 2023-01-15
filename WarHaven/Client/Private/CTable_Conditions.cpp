@@ -360,23 +360,23 @@ void CTable_Conditions::Check_DeadAllies(_bool& OutCondition, CPlayer* pPlayer, 
 		{
 			continue;
 		}
-		else
-		{
-			_float4 vTargetPosition = (*iter)->Get_WorldPos();
+		//else
+		//{
+		//	_float4 vTargetPosition = (*iter)->Get_WorldPos();
 
-			_float4 vDist = (vTargetPosition - MyPositoin);
-			if (pAIController->Get_Personality()->Get_LimitRouteDistance() < vDist.Length())
-			{
-				_float4 vDir = vDist.Normalize();
-				_float4 vMyLook = pPlayer->Get_LookDir();
+		//	_float4 vDist = (vTargetPosition - MyPositoin);
+		//	if (pAIController->Get_Personality()->Get_LimitRouteDistance() < vDist.Length())
+		//	{
+		//		_float4 vDir = vDist.Normalize();
+		//		_float4 vMyLook = pPlayer->Get_LookDir();
 
-				_float DotDir = vMyLook.Dot(vDir);
+		//		_float DotDir = vMyLook.Dot(vDir);
 
-				//1보다 떨어진 돌이 된 아군이 정면에 있는지 확인 --> 없으면 삭제 --> 못본거
-				if (RemovePlayer((DotDir < 0.f), Enemies, iter))
-					continue;
-			}
-		}
+		//		//1보다 떨어진 돌이 된 아군이 정면에 있는지 확인 --> 없으면 삭제 --> 못본거
+		//		if (RemovePlayer((DotDir < 0.f), Enemies, iter))
+		//			continue;
+		//	}
+		//}
 		iter++;
 
 	}
@@ -833,16 +833,18 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 	//정리해놓고, 만약 그동안 쓰레드가 내놓은 타겟 플레이어가 있으면 갱신 시키기. (동기화?)
 	pPlayer->Set_SortedEnemies(Enemies);
 
+
 	if (pPlayer->Get_ReserveTargetPlayer())
 	{
-		OutCondition = true;
-		OutDesc->pEnemyPlayer = pPlayer->Get_ReserveTargetPlayer();
+			OutDesc->pEnemyPlayer = pPlayer->Get_ReserveTargetPlayer();
+			OutCondition = true;
 	}
 	else
 		OutCondition = false;
 
 	if (!pPlayer->Is_TargetLocked())
-		std::future<int>	newThread = std::async(std::launch::async, bind(Func_Ray, pPlayer));
+		if (!Enemies.empty())
+			std::future<int>	newThread = std::async(std::launch::async, bind(Func_Ray, pPlayer));
 
 
 	if (OutCondition)
@@ -852,6 +854,12 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
 	//CHECKFALSEOUTCONDITION(OutCondition);
+
+	if (pPlayer->Get_CurClass() >= FIONA)
+	{
+		OutCondition = false;
+		return;
+	}
 
 	//소팅하고 정리해놓기
 	if (!pPlayer->Get_CurrentUnit()->Is_Valid())
@@ -875,19 +883,37 @@ void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& O
 			else return false;
 		});
 
+	/* Test */
+
+	//if (!Enemies.empty())
+	//{
+
+	//	OutCondition = true;
+	//	OutDesc->pAlliesPlayer = Enemies.front();
+	//	return;
+	//}
+
+
 	//정리해놓고, 만약 그동안 쓰레드가 내놓은 타겟 플레이어가 있으면 갱신 시키기. (동기화?)
 	pPlayer->Set_SortedAllies(Enemies);
 
+	OutCondition = false;
+
 	if (pPlayer->Get_ReserveTargetAlly())
 	{
-		OutCondition = true;
-		OutDesc->pAlliesPlayer = pPlayer->Get_ReserveTargetAlly();
+		if (pPlayer->Get_ReserveTargetAlly()->Is_AbleRevival())
+		{
+			OutCondition = true;
+			OutDesc->pAlliesPlayer = pPlayer->Get_ReserveTargetAlly();
+		}
 	}
-	else
-		OutCondition = false;
 
 	if (!pPlayer->Is_AllyLocked())
-		std::future<int>	newThread = std::async(std::launch::async, bind(Func_Ray_Revive, pPlayer));
+	{
+		if (!Enemies.empty())
+			std::future<int>	newThread = std::async(std::launch::async, bind(Func_Ray_Revive, pPlayer));
+
+	}
 
 
 	if (OutCondition)

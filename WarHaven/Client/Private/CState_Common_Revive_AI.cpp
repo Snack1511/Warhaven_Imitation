@@ -55,55 +55,31 @@ HRESULT CState_Common_Revive_AI::Initialize()
 
 void CState_Common_Revive_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+    m_eAnimType = ANIM_BASE_R;
+
     switch (pOwner->Get_OwnerPlayer()->Get_CurClass())
     {
     case WARRIOR:
-        m_iAnimIndex;
+        m_iAnimIndex = 27;
+        break;
+    case ENGINEER:
+        m_iAnimIndex = 30;
+        break;
+    case ARCHER:
+        m_iAnimIndex = 27;
+        break;
+    case PALADIN:
+        m_iAnimIndex = 19;
+        break;
+    case PRIEST:
+        m_iAnimIndex = 19;
         break;
     default:
         break;
     }
 
+    pOwner->Get_PhysicsCom()->Set_MaxSpeed(pOwner->Get_Status().fRunSpeed);
 
-
-    if (ePrevType != m_ePreStateType && pOwner->Get_OwnerPlayer()->Get_CurClass() >= FIONA)
-    {
-        m_iAnimIndex = 20;
-    }
-
-    m_pAbjPlayer = pOwner->Get_RevivalPlayer();
-
-    _float4 vMyPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
-    m_vPos = vMyPos;
-    _float4 vDir;
-
-
-    if (m_pAbjPlayer)
-    {
-        static_cast<CPlayer*>(m_pAbjPlayer)->Get_CurrentUnit()->Start_Reborn();
-        m_vPos = pOwner->Get_RevivalPlayer()->Get_WorldPos();
-        vDir = m_vPos - vMyPos;
-
-    }
-    else
-    {
-        m_iRand = random(0, 2);
-
-        if (m_iRand == 0)
-        {
-            m_eCurPhase = DANCE;
-            m_iAnimIndex = 9;
-        }
-        else
-        {
-            m_eCurPhase = PHASE_NONE;
-        }
-
-        vDir = _float4(1.f, 0.f, 0.f);
-    }
-
-    vDir.y = 0.f;
-    pOwner->Get_Transform()->Set_LerpLook(vDir, 0.4f);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -114,14 +90,54 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
     STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
 
+    CUnit* pTargetUnit = pOwner->Get_TargetUnit();
+
+  
+
     switch (m_eCurPhase)
     {
     case Client::CState_Common_Revive_AI::eFOLLOW:
     {
+        //목표까지 가야함
+        if (pOwner->Get_RevivalPlayer())
+        {
+            m_eCurPhase = BEGIN;
+            m_eAnimType = ANIM_ETC;
 
+            if (pOwner->Get_OwnerPlayer()->Get_CurClass() >= FIONA)
+                m_iAnimIndex = 22;
+            else
+                m_iAnimIndex = 30;
+
+
+            _float4 vMyPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+            _float4 vLook = pOwner->Get_RevivalPlayer()->Get_Transform()->Get_World(WORLD_POS) - vMyPos;
+
+            vLook.y = 0.f;
+
+            pOwner->Get_Transform()->Set_LerpLook(vLook.Normalize(), 0.5f);
+            pOwner->Get_RevivalPlayer()->Get_CurrentUnit()->Start_Reborn();
+
+            CState::Enter(pOwner, pAnimator, (STATE_TYPE)m_eCurPhase);
+        }
+        else
+        {
+            //방향으로 가기 
+            if (!pTargetUnit)
+                return __super::Tick(pOwner, pAnimator);
+
+            pOwner->Set_LookToTarget();
+            _float4 vLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
+            pOwner->Get_PhysicsCom()->Set_Dir(vLook);
+            pOwner->Get_PhysicsCom()->Set_Accel(50.f);
+
+
+        }
 
 
     }
+
+    break;
 
     case Client::CState_Common_Revive_AI::PHASE_NONE:
 

@@ -488,7 +488,7 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 				CPath* pPath = CGameSystem::Get_Instance()->Find_Path(m_strStartPath);
 
 
-				if (pPath)
+				if (pPath) 
 				{
 					m_pUI_Trail->Clear_Nodes();
 					vPos.y += 0.1f;
@@ -980,13 +980,13 @@ CPlayer* CPlayer::Get_TargetPlayer(eTargetPlayerType eType)
 		return nullptr;
 
 
-	switch (eType)
+	/*switch (eType)
 	{
 	case eTargetPlayerType::eEnemy:
 		return m_pCurBehaviorDesc->pEnemyPlayer;
 	case eTargetPlayerType::eAllies:
 		return m_pCurBehaviorDesc->pAlliesPlayer;
-	}
+	}*/
 
 	return m_pTargetPlayer;
 
@@ -1126,14 +1126,9 @@ void CPlayer::On_RealChangeBehavior()
 		break;
 
 	case eBehaviorType::ePathFinding:
-		pNewTargetObj = m_pCurBehaviorDesc->pTriggerPtr;
 		m_bKeepRay = false;
 		break;
 
-
-		m_pTargetPlayer = m_pCurBehaviorDesc->pAlliesPlayer;
-		pNewTargetObj = m_pTargetPlayer;
-		m_bKeepRay = false;
 		break;
 
 	default:

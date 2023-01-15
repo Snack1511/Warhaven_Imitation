@@ -84,8 +84,6 @@ void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint&
 		else if (eColType == COL_BLUEGUARDBREAK)
 			m_pCollider->Set_ColIndex(COL_REDGUARDBREAK);
 
-
-
 		else if (eColType == COL_REDGROGGYATTACK)
 			m_pCollider->Set_ColIndex(COL_BLUEGROGGYATTACK);
 

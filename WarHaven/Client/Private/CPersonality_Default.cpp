@@ -79,7 +79,7 @@ HRESULT CPersonality_Default::Initailize()
 	m_BehaviorList.push_back(pBehavior);*/
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Revive"))->Clone();
-	pBehavior->Add_OtherCondition(wstring(L"Check_LookAllies"));
+	pBehavior->Add_OtherCondition(wstring(L"Check_DeadAllies"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearAllies"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
@@ -105,6 +105,8 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);
+
+	
 
 	//pBehavior = m_pConditionTable->Find_Behavior(wstring(L"CatchCannon"))->Clone();
 	////근처에 상대가 쏜 대포알이 있을 때
