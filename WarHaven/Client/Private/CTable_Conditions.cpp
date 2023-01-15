@@ -100,6 +100,7 @@ HRESULT CTable_Conditions::SetUp_Conditions()
 	Add_WhyCondition(wstring(L"Check_LookEnemy"), Check_LookEnemy);
 	Add_WhyCondition(wstring(L"Check_DeadAllies"), Check_DeadAllies);
 	Add_WhyCondition(wstring(L"Check_ValidPath"), Check_ValidPath);
+	Add_WhyCondition(wstring(L"Check_ReviveTeam"), Check_ReviveTeam);
 #pragma endregion 플레이어 체크
 
 #pragma region 맵 체크
@@ -690,6 +691,22 @@ void CTable_Conditions::Check_EmptyRoute(_bool& OutCondition, CPlayer* pPlayer, 
 	//OutCondition = !pPlayer->Get_CurRoute().empty();
 }
 
+void CTable_Conditions::Check_ReviveTeam(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+	CHECKFALSEOUTCONDITION(OutCondition);
+	OutCondition = false;
+
+	//부활 가능한 아군에 닿았고 그 아군이 able revival일 때 
+	if (pPlayer->Get_CurrentUnit()->Get_RevivalPlayer())
+	{
+		if (pPlayer->Get_CurrentUnit()->Get_RevivalPlayer()->Is_AbleRevival())
+		{
+			OutCondition = true;
+		}
+	}
+
+}
+
 void CTable_Conditions::Select_Leader(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
 	//CHECKFALSEOUTCONDITION(OutCondition);
@@ -753,13 +770,50 @@ int	Func_Ray(CPlayer* pPlayer)
 	return 0;
 }
 
+int	Func_Ray_Revive(CPlayer* pPlayer)
+{
+	pPlayer->Ally_Lock();
+
+
+	list<CPlayer*>* pSortedEnemies = pPlayer->Get_SortedAlliesP();
+
+	_float4 vRayStartPos = pPlayer->Get_WorldPos();
+	vRayStartPos.y += 0.5f;
+
+	CPlayer* pTargetPlayer = nullptr;
+
+	for (auto& elem : (*pSortedEnemies))
+	{
+		if (!elem->Is_Valid())
+			continue;
+
+		_float4 vDir = elem->Get_WorldPos() - pPlayer->Get_WorldPos();
+		_float fLength = vDir.Length();
+
+		if (!GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, fLength))
+		{
+			pTargetPlayer = elem;
+			break;
+		}
+
+	}
+
+	pPlayer->ReserveTargetAlly(pTargetPlayer);
+
+	return 0;
+}
+
 
 void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
 	//CHECKFALSEOUTCONDITION(OutCondition);
 
 	//소팅하고 정리해놓기
-
+	if (!pPlayer->Get_CurrentUnit()->Is_Valid())
+	{
+		OutCondition = false;
+		return;
+	}
 
 	_float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
 
@@ -799,24 +853,45 @@ void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& O
 {
 	//CHECKFALSEOUTCONDITION(OutCondition);
 
+	//소팅하고 정리해놓기
+	if (!pPlayer->Get_CurrentUnit()->Is_Valid())
+	{
+		OutCondition = false;
+		return;
+	}
+
 	_float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
 
-	list<CPlayer*> Allies = pAIController->Get_NearAllies();
-	CHECK_EMPTY(Allies);
+	list<CPlayer*> Enemies = pAIController->Get_NearAllies();
 
-	Allies.sort([&MyPositoin](auto& Sour, auto& Dest)
+	CHECK_EMPTY(Enemies);
+
+	Enemies.sort([&MyPositoin](auto& Sour, auto& Dest)
 		{
 			_float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-	_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-	if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
-		return true;
-	else return false;
+			_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+			if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
+				return true;
+			else return false;
 		});
 
-	CPlayer* pTargetPlayer = Allies.front();
-	pPlayer->Set_TargetPos(pTargetPlayer->Get_WorldPos());
-	OutDesc->pAlliesPlayer = pTargetPlayer;
-	OutCondition = true;
+	//정리해놓고, 만약 그동안 쓰레드가 내놓은 타겟 플레이어가 있으면 갱신 시키기. (동기화?)
+	pPlayer->Set_SortedAllies(Enemies);
+
+	if (pPlayer->Get_ReserveTargetAlly())
+	{
+		OutCondition = true;
+		OutDesc->pAlliesPlayer = pPlayer->Get_ReserveTargetAlly();
+	}
+	else
+		OutCondition = false;
+
+	if (!pPlayer->Is_AllyLocked())
+		std::future<int>	newThread = std::async(std::launch::async, bind(Func_Ray_Revive, pPlayer));
+
+
+	if (OutCondition)
+		pPlayer->Set_TargetPos(OutDesc->pAlliesPlayer->Get_WorldPos());
 
 }
 

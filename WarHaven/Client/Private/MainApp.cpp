@@ -353,6 +353,9 @@ HRESULT CMainApp::Load_SoundFile()
 
 void CMainApp::Col_Check()
 {
+	//GAMEINSTANCE->Check_Group(COL_BLUETEAM, COL_REDTEAM);
+
+
 	/* TRIGGER */
 	GAMEINSTANCE->Check_Group(COL_BLUETEAM, COL_TRIGGER);
 	GAMEINSTANCE->Check_Group(COL_REDTEAM, COL_TRIGGER);

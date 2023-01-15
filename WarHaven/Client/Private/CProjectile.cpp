@@ -111,10 +111,20 @@ void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint&
 	}
 	else
 	{
+		if (m_bHit)
+			return;
+
+		m_bHit = true;
+
 		m_pOwnerUnit->CallBack_CollisionEnter(pOtherObj, eOtherColType, eMyColType, vHitPos);
 		pOtherObj->CallBack_CollisionEnter(m_pOwnerUnit, eMyColType, eOtherColType, vHitPos);
+		_bool bHeadShot = false;
+		if (eOtherColType == COL_REDHITBOX_HEAD || eOtherColType == COL_BLUEHITBOX_HEAD)
+			bHeadShot = true;
 
-		Hit_Unit(pOtherObj, vHitPos);
+		Hit_Unit(pOtherObj, vHitPos, bHeadShot);
+
+		
 	}
 
 }
@@ -688,11 +698,13 @@ void CProjectile::OnEnable()
 {
 	__super::OnEnable();
 	DISABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
+	m_bHit = false;
 }
 
 void CProjectile::OnDisable()
 {
 	__super::OnDisable();
+	m_bHit = false;
 
 	Safe_release(m_pActor);
 	m_fLoopTimeAcc = 0.f;
@@ -705,31 +717,41 @@ void CProjectile::OnDisable()
 
 }
 
-void CProjectile::Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos)
+void CProjectile::Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos, _bool bHeadShot)
 {
-
-	_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
-	_float4 vDir = (Get_ArrowHeadPos() - vHitPos);
-	vCurPos -= vDir * 0.5f;
-
-	m_pTransform->Set_World(WORLD_POS, vCurPos);
-	m_pTransform->Make_WorldMatrix();
-
+	//bHeadShot = true;
 
 	m_pHitUnit = pHitUnit;
 	On_ChangePhase(eSTICK);
-	m_pCurStickBone = GET_COMPONENT_FROM(pHitUnit, CModel)->Find_HierarchyNode("0B_COM");
+
+	string strBoneName = "0B_Spine1";
+
+	if (bHeadShot)
+		strBoneName = "0B_Head";
+
+	m_pCurStickBone = GET_COMPONENT_FROM(pHitUnit, CModel)->Find_HierarchyNode(strBoneName.c_str());
 
 	if (!m_pCurStickBone)
 		return;
 
-	//맞은 순간에 worldmat과 맞은 놈의 월드 inverse
+
+
+	//1. 화살이 맞으면 일단 matInv를 곱해서 로컬로 들어가자
 	_float4x4 matWorldInv = m_pCurStickBone->Get_BoneMatrix().Inverse();
 	m_matHitOffset = m_pTransform->Get_WorldMatrix() * matWorldInv;
 
-	/**((_float4*)&m_matHitOffset.m[0]) = ((_float4*)&m_matHitOffset.m[0])->Normalize();
-	*((_float4*)&m_matHitOffset.m[1]) = ((_float4*)&m_matHitOffset.m[1])->Normalize();
-	*((_float4*)&m_matHitOffset.m[2]) = ((_float4*)&m_matHitOffset.m[2])->Normalize();*/
+
+	//2. 화살 방향도 돌아가야함
+	_float4 vDir = (Get_ArrowHeadPos() - vHitPos);
+	vDir = vDir.MultiplyNormal(matWorldInv);
+
+	//3. 화살의 로컬 매트릭스는 x랑 z는 지우고 dir 방향으로 밀기
+	_float4 vHitLocalPos = ZERO_VECTOR;
+	vHitLocalPos -= vDir.Normalize() * 100.f;
+
+	
+
+	memcpy(m_matHitOffset.m[3], &vHitLocalPos, sizeof(_float4));
 
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Blood", vHitPos);
 

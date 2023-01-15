@@ -98,6 +98,7 @@ private:
     void Check_AdjCannon(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_AbleHero(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_EmptyRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_ReviveTeam(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
 #pragma endregion 플레이어 상태 체크
     //void Check_Winning(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_EmptyEnemyInTerritory(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);

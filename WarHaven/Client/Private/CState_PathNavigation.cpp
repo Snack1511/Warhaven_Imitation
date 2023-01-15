@@ -74,7 +74,7 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		vRayStartPos.y += 0.5f;
 
 
-		if (GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, pCurPath->Get_CurLength(vCurPos) * 0.8f))
+		if (GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, 1.f))
 		{
 			/* 만약 main path 타고있던거면 main path 그냥 다 탄걸로 처리해 */
 			if (m_pOwner->Get_StartMainPath() == pCurPath)

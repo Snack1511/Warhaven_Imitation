@@ -78,13 +78,13 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);*/
 
-	/*pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Revive"))->Clone();
-	pBehavior->Add_OtherCondition(wstring(L"Check_DeadAllies"));
+	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Revive"))->Clone();
+	pBehavior->Add_OtherCondition(wstring(L"Check_LookAllies"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearAllies"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(iPriority++);
-	m_BehaviorList.push_back(pBehavior);*/
+	m_BehaviorList.push_back(pBehavior);
 
 	//캐논점령지에 있고, 캐논 근처에, 캐논사용가능할 때
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PadenCannonInteract"))->Clone();

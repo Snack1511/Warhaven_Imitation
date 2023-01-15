@@ -161,6 +161,8 @@ void CState_Combat_Default_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pA
 
 STATE_TYPE CState_Combat_Default_Priest::Random_State(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (!pOwner->Get_TargetUnit())
+        return STATE_END;
 
     if (pOwner->Get_TargetUnit()->Get_OwnerPlayer()->Get_CurClass() == ARCHER && pOwner->Can_Use(CUnit::SKILL3))
         return AI_STATE_COMBAT_CATCH_BEGIN_PRIEST;

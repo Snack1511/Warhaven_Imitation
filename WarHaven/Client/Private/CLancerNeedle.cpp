@@ -600,6 +600,8 @@ void CLancerNeedle::OnDisable()
 	
 	if (m_pStinedUnit)
 	{
+		CFunctor::Play_Sound(L"Effect_Die", CHANNEL_EFFECTS, m_pStinedUnit->Get_Transform()->Get_World(WORLD_POS));
+
 		m_pStinedUnit->On_Die();
 		m_pStinedUnit = nullptr;
 	}
@@ -742,6 +744,7 @@ void CLancerNeedle::Dragging_Unit()
 			break;
 
 		case Client::LANCER:
+			CFunctor::Play_Sound(L"Effect_Die", CHANNEL_EFFECTS, m_pStinedUnit->Get_Transform()->Get_World(WORLD_POS));
 			m_pStinedUnit->On_Die();
 			m_pStinedUnit = nullptr;
 			break;

@@ -36,8 +36,6 @@ CState_Common_Revive_AI* CState_Common_Revive_AI::Create()
 }
 HRESULT CState_Common_Revive_AI::Initialize()
 {
-
-
     m_eAnimType = ANIM_ETC;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 28;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_COMMON_REVIVE_AI;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -57,6 +55,17 @@ HRESULT CState_Common_Revive_AI::Initialize()
 
 void CState_Common_Revive_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+    switch (pOwner->Get_OwnerPlayer()->Get_CurClass())
+    {
+    case WARRIOR:
+        m_iAnimIndex;
+        break;
+    default:
+        break;
+    }
+
+
+
     if (ePrevType != m_ePreStateType && pOwner->Get_OwnerPlayer()->Get_CurClass() >= FIONA)
     {
         m_iAnimIndex = 20;
@@ -107,6 +116,13 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
     switch (m_eCurPhase)
     {
+    case Client::CState_Common_Revive_AI::eFOLLOW:
+    {
+
+
+
+    }
+
     case Client::CState_Common_Revive_AI::PHASE_NONE:
 
         

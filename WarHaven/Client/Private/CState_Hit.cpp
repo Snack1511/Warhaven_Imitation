@@ -180,7 +180,11 @@ STATE_TYPE CState_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
         m_fTimeAcc += fDT(0);
 
         if (m_fTimeAcc > 1.5f)
+        {
+            CFunctor::Play_Sound(L"Effect_Die", CHANNEL_EFFECTS, pOwner->Get_Transform()->Get_World(WORLD_POS));
             pOwner->On_Die();
+
+        }
     }
 
     return __super::Tick(pOwner, pAnimator);

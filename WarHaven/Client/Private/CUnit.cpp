@@ -63,7 +63,6 @@
 
 #define PHYSX_ON
 
-
 CUnit::CUnit()
 {
 }
@@ -75,7 +74,8 @@ CUnit::~CUnit()
 
 void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
-
+	if (eOtherColType == COL_BLUETEAM || eOtherColType == COL_REDTEAM)
+		return;
 
 	if (eOtherColType == COL_REVIVE)
 	{
@@ -227,6 +227,19 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 void CUnit::Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
+	/*if (eOtherColType == COL_BLUETEAM || eOtherColType == COL_REDTEAM)
+	{
+		if (static_cast<CUnit*>(pOtherObj)->Is_MainPlayer())
+			return;
+
+		_float4 vCurPos = pOtherObj->Get_Transform()->Get_World(WORLD_POS);
+
+		_float4 vDir = CUtility_Transform::Get_Dir_2D(m_pTransform, pOtherObj->Get_Transform());
+
+		vCurPos += vDir * fDT(0);
+		static_cast<CUnit*>(pOtherObj)->Teleport_Unit(vCurPos);
+
+	}*/
 }
 
 void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
@@ -1820,8 +1833,8 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 {
 	m_bDie = true;
+	CFunctor::Play_Sound(L"Effect_Die", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS));
 
-	CFunctor::Play_Sound(L"Effect_Die", CHANNEL_UI, Get_Transform()->Get_World(WORLD_POS));
 
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StoneSpark", vHitPos);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Hit_Particle", vHitPos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));

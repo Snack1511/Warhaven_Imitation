@@ -1587,17 +1587,27 @@ void CPlayer::Clear_DebugObject()
 
 void CPlayer::Update_TargetLock()
 {
-	if (!m_bTargetLocked)
-		return;
-
-	m_fTargetAcc += fDT(0);
-
-	if (m_fTargetAcc >= m_fTargetMaxTime)
+	if (m_bTargetLocked)
 	{
-		m_fTargetAcc = 0.f;
-		Target_UnLock();
+		m_fTargetAcc += fDT(0);
+
+		if (m_fTargetAcc >= m_fTargetMaxTime)
+		{
+			m_fTargetAcc = 0.f;
+			Target_UnLock();
+		}
 	}
-	 
+
+	if (m_bAllyLocked)
+	{
+		m_fAllyAcc += fDT(0);
+
+		if (m_fAllyAcc >= m_fAllyMaxTime)
+		{
+			m_fAllyAcc = 0.f;
+			m_bAllyLocked = false;
+		}
+	}
 
 }
 
@@ -1744,7 +1754,11 @@ void CPlayer::Check_AbleRevival()
 				// 1. respawn 거점 먹었으면 respawn에서
 				if (m_pMyTeam->Has_RespawnTrigger())
 				{
-					vStartPos = m_pMyTeam->Find_RespawnPosition("Hwara_Respawn");
+					if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_HWARA)
+						vStartPos = m_pMyTeam->Find_RespawnPosition("Hwara_Respawn");
+					else
+						vStartPos = m_pMyTeam->Find_RespawnPosition("Paden_Trigger_R");
+
 				}
 				else if (m_pMyTeam->Has_CenterTrigger())
 				{

@@ -46,6 +46,7 @@ void CPhysXCharacter::Set_Position(_float4 vPos)
 
 void CPhysXCharacter::onShapeHit(const PxControllerShapeHit& hit)
 {
+
 	if (PxActorType::eRIGID_DYNAMIC == hit.actor->getType())
 	{
 		//밀어내야함

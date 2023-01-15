@@ -298,17 +298,36 @@ private:
 	_float	m_fTargetAcc = 0.f;
 	_float	m_fTargetMaxTime = 1.5f;
 
+private:
+	/* 쓰레드가 만질 타겟 플레이어 포인터 */
+	list<CPlayer*> m_SortedAllies;
+	CPlayer* m_pReserveTargetAlly = nullptr;
+	_bool	m_bAllyLocked = false;
+	_float	m_fAllyAcc = 0.f;
+	_float	m_fAllyMaxTime = 2.f;
+
+
 public:
 	list<CPlayer*>* Get_SortedEnemiesP() { return &m_SortedEnemies; }
 	void			Set_SortedEnemies(list<CPlayer*>& listEnemies) { m_SortedEnemies = listEnemies; }
 
+	list<CPlayer*>* Get_SortedAlliesP() { return &m_SortedAllies; }
+	void			Set_SortedAllies(list<CPlayer*>& listEnemies) { m_SortedAllies = listEnemies; }
+
 	void	ReserveTargetPlayer(CPlayer* pPlayer) { m_pReserveTargetPlayer = pPlayer; }
 	CPlayer*	Get_ReserveTargetPlayer() { return m_pReserveTargetPlayer; }
 
+
+	void	ReserveTargetAlly(CPlayer* pPlayer) { m_pReserveTargetAlly = pPlayer; }
+	CPlayer* Get_ReserveTargetAlly() { return m_pReserveTargetAlly; }
+
 	void	Target_Lock() { m_bTargetLocked = true; }
+	void	Ally_Lock() { m_bAllyLocked = true; }
+	void	Ally_UnLock() { m_bAllyLocked = false; }
 	void	Target_UnLock() { m_bTargetLocked = false; }
 
 	_bool	Is_TargetLocked() { return m_bTargetLocked; }
+	_bool	Is_AllyLocked() { return m_bAllyLocked; }
 
 private:
 	CPlayer* m_pTargetPlayer = nullptr;

@@ -515,7 +515,11 @@ _bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist
 			{
 				continue;
 			}
+
+			if (((vCenterPos - vStartPos).Length() - fRadius) >= fMaxDistance)
+				continue;
 		}
+
 
 		PxU32 hitCount = PxGeometryQuery::raycast(
 			CUtility_PhysX::To_PxVec3(vStartPos),
