@@ -1634,7 +1634,7 @@ CPath* CGameSystem::Clone_RandomReleasePath(_float4 vCurPos)
 	if (m_eCurStageType == eSTAGE_HWARA)
 		eEnum = eHWARA_RELEASE;
 
-	_float fMinDist = 9999.f;
+	_float fMinDist = 10.f;
 	CPath* pPath = nullptr;
 
 	for (auto& elem : m_mapAllPathes[eEnum])

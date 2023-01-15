@@ -51,7 +51,7 @@ HRESULT CState_Combat_Attack_Sting_Priest::Initialize()
    
     m_iStopIndex = 48;
 
-	Add_KeyFrame(39, 3);
+	Add_KeyFrame(39, 1);
 	Add_KeyFrame(m_iStopIndex, 2);
 	Add_KeyFrame(30, 999);
 	Add_KeyFrame(35, 998);

@@ -79,7 +79,7 @@ HRESULT CPersonality_Default::Initailize()
 	m_BehaviorList.push_back(pBehavior);*/
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Revive"))->Clone();
-	pBehavior->Add_OtherCondition(wstring(L"Check_DeadAllies"));
+	pBehavior->Add_OtherCondition(wstring(L"EmptyOtherCondition"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearAllies"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();

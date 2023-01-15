@@ -36,7 +36,7 @@ HRESULT CState_Combat_Attack_VerticalCut_Engineer::Initialize()
 
 	m_iStopIndex = 80;
 
-	Add_KeyFrame(60, 3);
+	Add_KeyFrame(60, 1);
 	Add_KeyFrame(m_iStopIndex, 2);
 	Add_KeyFrame(70, 999);
 

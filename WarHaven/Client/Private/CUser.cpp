@@ -1008,10 +1008,7 @@ void CUser::Toggle_DeadUI(_bool value, _bool isFall)
 		return;
 	}
 
-	if (!CGameObject::Is_Valid(m_pUI_Dead))
-	{
-		m_pUI_Dead->Toggle_DeadUI(value, isFall);
-	}
+	m_pUI_Dead->Toggle_DeadUI(value, isFall);
 }
 void CUser::Disable_RevivalUI()
 {

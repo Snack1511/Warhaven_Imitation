@@ -469,7 +469,15 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 			}
 			else
 			{
-				CPath* pNewPath = CGameSystem::Get_Instance()->Clone_Path(m_pMySquad->Get_LeaderPlayer()->m_strStartPath, m_pAIController);
+				CPath* pNewPath = nullptr;
+				if (m_pMyTeam->Has_RespawnTrigger())
+				{
+					pNewPath = CGameSystem::Get_Instance()->Clone_RandomRespawnPath(m_pAIController, m_pMyTeam->Get_TeamType());
+				}
+				else
+				{
+					pNewPath = CGameSystem::Get_Instance()->Clone_Path(m_pMySquad->Get_LeaderPlayer()->m_strStartPath, m_pAIController);
+				}
 				Set_NewMainPath(pNewPath);
 			}
 		}
@@ -1050,6 +1058,9 @@ void CPlayer::On_Reborn()
 	if (m_bIsMainPlayer)
 		GAMEINSTANCE->Stop_GrayScale();
 
+	CUser::Get_Instance()->SetActive_HUD_RevivalUI(false);
+
+
 	m_bAbleRevival = false;
 	m_fRevivalAcc = 0.f;
 
@@ -1338,7 +1349,7 @@ void CPlayer::My_LateTick()
 
 	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
 	vPos.y += 2.f;
-	m_bIsInFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
+	m_bIsInFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.3f);
 
 	if (m_pCurrentUnit->Get_Status().fHP > 0.f)
 	{
@@ -1726,22 +1737,6 @@ void CPlayer::Check_AbleRevival()
 		if (m_fRevivalAcc >= m_fMaxRevivalTime)
 		{
 
-			/*if (m_bIsLeaderPlayer)
-				Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
-			else
-			{
-				CPath* pPath = m_pMySquad->Get_LeaderPlayer()->Get_CurPath();
-
-				if (nullptr == pPath)
-				{
-					pPath = CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType());
-					Set_NewPath(pPath);
-				}
-				else
-					Set_NewPath(pPath->Clone());
-
-
-			}*/
 			if (!m_bIsMainPlayer)
 			{
 				_float4 vStartPos;
@@ -1765,6 +1760,10 @@ void CPlayer::Check_AbleRevival()
 				}
 
 				Respawn_Unit(vStartPos, m_eCurrentClass);
+			}
+			else
+			{
+				m_bAbleRevival = false;
 			}
 
 

@@ -35,6 +35,7 @@
 
 #include "CState.h"
 #include "CState_Manager.h"
+#include "CUser.h"
 
 #include "CPhysXCharacter.h"
 
@@ -1549,6 +1550,12 @@ void CUnit::Start_Reborn()
 {
 	if (!m_pOwnerPlayer->Is_AbleRevival())
 		return;
+
+	if (m_bIsMainPlayer)
+	{
+		CUser::Get_Instance()->Toggle_DeadUI(false);
+		CUser::Get_Instance()->SetActive_HUD_RevivalUI(true);
+	}
 
 	m_pOwnerPlayer->Start_Reborn();
 

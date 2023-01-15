@@ -57,6 +57,9 @@ void CUI_Dead::OnDisable()
 
 	SetActive_DeadUI(false);
 	SetActive_RevivalUI(false);
+
+	m_bAbleRevival = false;
+	m_bIsFall = false;
 }
 
 void CUI_Dead::Toggle_DeadUI(_bool value, _bool isFall)
@@ -105,8 +108,6 @@ void CUI_Dead::My_Tick()
 	if (!m_bIsFall)
 	{
 		m_fAccTime += fDT(0);
-
-		cout << m_fAccTime << endl;
 
 		if (m_fAccTime > m_fDeadUIEnableTime)
 		{

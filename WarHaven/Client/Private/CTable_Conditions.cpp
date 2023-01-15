@@ -353,7 +353,7 @@ void CTable_Conditions::Check_DeadAllies(_bool& OutCondition, CPlayer* pPlayer, 
 
 	for (auto iter = Enemies.begin(); iter != Enemies.end();)
 	{
-		_bool bAlliesDead = ((*iter)->Is_Died());
+		_bool bAlliesDead = ((*iter)->IsMainPlayer());
 		_bool bRevival = !((*iter)->Is_AbleRevival());
 		//돌이 안됬거나 부활 가능한 아군이 아니면 삭제
 		if (RemovePlayer((!bAlliesDead || !bRevival), Enemies, iter))
@@ -870,55 +870,24 @@ void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& O
 
 	_float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
 
-	list<CPlayer*> Enemies = pAIController->Get_NearAllies();
+	list<CPlayer*> Allies = pAIController->Get_NearAllies();
 
-	CHECK_EMPTY(Enemies);
+	CHECK_EMPTY(Allies);
 
-	Enemies.sort([&MyPositoin](auto& Sour, auto& Dest)
-		{
-			_float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-			_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-			if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
-				return true;
-			else return false;
-		});
-
-	/* Test */
-
-	//if (!Enemies.empty())
-	//{
-
-	//	OutCondition = true;
-	//	OutDesc->pAlliesPlayer = Enemies.front();
-	//	return;
-	//}
-
-
-	//정리해놓고, 만약 그동안 쓰레드가 내놓은 타겟 플레이어가 있으면 갱신 시키기. (동기화?)
-	pPlayer->Set_SortedAllies(Enemies);
-
-	OutCondition = false;
-
-	if (pPlayer->Get_ReserveTargetAlly())
+	for (auto& elem : Allies)
 	{
-		if (pPlayer->Get_ReserveTargetAlly()->Is_AbleRevival())
+		if (elem->IsMainPlayer())
 		{
-			OutCondition = true;
-			OutDesc->pAlliesPlayer = pPlayer->Get_ReserveTargetAlly();
+			if (elem->Is_AbleRevival() && elem->Is_Died())
+			{
+				OutCondition = true;
+				OutDesc->pAlliesPlayer = elem;
+				return;
+			}
 		}
 	}
 
-	if (!pPlayer->Is_AllyLocked())
-	{
-		if (!Enemies.empty())
-			std::future<int>	newThread = std::async(std::launch::async, bind(Func_Ray_Revive, pPlayer));
-
-	}
-
-
-	if (OutCondition)
-		pPlayer->Set_TargetPos(OutDesc->pAlliesPlayer->Get_WorldPos());
-
+	OutCondition = false;
 }
 
 void CTable_Conditions::Select_MainPlayer(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)

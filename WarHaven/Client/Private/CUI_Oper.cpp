@@ -174,12 +174,18 @@ void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
 
 	if (m_bRespawnTriggerClicked)
 	{
-		if (m_eLoadLevel == LEVEL_PADEN)
-			vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition("Paden_Trigger_R");
-		else
-			vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition("Hwara_Respawn");
+		if (pMainPlayer->Get_Team()->Has_RespawnTrigger())
+		{
+			if (m_eLoadLevel == LEVEL_PADEN)
+				vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition("Paden_Trigger_R");
+			else
+				vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition("Hwara_Respawn");
 
-		pMainPlayer->SetStartPathEmpty();
+			pMainPlayer->SetStartPath("Paden_RespawnToMain_0");
+
+
+		}
+
 
 	}
 
@@ -751,7 +757,7 @@ void CUI_Oper::Progress_Oper()
 				}
 
 				CFunctor::Stop_Sound(CHANNEL_BGM);
-
+				m_bIsOperation = false;
 				switch (m_eLoadLevel)
 				{
 				case Client::LEVEL_PADEN:

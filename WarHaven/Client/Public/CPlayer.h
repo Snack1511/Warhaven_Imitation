@@ -265,6 +265,7 @@ public:
 public:
 	void Set_MainPlayerStartPath(_uint iTriggerType);
 	void SetStartPathEmpty() { m_strStartPath.clear(); };
+	void SetStartPath(string strPath) { m_strStartPath = strPath; };
 
 	void	Set_CurPathNull() { m_pCurPath = nullptr; }
 	CPath* Get_CurPath();
