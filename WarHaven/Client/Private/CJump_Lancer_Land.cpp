@@ -44,6 +44,8 @@ HRESULT CJump_Lancer_Land::Initialize()
 	m_vecAdjState.push_back(STATE_IDLE_LANCER);
 	m_vecAdjState.push_back(STATE_RUN_LANCER);
 
+    Add_KeyFrame(18, 0);
+
     return S_OK;
 }
 
@@ -83,4 +85,20 @@ STATE_TYPE CJump_Lancer_Land::Check_Condition(CUnit* pOwner, CAnimator* pAnimato
 		return m_eStateType;
 
     return STATE_END;
+}
+
+void CJump_Lancer_Land::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+    switch (iSequence)
+    {
+
+    case 0:
+        Play_Sound(L"Env_LandingHorse");
+        break;
+
+    default:
+        break;
+    }
 }

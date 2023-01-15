@@ -60,6 +60,8 @@ HRESULT CState_Patrol_Walk_Lancer::Initialize()
 
     m_fAnimSpeed = 1.f;
 
+    Add_KeyFrame(19, 0);
+
     return __super::Initialize();
 }
 
@@ -107,4 +109,15 @@ STATE_TYPE CState_Patrol_Walk_Lancer::Check_Condition(CUnit* pOwner, CAnimator* 
 void CState_Patrol_Walk_Lancer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
     __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+    switch (iSequence)
+    {
+
+    case 0:
+        Play_Sound(L"Env_FootStepHorse", CHANNEL_ENVIRONMENT);
+        break;
+
+    default:
+        break;
+    }
 }

@@ -50,6 +50,8 @@ HRESULT CLancer_Breeze_Loop::Initialize()
 	m_fInterPolationTime = 0.f;
 	m_fAnimSpeed = 2.5f;
 
+	Add_KeyFrame(3, 0, true);
+
 	return S_OK;
 }
 
@@ -142,6 +144,7 @@ void CLancer_Breeze_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	pOwner->TurnOn_TrailEffect(false);
 	GAMEINSTANCE->Stop_RadialBlur();
 
+	CFunctor::Play_Sound(L"Effect_LanceDisable", CHANNEL_EFFECTS);
 
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_LANCER);
 	pOwner->On_Use(CUnit::SKILL1);
@@ -159,4 +162,19 @@ STATE_TYPE CLancer_Breeze_Loop::Check_Condition(CUnit* pOwner, CAnimator* pAnima
 	}
 
 	return STATE_END;
+}
+
+void CLancer_Breeze_Loop::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	switch (iSequence)
+	{
+	case 0:
+		Play_Sound(L"Env_FootStepHorse", CHANNEL_ENVIRONMENT);
+		break;
+
+	default:
+		break;
+	}
+
+
 }

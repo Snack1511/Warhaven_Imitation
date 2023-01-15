@@ -53,13 +53,15 @@ HRESULT CLancer_Breeze_Begin::Initialize()
 
 
 	Add_KeyFrame(3, 0);
-
+	Add_KeyFrame(16, 1, true);
+	Add_KeyFrame(32, 1, true);
+	Add_KeyFrame(54, 1, true);
 
 	// return __super::Initialize();
 	return S_OK;
 }
 
-void CLancer_Breeze_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CLancer_Breeze_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
 	m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed * 1.5f;
 
@@ -80,10 +82,12 @@ void CLancer_Breeze_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 		pNeedle->On_ChangePhase(CLancerNeedle::LANCERNEEDLE_ATTACKBEGIN);
 	}
 
-	
- 
+
+
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Sound(L"Effect_LancerBreeze_Begin");
 }
 
 STATE_TYPE CLancer_Breeze_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -124,6 +128,10 @@ void CLancer_Breeze_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 	case 0:
 		Physics_Setting(m_fMaxSpeed, pOwner);
 		Play_Voice(pOwner, L"Voice_Breeze", 1.f);
+		break;
+
+	case 1:
+		Play_Sound(L"Env_FootStepHorse", CHANNEL_ENVIRONMENT);
 		break;
 
 	default:

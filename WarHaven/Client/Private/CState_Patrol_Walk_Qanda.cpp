@@ -60,6 +60,8 @@ HRESULT CState_Patrol_Walk_Qanda::Initialize()
 
     m_fAnimSpeed = 2.5f;
 
+    Add_KeyFrame(32, 0, true);
+    Add_KeyFrame(60, 0, true);
     return __super::Initialize();
 }
 

@@ -938,6 +938,7 @@ void CUnit_Lancer::My_LateTick()
 
 				if (m_fTimeAcc > m_fNeedleCreateTime)
 				{
+					CFunctor::Play_Sound(L"Effect_GaugeFull_Lancer", CHANNEL_UI);
 					m_pNeedle[m_iNeedleNums]->Enable_Needle(true);
 					++m_iNeedleNums;
 					m_fTimeAcc = 0.f;
