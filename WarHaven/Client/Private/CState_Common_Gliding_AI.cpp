@@ -117,13 +117,6 @@ void CState_Common_Gliding_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_
 
     if (m_eGlideState != GLIDE_NOENTER)
     {
-        pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fAirFriction = 0.01f;
-        //pOwner->Get_PhysicsCom()->Get_Physics().fGravity = 5.f;
-        pOwner->Get_PhysicsCom()->Get_Physics().fPlusAcc = 0.3f;
-        pOwner->Enable_Glider(true);
-        pOwner->Set_GliderAnimIndex(0, 0.1f, 2.f);
-        pOwner->Get_Glider()->Set_GliderState(CGlider::eGliderState::eOpen);
-
         if (pOwner->Get_OwnerPlayer()->Get_CurClass() == ARCHER)
             static_cast<CUnit_Archer*>(pOwner)->Enable_Arrow(false);
     }
@@ -150,7 +143,15 @@ STATE_TYPE CState_Common_Gliding_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
             m_eAnimType = ANIM_ETC;
             m_iAnimIndex = 18;
 
-            __super::Re_Enter(pOwner, pAnimator, m_fInterPolationTime, m_fAnimSpeed);
+            pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fAirFriction = 0.01f;
+            pOwner->Get_PhysicsCom()->Get_Physics().fPlusAcc = 0.3f;
+            pOwner->Enable_Glider(true);
+            pOwner->Set_GliderAnimIndex(0, 0.1f, 2.f);
+            pOwner->Get_Glider()->Set_GliderState(CGlider::eGliderState::eOpen);
+
+            pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex, m_eAnimDivide);
+            pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, m_fInterPolationTime);
+            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, m_fAnimSpeed);
             m_eGlideState = GLIDE_LOOP;
         }
 
