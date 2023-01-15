@@ -811,7 +811,12 @@ void CRectEffects::My_LateTick()
 		{
 			if (m_pFollowTarget)
 			{
-				m_pDatas[i].RectInstance.vTranslation = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
+				_float4x4 matTarget = m_pFollowTarget->Get_Transform()->Get_WorldMatrix();
+				_float4 vPos = m_vOffsetPos;
+
+				vPos = vPos.MultiplyCoord(matTarget);
+
+				m_pDatas[i].RectInstance.vTranslation = vPos;
 			}
 		}
 	}
@@ -1262,6 +1267,10 @@ void CRectEffects::Select_UVTexture(_uint iIndex)
 
 _bool CRectEffects::FrustumCheck(_uint iIndex)
 {
+	if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_MAINMENU)
+	{
+		return true;
+	}
 	_float4 vPos;
 	vPos = m_pDatas[iIndex].RectInstance.vTranslation;
 	
@@ -1529,17 +1538,23 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDel
 		if (m_pRefBone)
 		{
 			_float4x4 MatBone = m_pRefBone->Get_BoneMatrix();
-			_float4 vBone = MatBone.XMLoad().r[3];
+			_float4 vTargetPos = m_vOffsetPos;
 
-			_float4 vTarget = vBone - vPos;
+			vTargetPos = vTargetPos.MultiplyCoord(MatBone);
+
+			_float4 vTarget = vTargetPos - vPos;
 			m_pDatas[iIdx].InstancingData.vDir = vTarget;
 		}
 		else if (m_pFollowTarget)
 		{
 			//vPos = CEasing_Utillity::Linear(vPos, m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS), m_pDatas[iIdx].InstancingData.fMovingAcc,
 			//	m_pDatas[iIdx].InstancingData.fFadeInTime + m_pDatas[iIdx].InstancingData.fFadeOutStartTime + m_pDatas[iIdx].InstancingData.fFadeOutTime);
+			_float4x4 MatTarget = m_pFollowTarget->Get_Transform()->Get_WorldMatrix();
+			_float4 vTargetPos = m_vOffsetPos;
 
-			_float4 vTarget = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS) - vPos;
+			vTargetPos = vTargetPos.MultiplyCoord(MatTarget);
+			
+			_float4 vTarget = vTargetPos - vPos;
 			m_pDatas[iIdx].InstancingData.vDir = vTarget;
 		}
 		break;

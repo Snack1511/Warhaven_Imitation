@@ -505,15 +505,37 @@ HRESULT CUnit_WarHammer::Start()
 		"0B_R_WP1"
 	);
 
+	_float fUpperSize = 2.f;
+
+	SetUp_EyeTrail(
+		_float4(2.f, fUpperSize, 0.f, 1.f),	//Weapon R
+		_float4(2.f, -fUpperSize, 0.f, 1.f),					//Weapon R
+		_float4(fUpperSize + 2.f, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize + 2.f, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		RGBA(255, 20, 20, 0.7f),
+		0.f,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		20,
+		"0B_Face_R_Eye"
+	);
+
 	return S_OK;
 }
 
 void CUnit_WarHammer::OnEnable()
 {
 	__super::OnEnable();
+
+	Turn_EyeFlare(true, L"WarHammer_Eye");
+	Turn_EyeTrail(true);
 }
 
 void CUnit_WarHammer::OnDisable()
 {
 	__super::OnDisable();
+
+	Turn_EyeFlare(false);
+	Turn_EyeTrail(false);
 }

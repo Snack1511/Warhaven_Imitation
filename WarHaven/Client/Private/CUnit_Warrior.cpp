@@ -384,64 +384,32 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	}
 }
 
-void CUnit_Warrior::SetUp_EyeTrail(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+void CUnit_Warrior::Turn_EyeEffect(_bool bOnOff)
 {
-	m_pEyeTrail = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
-		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
-		wstrMaskMapPath, wstrColorMapPath);
-
-	m_pEyeTrail2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
-		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
-		wstrMaskMapPath, wstrColorMapPath);
-
-	if (!m_pEyeTrail)
-		return;
-
-	CREATE_GAMEOBJECT(m_pEyeTrail, GROUP_EFFECT);
-	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pEyeTrail, CMesh))->Set_NoCurve();
-
-	CREATE_GAMEOBJECT(m_pEyeTrail2, GROUP_EFFECT);
-	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pEyeTrail2, CMesh))->Set_NoCurve();
-
-	m_pEyeTrail->Set_EffectFlag(SH_EFFECT_NONE);
-	m_pEyeTrail2->Set_EffectFlag(SH_EFFECT_NONE);
-
-	m_pEyeTrail->TurnOn_TrailEffect(false);
-	m_pEyeTrail2->TurnOn_TrailEffect(false);
+	Turn_EyeFlare(bOnOff, L"Warrior_Eye");
+	Turn_EyeTrail(bOnOff);
 }
 
-void CUnit_Warrior::Turn_EyeTrail(_bool bOn)
-{
-	if (!m_pEyeTrail)
-		return;
-
-	m_pEyeTrail->TurnOn_TrailEffect(bOn);
-	m_pEyeTrail2->TurnOn_TrailEffect(bOn);
-}
-
-void CUnit_Warrior::Turn_EyeFlare(_bool bOnOff)
-{
-	if (bOnOff)
-	{
-		if (m_EyeFlare.empty())
-			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Warrior_Eye", this, ZERO_VECTOR);
-
-		Turn_EyeTrail(bOnOff);
-	}
-	else
-	{
-		if (!m_EyeFlare.empty())
-		{
-			for (auto& elem : m_EyeFlare)
-			{
-				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
-			}
-			m_EyeFlare.clear();
-		}
-
-		Turn_EyeTrail(bOnOff);
-	}
-}
+//void CUnit_Warrior::Turn_EyeFlare(_bool bOnOff)
+//{
+//	/*if (bOnOff)
+//	{
+//		if (m_EyeFlare.empty())
+//			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Warrior_Eye", this, ZERO_VECTOR);
+//	}
+//	else
+//	{
+//		if (!m_EyeFlare.empty())
+//		{
+//			for (auto& elem : m_EyeFlare)
+//			{
+//				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+//			}
+//			m_EyeFlare.clear();
+//		}
+//
+//	}*/
+//}
 
 HRESULT CUnit_Warrior::Initialize_Prototype()
 {
@@ -561,25 +529,22 @@ HRESULT CUnit_Warrior::Start()
 		"0B_R_WP1"
 	);
 
-	wstring strMask = L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds";
-	_float fAlpha = 0.7f;
-	_float fUpperSize = 4.f;
+
+	_float fUpperSize = 2.f;
 
 	SetUp_EyeTrail(
-		_float4(0.f, 0.f, fUpperSize, 1.f),	//Weapon R
-		_float4(-0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
-		_float4(fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
-		_float4(-fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(2.f, fUpperSize, 0.f, 1.f),	//Weapon R
+		_float4(2.f, -fUpperSize, 0.f, 1.f),					//Weapon R
+		_float4(fUpperSize + 2.f, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize + 2.f, 0.f, 0.f, 1.f),					//Right	L
 		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
-		_float4(1.f, 0.3f, 0.3f, fAlpha), //vColor
+		RGBA(255, 30, 30, 0.7f),
 		0.f,
-		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
-		12,
+		20,
 		"0B_Face_L_Eye"
 	);
-
-	m_EyeFlare.clear();
 
 	return S_OK;
 }
@@ -588,7 +553,7 @@ void CUnit_Warrior::OnEnable()
 {
 	__super::OnEnable();
 
-	Turn_EyeFlare(true);
+	Turn_EyeEffect(true);
 	
 }
 
@@ -596,8 +561,7 @@ void CUnit_Warrior::OnDisable()
 {
 	__super::OnDisable();
 
-	Turn_EyeFlare(false);
-	
+	Turn_EyeEffect(false);
 }
 
 void CUnit_Warrior::My_LateTick()

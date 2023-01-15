@@ -755,6 +755,14 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Warrior_Eye"), "Warrior_Eye")))
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Archer_Eye"), "Archer_Eye")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Priest_Eye"), "Priest_Eye")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"WarHammer_Eye"), "WarHammer_Eye")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Main_Transform"), "Main_Transform")))
+		return E_FAIL;
 		/*cat*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"PoisonTest"), "PoisonTest")))
 		return E_FAIL;
@@ -765,6 +773,8 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Arrow_Hit"), "Arrow_Hit")))
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Arrow_Blood"), "Arrow_Blood")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Sniping_Arrow"), "Sniping_Arrow")))
 		return E_FAIL;
 
 	/*Transform*/

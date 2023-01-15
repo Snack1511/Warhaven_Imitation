@@ -242,7 +242,7 @@ void CWarrior_Oxen_Loop_Attack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnim
         Play_Sound(L"Effect_Oxen_Loop_Attack_Warrior", CHANNEL_EFFECTS, 1.f);
         m_bAttackTrigger = true;
 		pOwner->Enable_FlyAttackCollider(true);
-        Play_Voice(pOwner, L"Voice_Attack", 1.f);
+        Play_Voice(pOwner, L"Voice_Oxen", 1.f);
 		break;
 
 

@@ -19,6 +19,7 @@
 #include "CTrailBuffer.h"
 #include "Easing_Utillity.h"
 #include "CUI_UnitHUD.h"
+#include "CSnipeArrow.h"
 
 CProjectile::CProjectile()
 {
@@ -334,6 +335,7 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 			m_pTrailEffect->TurnOn_TrailEffect(false);
 			m_pTrailEffect2->TurnOn_TrailEffect(false);
 		}
+
 		break;
 	case eSTICK:
 		DISABLE_COMPONENT(m_pCollider);
@@ -342,6 +344,7 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 			m_pTrailEffect->TurnOn_TrailEffect(false);
 			m_pTrailEffect2->TurnOn_TrailEffect(false);
 		}
+
 		Safe_release(m_pActor);
 		break;
 
@@ -754,6 +757,11 @@ void CProjectile::Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos, _bool bHeadSh
 	memcpy(m_matHitOffset.m[3], &vHitLocalPos, sizeof(_float4));
 
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Blood", vHitPos);
+
+	CSnipeArrow* pSArrow = dynamic_cast<CSnipeArrow*>(this);
+
+	if(pSArrow)
+		pSArrow->Turn_Effect(false);
 
 
 } 

@@ -25,6 +25,7 @@
 #include "CColorController.h"
 
 #include "CUI_Trail.h"
+#include "CRectEffects.h"
 
 CUnit_Archer::CUnit_Archer()
 {
@@ -609,6 +610,23 @@ HRESULT CUnit_Archer::Start()
 	);
 
 
+	_float fUpperSize = 2.f;
+
+	SetUp_EyeTrail(
+		_float4(2.f, fUpperSize, 0.f, 1.f),	//Weapon R
+		_float4(2.f, -fUpperSize, 0.f, 1.f),					//Weapon R
+		_float4(fUpperSize + 2.f, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize + 2.f, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		RGBA(255, 140, 0, 0.7f),
+		0.f,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		20,
+		"0B_Face_R_Eye"
+	);
+
+
 	return S_OK;
 }
 
@@ -617,6 +635,8 @@ void CUnit_Archer::OnEnable()
 	__super::OnEnable();
 	Create_DefaultArrow();
 
+	Turn_EyeFlare(true, L"Archer_Eye");
+	Turn_EyeTrail(true);
 }
 
 void CUnit_Archer::OnDisable()
@@ -627,6 +647,9 @@ void CUnit_Archer::OnDisable()
 
 	if (m_pUI_Trail)
 		DISABLE_GAMEOBJECT(m_pUI_Trail);
+
+	Turn_EyeFlare(false);
+	Turn_EyeTrail(false);
 }
 
 void CUnit_Archer::My_Tick()
