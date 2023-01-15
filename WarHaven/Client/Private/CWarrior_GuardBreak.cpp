@@ -110,6 +110,8 @@ void CWarrior_GuardBreak::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
     m_fMaxSpeed = pOwner->Get_Status().fSprintAttackSpeed;
     pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+    // Play_Sound(L"Effect_GuardBreak_Begin_Warrior");
 }
 
 STATE_TYPE CWarrior_GuardBreak::Tick(CUnit* pOwner, CAnimator* pAnimator)

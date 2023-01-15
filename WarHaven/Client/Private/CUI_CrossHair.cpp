@@ -508,8 +508,8 @@ void CUI_Crosshair::Create_GaugeUI()
 			m_pGaugeUI[i]->Set_FontRender(true);
 			m_pGaugeUI[i]->Set_FontStyle(true);
 			m_pGaugeUI[i]->Set_FontCenter(true);
-			m_pGaugeUI[i]->Set_FontOffset(100.f, 3.f);
-			m_pGaugeUI[i]->Set_FontScale(0.4f);
+			m_pGaugeUI[i]->Set_FontOffset(80.f, 4.f);
+			m_pGaugeUI[i]->Set_FontScale(0.3f);
 			break;
 
 		case Gauge_Bar:

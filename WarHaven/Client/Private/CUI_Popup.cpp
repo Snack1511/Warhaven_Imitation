@@ -40,6 +40,9 @@ HRESULT CUI_Popup::Start()
 void CUI_Popup::Enable_Popup(ePOPUP_TYPE ePopupType)
 {
 	GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)CHANNEL_UI);
+
+	Play_Sound(L"Effect_Popup");
+
 	switch (ePopupType)
 	{
 	case Client::CUI_Popup::eConquest:

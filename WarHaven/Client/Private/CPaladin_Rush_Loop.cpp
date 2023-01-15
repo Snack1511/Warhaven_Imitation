@@ -108,6 +108,9 @@ void CPaladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 	//static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(true);
 	GAMEINSTANCE->Start_RadialBlur(0.01f);
 	pOwner->Lerp_Camera(6);
+
+	CUser::Get_Instance()->SetActive_Gauge(true);
+
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -117,6 +120,8 @@ STATE_TYPE CPaladin_Rush_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		return STATE_RUSH_END_PALADIN;
 
 	m_fTimeAcc += fDT(0);
+	if (pOwner->Is_MainPlayer())
+		CUser::Get_Instance()->Set_BreezeTime(m_fTimeAcc, 5.f);
 
 	if (m_fTimeAcc > 5.f)
 		return STATE_RUSH_END_PALADIN;
@@ -155,6 +160,8 @@ void CPaladin_Rush_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)CHANNEL_EFFECTS, m_iSoundIdx);
 	pOwner->Enable_GuardCollider(false);
 	pOwner->Enable_GroggyCollider(false);
+
+	CUser::Get_Instance()->SetActive_Gauge(false);
 }
 
 STATE_TYPE CPaladin_Rush_Loop::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

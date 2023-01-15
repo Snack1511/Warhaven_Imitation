@@ -46,4 +46,3 @@ STATE_TYPE CState_PathNavigation_Walk::Check_Condition(CUnit* pOwner, CAnimator*
 {
     return STATE_END;
 }
-

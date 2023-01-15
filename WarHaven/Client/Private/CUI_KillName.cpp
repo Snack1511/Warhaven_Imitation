@@ -122,6 +122,7 @@ void CUI_KillName::Create_KillNameUI()
 		{
 		case Text_Name:
 
+			m_pKillNameUI[i]->Set_Sort(0.5f);
 			m_pKillNameUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 			m_pKillNameUI[i]->Set_FontRender(true);
 			m_pKillNameUI[i]->Set_FontStyle(true);
@@ -151,12 +152,8 @@ void CUI_KillName::SetActive_KillName(_bool value)
 	for (int i = 0; i < Text_End; ++i)
 	{
 		if (value == true)
-		{
 			Enable_Fade(m_pKillNameUI[i], m_fAccTime);
-		}
 		else
-		{
 			Disable_Fade(m_pKillNameUI[i], m_fAccTime);
-		}
 	}
 }

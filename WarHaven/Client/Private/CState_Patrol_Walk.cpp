@@ -52,7 +52,7 @@ void CState_Patrol_Walk::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, c
     switch (iSequence)
     {
     case 0:
-        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, m_fAIDeafultVolume);
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.3f);
         break;
     }
 }
