@@ -17,7 +17,7 @@ CGlider::~CGlider()
 {
 }
 
-CGlider* CGlider::Create(wstring wstrModelFilePath, wstring wstrAnimFilePath, CUnit* pOwnerUnit, string strBoneName, 
+CGlider* CGlider::Create(wstring wstrModelFilePath, wstring wstrAnimFilePath, CUnit* pOwnerUnit, string strBoneName,
 	_float fRadianX, _float fRadianY, _float fRadianZ)
 {
 	CGlider* pInstance = new CGlider;
@@ -30,7 +30,7 @@ CGlider* CGlider::Create(wstring wstrModelFilePath, wstring wstrAnimFilePath, CU
 		Call_MsgBox(L"Failed to SetUp_Model : CGlider");
 		return nullptr;
 	}
-	
+
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
 		SAFE_DELETE(pInstance);
@@ -113,19 +113,19 @@ HRESULT CGlider::Initialize_Prototype()
 	Add_Component<CRenderer>(pRenderer);
 
 
-    return S_OK;
+	return S_OK;
 }
 
 HRESULT CGlider::Initialize()
 {
-    return S_OK;
+	return S_OK;
 }
 
 HRESULT CGlider::Start()
 {
 	__super::Start();
 
-    return S_OK;
+	return S_OK;
 }
 
 void CGlider::OnEnable()
@@ -238,6 +238,7 @@ void CGlider::Late_Tick()
 	{
 	case Client::CGlider::eOpen:
 
+		CFunctor::Play_Sound(L"Effect_GlidingBegin", CHANNEL_EFFECTS);
 
 		m_vScale += fDT(0) * 10.f;
 
@@ -250,17 +251,19 @@ void CGlider::Late_Tick()
 		{
 			m_pTransform->Set_Scale(m_vScale);
 		}
-			
+
 
 
 		break;
 
 	case Client::CGlider::eClose:
 
+		CFunctor::Play_Sound(L"Effect_GlidingEnd", CHANNEL_EFFECTS);
+
 		m_vScale -= fDT(0) * 10.f;
 
 		m_pTransform->Set_Scale(m_vScale);
-		
+
 		if (m_vScale.x <= 0.f)
 			DISABLE_GAMEOBJECT(this);
 
@@ -270,7 +273,7 @@ void CGlider::Late_Tick()
 		break;
 	}
 
-	
+
 
 	_float4x4		matBone = m_pOwnerBone->Get_BoneMatrix();
 

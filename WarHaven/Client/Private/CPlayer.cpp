@@ -387,7 +387,7 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 		if (m_eCurrentClass >= FIONA)
 		{
 			m_pCurrentUnit->Get_Status().fHP = m_pCurrentUnit->Get_Status().fMaxHP;
-
+			CFunctor::Play_Sound(L"Effect_ChangeHeroBoom", CHANNEL_EFFECTS, Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS), 1.f);
 			CFunctor::Play_Sound(L"Effect_ChangeHero", CHANNEL_EFFECTS, Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS), 1.f);
 		}
 		else
