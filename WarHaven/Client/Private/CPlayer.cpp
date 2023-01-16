@@ -1136,6 +1136,11 @@ void CPlayer::On_RealChangeBehavior()
 		m_pTargetPlayer = m_pCurBehaviorDesc->pAlliesPlayer;
 
 		break;
+
+	case eBehaviorType::eGliding:
+		//m_pTargetObj = m_pCurBehaviorDesc->pTriggerPtr;
+
+		break;
 	case eBehaviorType::ePadenCannonInteract:
 		m_pTargetObj = m_pCurBehaviorDesc->pNearCannon;
 		break;
@@ -1393,6 +1398,7 @@ void CPlayer::Set_NewPath(CPath* pPath)
 	if (m_pCurPath)
 		m_pCurPath->Init_Indices();
 
+	if (m_pCurPath)
 	m_pCurPath->m_vPrevPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
 }
 

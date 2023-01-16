@@ -62,6 +62,15 @@ HRESULT CPersonality_Leader::Initailize()
 	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);
 
+	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Gliding"))->Clone();
+	pBehavior->Add_OtherCondition(wstring(L"Check_GlidePath"));
+	pBehavior->Add_OtherCondition(wstring(L"Check_GriderTrigger"));
+	pBehavior->Add_OtherCondition(wstring(L"Check_Gliding"));
+	pBehavior->Add_WhatCondition(wstring(L"Select_NearGliderTrigger"));
+	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
+	pBehavior->Initialize();
+	pBehavior->Set_Priority(iPriority++);
+	m_BehaviorList.push_back(pBehavior);
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PadenCannonInteract"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_Paden"));
