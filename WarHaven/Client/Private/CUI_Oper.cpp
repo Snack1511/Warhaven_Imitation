@@ -613,7 +613,6 @@ void CUI_Oper::Progress_Oper()
 				_uint iIndex;
 				iIndex = m_eLoadLevel == LEVEL_HWARA ? 5 : 6;
 
-
 				Play_Sound(L"UI_Oper02");
 
 				for (int i = 3; i < iIndex; ++i)
@@ -644,6 +643,7 @@ void CUI_Oper::Progress_Oper()
 				vPos1.x -= 50.f;
 				m_pArrCharacterSideBG[1]->DoMove(vPos1, fDuration, 0);
 
+				Play_Sound(L"UI_Select");
 				for (int i = 0; i < CP_End; ++i)
 				{
 					for (int j = 0; j < 6; ++j)
