@@ -104,7 +104,10 @@ STATE_TYPE CState_Combat_Attack_Default_Aiming_Qanda::Tick(CUnit* pOwner, CAnima
     }
 	
     if (m_fSndTime <= 0.f)
+    {
         m_iSndIdx = CFunctor::Play_LoopSound(L"Effect_Charge01_Qanda", CHANNEL_EFFECTS);
+        m_iCharge = CFunctor::Play_LoopSound(L"Effect_Charge02_Qanda", CHANNEL_EFFECTS);
+    }
 
     m_fSndTime += fDT(0);
     if (m_fSndTime >= 3.f)

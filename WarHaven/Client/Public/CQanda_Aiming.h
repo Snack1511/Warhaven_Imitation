@@ -37,6 +37,7 @@ private:
 	_bool				m_bShoot = false;
 
 	_uint m_iSndIdx;
+	_uint m_iCharge;
 	_float m_fSndTime;
 };
 

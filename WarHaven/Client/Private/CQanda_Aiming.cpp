@@ -77,7 +77,10 @@ STATE_TYPE CQanda_Aiming::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	}
 
 	if (m_fSndTime <= 0.f)
+	{
 		m_iSndIdx = CFunctor::Play_LoopSound(L"Effect_Charge01_Qanda", CHANNEL_EFFECTS);
+		m_iCharge = CFunctor::Play_LoopSound(L"Effect_Charge02_Qanda", CHANNEL_EFFECTS);
+	}
 
 	m_fSndTime += fDT(0);
 	if (m_fSndTime >= 3.f)
@@ -92,6 +95,7 @@ void CQanda_Aiming::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	__super::Exit(pOwner, pAnimator);
 
 		GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)CHANNEL_EFFECTS, m_iSndIdx);
+		GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)CHANNEL_EFFECTS, m_iCharge);
 
 	if (!m_bShoot)
 		static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->ChangeColor_End();
