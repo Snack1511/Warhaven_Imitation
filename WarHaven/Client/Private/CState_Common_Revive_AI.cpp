@@ -97,6 +97,12 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
         Call_RealMsgBox(L"sibla");
     }*/
 
+    if (!pTargetUnit)
+    {
+        pOwner->Force_ChangeBehavior();
+        return eDefaultState;
+    }
+
 
     switch (m_eCurPhase)
     {

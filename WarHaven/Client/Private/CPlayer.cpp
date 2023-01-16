@@ -1393,7 +1393,8 @@ void CPlayer::Update_HP()
 
 void CPlayer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 {
-	m_pCurrentUnit->On_ChangeBehavior(pBehaviorDesc);
+	if (m_pCurrentUnit)
+		m_pCurrentUnit->On_ChangeBehavior(pBehaviorDesc);
 }
 
 void CPlayer::Set_NewPath(CPath* pPath)

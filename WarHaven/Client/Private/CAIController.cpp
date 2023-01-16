@@ -67,6 +67,9 @@ void CAIController::Start()
 
 void CAIController::Early_Tick()
 {
+	if (!m_pOwnerPlayer->Get_CurrentUnit())
+		return;
+
 	Ready_Controller();
 
 	CBehavior* pNextBehavior = nullptr;
@@ -150,6 +153,9 @@ void CAIController::Early_Tick()
 
 void CAIController::Tick()
 {
+
+	if (!m_pOwnerPlayer->Get_CurrentUnit())
+		return;
 	//¿¬»ê·® ¸¹À¸¸é »©¾ßµÊ;;
 	if(m_pCurrentBehavior)
 		m_pCurrentBehavior->Callback_BehaviorTick(m_pOwnerPlayer, this);
@@ -160,6 +166,8 @@ void CAIController::Tick()
 void CAIController::Late_Tick()
 {
 
+	if (!m_pOwnerPlayer->Get_CurrentUnit())
+		return;
 	m_pNearCannon = nullptr;
 	m_NearObjectList.clear();
 	m_NearEnemyList.clear();

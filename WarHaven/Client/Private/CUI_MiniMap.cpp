@@ -242,6 +242,7 @@ void CUI_MiniMap::My_LateTick()
 		}
 	}
 	break;
+
 	case Client::LEVEL_HWARA:
 	{
 		for (int i = 0; i < 8; ++i)
