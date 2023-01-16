@@ -449,7 +449,12 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 			{
 				CPath* pNewPath = nullptr;
 
-				// 1. respawn 거점 먹었으면 respawn에서
+				if (!m_bFirstPath && (CUser::Get_Instance()->Get_CurLevel() == LEVEL_PADEN))
+				{
+					m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
+					pNewPath = CGameSystem::Get_Instance()->Clone_Path(m_strStartPath, m_pAIController);
+				}
+				else	// 1. respawn 거점 먹었으면 respawn에서
 				if (m_pMyTeam->Has_RespawnTrigger())
 				{
 					pNewPath = CGameSystem::Get_Instance()->Clone_RandomRespawnPath(m_pAIController, m_pMyTeam->Get_TeamType());
@@ -464,11 +469,13 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 				}
 
 				Set_NewMainPath(pNewPath);
-				m_strStartPath = m_pStartMainPath->m_strName;
+				if (m_pStartMainPath)
+					m_strStartPath = m_pStartMainPath->m_strName;
 
 				/*무조건 중앙으로 모이게 하는 코드*/
 				//m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
 				//Set_NewPath(CGameSystem::Get_Instance()->Clone_Path(m_strStartPath, m_pAIController));
+				m_bFirstPath = true;
 
 			}
 			else

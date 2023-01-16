@@ -389,6 +389,7 @@ private:	// 화신 게이지
 
 private:
 	list<CGameObject*>	m_DeadLights;
+	_bool				m_bFirstPath = false;
 
 private:
 	_float	m_fKillStreakTimeAcc = 0.f;

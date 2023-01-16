@@ -335,7 +335,8 @@ void CTable_Conditions::Check_LookEnemy(_bool& OutCondition, CPlayer* pPlayer, C
 	{
 		//적이 죽은지 확인 --> 죽었으면 삭제
 		_bool bEnemyDead = (*iter)->Is_Died();
-		if (RemovePlayer(bEnemyDead, Enemies, iter))
+		_bool bEnemyValid = (*iter)->Get_CurrentUnit()->Is_Valid();
+		if (RemovePlayer((bEnemyDead ||!bEnemyValid), Enemies, iter))
 		{
 			continue;
 		}
@@ -429,9 +430,6 @@ void CTable_Conditions::Check_ValidPath(_bool& OutCondition, CPlayer* pPlayer, C
 		OutCondition = false;
 		return;
 	}
-
-
-
 
 	OutCondition = true;
 
@@ -970,7 +968,6 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 
 	//정리해놓고, 만약 그동안 쓰레드가 내놓은 타겟 플레이어가 있으면 갱신 시키기. (동기화?)
 	pPlayer->Set_SortedEnemies(Enemies);
-
 
 	if (pPlayer->Get_ReserveTargetPlayer())
 	{
