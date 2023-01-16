@@ -142,6 +142,7 @@ HRESULT CTable_Conditions::SetUp_Conditions()
 	Add_WhatCondition(wstring(L"Select_NearEnemy"), Select_NearEnemy);
 	Add_WhatCondition(wstring(L"Select_NearAllies"), Select_NearAllies);
 	Add_WhatCondition(wstring(L"Select_MainPlayer"), Select_MainPlayer);
+	Add_WhatCondition(wstring(L"Select_Cannon"), Select_Cannon);
 	Add_WhatCondition(wstring(L"Select_Teammate"), Select_Teammate);
 #pragma endregion 플레이어 선택
 
@@ -357,9 +358,10 @@ void CTable_Conditions::Check_DeadAllies(_bool& OutCondition, CPlayer* pPlayer, 
 
 	for (auto iter = Enemies.begin(); iter != Enemies.end();)
 	{
-		_bool bAlliesDead = ((*iter)->IsMainPlayer());
-		_bool bRevival = !((*iter)->Is_AbleRevival());
-		//돌이 안됬거나 부활 가능한 아군이 아니면 삭제
+		_bool bAlliesDead = ((*iter)->Is_Died());
+		_bool bRevival = ((*iter)->Is_AbleRevival());
+		//돌이 안됬거나
+		//부활 가능한 아군이 아니면 삭제
 		if (RemovePlayer((!bAlliesDead || !bRevival), Enemies, iter))
 		{
 			continue;
@@ -607,7 +609,11 @@ void CTable_Conditions::Check_ChangeBehavior(_bool& OutCondition, CPlayer* pPlay
 void CTable_Conditions::Check_UsableCannon(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
 	CHECKFALSEOUTCONDITION(OutCondition);
+
 	OutCondition = CGameSystem::Get_Instance()->Get_Cannon()->Can_ControlCannon(pPlayer);
+
+	if (pPlayer->Get_CurClass() >= FIONA)
+		OutCondition = false;
 }
 
 void CTable_Conditions::Check_InCannonConquerTrigger(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
@@ -835,7 +841,7 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 
 	list<CPlayer*> Enemies = pAIController->Get_NearEnemy();
 
-	CHECK_EMPTY(Enemies);
+	//CHECK_EMPTY(Enemies);
 
 	Enemies.sort([&MyPositoin](auto& Sour, auto& Dest)
 		{
@@ -852,8 +858,8 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 
 	if (pPlayer->Get_ReserveTargetPlayer())
 	{
-			OutDesc->pEnemyPlayer = pPlayer->Get_ReserveTargetPlayer();
-			OutCondition = true;
+		OutDesc->pEnemyPlayer = pPlayer->Get_ReserveTargetPlayer();
+		OutCondition = true;
 	}
 	else
 		OutCondition = false;
@@ -871,12 +877,6 @@ void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& O
 {
 	//CHECKFALSEOUTCONDITION(OutCondition);
 
-	if (pPlayer->Get_CurClass() >= FIONA)
-	{
-		OutCondition = false;
-		return;
-	}
-
 	//소팅하고 정리해놓기
 	if (!pPlayer->Get_CurrentUnit()->Is_Valid())
 	{
@@ -886,24 +886,39 @@ void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& O
 
 	_float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
 
-	list<CPlayer*> Allies = pAIController->Get_NearAllies();
+	list<CPlayer*> Enemies = pAIController->Get_NearAllies();
 
-	CHECK_EMPTY(Allies);
+	//CHECK_EMPTY(Enemies);
 
-	for (auto& elem : Allies)
-	{
-		if (elem->IsMainPlayer())
+	Enemies.sort([&MyPositoin](auto& Sour, auto& Dest)
 		{
-			if (elem->Is_AbleRevival() && elem->Is_Died())
-			{
-				OutCondition = true;
-				OutDesc->pAlliesPlayer = elem;
-				return;
-			}
-		}
-	}
+			_float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+			_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+			if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
+				return true;
+			else return false;
+		});
 
-	OutCondition = false;
+	//정리해놓고, 만약 그동안 쓰레드가 내놓은 타겟 플레이어가 있으면 갱신 시키기. (동기화?)
+	pPlayer->Set_SortedAllies(Enemies);
+
+
+	if (pPlayer->Get_ReserveTargetAlly())
+	{
+
+		OutDesc->pAlliesPlayer = pPlayer->Get_ReserveTargetAlly();
+		OutCondition = true;
+	}
+	else
+		OutCondition = false;
+
+	if (!pPlayer->Is_AllyLocked())
+		if (!Enemies.empty())
+			std::future<int>	newThread = std::async(std::launch::async, bind(Func_Ray_Revive, pPlayer));
+
+
+	if (OutCondition)
+		pPlayer->Set_TargetPos(OutDesc->pAlliesPlayer->Get_WorldPos());
 }
 
 void CTable_Conditions::Select_MainPlayer(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
@@ -915,6 +930,18 @@ void CTable_Conditions::Select_MainPlayer(_bool& OutCondition, BEHAVIOR_DESC*& O
 	CPlayer* pTargetPlayer = CUser::Get_Instance()->Get_MainPlayerInfo()->Get_Player();
 	pPlayer->Set_TargetPos(pTargetPlayer->Get_WorldPos());
 	OutDesc->pAlliesPlayer = pTargetPlayer;
+}
+
+void CTable_Conditions::Select_Cannon(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
+{
+	OutCondition = false;
+
+	if (pAIController->Get_NearCannon())
+	{
+		OutDesc->pNearCannon = pAIController->Get_NearCannon();
+		OutCondition = true;
+		return;
+	}
 }
 
 void CTable_Conditions::Select_Teammate(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)

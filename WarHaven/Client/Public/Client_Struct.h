@@ -49,6 +49,7 @@ namespace Client
 		class CTrigger* pTriggerPtr = nullptr;
 		class CPlayer* pAlliesPlayer = nullptr;
 		class CPlayer* pEnemyPlayer = nullptr;
+		class CCannon* pNearCannon = nullptr;
 
 		_float fDelayTime = 0.f;
 

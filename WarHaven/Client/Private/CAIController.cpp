@@ -9,6 +9,7 @@
 #include "CBehavior.h"
 #include "Functor.h"
 #include "CPath.h"
+#include "CCannon.h"
 #include  "CGameSystem.h"
 
 CAIController::CAIController(_uint iGroupID)
@@ -158,8 +159,11 @@ void CAIController::Tick()
 void CAIController::Late_Tick()
 {
 
-
+	m_pNearCannon = nullptr;
 	m_NearObjectList.clear();
+	m_NearEnemyList.clear();
+	m_NearAlliesList.clear();
+	m_NearTriggerList.clear();
 }
 
 void CAIController::Release()
@@ -181,21 +185,32 @@ void CAIController::Ready_Controller()
 {
 	for (auto& Value : m_NearObjectList)
 	{
-		CUnit* pUnit = dynamic_cast<CUnit*>(Value);
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Value);
 		CTrigger* pTrigger = dynamic_cast<CTrigger*>(Value);
+		CUnit* pUnit = dynamic_cast<CUnit*>(Value);
 
 		if (nullptr != pTrigger)
 		{
 			m_NearTriggerList.push_back(pTrigger);
 		}
-		else if (nullptr != pUnit)
+		else if (nullptr != pPlayer)
 		{
-			if(pUnit->Get_OwnerPlayer()->Get_Team() == m_pOwnerPlayer->Get_Team())
+			if (pPlayer->Get_Team() == m_pOwnerPlayer->Get_Team())
+				m_NearAlliesList.push_back(pPlayer);
+			else
+				m_NearEnemyList.push_back(pPlayer);
+
+		}
+		else if (pUnit)
+		{
+			if (pUnit->Get_OwnerPlayer()->Get_Team() == m_pOwnerPlayer->Get_Team())
 				m_NearAlliesList.push_back(pUnit->Get_OwnerPlayer());
 			else
 				m_NearEnemyList.push_back(pUnit->Get_OwnerPlayer());
 
 		}
+		else
+			m_pNearCannon = dynamic_cast<CCannon*>(Value);
 	}
 
 	//m_NearTriggerList.sort();

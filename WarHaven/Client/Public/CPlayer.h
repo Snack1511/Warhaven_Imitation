@@ -297,7 +297,7 @@ private:
 	CPlayer* m_pReserveTargetPlayer = nullptr;
 	_bool	m_bTargetLocked = false;
 	_float	m_fTargetAcc = 0.f;
-	_float	m_fTargetMaxTime = 1.5f;
+	_float	m_fTargetMaxTime = 0.2f;
 
 private:
 	/* 쓰레드가 만질 타겟 플레이어 포인터 */
@@ -305,7 +305,7 @@ private:
 	CPlayer* m_pReserveTargetAlly = nullptr;
 	_bool	m_bAllyLocked = false;
 	_float	m_fAllyAcc = 0.f;
-	_float	m_fAllyMaxTime = 2.f;
+	_float	m_fAllyMaxTime = 0.2f;
 
 
 public:

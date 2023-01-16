@@ -177,6 +177,8 @@ void CMainMenuPlayer::Change_ModelParts(CLASS_TYPE eClassType, MODEL_PART_TYPE e
 	m_pMainMenuUnit[eClassType]->Initialize();
 	CREATE_GAMEOBJECT(m_pMainMenuUnit[eClassType], GROUP_PLAYER);
 
+
+
 }
 
 void CMainMenuPlayer::Set_Rotatable(_bool b)

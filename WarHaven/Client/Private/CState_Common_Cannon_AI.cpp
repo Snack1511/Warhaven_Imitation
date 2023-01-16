@@ -93,7 +93,13 @@ STATE_TYPE CState_Common_Cannon_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
     case Client::CState_Common_Cannon_AI::CANNON_FOLLOW:
 
         if (pCannon)
+        {
             m_eCannonState = CANNON_ENTER;
+            if (!pCannon->Can_ControlCannon(pOwner->Get_OwnerPlayer()))
+            {
+                return pOwner->Get_DefaultState();
+            }
+        }
 
         else
             Follow_Move(pOwner, pTargetObject);

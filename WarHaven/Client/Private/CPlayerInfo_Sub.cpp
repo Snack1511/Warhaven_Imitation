@@ -55,13 +55,20 @@ HRESULT CPlayerInfo_Sub::Initialize()
 	else if (g_iSubCnt == 2)
 	{
 		m_tPlayerInfo.wstrName = L"쥬신아카데미가라";
-
 	}
-	//else if (g_iSubCnt == 3)
-	//{
-	//	m_tPlayerInfo.wstrName = L"명품수제돈가스";
-	//	m_vecPrefClassType.push_back(ENGINEER);
-	//}
+	else if (g_iSubCnt == 3)
+	{
+		m_tPlayerInfo.wstrName = L"명품수제돈까스망치";
+		m_vecPrefClassType.push_back(ENGINEER);
+	}
+	else if (g_iSubCnt == 4)
+	{
+		m_tPlayerInfo.wstrName = L"김기성의드래곤볼";
+	}
+	else if (g_iSubCnt == 5)
+	{
+		m_tPlayerInfo.wstrName = L"윤창이의타워";
+	}
 	else
 	{
 		m_tPlayerInfo.wstrName = L"SubPlayer_";

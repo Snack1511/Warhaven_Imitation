@@ -24,6 +24,8 @@
 #include "CTrailBuffer.h"
 #include "Loading_Manager.h"
 
+#include "CCannon.h"
+
 #include "CTeamConnector.h"
 #include "CUI_Popup.h"
 #include "CScript_FollowCam.h"
@@ -300,7 +302,7 @@ void CPlayer::Player_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherC
 	if (eMyColType == COL_REVIVE)
 		return;
 
-	if (!pOtherObj->Is_Valid() || m_pCurrentUnit == pOtherObj)
+	if (!pOtherObj->Is_Valid() || m_pCurrentUnit == pOtherObj || pOtherObj == this)
 		return;
 
 	m_pAIController->m_NearObjectList.push_back(pOtherObj);
@@ -311,7 +313,7 @@ void CPlayer::Player_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherCo
 	if (eMyColType == COL_REVIVE)
 		return;
 
-	if (!pOtherObj->Is_Valid() || m_pCurrentUnit == pOtherObj)
+	if (!pOtherObj->Is_Valid() || m_pCurrentUnit == pOtherObj || pOtherObj == this)
 		return;
 
 	m_pAIController->m_NearObjectList.push_back(pOtherObj);
@@ -1133,6 +1135,10 @@ void CPlayer::On_RealChangeBehavior()
 		m_bKeepRay = true;
 
 		break;
+	case eBehaviorType::ePadenCannonInteract:
+		m_pTargetObj = m_pCurBehaviorDesc->pNearCannon;
+		break;
+
 
 	case eBehaviorType::ePathFinding:
 		m_bKeepRay = false;

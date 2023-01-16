@@ -45,6 +45,12 @@ namespace Engine
 
 	}
 
+	static void Call_RealMsgBox(const _tchar* strMessage)
+	{
+		MessageBox(0, strMessage, TEXT("System Error"), MB_OK);
+
+	}
+
 	static	size_t	Convert_ToHash(wstring strTemp)
 	{
 		hash<wstring>	strHash;

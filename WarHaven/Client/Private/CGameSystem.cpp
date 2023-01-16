@@ -84,6 +84,12 @@ HRESULT CGameSystem::Initialize()
 		return E_FAIL;
 	}
 
+	if (FAILED(m_pPositionTable->Load_Position("Hwara_Glide")))
+	{
+		Call_MsgBox(L"Failed to Load_Position : CGameSystem");
+		return E_FAIL;
+	}
+
 	if (FAILED(SetUp_AllPlayerInfos()))
 	{
 		Call_MsgBox(L"Failed to SetUp_AllPlayerInfos : CGameSystem");
@@ -1651,7 +1657,7 @@ CPath* CGameSystem::Clone_RandomReleasePath(_float4 vCurPos)
 	if (m_eCurStageType == eSTAGE_HWARA)
 		eEnum = eHWARA_RELEASE;
 
-	_float fMinDist = 10.f;
+	_float fMinDist = 9999.f;
 	CPath* pPath = nullptr;
 
 	for (auto& elem : m_mapAllPathes[eEnum])

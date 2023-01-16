@@ -92,7 +92,11 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
     CUnit* pTargetUnit = pOwner->Get_TargetUnit();
 
-  
+   /* if (pTargetUnit->Get_OwnerPlayer()->Get_Team() != pOwner->Get_OwnerPlayer()->Get_Team())
+    {
+        Call_RealMsgBox(L"sibla");
+    }*/
+
 
     switch (m_eCurPhase)
     {
@@ -117,6 +121,7 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
             pOwner->Get_Transform()->Set_LerpLook(vLook.Normalize(), 0.5f);
             pOwner->Get_RevivalPlayer()->Get_CurrentUnit()->Start_Reborn();
+            m_fTimeAcc = 0.f;
 
             CState::Enter(pOwner, pAnimator, (STATE_TYPE)m_eCurPhase);
         }
@@ -125,6 +130,10 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
             //방향으로 가기 
             if (!pTargetUnit)
                 return __super::Tick(pOwner, pAnimator);
+
+            if (!pTargetUnit->Get_OwnerPlayer()->Is_AbleRevival())
+                return eDefaultState;
+
 
             pOwner->Set_LookToTarget();
             _float4 vLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
@@ -201,7 +210,7 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
     case Client::CState_Common_Revive_AI::PHASE_END:
         if (pAnimator->Is_CurAnimFinished())
         {
-            CUser::Get_Instance()->Disable_RevivalUI();
+            //CUser::Get_Instance()->Disable_RevivalUI();
 
             STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
             return eDefaultState;

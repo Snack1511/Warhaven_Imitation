@@ -72,13 +72,13 @@ HRESULT CPersonality_Leader::Initailize()
 	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);
 
-	/*pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Revive"))->Clone();
+	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Revive"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_DeadAllies"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearAllies"));
 	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(iPriority++);
-	m_BehaviorList.push_back(pBehavior);*/
+	m_BehaviorList.push_back(pBehavior);
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Combat"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_LookEnemy"));
