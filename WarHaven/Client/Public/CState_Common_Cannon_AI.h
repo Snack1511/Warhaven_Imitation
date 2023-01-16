@@ -35,11 +35,13 @@ private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
 private:
+	void Change_Animation(CAnimator* pAnimator, ANIM_TYPE eAnimType, _uint iAnimIndex);
+
+private:
 	_bool m_bNoAdjTrigger = false;
 	_bool m_bControlCannon = false;
 
 	Cannon_State m_eCannonState = CANNON_END;
-
 
 };
 

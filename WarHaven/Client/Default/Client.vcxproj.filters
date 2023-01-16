@@ -3943,6 +3943,24 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\09. Cannon">
       <UniqueIdentifier>{4edf7d8d-e453-4c98-949c-e6ee2ef67bb2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Catch">
+      <UniqueIdentifier>{0add3894-e949-4858-9113-af23e3fc248f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Catch\06. Priest">
+      <UniqueIdentifier>{0e390288-a9ce-4ee9-ba4f-41c95cd6ee82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Catch\06. Priest\01. Begin">
+      <UniqueIdentifier>{a5e3f29c-1d39-4f24-ab63-34d98e220a6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Catch\06. Priest\02. Loop">
+      <UniqueIdentifier>{68cfe73d-6682-4a5e-9609-144f04cfab8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Catch\06. Priest\03. Catching">
+      <UniqueIdentifier>{1874e178-58da-4540-b30c-75db306f6efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Catch\06. Priest\04. Shoot">
+      <UniqueIdentifier>{930c7f17-89ff-4a5c-b048-8733fe3b3534}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -7089,9 +7107,6 @@
     <ClInclude Include="..\public\CPersonality_Leader.h">
       <Filter>03. Instances\03. Component\06. AI\Personality\02. Leader</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CState_Combat_SkillQ_Catch_Begin_Priest.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\06. Priest\01. Begin</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_SkillQ_Catch_Loop_Priest.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\06. Priest\02. Loop</Filter>
     </ClInclude>
@@ -7103,6 +7118,21 @@
     </ClInclude>
     <ClInclude Include="..\Public\CTrigger_Glider.h">
       <Filter>03. Instances\02. GameObject\11. Trigger\03.Trigger_Glider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_Catch_Begin_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\06. Priest\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Catch_Shoot_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Catch\06. Priest\04. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Catch_Catching_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Catch\06. Priest\03. Catching</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Catch_Loop_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Catch\06. Priest\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Catch_Begin_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Catch\06. Priest\01. Begin</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -10231,9 +10261,6 @@
     <ClCompile Include="..\private\CPersonality_Leader.cpp">
       <Filter>03. Instances\03. Component\06. AI\Personality\02. Leader</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CState_Combat_SkillQ_Catch_Begin_Priest.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\06. Priest\01. Begin</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_SkillQ_Catch_Loop_Priest.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\06. Priest\02. Loop</Filter>
     </ClCompile>
@@ -10245,6 +10272,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\CTrigger_Glider.cpp">
       <Filter>03. Instances\02. GameObject\11. Trigger\03.Trigger_Glider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_Catch_Begin_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\06. Priest\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Catch_Shoot_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Catch\06. Priest\04. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Catch_Catching_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Catch\06. Priest\03. Catching</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Catch_Loop_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Catch\06. Priest\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Catch_Begin_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Catch\06. Priest\01. Begin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

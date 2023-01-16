@@ -981,6 +981,11 @@
 #include "CState_Common_FlyHit_Lancer.h"
 
 
+#include "CState_Catch_Begin_Priest.h"
+#include "CState_Catch_Loop_Priest.h"
+#include "CState_Catch_Catching_Priest.h"
+#include "CState_Catch_Shoot_Priest.h"
+
 
 
 
@@ -2409,6 +2414,13 @@ void CState_Manager::Priest_State_AI()
 	m_arrStates[AI_STATE_COMMON_FLYHIT_PRIEST] = CState_Common_FlyHit_Priest::Create();
 
 #pragma endregion
+
+	// CannonCatch
+	m_arrStates[AI_STATE_CATCH_CANNON_BEGIN_PRIEST] = CState_Catch_Begin_Priest::Create();
+	m_arrStates[AI_STATE_CATCH_CANNON_LOOP_PRIEST] = CState_Catch_Loop_Priest::Create();
+	m_arrStates[AI_STATE_CATCH_CANNON_PRIEST] = CState_Catch_Catching_Priest::Create();
+	m_arrStates[AI_STATE_CATCH_CANNON_SHOOT_PRIEST] = CState_Catch_Shoot_Priest::Create();
+
 }
 
 void CState_Manager::Lancer_State_AI()
