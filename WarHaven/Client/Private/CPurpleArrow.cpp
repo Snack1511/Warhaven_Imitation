@@ -169,8 +169,7 @@ void CPurpleArrow::My_Tick()
 					pUnit, pUnit->Get_Transform()->Get_World(WORLD_POS));
 
 				DISABLE_GAMEOBJECT(this);
-			}
-				
+			}				
 			else
 			{
 				pUnit->On_PlusHp(m_fDamage, m_pOwnerUnit, false, 9999);

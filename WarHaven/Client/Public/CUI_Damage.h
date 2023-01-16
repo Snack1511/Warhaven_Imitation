@@ -22,6 +22,7 @@ public:
 
 	virtual void My_Tick() override;
 	virtual void OnEnable() override;
+	virtual void OnDisable() override;
 
 public:
 	void Enable_Damage(_uint eIcon, _float fDmg);
@@ -32,13 +33,27 @@ private:
 	CUI_Object* m_pArrDmgNum[3];
 
 private:
+	enum HeadShotIcon { Head_Up, Head_Down, Head_End };
+	CUI_Object* m_pHeadShotIcon[Head_End];
+	CUI_Object* m_pScratch = nullptr;
+
+	_float4 m_vHeadPos;
+	_float m_fHeadShotTime = 0.f;
+	_bool m_bScratch = false;
+	_float m_fScratchTime = 0.f;
+
+	_bool m_bDisable = false;
+
+	void Create_HeadShotIcon();
+
+private:
 	_float4 m_vColorWhite = _float4(1.f, 1.f, 1.f, 1.f);
 	_float4 m_vColorGray = _float4(0.8f, 0.8f, 0.8f, 1.f);
 	_float4 m_vColorRed = _float4(0.8f, 0.2f, 0.2f, 1.f);
 	_float4 m_vColorGreen = _float4(0.2f, 0.5f, 0.2f, 1.f);
 
 	_float2 m_vFontScale = _float2(60.f, 71.f);
-	_float m_vHeadShotScale = 70.f;
+	_float m_vHeadShotScale = 50.f;
 
 	_float m_fFadeInTime = 0.3f;
 	_float m_fFadeOutTime = 0.1f;
