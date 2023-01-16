@@ -2157,7 +2157,7 @@ void CUI_Oper::Init_ConquestBlur()
 		for (int i = 0; i < 3; ++i)
 			m_pArrConquestBlur[i]->Set_PosX(23.f);
 
-		m_pArrConquestBlur[0]->Set_PosY(-22.f);
+		m_pArrConquestBlur[0]->Set_PosY(-25.f);
 		m_pArrConquestBlur[1]->Set_PosY(155.f);
 
 		break;
