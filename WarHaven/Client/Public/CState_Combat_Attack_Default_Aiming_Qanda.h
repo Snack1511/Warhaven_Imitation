@@ -38,6 +38,7 @@ private:
 
 	_uint m_iSndIdx;
 	_float m_fSndTime;
+	_float m_iCharge;
 };
 
 END

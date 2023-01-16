@@ -217,6 +217,8 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 					CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Charge_End",
 						pQanda->Get_Crow(), ZERO_VECTOR);
 
+					CFunctor::Play_Sound(L"Effect_Steam", CHANNEL_EFFECTS, 1.f);
+
 					pQanda->Turn_ChargeEffect(false);
 
 					m_bCharge = false;

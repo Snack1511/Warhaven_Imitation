@@ -114,6 +114,10 @@ void CAnimWeapon_Crow::Boom_Crow()
 
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Crow_Boom", m_pTransform->Get_World(WORLD_POS),
 		GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE));
+
+	CFunctor::Play_Sound(L"Effect_Crow_Boom0", CHANNEL_EFFECTS, m_pTransform->Get_World(WORLD_POS), 1.f);
+	CFunctor::Play_Sound(L"Effect_Crow_Boom1", CHANNEL_EFFECTS, m_pTransform->Get_World(WORLD_POS), 1.f);
+	CFunctor::Play_Sound(L"Effect_Crow_Boom2", CHANNEL_EFFECTS, m_pTransform->Get_World(WORLD_POS), 1.f);
 }
 
 

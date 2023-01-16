@@ -72,7 +72,7 @@ void CState_Combat_Attack_Engineer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* p
 		m_fMyMaxLerp = 0.01f;
 		//pOwner->Set_LookToTarget();
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
-		Play_Voice(pOwner, L"Voice_Attack", 1.f);
+		Play_Voice(pOwner, L"Voice_Attack", 0.3f);
 
 		break;
 
