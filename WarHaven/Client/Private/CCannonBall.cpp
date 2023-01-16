@@ -210,6 +210,16 @@ HRESULT CCannonBall::Start()
 	return S_OK;
 }
 
+_float4 CCannonBall::Get_Position()
+{
+	_float4 vReturn = ZERO_VECTOR;
+
+	if (nullptr != m_pTransform)
+		vReturn = m_pTransform->Get_World(WORLD_POS);
+
+	return vReturn;
+}
+
 void CCannonBall::My_Tick()
 {
 	if (!m_bCatched)

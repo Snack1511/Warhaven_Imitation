@@ -795,8 +795,8 @@ void CTable_Conditions::Select_CannonBall(_bool& OutCondition, BEHAVIOR_DESC*& O
 
 	Cannon.sort([&MyPositoin](auto& Sour, auto& Dest)
 		{
-			_float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-			_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+			_float4 SourPosition = Sour->Get_Position();
+			_float4 DestPosition = Dest->Get_Position();
 			if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
 				return true;
 			else return false;
