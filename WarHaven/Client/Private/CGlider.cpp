@@ -238,7 +238,7 @@ void CGlider::Late_Tick()
 	{
 	case Client::CGlider::eOpen:
 
-		CFunctor::Play_Sound(L"Effect_GlidingBegin", CHANNEL_EFFECTS);
+		CFunctor::Play_Sound(L"Effect_GlidingBegin", CHANNEL_EFFECTS, m_pTransform->Get_World(WORLD_POS));
 
 		m_vScale += fDT(0) * 10.f;
 
@@ -258,7 +258,7 @@ void CGlider::Late_Tick()
 
 	case Client::CGlider::eClose:
 
-		CFunctor::Play_Sound(L"Effect_GlidingEnd", CHANNEL_EFFECTS);
+		CFunctor::Play_Sound(L"Effect_GlidingEnd", CHANNEL_EFFECTS, m_pTransform->Get_World(WORLD_POS));
 
 		m_vScale -= fDT(0) * 10.f;
 
