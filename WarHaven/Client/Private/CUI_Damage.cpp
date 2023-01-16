@@ -79,6 +79,7 @@ void CUI_Damage::My_Tick()
 
 			if (m_eDamageIcon == Head)
 			{
+				cout << "원래 위치 : " << m_vHeadPos.x << ", " << m_vHeadPos.y << endl;
 				m_vHeadPos.x -= 5.f;
 
 				for (int i = 0; i < Head_End; ++i)
@@ -113,6 +114,8 @@ void CUI_Damage::My_Tick()
 				_float4 vUpPos = _float4(m_vHeadPos.x - 10.f, m_vHeadPos.y - 7.f, 0.f);
 				_float4 vDownPos = _float4(m_vHeadPos.x + 10.f, m_vHeadPos.y + 7.f, 0.f);
 
+				cout << "헤드포스 : " << m_vHeadPos.x << ", " << m_vHeadPos.y << endl;
+
 				m_pHeadShotIcon[Head_Up]->DoMove(vUpPos, fDuration);
 				m_pHeadShotIcon[Head_Down]->DoMove(vDownPos, fDuration);
 			}
@@ -126,7 +129,7 @@ void CUI_Damage::My_Tick()
 		{
 			m_fAccTime = 0.f;
 
-			DISABLE_GAMEOBJECT(this);
+			this->SetActive(false);
 		}
 	}
 
@@ -227,8 +230,6 @@ void CUI_Damage::Enable_Damage(_uint eIcon, _float fDmg)
 		m_iDamageValue = 999;
 
 	m_eDamageIcon = (DamageIcon)eIcon;
-
-	ENABLE_GAMEOBJECT(this);
 }
 
 void CUI_Damage::Create_HeadShotIcon()
