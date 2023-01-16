@@ -47,7 +47,7 @@ HRESULT CState_Common_Gliding_AI::Initialize()
 
 
     m_fMyAccel = 10.f;
-    m_fMyMaxLerp = 0.4f;
+    m_fMyMaxLerp = 0.05f;
     m_fAnimSpeed = 2.f;
 
     return S_OK;
@@ -158,12 +158,14 @@ STATE_TYPE CState_Common_Gliding_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
         break;
 
     case Client::CState_Common_Gliding_AI::GLIDE_LOOP:
-
-        if (!pOwner->Is_Air())
+    {
+        _float4 vLook = CGameSystem::Get_Instance()->Find_Position("Hwara_Center") - pOwner->Get_Transform()->Get_World(WORLD_POS);
+        if (2.f > vLook.Length())
             m_eGlideState = GLIDE_LAND;
 
         Move_Gliding(pOwner, "Hwara_Center", true);
-        break;
+    }   
+    break;
 
     
     case Client::CState_Common_Gliding_AI::GLIDE_STOP:
@@ -173,6 +175,7 @@ STATE_TYPE CState_Common_Gliding_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
     case Client::CState_Common_Gliding_AI::GLIDE_LAND:
 
+        pOwner->Get_OwnerPlayer()->Set_NewPath(nullptr);
         return Glide_Land(pOwner);
 
 
@@ -199,12 +202,12 @@ void CState_Common_Gliding_AI::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
     if (m_eGlideState != GLIDE_NOENTER)
     {
-        if (!m_bReturn)
-            pOwner->Enable_Glider(false);
+            
 
         if (pOwner->Get_OwnerPlayer()->Get_CurClass() == ARCHER)
             static_cast<CUnit_Archer*>(pOwner)->Enable_Arrow(true);
 
+        pOwner->Enable_Glider(false);
         pOwner->Get_Glider()->Set_GliderState(CGlider::eGliderState::eClose);
     }
 
@@ -218,9 +221,9 @@ STATE_TYPE CState_Common_Gliding_AI::Check_Condition(CUnit* pOwner, CAnimator* p
 STATE_TYPE CState_Common_Gliding_AI::Glide_Land(CUnit* pOwner)
 {
     /* PathNavi SprintEnd 글라이더를 착용한 상태에서 착지 */
-    STATE_TYPE eSprintEndState = pOwner->Get_SprintEndState();
+    STATE_TYPE eSprintFallState = pOwner->Get_SprintEndState();
     m_bReturn = true;
-    return eSprintEndState;
+    return eSprintFallState;
 }
 
 STATE_TYPE CState_Common_Gliding_AI::Glide_Cancel(CUnit* pOwner)
@@ -253,4 +256,6 @@ void CState_Common_Gliding_AI::Move_Gliding(CGameObject* pSourObject, string str
         
     pMyUnit->Get_Transform()->Set_LerpLook(vLook, m_fMyMaxLerp);
     pMyUnit->Get_PhysicsCom()->Set_Dir(vLook);
+    pMyUnit->Get_PhysicsCom()->Set_Accel(100.f);
+   
 }

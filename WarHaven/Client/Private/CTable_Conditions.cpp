@@ -142,6 +142,7 @@ HRESULT CTable_Conditions::SetUp_Conditions()
 	Add_WhyCondition(wstring(L"Check_AdjCannon"), Check_AdjCannon);
 	Add_WhyCondition(wstring(L"Check_AbleHero"), Check_AbleHero);
 	Add_WhyCondition(wstring(L"Check_EmptyRoute"), Check_EmptyRoute);
+	Add_WhyCondition(wstring(L"Check_Gliding"), Check_Gliding);
 #pragma endregion 플레이어 상태 체크
 
 #pragma region 패스 체크
@@ -795,9 +796,34 @@ void CTable_Conditions::Check_ReviveTeam(_bool& OutCondition, CPlayer* pPlayer, 
 
 }
 
+void CTable_Conditions::Check_Gliding(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+	//얘는 글라이딩 중엔 무조건 True가 나와야 하는 조건
+	//CHECKFALSEOUTCONDITION(OutCondition);
+	if (OutCondition)
+		return;
+	else
+	{
+		CUnit* pUnit = pPlayer->Get_CurrentUnit();
+		if (pUnit) 
+		{
+			STATE_TYPE eType = pUnit->Get_CurState();
+			OutCondition = (eType == AI_STATE_GLIDING_AI);
+		}
+		else
+			OutCondition = false;
+	}
+
+}
+
 void CTable_Conditions::Select_CannonBall(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
-	_float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+	CUnit* pUnit = pPlayer->Get_CurrentUnit();
+	if (!pUnit) {
+		OutCondition = false;
+		return;
+	}
+	_float4 MyPositoin = pUnit->Get_Transform()->Get_World(WORLD_POS);
 
 	list<CCannonBall*> Cannon = pAIController->Get_NearCannonBall();
 
@@ -1379,6 +1405,8 @@ void CTable_Conditions::Select_HwaraFinalTrigger(_bool& OutCondition, BEHAVIOR_D
 
 void CTable_Conditions::Select_NearGliderTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
+	if (OutCondition)
+		return;
 
 	_float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
 
@@ -1469,7 +1497,7 @@ int	Find_Path(CPlayer* pPathOwner)
 		{
 			while (1)
 			{
-				if (pPathOwner->Get_CurPath()->IsLocked())
+				if (pPathOwner->Get_CurPath() && pPathOwner->Get_CurPath()->IsLocked())
 					continue;
 
 				pPathOwner->Set_NewPath(pCurPath);
@@ -1485,7 +1513,7 @@ int	Find_Path(CPlayer* pPathOwner)
 		{
 			while (1)
 			{
-				if (pPathOwner->Get_CurPath()->IsLocked())
+				if (pPathOwner->Get_CurPath() && pPathOwner->Get_CurPath()->IsLocked())
 					continue;
 
 				pPathOwner->Set_NewPath(pCurPath);
