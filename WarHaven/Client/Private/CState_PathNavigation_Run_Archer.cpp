@@ -26,9 +26,6 @@ HRESULT CState_PathNavigation_Run_Archer::Initialize()
 
 	// 선형 보간 시간
 	m_fInterPolationTime = 0.1f;
-
-	// 애니메이션의 전체 속도를 올려준다.
-	m_fAnimSpeed = 1.f;
 	
 
 	Add_KeyFrame(12, 0, true);

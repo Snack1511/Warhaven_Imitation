@@ -46,7 +46,7 @@ HRESULT CState_Combat_SkillQ_Catch_Begin_Priest::Initialize()
     m_fInterPolationTime = 0.1f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 1.f;
+    m_fAnimSpeed = 1.5f;
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_iStateChangeKeyFrame = 99;

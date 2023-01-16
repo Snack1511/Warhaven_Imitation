@@ -56,7 +56,7 @@ HRESULT CState_Catch_Shoot_Priest::Initialize()
 
 	Add_KeyFrame(8, 0);
 	
-	return __super::Initialize();
+	return S_OK;
 }
 
 void CState_Catch_Shoot_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
@@ -107,7 +107,7 @@ STATE_TYPE CState_Catch_Shoot_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CState_Catch_Shoot_Priest::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	__super::Exit(pOwner, pAnimator);
+
 }
 
 STATE_TYPE CState_Catch_Shoot_Priest::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

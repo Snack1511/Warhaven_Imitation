@@ -46,13 +46,13 @@ HRESULT CState_Catch_Begin_Priest::Initialize()
     m_fInterPolationTime = 0.1f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 1.f;
+    m_fAnimSpeed = 1.5f;
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_iStateChangeKeyFrame = 99;
     m_fMyMaxLerp = 0.4f;
 
-	return __super::Initialize();
+	return S_OK;
 }
 
 void CState_Catch_Begin_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -90,7 +90,7 @@ STATE_TYPE CState_Catch_Begin_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CState_Catch_Begin_Priest::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	__super::Exit(pOwner, pAnimator);
+
 }
 
 STATE_TYPE CState_Catch_Begin_Priest::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

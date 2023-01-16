@@ -50,7 +50,7 @@ HRESULT CState_Catch_Loop_Priest::Initialize()
     m_iStateChangeKeyFrame = 999;
     m_fMyMaxLerp = 0.4f;
 
-	return __super::Initialize();
+	return S_OK;
 }
 
 void CState_Catch_Loop_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -97,9 +97,6 @@ STATE_TYPE CState_Catch_Loop_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
     CUnit* pUnit = pOwner->Get_TargetUnit();
     CTransform* pMyTransform = pOwner->Get_Transform();
 
-    CUnit* pUnit = pOwner->Get_TargetUnit();
-    CTransform* pMyTransform = pOwner->Get_Transform();
-
     _float4 vLook = ZERO_VECTOR;
 
     if (pUnit)
@@ -123,7 +120,6 @@ void CState_Catch_Loop_Priest::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	static_cast<CUnit_Priest*>(pOwner)->Turn_CatchEffet(false);
 
 	pOwner->Enable_GuardCollider(false);
-	__super::Exit(pOwner, pAnimator);
 }
 
 STATE_TYPE CState_Catch_Loop_Priest::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
