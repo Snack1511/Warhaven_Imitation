@@ -309,7 +309,7 @@ void CTrigger_Stage::Update_Conquered()
 			CGameSystem::Get_Instance()->Enable_HwaraFinalTrigger(m_pConqueredTeam->Get_TeamType());
 
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 2);
-			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 2);
+			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 0);
 			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 2);
 
 			if (IsMainPlayerTeam)
