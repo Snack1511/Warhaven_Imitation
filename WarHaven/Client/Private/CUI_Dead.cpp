@@ -95,10 +95,11 @@ void CUI_Dead::SetActive_RevivalUI(_bool value)
 {
 	m_pRevivalUI[RU_Bar]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
 
+	if (value == false)
+		m_bAbleRevival = false;
+
 	for (int i = 0; i < RU_End; ++i)
-	{
 		m_pRevivalUI[i]->SetActive(value);
-	}
 }
 
 void CUI_Dead::My_Tick()
@@ -138,6 +139,7 @@ void CUI_Dead::My_Tick()
 
 			CUser::Get_Instance()->Set_FixCursor(false);
 			CUser::Get_Instance()->SetActive_Cursor(true);
+
 			GAMEINSTANCE->Change_Camera(L"DefaultCam");
 
 			return;

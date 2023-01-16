@@ -136,7 +136,7 @@ protected:
 	_float				m_fMaxTime = 0.f;
 
 	_float m_fSndTime = 0.f;
-	_float m_fMaxSndTime = 5.f;
+	_float m_fMaxSndTime = 2.f;
 
 	_bool				m_bExecuted = false;
 

@@ -117,7 +117,8 @@ STATE_TYPE CLancer_Breeze_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	m_fTimeAcc += fDT(0);
 
-	CUser::Get_Instance()->Set_BreezeTime(m_fTimeAcc, 5.f);
+	if (pOwner->Is_MainPlayer())
+		CUser::Get_Instance()->Set_BreezeTime(m_fTimeAcc, 5.f);
 
 	if (m_fTimeAcc > 5.f || KEY(RBUTTON, AWAY))
 		return STATE_STOP_LANCER;

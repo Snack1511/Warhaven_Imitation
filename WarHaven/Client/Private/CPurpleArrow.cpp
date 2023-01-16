@@ -13,7 +13,7 @@
 #include "CCollider_Sphere.h"
 
 #include "CState.h"
-
+#include "Functor.h"
 CPurpleArrow::CPurpleArrow()
 {
 }
@@ -159,6 +159,7 @@ void CPurpleArrow::My_Tick()
 	
 		if (m_fCurPoisonTime > m_fMaxPoisonTime)
 		{
+			CFunctor::Play_Sound(L"Effect_Poison", CHANNEL_EFFECTS);
 
 			if (m_iTickCnt == m_iMaxTickCnt)
 			{
@@ -168,8 +169,7 @@ void CPurpleArrow::My_Tick()
 					pUnit, pUnit->Get_Transform()->Get_World(WORLD_POS));
 
 				DISABLE_GAMEOBJECT(this);
-			}
-				
+			}				
 			else
 			{
 				pUnit->On_PlusHp(m_fDamage, m_pOwnerUnit, false, 9999);

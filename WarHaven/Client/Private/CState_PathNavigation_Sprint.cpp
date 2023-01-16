@@ -52,16 +52,16 @@ void CState_PathNavigation_Sprint::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pA
     switch (iSequence)
     {
     case 0:
-        Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS, m_fAIDeafultVolume);
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.3f);
         break;
 
 
     case 222:
-        Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS, m_fAIDeafultVolume);
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.3f);
         CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
         break;
     case 333:
-        Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS, m_fAIDeafultVolume);
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.3f);
         CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
         break;
     default:

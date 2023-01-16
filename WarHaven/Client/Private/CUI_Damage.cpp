@@ -20,6 +20,8 @@ HRESULT CUI_Damage::Initialize_Prototype()
 	m_pDmgIcon = CUI_Object::Create();
 	m_pDmgNum = CUI_Object::Create();
 
+	Create_HeadShotIcon();
+
 	return S_OK;
 }
 
@@ -32,6 +34,15 @@ HRESULT CUI_Damage::Start()
 {
 	__super::Start();
 
+	CREATE_GAMEOBJECT(m_pScratch, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pScratch);
+
+	for (int i = 0; i < Head_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pHeadShotIcon[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pHeadShotIcon[i]);
+	}
+
 	Init_HeadShot();
 	Init_DmgNum();
 
@@ -40,32 +51,86 @@ HRESULT CUI_Damage::Start()
 
 void CUI_Damage::My_Tick()
 {
-	m_fAccTime += fDT(0);
-
-	_float m_fAliveTime = m_fFadeInTime + m_fFadeOutTime + m_fMaintainTime;
-
-	if (m_fAccTime >= m_fScaleDownTime)
+	if (m_bIsScaleDown)
 	{
-		if (m_bIsScaleDown)
+		m_fAccTime += fDT(0);
+		if (m_fAccTime >= m_fScaleDownTime)
 		{
+			m_fAccTime = 0.f;
 			m_bIsScaleDown = false;
+
 			for (int i = 0; i < 3; ++i)
-			{
 				m_pArrDmgNum[i]->DoScale(-m_fScaleValue, m_fScaleDownTime);
-			}
 
 			if (m_pDmgIcon->Is_Valid())
-			{
 				m_pDmgIcon->DoScale(-m_fScaleValue, m_fScaleUpTime);
+		}
+	}
+	else
+	{
+		m_fHeadShotTime += fDT(0);
+		if (m_fHeadShotTime >= m_fScaleUpTime)
+		{
+			m_fHeadShotTime = 0.f;
+			m_bScratch = true;
+
+			if (m_eDamageIcon == Head)
+			{
+				m_vHeadPos = m_pDmgIcon->Get_Pos();
+				m_vHeadPos.x -= 5.f;
+
+				for (int i = 0; i < Head_End; ++i)
+				{
+					m_pHeadShotIcon[i]->Set_Pos(m_vHeadPos);
+					Enable_Fade(m_pHeadShotIcon[i], 0.3f);
+				}
+
+				m_pDmgIcon->SetActive(false);
 			}
 		}
 	}
 
-	if (m_fAccTime >= m_fAliveTime)
+	if (m_bScratch)
 	{
-		m_fAccTime = 0.f;
-		DISABLE_GAMEOBJECT(this);
+		m_fScratchTime += fDT(0);
+		if (m_fScratchTime >= 0.3f)
+		{
+			m_fScratchTime = 0.f;
+			m_bScratch = false;
+			m_bDisable = true;
+
+			m_pScratch->Set_Pos(m_vHeadPos);
+			Enable_Fade(m_pScratch, 0.3f);
+
+			_float fDuration = 0.3f;
+
+			m_pScratch->DoScale(25.f, fDuration);
+
+			_float4 vUpPos = _float4(m_vHeadPos.x - 10.f, m_vHeadPos.y - 7.f, 0.f);
+			_float4 vDownPos = _float4(m_vHeadPos.x + 10.f, m_vHeadPos.y + 7.f, 0.f);
+
+			m_pHeadShotIcon[Head_Up]->DoMove(vUpPos, fDuration);
+			m_pHeadShotIcon[Head_Down]->DoMove(vDownPos, fDuration);
+		}
 	}
+
+	if (m_bDisable)
+	{
+		m_fAccTime += fDT(0);
+		if (m_fAccTime > 0.3f)
+		{
+			m_fAccTime = 0.f;
+
+			DISABLE_GAMEOBJECT(this);
+		}
+	}
+
+	// _float m_fAliveTime = m_fFadeInTime + m_fFadeOutTime + m_fMaintainTime;
+
+	//if (m_fAccTime >= m_fAliveTime)
+	//{
+	//	m_fAccTime = 0.f;
+	//}
 }
 
 void CUI_Damage::OnEnable()
@@ -134,6 +199,18 @@ void CUI_Damage::OnEnable()
 	m_bIsScaleDown = true;
 }
 
+void CUI_Damage::OnDisable()
+{
+	__super::OnDisable();
+
+	m_fHeadShotTime = 0.f;
+
+	Disable_Fade(m_pScratch, 0.3f);
+
+	for (int i = 0; i < Head_End; ++i)
+		Disable_Fade(m_pHeadShotIcon[i], 0.3f);
+}
+
 void CUI_Damage::Enable_Damage(_uint eIcon, _float fDmg)
 {
 	if (eIcon > Default)
@@ -148,9 +225,40 @@ void CUI_Damage::Enable_Damage(_uint eIcon, _float fDmg)
 	ENABLE_GAMEOBJECT(this);
 }
 
+void CUI_Damage::Create_HeadShotIcon()
+{
+	m_pScratch = CUI_Object::Create();
+	m_pScratch->Set_Texture(L"../Bin/Resources/Textures/UI/HUD/T_IconIndicatorScratch.dds");
+	m_pScratch->Set_Scale(50.f);
+	m_pScratch->Set_Sort(0.5f);
+
+	m_pScratch->Set_FadeDesc(0.f, 0.3f, 0.3f, true);
+
+	for (int i = 0; i < Head_End; ++i)
+	{
+		m_pHeadShotIcon[i] = CUI_Object::Create();
+
+		m_pHeadShotIcon[i]->Set_Scale(50.f);
+		m_pHeadShotIcon[i]->Set_Sort(0.5f);
+
+		m_pHeadShotIcon[i]->Set_FadeDesc(0.f, 0.3f, 0.3f, true);
+
+		switch (i)
+		{
+		case Head_Up:
+			m_pHeadShotIcon[i]->Set_Texture(L"../Bin/Resources/Textures/UI/HUD/T_IconIndicatorHeadshotTop.dds");
+			break;
+
+		case Head_Down:
+			m_pHeadShotIcon[i]->Set_Texture(L"../Bin/Resources/Textures/UI/HUD/T_IconIndicatorHeadshotBottom.dds");
+			break;
+		}
+	}
+}
+
 void CUI_Damage::Init_HeadShot()
 {
-	m_pDmgIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_HeadshotIcon.dds"));
+	m_pDmgIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_HeadshotIcon.png"));
 	GET_COMPONENT_FROM(m_pDmgIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_IconGuardShield.dds"));
 	GET_COMPONENT_FROM(m_pDmgIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_HeartIcon.png"));
 
