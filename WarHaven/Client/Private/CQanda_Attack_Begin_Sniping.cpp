@@ -77,6 +77,8 @@ void CQanda_Attack_Begin_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 	Play_Voice(pOwner, L"Voice_Sniping", 1.f);
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Sound(L"Effect_MeteorBegin");
 }
 
 STATE_TYPE CQanda_Attack_Begin_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)

@@ -309,13 +309,10 @@ void CUI_Oper::OnDisable()
 
 void CUI_Oper::Set_PointColor(_bool IsMainTeam, _uint iPoinIdx)
 {
-	_float4 vColor;
-	vColor = IsMainTeam ? m_vColorBlue : m_vColorRed;
+	_float4 vColor = IsMainTeam ? m_vColorBlue : m_vColorRed;
 
 	for (int i = 0; i < SP_TEXT; ++i)
-	{
 		m_pArrStrongHoldUI[i][iPoinIdx]->Set_Color(vColor);
-	}
 
 	m_pArrConquestBlur[iPoinIdx]->Set_Color(vColor);
 
@@ -2166,7 +2163,7 @@ void CUI_Oper::Init_ConquestBlur()
 		for (int i = 0; i < 3; ++i)
 			m_pArrConquestBlur[i]->Set_PosX(23.f);
 
-		m_pArrConquestBlur[0]->Set_PosY(-25.f);
+		m_pArrConquestBlur[0]->Set_PosY(-30.f);
 		m_pArrConquestBlur[1]->Set_PosY(155.f);
 
 		break;
