@@ -38,7 +38,7 @@ void CState_PathNavigation::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	m_fAIDelayTime += fDT(0);
+	
 
 
 	/* Path Å¸±â */
@@ -50,6 +50,10 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	if (!pCurPath)
 		return __super::Tick(pOwner, pAnimator);
+
+	if (pCurPath != pOwner->Get_StartMainPath())
+		m_fAIDelayTime += fDT(0);
+
 
 	pCurPath->Lock();
 	pCurPath->Update_CurrentIndex(vCurPos);

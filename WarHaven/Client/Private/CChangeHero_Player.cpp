@@ -96,6 +96,9 @@ STATE_TYPE CChangeHero_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		pOwner->Shake_Camera(8.f, 1.f);
 		GAMEINSTANCE->Stop_RadialBlur();
 		GAMEINSTANCE->Stop_ChromaticAberration();
+		if (m_eChangeClassType == LANCER)
+			CFunctor::Play_Sound(L"Effect_HorseStop", CHANNEL_EFFECTS, pOwner->Get_Transform()->Get_World(WORLD_POS), 1.f);
+
 
 		return STATE_END;
 	}

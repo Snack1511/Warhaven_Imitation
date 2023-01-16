@@ -53,6 +53,8 @@ HRESULT CState_Combat_Stop_Lancer::Initialize()
 void CState_Combat_Stop_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
     pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.5f;
+    CFunctor::Play_Sound(L"Effect_HorseStop", CHANNEL_EFFECTS, pOwner->Get_Transform()->Get_World(WORLD_POS), 1.f);
+
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

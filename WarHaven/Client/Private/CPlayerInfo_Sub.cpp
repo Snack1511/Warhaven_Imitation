@@ -59,7 +59,11 @@ HRESULT CPlayerInfo_Sub::Initialize()
 	else if (g_iSubCnt == 3)
 	{
 		m_tPlayerInfo.wstrName = L"¸íÇ°¼öÁ¦µ·±î½º¸ÁÄ¡";
+#ifdef ENGINEER_TH
 		m_vecPrefClassType.push_back(ENGINEER);
+#else
+		m_vecPrefClassType.push_back(WARRIOR);
+#endif
 	}
 	else if (g_iSubCnt == 4)
 	{
@@ -102,9 +106,9 @@ HRESULT CPlayerInfo_Sub::Initialize()
 
 HRESULT CPlayerInfo_Sub::SetUp_AIPersonality()
 {
-	CAIPersonality* pPersonality = CAIPersonality::Create(CGameSystem::Get_Instance()->Get_BXTable());
-	pPersonality->Load(L"Glide");
-	//CAIPersonality* pPersonality = CPersonality_Sub::Create(CGameSystem::Get_Instance()->Get_BXTable());
+	//CAIPersonality* pPersonality = CAIPersonality::Create(CGameSystem::Get_Instance()->Get_BXTable());
+	//pPersonality->Load(L"Glide");
+	CAIPersonality* pPersonality = CPersonality_Sub::Create(CGameSystem::Get_Instance()->Get_BXTable());
 	m_pPersonality = pPersonality;
 
 	m_iUnitType = ((_uint)CUnit::UNIT_TYPE::eAI_Default);
