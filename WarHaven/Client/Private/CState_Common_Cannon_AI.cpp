@@ -228,8 +228,14 @@ void CState_Common_Cannon_AI::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (m_eCannonState != CANNON_NOENTER)
     {
-        if(m_bControlCannon)
-            pOwner->Get_AdjCannon()->Exit_Cannon();
+        if (m_bControlCannon)
+        {
+            if (pOwner->Get_AdjCannon())
+            {
+                pOwner->Get_AdjCannon()->Exit_Cannon();
+            }
+        }
+            
     }
 }
 
