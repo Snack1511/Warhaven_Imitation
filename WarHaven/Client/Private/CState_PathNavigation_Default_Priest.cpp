@@ -55,7 +55,7 @@ HRESULT CState_PathNavigation_Default_Priest::Initialize()
 
     Add_KeyFrame(20, 0, true);
     Add_KeyFrame(44, 0, true);
-    return S_OK;
+
     return __super::Initialize();
 }
 

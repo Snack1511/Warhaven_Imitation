@@ -74,6 +74,7 @@
 
 #include "CUI_HUD.h"
 #include "CUI_Skill.h"
+#include "CCannonBall.h"
 #include "CUI_ScoreInfo.h"
 
 #pragma region AI 추가용
@@ -1144,18 +1145,15 @@ void CPlayer::On_RealChangeBehavior()
 		m_bKeepRay = false;
 		break;
 
+	case eBehaviorType::eCatchCannon:
+		m_bKeepRay = false;
+		pNewTargetObj = m_pCurBehaviorDesc->pCannonBall;
 		break;
 
 	default:
 		m_bKeepRay = false;
 
 		break;
-	}
-
-	if (m_pTargetObj != pNewTargetObj)
-	{
-		m_CurRoute.clear();
-		m_bFindRoute = false;
 	}
 
 	m_pTargetObj = pNewTargetObj;

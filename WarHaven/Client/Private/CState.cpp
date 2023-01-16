@@ -973,6 +973,8 @@ void CState::Follow_Move(CGameObject* pSourObject, CGameObject* pDestUnit, _bool
 		return;
 	}
 
+	vLook.y = 0.f;
+
 	if (!vLook.Is_Zero())
 		pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
 

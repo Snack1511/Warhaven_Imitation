@@ -50,6 +50,7 @@ namespace Client
 		class CPlayer* pAlliesPlayer = nullptr;
 		class CPlayer* pEnemyPlayer = nullptr;
 		class CCannon* pNearCannon = nullptr;
+		class CCannonBall* pCannonBall= nullptr;
 
 		_float fDelayTime = 0.f;
 
