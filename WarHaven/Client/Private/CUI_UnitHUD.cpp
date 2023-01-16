@@ -443,6 +443,7 @@ void CUI_UnitHUD::Tick_TargetUI()
 			m_fEanbleTargetUITime = 0.f;
 			m_bEnableTargetUI = false;
 
+			Play_Sound(L"Effect_MeteorTarget");
 			m_pTargetUI[Target_Point]->SetActive(true);
 			m_pTargetUI[Target_Point]->Lerp_Scale(70.f, 30.f, 0.3f);
 		}
