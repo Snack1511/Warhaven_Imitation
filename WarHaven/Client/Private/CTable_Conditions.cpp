@@ -17,6 +17,7 @@
 #include "CGameSystem.h"
 #include "CTrigger_Stage.h"
 #include "CTrigger_Glider.h"
+#include "CCannonBall.h"
 #include "CCannon.h"
 
 
@@ -114,7 +115,19 @@ HRESULT CTable_Conditions::SetUp_Conditions()
 	Add_WhyCondition(wstring(L"Check_UsableCannon"), Check_UsableCannon);
 	Add_WhyCondition(wstring(L"Check_InCannonConquerTrigger"), Check_InCannonConquerTrigger);
 	Add_WhyCondition(wstring(L"Check_GriderTrigger"), Check_GriderTrigger);
+	Add_WhyCondition(wstring(L"Check_InNearCannonBall"), Check_InNearCannonBall);
 #pragma endregion 맵 체크
+
+#pragma region 캐릭터체크
+	Add_WhyCondition(wstring(L"Check_IsPriest"), Check_IsPriest);
+
+#pragma endregion 캐릭터체크
+
+#pragma region 쿨타임 체크
+	Add_WhyCondition(wstring(L"Check_IsEnableSkill1"), Check_IsEnableSkill1);
+	Add_WhyCondition(wstring(L"Check_IsEnableSkill2"), Check_IsEnableSkill2);
+	Add_WhyCondition(wstring(L"Check_IsEnableSkill3"), Check_IsEnableSkill3);
+#pragma endregion 쿨타임 체크
 
 #pragma region 비해비어 체크
 	Add_WhyCondition(wstring(L"Check_PatrolBehavior"), Check_PatrolBehavior);
@@ -137,6 +150,9 @@ HRESULT CTable_Conditions::SetUp_Conditions()
 
 
 	Add_WhatCondition(wstring(L"EmptyWhatCondition"), EmptyWhatCondition);
+#pragma region 캐논볼  선택
+	Add_WhatCondition(wstring(L"Select_CannonBall"), Select_CannonBall);
+#pragma endregion 캐논볼 선택
 #pragma region 플레이어 선택
 	Add_WhatCondition(wstring(L"Select_Leader"), Select_Leader);
 	Add_WhatCondition(wstring(L"Select_NearEnemy"), Select_NearEnemy);
@@ -653,6 +669,52 @@ void CTable_Conditions::Check_GriderTrigger(_bool& OutCondition, CPlayer* pPlaye
 	OutCondition = false;
 }
 
+void CTable_Conditions::Check_InNearCannonBall(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+	CHECKFALSEOUTCONDITION(OutCondition);
+
+
+	list<CCannonBall*> CannonList = pAIController->Get_NearCannonBall();
+	CHECK_EMPTY(CannonList);
+
+	OutCondition = true;
+}
+
+void CTable_Conditions::Check_IsPriest(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+	CHECKFALSEOUTCONDITION(OutCondition);
+	CLASS_TYPE eClassType = pPlayer->Get_CurClass();
+
+	if(eClassType == PRIEST)
+	{
+		OutCondition = true;
+	}
+	else
+		OutCondition = false;
+
+}
+
+void CTable_Conditions::Check_IsEnableSkill1(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+	CHECKFALSEOUTCONDITION(OutCondition);
+
+	OutCondition = pPlayer->Get_CurrentUnit()->Can_Use(CUnit::SKILL1);
+}
+
+void CTable_Conditions::Check_IsEnableSkill2(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+	CHECKFALSEOUTCONDITION(OutCondition);
+
+	OutCondition = pPlayer->Get_CurrentUnit()->Can_Use(CUnit::SKILL2);
+}
+
+void CTable_Conditions::Check_IsEnableSkill3(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+	CHECKFALSEOUTCONDITION(OutCondition);
+
+	OutCondition = pPlayer->Get_CurrentUnit()->Can_Use(CUnit::SKILL3);
+}
+
 void CTable_Conditions::Check_AdjCannon(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
 	CHECKFALSEOUTCONDITION(OutCondition);
@@ -721,6 +783,27 @@ void CTable_Conditions::Check_ReviveTeam(_bool& OutCondition, CPlayer* pPlayer, 
 		}
 	}
 
+}
+
+void CTable_Conditions::Select_CannonBall(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
+{
+	_float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+
+	list<CCannonBall*> Cannon = pAIController->Get_NearCannonBall();
+
+	CHECK_EMPTY(Cannon);
+
+	Cannon.sort([&MyPositoin](auto& Sour, auto& Dest)
+		{
+			_float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+			_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+			if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
+				return true;
+			else return false;
+		});
+
+	OutDesc->pCannonBall = Cannon.front();
+	OutCondition = true;
 }
 
 void CTable_Conditions::Select_Leader(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)

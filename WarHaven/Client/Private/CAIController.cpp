@@ -10,6 +10,7 @@
 #include "Functor.h"
 #include "CPath.h"
 #include  "CGameSystem.h"
+#include  "CCannonBall.h"
 
 CAIController::CAIController(_uint iGroupID)
 	: CComponent(iGroupID)
@@ -158,7 +159,9 @@ void CAIController::Tick()
 void CAIController::Late_Tick()
 {
 
-
+	m_NearEnemyList.clear();
+	m_NearAlliesList.clear();
+	m_NearCannonBallList.clear();
 	m_NearObjectList.clear();
 }
 
@@ -179,11 +182,15 @@ void CAIController::OnDisable()
 
 void CAIController::Ready_Controller()
 {
+	m_NearAlliesList.clear();
+	m_NearEnemyList.clear();
+	m_NearCannonBallList.clear();
+
 	for (auto& Value : m_NearObjectList)
 	{
 		CUnit* pUnit = dynamic_cast<CUnit*>(Value);
 		CTrigger* pTrigger = dynamic_cast<CTrigger*>(Value);
-
+		CCannonBall* pCannonBall = dynamic_cast<CCannonBall*>(Value);
 		if (nullptr != pTrigger)
 		{
 			m_NearTriggerList.push_back(pTrigger);
@@ -195,6 +202,11 @@ void CAIController::Ready_Controller()
 			else
 				m_NearEnemyList.push_back(pUnit->Get_OwnerPlayer());
 
+		}
+		else if (nullptr != pCannonBall)
+		{
+			if(!pCannonBall->Is_Catch())
+				m_NearCannonBallList.push_back(pCannonBall);
 		}
 	}
 

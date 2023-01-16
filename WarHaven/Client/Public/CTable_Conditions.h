@@ -75,14 +75,18 @@ private:
     void Check_InCannonConquerTrigger(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //활공 트리거랑 충돌할 때
     void Check_GriderTrigger(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_InNearCannonBall(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
 #pragma endregion 맵 체크
 
 #pragma region 캐릭터체크
+    void Check_IsPriest(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
 
 #pragma endregion 캐릭터체크
 
 #pragma region 쿨타임 체크
-
+    void Check_IsEnableSkill1(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_IsEnableSkill2(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_IsEnableSkill3(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
 #pragma endregion 쿨타임 체크
 
 #pragma region 비해비어 체크
@@ -109,6 +113,9 @@ private:
     //void Check_EmptyEnemyInTerritory(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_Losing(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_LowHealthPoint(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+#pragma region 캐논볼  선택
+    void  Select_CannonBall(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+#pragma endregion 캐논볼 선택
 
 private:
 #pragma region 플레이어 선택

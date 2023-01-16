@@ -36,7 +36,8 @@ public:
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT	Initialize();
 	virtual HRESULT	Start();
-
+public:
+	_bool Is_Catch() { return m_bCatched; }
 protected:
 	CPlayer* m_pOwnerPlayer = nullptr;
 
