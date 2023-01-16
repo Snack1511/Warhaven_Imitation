@@ -101,8 +101,6 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);
 
-	
-
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Change"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_CombatBehavior"));
 	pBehavior->Add_OtherCondition(wstring(L"Check_AbleHero"));

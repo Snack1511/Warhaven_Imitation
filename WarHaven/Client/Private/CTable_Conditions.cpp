@@ -747,10 +747,22 @@ void CTable_Conditions::Check_AbleHero(_bool& OutCondition, CPlayer* pPlayer, CA
 {
 	CHECKFALSEOUTCONDITION(OutCondition);
 
+	CSquad* pSquad = pPlayer->Get_Squad();
+
+	for (auto& elem : pSquad->Get_AllPlayers())
+	{
+		if (elem.second->Get_CurClass() >= FIONA)
+		{
+			OutCondition = false;
+			return;
+		}
+	}
+
+
 	if (pPlayer->AbleHero())
 		OutCondition = true;
 	else
-		OutCondition = false;;
+		OutCondition = false;
 
 }
 
