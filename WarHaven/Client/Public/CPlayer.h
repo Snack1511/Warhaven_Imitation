@@ -350,7 +350,9 @@ private:
 	_bool	m_bReborn = false;
 	_bool	m_bAbleRevival = false;
 	_float		m_fRevivalAcc = 0.f;
+	_float		m_fRevivalEffectAcc = 0.f;
 	_float		m_fMaxRevivalTime = 10.f;
+	_float		m_fMaxRevivalEffectTime = 1.f;
 
 private:
 	CUnit* m_pCurrentUnit = nullptr;

@@ -81,7 +81,7 @@ HRESULT CPersonality_Default::Initailize()
 	m_BehaviorList.push_back(pBehavior);
 
 	
-
+		
 	//캐논점령지에 있고, 캐논 근처에, 캐논사용가능할 때
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PadenCannonInteract"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_Paden"));

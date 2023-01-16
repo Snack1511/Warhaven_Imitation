@@ -1045,6 +1045,10 @@ void CPlayer::On_RealDie()
 
 	m_DeadLights.clear();
 
+
+	
+
+
 	if (m_pMyTeam)
 	{
 		if (m_pMyTeam->IsMainPlayerTeam())
@@ -1710,6 +1714,22 @@ void CPlayer::Check_AbleRevival()
 	if (m_bAbleRevival)
 	{
 		m_fRevivalAcc += fDT(0);
+
+		if (m_pMyTeam)
+		{
+			if (m_pMyTeam->IsMainPlayerTeam())
+			{
+				m_fRevivalEffectAcc += fDT(0);
+
+				if (m_fRevivalEffectAcc > m_fMaxRevivalEffectTime)
+				{
+
+
+					CFunctor::Play_Sound(L"Effect_Death", CHANNEL_EFFECTS, Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS), 0.8f);
+					m_fRevivalEffectAcc = 0.f;
+				}
+			}
+		}
 
 		if (m_pUnitHUD)
 			m_pUnitHUD->Set_RevivalGauge(m_fRevivalAcc, m_fMaxRevivalTime);
