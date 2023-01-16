@@ -132,11 +132,10 @@ void CUI_Damage::My_Tick()
 				Disable_Fade(m_pHeadShotIcon[i], 0.3f);
 		}
 
-		if (m_fAccTime >= 0.3f)
+		if (m_fAccTime > 0.1f)
 		{
 			m_fAccTime = 0.f;
 			m_bDisable = false;
-
 			DISABLE_GAMEOBJECT(this);
 		}
 	}
