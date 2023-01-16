@@ -135,6 +135,9 @@ HRESULT CCannonBall::Initialize_Prototype()
 	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, 0.5f, COL_BLUEATTACK, ZERO_VECTOR, DEFAULT_TRANS_MATRIX);
 	Add_Component(pCollider);
 
+	pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, 0.5f, COL_CANNONBALL, ZERO_VECTOR, DEFAULT_TRANS_MATRIX);
+	Add_Component(pCollider);
+
 
 	/* PhysX */
 	CMeshContainer* pMesh = (pModel->Get_MeshContainers().back().second);

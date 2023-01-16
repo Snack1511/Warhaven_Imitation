@@ -17,7 +17,7 @@
 #include "CUser.h"
 #include "CTeamConnector.h"
 #include "CSquad.h"
-#define AUTO_CANNON
+//#define AUTO_CANNON
 
 CCannon::CCannon()
 {

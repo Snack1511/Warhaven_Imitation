@@ -79,6 +79,7 @@ HRESULT CPlayerInfo_Default::Initialize()
 	m_vecPrefClassType.push_back(WARRIOR);
 #endif // WARRIOR_TH
 
+	m_vecPrefClassType.push_back(PRIEST);
 
 	if (FAILED(SetUp_AIPersonality()))
 		return E_FAIL;

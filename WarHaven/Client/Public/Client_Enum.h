@@ -107,6 +107,7 @@ namespace Client
 		COL_CANNON,
 
 		COL_SIGHTRANGE,
+		COL_CANNONBALL,
 
 		COL_END = 32,
 	};

@@ -320,7 +320,9 @@ void CTable_Conditions::Check_FarAwayLeader(_bool& OutCondition, CPlayer* pPlaye
 void CTable_Conditions::Check_LookEnemy(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
 	CHECKFALSEOUTCONDITION(OutCondition);
-
+	
+	if (!pPlayer->Get_CurrentUnit())
+		return;
 
 	//플레이어 Look방향 반원
 	_float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
@@ -365,6 +367,8 @@ void CTable_Conditions::Check_DeadAllies(_bool& OutCondition, CPlayer* pPlayer, 
 {
 	CHECKFALSEOUTCONDITION(OutCondition);
 
+	if (!pPlayer->Get_CurrentUnit())
+		return;
 
 	//플레이어 Look방향 반원
 	_float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
@@ -914,7 +918,7 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 	//CHECKFALSEOUTCONDITION(OutCondition);
 
 	//소팅하고 정리해놓기
-	if (!pPlayer->Get_CurrentUnit()->Is_Valid())
+	if (!pPlayer->Get_CurrentUnit())
 	{
 		OutCondition = false;
 		return;
@@ -961,7 +965,7 @@ void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& O
 	//CHECKFALSEOUTCONDITION(OutCondition);
 
 	//소팅하고 정리해놓기
-	if (!pPlayer->Get_CurrentUnit()->Is_Valid())
+	if (!pPlayer->Get_CurrentUnit())
 	{
 		OutCondition = false;
 		return;

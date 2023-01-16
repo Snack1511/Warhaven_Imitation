@@ -1120,26 +1120,20 @@ void CPlayer::On_RealChangeBehavior()
 	if (!m_pCurBehaviorDesc)
 		return;
 
-	CGameObject* pNewTargetObj = nullptr;
-
 	switch (m_pCurBehaviorDesc->eCurType)
 	{
 	case eBehaviorType::eCombat:
 		m_pTargetPlayer = m_pCurBehaviorDesc->pEnemyPlayer;
-		pNewTargetObj = m_pTargetPlayer;
 		m_bKeepRay = true;
 
 		break;
 	case eBehaviorType::eRevive:
 		m_pTargetPlayer = m_pCurBehaviorDesc->pAlliesPlayer;
-		pNewTargetObj = m_pTargetPlayer;
-		m_bKeepRay = true;
 
 		break;
 	case eBehaviorType::ePadenCannonInteract:
 		m_pTargetObj = m_pCurBehaviorDesc->pNearCannon;
 		break;
-
 
 	case eBehaviorType::ePathFinding:
 		m_bKeepRay = false;
@@ -1147,7 +1141,8 @@ void CPlayer::On_RealChangeBehavior()
 
 	case eBehaviorType::eCatchCannon:
 		m_bKeepRay = false;
-		pNewTargetObj = m_pCurBehaviorDesc->pCannonBall;
+		m_pTargetObj = m_pCurBehaviorDesc->pCannonBall;
+
 		break;
 
 	default:
@@ -1156,7 +1151,6 @@ void CPlayer::On_RealChangeBehavior()
 		break;
 	}
 
-	m_pTargetObj = pNewTargetObj;
 }
 
 void CPlayer::On_FinishGame(CTeamConnector* pLoseTeam)

@@ -132,7 +132,11 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
                 return __super::Tick(pOwner, pAnimator);
 
             if (!pTargetUnit->Get_OwnerPlayer()->Is_AbleRevival())
+            {
+                pOwner->Force_ChangeBehavior();
                 return eDefaultState;
+
+            }
 
 
             pOwner->Set_LookToTarget();
@@ -211,6 +215,7 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
         if (pAnimator->Is_CurAnimFinished())
         {
             //CUser::Get_Instance()->Disable_RevivalUI();
+            pOwner->Force_ChangeBehavior();
 
             STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
             return eDefaultState;

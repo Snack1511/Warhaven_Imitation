@@ -368,6 +368,10 @@ protected:
 	_bool				m_bForUseTeam = true;
 	_bool				m_bSameNearObject = false;
 
+	_bool				m_bForceChangeBehavior = false;
+	public:
+		void	Force_ChangeBehavior() { m_bForceChangeBehavior = true; }
+
 protected:
 	// ¾ê°¡ max
 	_float	m_fCoolTime[COOL_END] = {};

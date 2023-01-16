@@ -65,15 +65,6 @@ void CState_Common_Cannon_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 {
     m_ePreStateType = ePrevType;
 
-    CGameObject* pTargetObj = pOwner->Get_OwnerPlayer()->Get_TargetObject();
-
-    // 현재 인접한 타겟오브젝트가 대포가 아닐 시
-    if (!pTargetObj)
-    {
-        m_eCannonState = CANNON_NOENTER;
-        return;
-    }
-    else
     {
         m_eAnimType = ANIM_BASE_R;
 
@@ -112,6 +103,15 @@ STATE_TYPE CState_Common_Cannon_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
     CCannon* pCannon = pOwner->Get_AdjCannon();
     CGameObject* pTargetObject = pOwner->Get_TargetObject();
 
+    if (!pTargetObject)
+    {
+        STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+        pOwner->Force_ChangeBehavior();
+
+        return eDefaultState;
+    }
+
+
 
     switch (m_eCannonState)
     {
@@ -122,9 +122,10 @@ STATE_TYPE CState_Common_Cannon_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
             m_eCannonState = CANNON_ENTER;
             if (!pCannon->Can_ControlCannon(pOwner->Get_OwnerPlayer()))
             {
+                pOwner->Force_ChangeBehavior();
+
                 return pOwner->Get_DefaultState();
             }
-        }
 
             _uint iAnimIndex = 0;
 
@@ -134,12 +135,20 @@ STATE_TYPE CState_Common_Cannon_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
                 iAnimIndex = 30;
 
             Change_Animation(pAnimator, ANIM_ETC, iAnimIndex);
+
+
         }
             
 
         // 타겟 오브젝트가 없으면 ? 타겟포스로 찾아가기.
         else
+        {
+            if (!dynamic_cast<CCannon*>(pTargetObject)->Can_ControlCannon(pOwner->Get_OwnerPlayer()))
+                pOwner->Force_ChangeBehavior();
+
             Follow_Move(pOwner, pTargetObject);
+
+        }
 
         
 

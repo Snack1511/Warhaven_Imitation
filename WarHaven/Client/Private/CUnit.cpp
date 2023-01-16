@@ -579,10 +579,7 @@ CUnit* CUnit::Get_TargetUnit()
 
 CGameObject* CUnit::Get_TargetObject()
 {
-	if (!m_pOwnerPlayer->Get_TargetObject())
-		return nullptr;
-
-	return m_pOwnerPlayer->Get_TargetPlayer()->Get_TargetObject();
+	return m_pOwnerPlayer->Get_TargetObject();
 }
 
 
@@ -1405,6 +1402,11 @@ void CUnit::My_Tick()
 			/* BehaviorDesc는 갱신하기 */
 			m_pOwnerPlayer->On_RealChangeBehavior();
 
+		}
+		else if (m_bForceChangeBehavior)
+		{
+			m_pOwnerPlayer->On_RealChangeBehavior();
+			m_bForceChangeBehavior = false;
 		}
 
 	}
