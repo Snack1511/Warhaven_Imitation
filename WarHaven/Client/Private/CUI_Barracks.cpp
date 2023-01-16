@@ -233,7 +233,7 @@ void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
 			m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("¿œπ›"));
 
 			for (int i = SB_Outline; i < SB_Lock; ++i)
-				Enable_Fade(m_pArrSkinBtn[0][i], m_fDuration);
+				Enable_Fade(m_pArrSkinBtn[iEventNum][i], m_fDuration);
 
 			CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomBody((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_BODY::eBODY1);
 			CUser::Get_Instance()->Change_ModelParts(m_iSelectClass, MODEL_PART_BODY);
@@ -246,7 +246,7 @@ void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
 			m_pSkinInfo[Skin_Tier]->Set_FontColor(RGB(90, 60, 130));
 
 			for (int i = SB_Outline; i < SB_Lock; ++i)
-				Enable_Fade(m_pArrSkinBtn[0][i], m_fDuration);
+				Enable_Fade(m_pArrSkinBtn[iEventNum][i], m_fDuration);
 
 			CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomBody((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_BODY::eBODY2);
 			CUser::Get_Instance()->Change_ModelParts(m_iSelectClass, MODEL_PART_BODY);
@@ -271,7 +271,7 @@ void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
 				m_pSkinInfo[Skin_Tier]->Set_FontRender(false);
 
 				for (int i = SB_Outline; i < SB_Lock; ++i)
-					Enable_Fade(m_pArrSkinBtn[0][i], m_fDuration);
+					Enable_Fade(m_pArrSkinBtn[iEventNum][i], m_fDuration);
 
 				CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomHead((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_HEAD::eHEAD1);
 				CUser::Get_Instance()->Change_ModelParts(m_iSelectClass, MODEL_PART_HEAD);
@@ -285,7 +285,7 @@ void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
 				m_pSkinInfo[Skin_Tier]->Set_FontColor(RGB(60, 100, 200));
 
 				for (int i = SB_Outline; i < SB_Lock; ++i)
-					Enable_Fade(m_pArrSkinBtn[1][i], m_fDuration);
+					Enable_Fade(m_pArrSkinBtn[iEventNum][i], m_fDuration);
 
 				CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomHead((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_HEAD::eRABBIT);
 				CUser::Get_Instance()->Change_ModelParts(m_iSelectClass, MODEL_PART_HEAD);

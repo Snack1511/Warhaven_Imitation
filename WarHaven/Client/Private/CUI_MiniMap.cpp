@@ -33,7 +33,7 @@ HRESULT CUI_MiniMap::Start()
 
 	Init_MiniMap();
 	Init_MiniMapPoint();
-
+	Set_TeamType();
 	Bind_Shader();
 
 	return S_OK;
@@ -80,10 +80,7 @@ void CUI_MiniMap::SetActive_MiniMap(_bool value)
 
 void CUI_MiniMap::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
 {
-	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
-	auto iter = mapPlayers.begin();
-	eTEAM_TYPE eTeam = iter->second->Get_Team()->Get_TeamType();
-	if (eTeam == eTEAM_TYPE::eBLUE)
+	if (m_eTeamType == eTEAM_TYPE::eBLUE)
 	{
 		if (strPadenPointKey == "Hwara_Final_Blue")
 		{
@@ -194,6 +191,10 @@ void CUI_MiniMap::My_Tick()
 	{
 		if (!m_pPlayers[i]->Get_CurrentUnit())
 			continue;
+		if (!m_pPlayers[i])
+			m_pPlayerIcon[i]->SetActive(false);
+
+		
 
 		_float fHP = m_pPlayers[i]->Get_CurrentUnit()->Get_Status().fHP;
 		if (fHP <= 0.f)
@@ -238,6 +239,9 @@ void CUI_MiniMap::My_LateTick()
 	{
 		for (int i = 0; i < 8; ++i)
 		{
+			if (!m_pPlayerTransform[i])
+				continue;
+
 			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS);
 			vPos.x += m_fIconOffsetX;
 			vPos.z += m_fIconOffsetY;
@@ -250,6 +254,9 @@ void CUI_MiniMap::My_LateTick()
 	{
 		for (int i = 0; i < 8; ++i)
 		{
+			if (!m_pPlayerTransform[i])
+				continue;
+
 			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 0.8f;
 			vPos.x += m_fHwaraOffSetX;
 			vPos.z += m_fHwaraOffSetY;
@@ -280,6 +287,13 @@ void CUI_MiniMap::Bind_Shader()
 	GET_COMPONENT_FROM(m_pArrMiniMapPoint[Point_R][MP_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_MiniMap::Set_Shader_Guage_PointR, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrMiniMapPoint[Point_C][MP_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_MiniMap::Set_Shader_Guage_PointC, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrMiniMapPoint[Point_E][MP_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_MiniMap::Set_Shader_Guage_PointE, this, placeholders::_1, "g_fValue");
+}
+
+void CUI_MiniMap::Set_TeamType()
+{
+	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+	auto iter = mapPlayers.begin();
+	m_eTeamType = iter->second->Get_Team()->Get_TeamType();
 }
 
 void CUI_MiniMap::Create_MiniMap()
@@ -458,12 +472,9 @@ void CUI_MiniMap::Init_MiniMapPoint()
 			m_pArrMiniMapPoint[Point_E][i]->Set_PosY(246.f);
 			m_pArrMiniMapPoint[Point_R][i]->Set_PosY(278.f);
 
-			map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
-			auto iter = mapPlayers.begin();
-			eTEAM_TYPE eTeam = iter->second->Get_Team()->Get_TeamType();
 			for (int i = 0; i < MP_End; ++i)
 			{
-				if (eTeam == eTEAM_TYPE::eBLUE)
+				if (m_eTeamType == eTEAM_TYPE::eBLUE)
 				{
 					m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-565.f);
 					m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-433.f);

@@ -754,6 +754,7 @@ void CUser::SetActive_Cursor(_bool value)
 
 void CUser::Enable_DamageFont(_uint eType, _float fDmg)
 {
+	m_pUI_Damage[m_iDamageFontIdx]->SetActive(true);
 	m_pUI_Damage[m_iDamageFontIdx]->Enable_Damage(eType, fDmg);
 
 	m_iDamageFontIdx++;

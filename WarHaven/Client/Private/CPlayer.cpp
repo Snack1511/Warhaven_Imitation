@@ -499,7 +499,7 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 				CPath* pPath = CGameSystem::Get_Instance()->Find_Path(m_strStartPath);
 
 
-				if (pPath) 
+				if (pPath)
 				{
 					m_pUI_Trail->Clear_Nodes();
 					vPos.y += 0.1f;
@@ -1298,7 +1298,7 @@ void CPlayer::My_Tick()
 
 	//공통으로 업데이트 되어야 하는것
 
-	if (m_pUnitHUD)
+	if (m_pUnitHUD && m_pCurrentUnit)
 		m_pUnitHUD->Set_UnitStatus(m_pCurrentUnit->Get_Status());
 
 	Update_HeroGauge();
