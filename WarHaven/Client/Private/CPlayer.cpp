@@ -393,8 +393,6 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 
 		pUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
 
-
-
 	}
 	if (m_bIsMainPlayer)
 	{
