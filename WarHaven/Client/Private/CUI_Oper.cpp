@@ -177,12 +177,14 @@ void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
 		if (pMainPlayer->Get_Team()->Has_RespawnTrigger())
 		{
 			if (m_eLoadLevel == LEVEL_PADEN)
+			{
 				vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition("Paden_Trigger_R");
+				pMainPlayer->SetStartPath("Paden_RespawnToMain_0");
+			}
 			else
+			{
 				vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition("Hwara_Respawn");
-
-			pMainPlayer->SetStartPath("Paden_RespawnToMain_0");
-
+			}
 
 		}
 

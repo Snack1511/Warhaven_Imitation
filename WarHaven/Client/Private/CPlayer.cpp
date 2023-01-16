@@ -453,10 +453,10 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 				{
 					pNewPath = CGameSystem::Get_Instance()->Clone_RandomRespawnPath(m_pAIController, m_pMyTeam->Get_TeamType());
 				}
-				else if (m_pMyTeam->Has_CenterTrigger())
+				/*else if (m_pMyTeam->Has_CenterTrigger())
 				{
 					pNewPath = CGameSystem::Get_Instance()->Clone_CenterPath(m_pAIController, m_pMyTeam->Get_TeamType());
-				}
+				}*/
 				else
 				{
 					pNewPath = CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType());
@@ -1486,9 +1486,10 @@ void CPlayer::Update_HeroGauge()
 
 	if (m_bIsMainPlayer)
 	{
-		/*_bool IsHeroGaugeEnable = CUser::Get_Instance()->Is_OnHeroGauge();
-		if (!IsHeroGaugeEnable)
-			return;*/
+		if (KEY(O, TAP))
+		{
+			m_fGauge = 100.f;
+		}
 
 		CUser::Get_Instance()->Set_HeroGauge(m_fGauge, m_fMaxGauge);
 	}
@@ -1498,12 +1499,6 @@ void CPlayer::Update_HeroGauge()
 
 		_float fGaugeSpeed = fDT(0) * 0.1f;
 
-		if (m_bIsMainPlayer)
-		{
-			//if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_TEST)
-			fGaugeSpeed *= 200.f;
-
-		}
 		if (!m_bIsHero) //CChangeHero_Player
 		{
 			if (m_bAlive)
@@ -1520,7 +1515,7 @@ void CPlayer::Update_HeroGauge()
 		}
 		else //변신 중일때 
 		{
-			//m_fGauge -= fDT(0) * 2.f; // 인게임속도2.f 
+			m_fGauge -= fDT(0) * 2.f; // 인게임속도2.f 
 
 			if (m_bIsMainPlayer)
 			{
@@ -1734,10 +1729,10 @@ void CPlayer::Check_AbleRevival()
 						vStartPos = m_pMyTeam->Find_RespawnPosition("Paden_Trigger_R");
 
 				}
-				else if (m_pMyTeam->Has_CenterTrigger())
+				/*else if (m_pMyTeam->Has_CenterTrigger())
 				{
 					vStartPos = m_pMyTeam->Find_RespawnPosition("Hwara_Center");
-				}
+				}*/
 				else
 				{
 					vStartPos = m_pMyTeam->Find_RespawnPosition_Start();

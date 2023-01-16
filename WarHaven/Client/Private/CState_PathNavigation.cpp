@@ -39,6 +39,7 @@ void CState_PathNavigation::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	
+	m_fAIDelayTime += fDT(0);
 
 
 	/* Path 타기 */
@@ -51,8 +52,6 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	if (!pCurPath)
 		return __super::Tick(pOwner, pAnimator);
 
-	if (pCurPath != pOwner->Get_StartMainPath())
-		m_fAIDelayTime += fDT(0);
 
 
 	pCurPath->Lock();
@@ -71,37 +70,41 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	// 만약 Path 타야하는데 Dir로 Ray쏴서 벽에 막히면, 다른 가장 가까운 Release Path를 찾아야 한다.
 
-	if (m_fAIDelayTime > 2.f)
+	if (pCurPath != pOwner->Get_StartMainPath())
 	{
-		m_fAIDelayTime = 0.f;
-		_float4 vRayStartPos = vCurPos;
-		vRayStartPos.y += 0.5f;
-
-
-		if (GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, 1.f))
+		if (m_fAIDelayTime > 2.f)
 		{
-			/* 만약 main path 타고있던거면 main path 그냥 다 탄걸로 처리해 */
-			if (m_pOwner->Get_StartMainPath() == pCurPath)
-			{
-				m_pOwner->Get_StartMainPath()->Set_Arrived();
-				/*현재 Path 갱신해야하고 MainPath 지우면 안되기 때문에 null 처리*/
-				m_pOwner->Get_OwnerPlayer()->Set_CurPathNull();
-			}
+			m_fAIDelayTime = 0.f;
+			_float4 vRayStartPos = vCurPos;
+			vRayStartPos.y += 0.5f;
 
-			pCurPath = CGameSystem::Get_Instance()->Clone_RandomReleasePath(vCurPos);
 
-			if (!pCurPath)
+			if (GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, 1.f))
 			{
-				/* Path 못찾았으면 main path 다시 */
-				pCurPath = m_pOwner->Get_StartMainPath();
-				m_pOwner->Get_OwnerPlayer()->Set_NewPath(pCurPath);
-			}
-			else
-			{
-				pOwner->Get_OwnerPlayer()->Set_NewPath(pCurPath);
+				/* 만약 main path 타고있던거면 main path 그냥 다 탄걸로 처리해 */
+				if (m_pOwner->Get_StartMainPath() == pCurPath)
+				{
+					m_pOwner->Get_StartMainPath()->Set_Arrived();
+					/*현재 Path 갱신해야하고 MainPath 지우면 안되기 때문에 null 처리*/
+					m_pOwner->Get_OwnerPlayer()->Set_CurPathNull();
+				}
+
+				pCurPath = CGameSystem::Get_Instance()->Clone_RandomReleasePath(vCurPos);
+
+				if (!pCurPath)
+				{
+					/* Path 못찾았으면 main path 다시 */
+					pCurPath = m_pOwner->Get_StartMainPath();
+					m_pOwner->Get_OwnerPlayer()->Set_NewPath(pCurPath);
+				}
+				else
+				{
+					pOwner->Get_OwnerPlayer()->Set_NewPath(pCurPath);
+				}
 			}
 		}
 	}
+	
 	
 
 	/* Path 따라가는 코드 */

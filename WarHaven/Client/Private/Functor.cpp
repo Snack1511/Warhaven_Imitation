@@ -168,6 +168,9 @@ void	CFunctor::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float4 vPosi
 
 	//fLength *= 2.f;
 
+	if (fLength >= SOUND_MAX_RANGE)
+		return;
+
 
 	if (fLength <= SOUND_MIN_RANGE)
 		fRatio = 1.f;
@@ -197,6 +200,10 @@ void CFunctor::Play_Sound_SetRange(wstring wstrFileName, _uint iGroupIndex, _flo
 	//	fMinRatio = 0.5f;
 
 	//fLength *= 2.f;
+
+
+	if (fLength >= SOUND_MAX_RANGE)
+		return;
 
 
 	if (fLength <= SOUND_MIN_RANGE)
