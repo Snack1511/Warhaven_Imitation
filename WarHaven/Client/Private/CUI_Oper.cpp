@@ -515,12 +515,12 @@ void CUI_Oper::Progress_Oper()
 				m_fAccTime = 0.f;
 				m_iOperProgress++;
 
-				Play_Sound(L"UI_Oper0", 0.3f);
 
 				GAMEINSTANCE->Play_BGM(L"BGM_Oper", 0.3f);
 
 				Enable_Fade(m_pTextImg[Text_Oper1], 0.3f);
 				m_pTextImg[Text_Oper1]->DoScale(-512.f, 0.3f);
+				Play_Sound(L"UI_Oper01", 0.3f);
 			}
 		}
 		else if (m_iOperProgress == 2)
@@ -534,6 +534,8 @@ void CUI_Oper::Progress_Oper()
 				vPos.y += 200.f;
 				m_pTextImg[Text_Oper1]->DoMove(vPos, 0.3f, 0);
 				m_pTextImg[Text_Oper1]->DoScale(-256.f, 0.3f);
+
+				Play_Sound(L"UI_Oper0", 0.3f);
 
 				Set_OperProfile();
 
@@ -593,6 +595,8 @@ void CUI_Oper::Progress_Oper()
 			_uint iIndex;
 			iIndex = m_eLoadLevel == LEVEL_HWARA ? 2 : 3;
 
+			Play_Sound(L"UI_Oper02");
+
 			for (int i = 0; i < iIndex; ++i)
 			{
 				Enable_Fade(m_pArrStrongHoldEffect[i], 1.f);
@@ -608,6 +612,9 @@ void CUI_Oper::Progress_Oper()
 
 				_uint iIndex;
 				iIndex = m_eLoadLevel == LEVEL_HWARA ? 5 : 6;
+
+
+				Play_Sound(L"UI_Oper02");
 
 				for (int i = 3; i < iIndex; ++i)
 				{
