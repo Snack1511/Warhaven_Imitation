@@ -52,6 +52,11 @@ private:
 	CUI_Object* m_pArrMiniMapPoint[Point_End][MP_End];
 
 private:
+	eTEAM_TYPE m_eTeamType = eTEAM_TYPE::eCOUNT;
+
+	void Set_TeamType();
+
+private:
 	CUI_Object* m_pPlayerIcon[8];
 
 	CPlayer* m_pPlayers[8];

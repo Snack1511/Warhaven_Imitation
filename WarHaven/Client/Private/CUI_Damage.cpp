@@ -64,6 +64,9 @@ void CUI_Damage::My_Tick()
 
 			if (m_pDmgIcon->Is_Valid())
 				m_pDmgIcon->DoScale(-m_fScaleValue, m_fScaleUpTime);
+
+			if (m_eDamageIcon != Head)
+				m_bDisable = true;
 		}
 	}
 	else
@@ -76,7 +79,6 @@ void CUI_Damage::My_Tick()
 
 			if (m_eDamageIcon == Head)
 			{
-				m_vHeadPos = m_pDmgIcon->Get_Pos();
 				m_vHeadPos.x -= 5.f;
 
 				for (int i = 0; i < Head_End; ++i)
@@ -90,34 +92,37 @@ void CUI_Damage::My_Tick()
 		}
 	}
 
-	if (m_bScratch)
+	if (m_eDamageIcon == Head)
 	{
-		m_fScratchTime += fDT(0);
-		if (m_fScratchTime >= 0.3f)
+		if (m_bScratch)
 		{
-			m_fScratchTime = 0.f;
-			m_bScratch = false;
-			m_bDisable = true;
+			m_fScratchTime += fDT(0);
+			if (m_fScratchTime >= 0.3f)
+			{
+				m_fScratchTime = 0.f;
+				m_bScratch = false;
+				m_bDisable = true;
 
-			m_pScratch->Set_Pos(m_vHeadPos);
-			Enable_Fade(m_pScratch, 0.3f);
+				m_pScratch->Set_Pos(m_vHeadPos);
+				Enable_Fade(m_pScratch, 0.3f);
 
-			_float fDuration = 0.3f;
+				_float fDuration = 0.1f;
 
-			m_pScratch->DoScale(25.f, fDuration);
+				m_pScratch->DoScale(25.f, fDuration);
 
-			_float4 vUpPos = _float4(m_vHeadPos.x - 10.f, m_vHeadPos.y - 7.f, 0.f);
-			_float4 vDownPos = _float4(m_vHeadPos.x + 10.f, m_vHeadPos.y + 7.f, 0.f);
+				_float4 vUpPos = _float4(m_vHeadPos.x - 10.f, m_vHeadPos.y - 7.f, 0.f);
+				_float4 vDownPos = _float4(m_vHeadPos.x + 10.f, m_vHeadPos.y + 7.f, 0.f);
 
-			m_pHeadShotIcon[Head_Up]->DoMove(vUpPos, fDuration);
-			m_pHeadShotIcon[Head_Down]->DoMove(vDownPos, fDuration);
+				m_pHeadShotIcon[Head_Up]->DoMove(vUpPos, fDuration);
+				m_pHeadShotIcon[Head_Down]->DoMove(vDownPos, fDuration);
+			}
 		}
 	}
 
 	if (m_bDisable)
 	{
 		m_fAccTime += fDT(0);
-		if (m_fAccTime > 0.3f)
+		if (m_fAccTime > 0.1f)
 		{
 			m_fAccTime = 0.f;
 
@@ -187,6 +192,7 @@ void CUI_Damage::OnEnable()
 		}
 
 		m_pDmgIcon->Set_Pos(fRandPosX - 40.f, fRandPosY);
+		m_vHeadPos = m_pDmgIcon->Get_Pos();
 		m_pDmgIcon->Set_Scale(m_vHeadShotScale);
 		m_pDmgIcon->DoScale(m_fScaleValue, m_fScaleUpTime);
 
