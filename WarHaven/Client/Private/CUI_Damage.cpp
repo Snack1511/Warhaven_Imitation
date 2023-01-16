@@ -79,7 +79,6 @@ void CUI_Damage::My_Tick()
 
 			if (m_eDamageIcon == Head)
 			{
-				cout << "원래 위치 : " << m_vHeadPos.x << ", " << m_vHeadPos.y << endl;
 				m_vHeadPos.x -= 5.f;
 
 				for (int i = 0; i < Head_End; ++i)
@@ -114,8 +113,6 @@ void CUI_Damage::My_Tick()
 				_float4 vUpPos = _float4(m_vHeadPos.x - 10.f, m_vHeadPos.y - 7.f, 0.f);
 				_float4 vDownPos = _float4(m_vHeadPos.x + 10.f, m_vHeadPos.y + 7.f, 0.f);
 
-				cout << "헤드포스 : " << m_vHeadPos.x << ", " << m_vHeadPos.y << endl;
-
 				m_pHeadShotIcon[Head_Up]->DoMove(vUpPos, fDuration);
 				m_pHeadShotIcon[Head_Down]->DoMove(vDownPos, fDuration);
 			}
@@ -125,20 +122,24 @@ void CUI_Damage::My_Tick()
 	if (m_bDisable)
 	{
 		m_fAccTime += fDT(0);
-		if (m_fAccTime > 0.1f)
+		if (m_fAccTime > 0.3f)
+		{
+			m_bScratch = false;
+
+			Disable_Fade(m_pScratch, 0.3f);
+
+			for (int i = 0; i < Head_End; ++i)
+				Disable_Fade(m_pHeadShotIcon[i], 0.3f);
+		}
+
+		if (m_fAccTime >= 0.3f)
 		{
 			m_fAccTime = 0.f;
+			m_bDisable = false;
 
-			this->SetActive(false);
+			DISABLE_GAMEOBJECT(this);
 		}
 	}
-
-	// _float m_fAliveTime = m_fFadeInTime + m_fFadeOutTime + m_fMaintainTime;
-
-	//if (m_fAccTime >= m_fAliveTime)
-	//{
-	//	m_fAccTime = 0.f;
-	//}
 }
 
 void CUI_Damage::OnEnable()
@@ -211,13 +212,6 @@ void CUI_Damage::OnEnable()
 void CUI_Damage::OnDisable()
 {
 	__super::OnDisable();
-
-	m_fHeadShotTime = 0.f;
-
-	Disable_Fade(m_pScratch, 0.3f);
-
-	for (int i = 0; i < Head_End; ++i)
-		Disable_Fade(m_pHeadShotIcon[i], 0.3f);
 }
 
 void CUI_Damage::Enable_Damage(_uint eIcon, _float fDmg)
