@@ -47,6 +47,7 @@ HRESULT CPlayerInfo_Leader::Initialize()
 	if (g_LeaderCnt == 3)
 	{
 		m_tPlayerInfo.wstrName = L"¹ö°ÅÇü";
+		m_bBurger = true;
 
 #ifdef PALADIN_TH
 		m_vecPrefClassType.push_back(PALADIN);

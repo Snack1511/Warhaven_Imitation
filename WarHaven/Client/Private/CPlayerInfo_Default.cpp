@@ -69,7 +69,7 @@ HRESULT CPlayerInfo_Default::Initialize()
 	}
 	else if (g_iDefaultCnt == 6)
 	{
-		m_tPlayerInfo.wstrName = L"DefaultPlayer";
+		m_tPlayerInfo.wstrName = L"따뜻한자습실";
 	}
 #ifdef ENGINEER_TH
 	m_vecPrefClassType.push_back(ENGINEER);
@@ -79,7 +79,6 @@ HRESULT CPlayerInfo_Default::Initialize()
 	m_vecPrefClassType.push_back(WARRIOR);
 #endif // WARRIOR_TH
 
-	m_vecPrefClassType.push_back(PRIEST);
 
 	if (FAILED(SetUp_AIPersonality()))
 		return E_FAIL;

@@ -94,6 +94,18 @@ HRESULT CPersonality_Sub::Initailize()
 	pBehavior->Set_Priority(iPriority++);
 	m_BehaviorList.push_back(pBehavior);
 
+	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"CatchCannon"))->Clone();
+	//근처에 상대가 쏜 대포알이 있을 때
+	pBehavior->Add_OtherCondition(wstring(L"Check_InNearCannonBall"));
+	pBehavior->Add_OtherCondition(wstring(L"Check_IsPriest"));
+	pBehavior->Add_OtherCondition(wstring(L"Check_IsEnableSkill3"));
+	//대포알을 타겟으로 넣어줌ㅇㅇ
+	pBehavior->Add_WhatCondition(wstring(L"Select_CannonBall"));
+	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
+	pBehavior->Initialize();
+	pBehavior->Set_Priority(iPriority++);
+	m_BehaviorList.push_back(pBehavior);
+
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Change"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_CombatBehavior"));
 	pBehavior->Add_OtherCondition(wstring(L"Check_AbleHero"));

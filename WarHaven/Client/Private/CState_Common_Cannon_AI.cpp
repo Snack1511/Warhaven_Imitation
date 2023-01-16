@@ -58,11 +58,17 @@ HRESULT CState_Common_Cannon_AI::Initialize()
     m_fAnimSpeed = 1.5f;
     m_fDamagePumping = 7.f;
 
+    m_fMyAccel = 10.f;
+    m_fMaxSpeed = 5.f;
+    m_fMyMaxLerp = 0.4f;
+
     return S_OK;
 }
 
 void CState_Common_Cannon_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+    m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
+
     m_ePreStateType = ePrevType;
 
     {
@@ -119,7 +125,7 @@ STATE_TYPE CState_Common_Cannon_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
         if (pCannon)
         {
-            m_eCannonState = CANNON_ENTER;
+            m_eCannonState = CANNON_CONTROL;
             if (!pCannon->Can_ControlCannon(pOwner->Get_OwnerPlayer()))
             {
                 pOwner->Force_ChangeBehavior();
@@ -129,14 +135,16 @@ STATE_TYPE CState_Common_Cannon_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
             _uint iAnimIndex = 0;
 
-            if (pOwner->Get_OwnerPlayer()->Get_CurClass() >= FIONA)
-                iAnimIndex = 22;
-            else
-                iAnimIndex = 30;
-
             Change_Animation(pAnimator, ANIM_ETC, iAnimIndex);
 
+            pOwner->Get_PhysicsCom()->Set_Speed(0.f);
 
+            pCannon->Control_Cannon(pOwner->Get_OwnerPlayer());
+            pOwner->Get_Transform()->Set_LerpLook(pCannon->Get_Transform()->Get_World(WORLD_LOOK), 0.4f);
+            pOwner->Teleport_Unit(pCannon->Get_ControlPos());
+            m_bControlCannon = true;
+
+            m_fTimeAcc = 0.f;
         }
             
 
@@ -146,7 +154,25 @@ STATE_TYPE CState_Common_Cannon_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
             if (!dynamic_cast<CCannon*>(pTargetObject)->Can_ControlCannon(pOwner->Get_OwnerPlayer()))
                 pOwner->Force_ChangeBehavior();
 
-            Follow_Move(pOwner, pTargetObject);
+            _float4 vLook = pTargetObject->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+            vLook.y = 0.f;
+            vLook.Normalize();
+
+            CTransform* pMyTransform = pOwner->Get_Transform();
+
+            CPhysics* pMyPhysicsCom = nullptr;
+            pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+            vLook.y = 0.f;
+
+            if (!vLook.Is_Zero())
+                pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
+
+            pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
+            pMyPhysicsCom->Set_Dir(vLook);
+            pMyPhysicsCom->Set_Accel(m_fMyAccel);
+
+            //Follow_Move(pOwner, pTargetObject);
 
         }
 
@@ -160,18 +186,10 @@ STATE_TYPE CState_Common_Cannon_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
         if (pCannon)
         {
-            if (pAnimator->Is_CurAnimFinished())
-            {
-                pOwner->Get_PhysicsCom()->Set_Speed(0.f);
-                pCannon->Control_Cannon(pOwner->Get_OwnerPlayer());
-                pOwner->Get_Transform()->Set_LerpLook(pCannon->Get_Transform()->Get_World(WORLD_LOOK), 0.4f);
-                pOwner->Teleport_Unit(pCannon->Get_ControlPos());
-                m_fTimeAcc = 0.f;
+               
                 m_eCannonState = CANNON_CONTROL;
-                m_bControlCannon = true;
 
                 Change_Animation(pAnimator, ANIM_ETC, 0);
-            }
         }
         else
             m_eCannonState = CANNON_FOLLOW;

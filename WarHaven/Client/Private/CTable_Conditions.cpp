@@ -632,6 +632,9 @@ void CTable_Conditions::Check_UsableCannon(_bool& OutCondition, CPlayer* pPlayer
 
 	OutCondition = CGameSystem::Get_Instance()->Get_Cannon()->Can_ControlCannon(pPlayer);
 
+	if (CGameSystem::Get_Instance()->Get_Cannon()->Get_CurOwnerPlayer() == pPlayer)
+		OutCondition = true;
+
 	if (pPlayer->Get_CurClass() >= FIONA)
 		OutCondition = false;
 }
@@ -803,14 +806,14 @@ void CTable_Conditions::Select_CannonBall(_bool& OutCondition, BEHAVIOR_DESC*& O
 
 	CHECK_EMPTY(Cannon);
 
-	Cannon.sort([&MyPositoin](auto& Sour, auto& Dest)
+	/*Cannon.sort([&MyPositoin](auto& Sour, auto& Dest)
 		{
 			_float4 SourPosition = Sour->Get_Position();
 			_float4 DestPosition = Dest->Get_Position();
 			if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
 				return true;
 			else return false;
-		});
+		});*/
 
 	OutDesc->pCannonBall = Cannon.front();
 	OutCondition = true;
@@ -932,8 +935,8 @@ void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& Ou
 
 	Enemies.sort([&MyPositoin](auto& Sour, auto& Dest)
 		{
-			_float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-	_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+			_float4 SourPosition = Sour->Get_WorldPos();
+	_float4 DestPosition = Dest->Get_WorldPos();
 	if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
 		return true;
 	else return false;
@@ -979,8 +982,8 @@ void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& O
 
 	Enemies.sort([&MyPositoin](auto& Sour, auto& Dest)
 		{
-			_float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-			_float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+			_float4 SourPosition = Sour->Get_WorldPos();
+			_float4 DestPosition = Dest->Get_WorldPos();
 			if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
 				return true;
 			else return false;
@@ -992,9 +995,18 @@ void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& O
 
 	if (pPlayer->Get_ReserveTargetAlly())
 	{
+		OutCondition = true;
 
 		OutDesc->pAlliesPlayer = pPlayer->Get_ReserveTargetAlly();
-		OutCondition = true;
+	//	if (pPlayer->Get_TargetPlayer() != OutDesc->pAlliesPlayer)
+		{
+			if (pPlayer->Get_TargetPlayer())
+			{
+				if (!pPlayer->Get_TargetPlayer()->Is_AbleRevival())
+					OutCondition = false;
+
+			}
+		}
 	}
 	else
 		OutCondition = false;

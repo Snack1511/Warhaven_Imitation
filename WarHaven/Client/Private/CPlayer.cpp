@@ -548,6 +548,9 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 
 _float4 CPlayer::Get_WorldPos()
 {
+	if (!m_pCurrentUnit)
+		return ZERO_VECTOR;
+
 	return m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
 }
 
@@ -1182,7 +1185,7 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 		GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)CHANNEL_VOICE);
 		m_pCurrentUnit->Play_Voice(L"Voice_Kill", 1.f, false);
 
-		if (pOtherPlayer->Get_PlayerName() == L"Jusin_Burger")
+		if (pOtherPlayer->Get_PlayerInfo()->Is_Burger())
 		{
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eBURGERKING);
 		}
@@ -1267,6 +1270,9 @@ void CPlayer::Set_OutlineType(OUTLINETYPE eOutlineType)
 
 void CPlayer::My_Tick()
 {
+	if (!m_pCurrentUnit)
+		return;
+
 	if (!m_bIsMainPlayer)
 		Update_TargetLock();
 	// 행복버튼~ 즐코
@@ -1311,37 +1317,10 @@ void CPlayer::My_Tick()
 
 void CPlayer::My_LateTick()
 {
-	//공통으로 업데이트 되어야 하는것
 
-	//POINT m_ptMouse;
-	//GetCursorPos(&m_ptMouse);
-	//ScreenToClient(g_hWnd, &m_ptMouse);
-
-	//_float fFixPosX = 11.f;
-	//_float fFixPosY = 13.f;
-
-	//_float4 vPos = CFunctor::To_Descartes(_float4(m_ptMouse.x + fFixPosX, m_ptMouse.y + fFixPosY, 0.f));
-
-	//_float2 vSunUV;
-	//vSunUV.x = vPos.x;
-	//vSunUV.y = vPos.y * -1.f;
-	//GAMEINSTANCE->Set_SunUV(vSunUV);
-
-	//// 마우스용 코드
-
-	//vSunUV.x /= 1280.f;
-	//vSunUV.y /= 720.f;
-
-	//_float fUVx = vSunUV.x + 0.5f;
-	//_float fUVy = vSunUV.y + 0.5f;
-	//fUVy = 1.f - fUVy;
-
-	//fUVy = 1.f - fUVy;
-
-	//fUVx -= 0.5f;
-	//fUVy -= 0.5f;
-
-	//cout << "x : " << fUVx << " y : " << fUVy << endl;
+	if (!m_pCurrentUnit)
+		return;
+	
 
 	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
 	vPos.y += 2.f;

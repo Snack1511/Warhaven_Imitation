@@ -165,14 +165,15 @@ void CAIController::Tick()
 
 void CAIController::Late_Tick()
 {
-
 	if (!m_pOwnerPlayer->Get_CurrentUnit())
 		return;
+
 	m_pNearCannon = nullptr;
 	m_NearObjectList.clear();
 	m_NearEnemyList.clear();
 	m_NearAlliesList.clear();
 	m_NearTriggerList.clear();
+	m_NearCannonBallList.clear();
 }
 
 void CAIController::Release()

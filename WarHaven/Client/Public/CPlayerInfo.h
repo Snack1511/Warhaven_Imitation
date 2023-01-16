@@ -31,7 +31,7 @@ return pInstance;\
 #define WARRIOR_TH
 #define ARCHER_TH
 //#define FIONA_TH
-//#define PALADIN_TH
+#define PALADIN_TH
 //#define ENGINEER_TH
 #define PRIEST_TH
 //#define QANDA_TH
@@ -140,6 +140,9 @@ protected:
 	_bool	m_bIsMainPlayer = false;
 
 	_uint	m_iUnitType = 0;
+	_bool	m_bBurger = false;
+public:
+	_bool	Is_Burger() { return m_bBurger; }
 
 protected:
 	/* 이 안에 있는 클래스중 하나를 랜덤으로 선택해서 플레이 한다. */

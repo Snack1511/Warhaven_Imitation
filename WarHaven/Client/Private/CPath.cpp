@@ -81,7 +81,7 @@ void CPath::Update_CurrentIndex(_float4 vCurrentPos)
 
         m_iPrevIndex = m_iCurIndex;
 
-        if (fLength < fCurSpeed + 30.f * fDT(0))
+        if (fLength < fCurSpeed + 60.f * fDT(0))
         {
             m_iCurIndex++;
 

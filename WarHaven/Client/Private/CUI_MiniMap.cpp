@@ -192,6 +192,9 @@ void CUI_MiniMap::My_Tick()
 
 	for (int i = 0; i < 8; ++i)
 	{
+		if (!m_pPlayers[i]->Get_CurrentUnit())
+			continue;
+
 		_float fHP = m_pPlayers[i]->Get_CurrentUnit()->Get_Status().fHP;
 		if (fHP <= 0.f)
 		{
