@@ -1095,6 +1095,8 @@ void CPlayer::On_Reborn()
 
 void CPlayer::Start_Reborn()
 {
+	
+	CFunctor::Play_Sound(L"Effect_Revive", CHANNEL_EFFECTS, 1.f);
 	m_bAbleRevival = false;
 	m_fRevivalAcc = 0.f;
 }

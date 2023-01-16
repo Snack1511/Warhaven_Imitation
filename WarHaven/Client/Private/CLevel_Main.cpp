@@ -81,6 +81,9 @@ HRESULT CLevel_Main::Enter()
 
 	GAMEINSTANCE->Save_Memory();
 
+
+	GAMEINSTANCE->Stop_GrayScale();
+
 	return S_OK;
 }
 

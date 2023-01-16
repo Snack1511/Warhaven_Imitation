@@ -69,6 +69,8 @@ private:
 	_bool m_bIsMVP = false;
 	_float m_fDissolveValue = 1.f;
 
+	_bool m_bOnce = true;
+
 private: // Color
 	_float4 m_vColorGold = _float4(0.773f, 0.714f, 0.596f, 1.f);
 	_float4 m_vColorBlue = _float4(0.f, 0.8f, 1.f, 0.1f);

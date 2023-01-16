@@ -71,6 +71,8 @@ void CStop_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 
 	/* OwnerÀÇ Animator Set Idle·Î */
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	CFunctor::Play_Sound(L"Effect_HorseStop", CHANNEL_EFFECTS, pOwner->Get_Transform()->Get_World(WORLD_POS), 1.f);
 }
 
 STATE_TYPE CStop_Lancer::Tick(CUnit* pOwner, CAnimator* pAnimator)
