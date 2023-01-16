@@ -61,6 +61,8 @@ void CState_Common_ChangeHero_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 	pOwner->Enable_HitBoxColliders(false);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinFlare", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));//henshin flare
 
+	_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+	CFunctor::Play_Sound(L"Effect_OnChangeHero", CHANNEL_EFFECTS, vPos, 1.f);
 
 	/* Owner¿« Animator Set Idle∑Œ */
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);

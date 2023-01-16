@@ -368,16 +368,7 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 		}
 		m_pCurrentUnit = pUnit;
 
-		if (m_eCurrentClass >= FIONA)
-		{
-			m_pCurrentUnit->Get_Status().fHP = m_pCurrentUnit->Get_Status().fMaxHP;
-
-			CFunctor::Play_Sound(L"Effect_ChangeHero", CHANNEL_EFFECTS, Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS), 1.f);
-		}
-		else
-		{
-			CFunctor::Play_Sound(L"Effect_UnchangeHero", CHANNEL_EFFECTS, Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS), 1.f);
-		}
+	
 
 
 		ENABLE_GAMEOBJECT(pUnit);
@@ -393,6 +384,16 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 		pUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
 
 
+		if (m_eCurrentClass >= FIONA)
+		{
+			m_pCurrentUnit->Get_Status().fHP = m_pCurrentUnit->Get_Status().fMaxHP;
+
+			CFunctor::Play_Sound(L"Effect_ChangeHero", CHANNEL_EFFECTS, Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS), 1.f);
+		}
+		else
+		{
+			CFunctor::Play_Sound(L"Effect_UnchangeHero", CHANNEL_EFFECTS, Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS), 1.f);
+		}
 
 	}
 	if (m_bIsMainPlayer)

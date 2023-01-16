@@ -99,6 +99,7 @@ STATE_TYPE CChangeHero_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		if (m_eChangeClassType == LANCER)
 			CFunctor::Play_Sound(L"Effect_HorseStop", CHANNEL_EFFECTS, pOwner->Get_Transform()->Get_World(WORLD_POS), 1.f);
 
+		_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
 
 		return STATE_END;
 	}
