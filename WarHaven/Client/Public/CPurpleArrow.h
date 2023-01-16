@@ -19,6 +19,9 @@ public:
 	static CPurpleArrow* Create();
 
 public:
+	void Clear_Addiction();
+
+public:
 	virtual HRESULT Start() override;
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual void	My_Tick() override;
@@ -45,7 +48,6 @@ private:
 private:
 	virtual void Set_ColliderType(eTEAM_TYPE eTeamType);
 	void AddictionEffect(CUnit* pUnit);
-	void Clear_Addiction();
 
 	void Death_Cam(CUnit* pOtherUnit);
 

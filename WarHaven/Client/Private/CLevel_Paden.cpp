@@ -131,7 +131,7 @@ HRESULT CLevel_Paden::Render()
 
 HRESULT CLevel_Paden::Exit()
 {
-	return __super::Exit();;
+	return __super::Exit();
 }
 
 void CLevel_Paden::BirdSound()

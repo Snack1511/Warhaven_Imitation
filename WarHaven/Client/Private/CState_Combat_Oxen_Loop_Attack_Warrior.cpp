@@ -73,7 +73,7 @@ void CState_Combat_Oxen_Loop_Attack_Warrior::Enter(CUnit* pOwner, CAnimator* pAn
     /*effect*/
     pOwner->TurnOn_TrailEffect(true);
     CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SkillLightParticle", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
-
+    CFunctor::Play_Sound(L"Effect_Oxen_Loop_Attack_Begin", CHANNEL_EFFECTS, pOwner->Get_Transform()->Get_World(WORLD_POS));
     CColorController::COLORDESC tColorDesc;
     ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
 

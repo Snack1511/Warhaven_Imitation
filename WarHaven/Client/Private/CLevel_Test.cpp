@@ -160,3 +160,10 @@ HRESULT CLevel_Test::Exit()
 	return __super::Exit();
 }
 
+HRESULT CLevel_Test::OnExit()
+{
+	__super::OnExit();
+
+	return S_OK;
+}
+

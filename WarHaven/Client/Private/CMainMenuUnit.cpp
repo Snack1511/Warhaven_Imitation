@@ -53,6 +53,17 @@ void CMainMenuUnit::On_Die()
 
 }
 
+void CMainMenuUnit::Delete_Flare()
+{
+	if (!m_EyeFlare.empty())
+	{
+		for (auto& elem : m_EyeFlare)
+		{
+			DELETE_GAMEOBJECT(elem);
+		}
+	}
+}
+
 void CMainMenuUnit::SetUp_Colliders(_bool bPlayer)
 {
 	

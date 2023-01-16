@@ -511,6 +511,7 @@ void CProjectile::My_LateTick()
 
 			m_pTransform->Make_WorldMatrix();
 		}
+
 		break;
 	case Client::CProjectile::eRANDOM:
 	{

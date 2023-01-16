@@ -168,6 +168,9 @@ void CPurpleArrow::My_Tick()
 				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Poison_End",
 					pUnit, pUnit->Get_Transform()->Get_World(WORLD_POS));
 
+				CFunctor::Play_Sound(L"Effect_Poison_Boom", CHANNEL_EFFECTS,
+					m_pTransform->Get_World(WORLD_POS), 1.f);
+
 				DISABLE_GAMEOBJECT(this);
 			}				
 			else

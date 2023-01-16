@@ -88,8 +88,9 @@ void CMainMenuPlayer::Change_ModelParts(CLASS_TYPE eClassType, MODEL_PART_TYPE e
 	if (eClassType >= CLASS_END)
 		return;
 
+	m_pMainMenuUnit[eClassType]->Delete_Flare();
 	DELETE_GAMEOBJECT(m_pMainMenuUnit[eClassType]);
-
+	
 	wstring wstrModeSkel[CLASS_END] =
 	{
 		L"../bin/resources/meshes/characters/Warrior/Warrior.fbx", // WARRIOR

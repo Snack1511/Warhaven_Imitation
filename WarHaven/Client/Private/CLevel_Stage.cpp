@@ -172,6 +172,8 @@ HRESULT CLevel_Stage::Render()
 
 HRESULT CLevel_Stage::OnExit()
 {
+	__super::OnExit();
+
 	CEffects_Factory::Get_Instance()->On_ExitLevel();
 	GAMEINSTANCE->Delete_Scene(CPhysX_Manager::Scene::SCENE_CURRENT);
 	GAMEINSTANCE->End_PhysScene();
