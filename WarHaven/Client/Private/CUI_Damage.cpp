@@ -79,8 +79,6 @@ void CUI_Damage::My_Tick()
 
 			if (m_eDamageIcon == Head)
 			{
-				m_vHeadPos.x -= 5.f;
-
 				for (int i = 0; i < Head_End; ++i)
 				{
 					m_pHeadShotIcon[i]->Set_Pos(m_vHeadPos);
@@ -127,7 +125,6 @@ void CUI_Damage::My_Tick()
 			m_bScratch = false;
 
 			Disable_Fade(m_pScratch, 0.3f);
-
 			for (int i = 0; i < Head_End; ++i)
 				Disable_Fade(m_pHeadShotIcon[i], 0.3f);
 		}
@@ -195,7 +192,10 @@ void CUI_Damage::OnEnable()
 		}
 
 		m_pDmgIcon->Set_Pos(fRandPosX - 40.f, fRandPosY);
+
 		m_vHeadPos = m_pDmgIcon->Get_Pos();
+		m_vHeadPos.x -= 5.f;
+
 		m_pDmgIcon->Set_Scale(m_vHeadShotScale);
 		m_pDmgIcon->DoScale(m_fScaleValue, m_fScaleUpTime);
 
@@ -211,6 +211,13 @@ void CUI_Damage::OnEnable()
 void CUI_Damage::OnDisable()
 {
 	__super::OnDisable();
+
+	m_fAccTime = 0.f;
+	m_vHeadPos = _float4(0.f, 0.f, 0.f);
+	m_fHeadShotTime = 0.f;
+	m_bScratch = false;
+	m_fScratchTime = 0.f;
+	m_bDisable = false;
 }
 
 void CUI_Damage::Enable_Damage(_uint eIcon, _float fDmg)
