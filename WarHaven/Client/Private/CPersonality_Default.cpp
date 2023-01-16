@@ -88,24 +88,24 @@ HRESULT CPersonality_Default::Initailize()
 	m_BehaviorList.push_back(pBehavior);
 
 	//캐논점령지에 있고, 캐논 근처에, 캐논사용가능할 때
-	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PadenCannonInteract"))->Clone();
-	//pBehavior->Add_OtherCondition(wstring(L"Check_Paden"));
-	pBehavior->Add_OtherCondition(wstring(L"Check_InCannonConquerTrigger"));
-	pBehavior->Add_OtherCondition(wstring(L"Check_AdjCannon"));
-	pBehavior->Add_OtherCondition(wstring(L"Check_UsableCannon"));
-	pBehavior->Add_WhatCondition(wstring(L"EmptyWhatCondition"));
-	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
-	pBehavior->Initialize();
-	pBehavior->Set_Priority(iPriority++);
-	m_BehaviorList.push_back(pBehavior);
+	//pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PadenCannonInteract"))->Clone();
+	////pBehavior->Add_OtherCondition(wstring(L"Check_Paden"));
+	//pBehavior->Add_OtherCondition(wstring(L"Check_InCannonConquerTrigger"));
+	//pBehavior->Add_OtherCondition(wstring(L"Check_AdjCannon"));
+	//pBehavior->Add_OtherCondition(wstring(L"Check_UsableCannon"));
+	//pBehavior->Add_WhatCondition(wstring(L"EmptyWhatCondition"));
+	//pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
+	//pBehavior->Initialize();
+	//pBehavior->Set_Priority(iPriority++);
+	//m_BehaviorList.push_back(pBehavior);
 
-	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Combat"))->Clone();
-	pBehavior->Add_OtherCondition(wstring(L"Check_LookEnemy"));
-	pBehavior->Add_WhatCondition(wstring(L"Select_NearEnemy"));
-	pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
-	pBehavior->Initialize();
-	pBehavior->Set_Priority(iPriority++);
-	m_BehaviorList.push_back(pBehavior);
+	//pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Combat"))->Clone();
+	//pBehavior->Add_OtherCondition(wstring(L"Check_LookEnemy"));
+	//pBehavior->Add_WhatCondition(wstring(L"Select_NearEnemy"));
+	//pBehavior->Add_BehaviorTick(wstring(L"EmptyBehaviorTick"));
+	//pBehavior->Initialize();
+	//pBehavior->Set_Priority(iPriority++);
+	//m_BehaviorList.push_back(pBehavior);
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"CatchCannon"))->Clone();
 	//근처에 상대가 쏜 대포알이 있을 때

@@ -69,14 +69,14 @@ STATE_TYPE CState_Catch_Begin_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		return AI_STATE_CATCH_CANNON_LOOP_PRIEST;
 
 
-    CUnit* pUnit = pOwner->Get_TargetUnit();
+    CGameObject* pCannonBallObj= pOwner->Get_TargetObject();
     CTransform* pMyTransform = pOwner->Get_Transform();
 
     _float4 vLook = ZERO_VECTOR;
 
-    if (pUnit)
+    if (pCannonBallObj)
     {
-        vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+        vLook = pCannonBallObj->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
         vLook.y = 0.f;
     }
     else

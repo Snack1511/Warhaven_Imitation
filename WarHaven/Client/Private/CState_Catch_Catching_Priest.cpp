@@ -104,7 +104,7 @@ void CState_Catch_Catching_Priest::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	if (pOwner->Get_CatchedBall())
 		DISABLE_GAMEOBJECT(pOwner->Get_CatchedBall());
 
-	pAnimator->Stop_ActionAnim();
+	//pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 
 	m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;

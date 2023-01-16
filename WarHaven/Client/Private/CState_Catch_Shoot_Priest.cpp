@@ -118,19 +118,23 @@ STATE_TYPE CState_Catch_Shoot_Priest::Check_Condition(CUnit* pOwner, CAnimator* 
 
 void CState_Catch_Shoot_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
-	CUnit* pTargetUnit = pOwner->Get_TargetUnit();
+	CGameObject* pCannonBallObj = pOwner->Get_TargetObject();
 	_float4 vLook = ZERO_VECTOR;
+
+
+	list<CPlayer*>* pEnemyList = pOwner->Get_OwnerPlayer()->Get_SortedEnemiesP();
+	CUnit* pTargetUnit = nullptr;
+	if(pEnemyList
+		&&!(pEnemyList->empty()))
+		pTargetUnit = pEnemyList->front()->Get_CurrentUnit();
+
 
 	switch (iSequence)
 	{
 	case 0:
 		if (m_bCatchBall)
 		{
-			CUnit* pTargetUnit = pOwner->Get_TargetUnit();
-
-			if(!pTargetUnit)
-				pOwner->Get_CatchedBall()->Shoot_CatchedCannon(pOwner->Get_FollowCamLook());
-			else
+			if (pTargetUnit)
 			{
 				m_tHitInfo.bFly = true;
 				m_tHitInfo.iLandKeyFrame = 100;
@@ -138,25 +142,27 @@ void CState_Catch_Shoot_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnim
 				m_tHitInfo.bGuardBreak = true;
 
 				vLook = pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
-				pOwner->Get_CatchedBall()->Shoot_CatchedCannon(vLook.Normalize());
 			}
-
+			else vLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
+			pOwner->Get_Transform()->Set_LerpLook(vLook, 0.4f);
+			pOwner->Get_CatchedBall()->Shoot_CatchedCannon(vLook.Normalize());
 			pOwner->Catch_CannonBall(nullptr);
 		}
 		else
 		{
 			if (pTargetUnit)
+			{
+
 				vLook = pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
-			else
-				vLook = pOwner->Get_FollowCamLook();
-
-			vLook.Normalize();
-
+			}
+			else vLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
+			pOwner->Get_Transform()->Set_LerpLook(vLook, 0.4f);
 			pOwner->Get_CatchProjectileObject()->Get_Transform()->Set_Right(vLook);
 			pOwner->Get_CatchProjectileObject()->Get_Transform()->Make_WorldMatrix();
 
 			pOwner->Get_CatchProjectileObject()->On_ShootProjectile();
 			pOwner->Catch_ProjectileObject(nullptr);
+			
 		}
 		
 		break;

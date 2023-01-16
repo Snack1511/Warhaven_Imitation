@@ -230,6 +230,7 @@ void CUnit_Archer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		break;
 	case eBehaviorType::ePadenCannonInteract:
 		//상태변경
+		eNewState = AI_STATE_CANNON_AI;
 		break;
 	case eBehaviorType::eCombat:
 		//상태변경
@@ -259,6 +260,7 @@ void CUnit_Archer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	case eBehaviorType::eCatchCannon:
 		//eNewState = AI_STATE_BOUNE_WARRIOR_R;
 		break;
+
 
 	default:
 		assert(0);
