@@ -8,11 +8,13 @@
 #include "CUnit_Paladin.h"
 #include "CUnit_Qanda.h"
 #include "CUnit_Lancer.h"
+#include "CUnit_Archer.h"
 #include "Loading_Manager.h"
 #include "CCamera_Follow.h"
 #include "CAnimWeapon_Crow.h"
 
 #include "CLancerNeedle.h"
+#include "CSnipeArrow.h"
 
 CState_Hit::CState_Hit()
 {
@@ -82,11 +84,18 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
 
     CLASS_TYPE eClass = pOwner->Get_OwnerPlayer()->Get_CurClass();
 
+    CSnipeArrow* pArrow = nullptr;
+    
     switch (eClass)
     {
     case Client::WARRIOR:
         break;
-    case Client::SPEAR:
+    case Client::ARCHER:
+        pArrow = dynamic_cast<CSnipeArrow*>(static_cast<CUnit_Archer*>(pOwner)->Get_CurArrow());
+
+        if (pArrow)
+            pArrow->Turn_Effect(false);
+
         break;
     case Client::PALADIN:
         static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(false);
