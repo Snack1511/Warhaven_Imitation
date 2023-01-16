@@ -76,7 +76,6 @@ void CUI_Damage::My_Tick()
 
 			if (m_eDamageIcon == Head)
 			{
-				m_vHeadPos = m_pDmgIcon->Get_Pos();
 				m_vHeadPos.x -= 5.f;
 
 				for (int i = 0; i < Head_End; ++i)
@@ -187,6 +186,7 @@ void CUI_Damage::OnEnable()
 		}
 
 		m_pDmgIcon->Set_Pos(fRandPosX - 40.f, fRandPosY);
+		m_vHeadPos = m_pDmgIcon->Get_Pos();
 		m_pDmgIcon->Set_Scale(m_vHeadShotScale);
 		m_pDmgIcon->DoScale(m_fScaleValue, m_fScaleUpTime);
 

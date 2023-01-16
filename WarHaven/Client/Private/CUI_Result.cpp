@@ -53,19 +53,7 @@ void CUI_Result::SetActive_Result(_uint iResult, _bool value)
 {
 	m_iResult = iResult;
 
-
-	switch (m_iResult)
-	{
-	case 1:
-		Play_Sound(L"Env_Cheers", CHANNEL_ENVIRONMENT);
-		Play_Sound(L"BGM_Win", CHANNEL_BGM);
-		break;
-
-	case 2:
-		Play_Sound(L"Env_Cheers", CHANNEL_ENVIRONMENT);
-		Play_Sound(L"BGM_Lose", CHANNEL_BGM);
-		break;
-	}
+	
 
 	CUser::Get_Instance()->SetActive_PadenUI(false);
 
@@ -109,9 +97,10 @@ void CUI_Result::OnEnable()
 {
 	__super::OnEnable();
 
-	GAMEINSTANCE->Stop_Sound(CH_BGM);
+	//GAMEINSTANCE->Stop_Sound(CH_BGM);
 
 	SetActive_Result(m_iResult, true);
+	m_bOnce = true;
 }
 
 void CUI_Result::OnDisable()
@@ -562,6 +551,15 @@ void CUI_Result::Progress_Result()
 	}
 	else if (m_iResultProgressCnt == 3)
 	{
+		if (m_bOnce)
+		{
+			Play_Sound(L"Env_Cheers", CHANNEL_ENVIRONMENT);
+			GAMEINSTANCE->Stop_Sound(CH_BGM);
+			GAMEINSTANCE->Play_BGM(L"BGM_Result");
+			m_bOnce = false;
+		}
+
+
 		for (int i = 0; i < Score_End; ++i)
 			m_pResultScoreBG[i]->SetActive(true);
 

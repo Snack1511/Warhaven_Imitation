@@ -1092,6 +1092,8 @@ void CPlayer::On_Reborn()
 
 void CPlayer::Start_Reborn()
 {
+	
+	CFunctor::Play_Sound(L"Effect_Revive", CHANNEL_EFFECTS, 1.f);
 	m_bAbleRevival = false;
 	m_fRevivalAcc = 0.f;
 }
@@ -1292,7 +1294,7 @@ void CPlayer::My_Tick()
 
 	//공통으로 업데이트 되어야 하는것
 
-	if (m_pUnitHUD)
+	if (m_pUnitHUD && m_pCurrentUnit)
 		m_pUnitHUD->Set_UnitStatus(m_pCurrentUnit->Get_Status());
 
 	Update_HeroGauge();

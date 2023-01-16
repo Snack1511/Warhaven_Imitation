@@ -1310,17 +1310,22 @@ void CGameSystem::On_FinishGame(CTeamConnector* pTeamConnector)
 			pPlayer->On_FinishGame(pTeamConnector);
 		}
 	}
+	GAMEINSTANCE->Stop_Sound(CH_BGM);
 
 	if (pTeamConnector->IsMainPlayerTeam())
 	{
 		// ÆÐ¹è
 		CUser::Get_Instance()->SetActive_Result(1, true);
+		GAMEINSTANCE->Play_BGM(L"BGM_Lose");
+		//CFunctor::Play_Sound(, CHANNEL_BGM, 1.f);
 		CFunctor::Play_Sound(L"UI_Lose", CHANNEL_UI, 1.f);
 	}
 	else
 	{
 		// ½Â¸®
 		CUser::Get_Instance()->SetActive_Result(0, true);
+		GAMEINSTANCE->Play_BGM(L"BGM_Win");
+		//CFunctor::Play_Sound(L"BGM_Win", CHANNEL_BGM, 1.f);
 		CFunctor::Play_Sound(L"UI_Win", CHANNEL_UI, 1.f);
 
 	}
