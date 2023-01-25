@@ -99,6 +99,8 @@ void CUI_Oper::On_PointDown_SelectBG(const _uint& iEventNum)
 	if (m_iPrvSelectEventNum == iEventNum)
 		return;
 
+	Play_Sound(L"UI_Oper_SelectBG");
+
 	for (int i = 0; i < CP_End; ++i)
 	{
 		m_pArrCharacterPort[i][m_iPrvSelectEventNum]->DoScale(-10.f, 0.1f);
@@ -133,12 +135,22 @@ void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 	m_pBriefingUI[BU_Icon]->Set_FontColor(_float4(0.f, 0.6f, 0.f, 1.f));
 	m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("목표 설정 완료"));
 
+	Play_Sound(TEXT("UI_Oper_Point"));
+
 	m_bSelectTargetPoint = true;
 	if (m_bSelectTargetPoint)
 		CUser::Get_Instance()->Set_TargetPointPos(iEventNum);
 
 	// a, r, c
-	PLAYER->Get_OwnerPlayer()->Set_MainPlayerStartPath(iEventNum);
+	if (m_bIsOperation)
+		PLAYER->Get_OwnerPlayer()->Set_MainPlayerStartPath(iEventNum);
+	else
+	{
+		if (iEventNum == 1)
+			m_bRespawnTriggerClicked = true;
+		else
+			m_bRespawnTriggerClicked = false;
+	}
 }
 
 void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
@@ -160,8 +172,30 @@ void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
 	CPlayer* pMainPlayer = CUser::Get_Instance()->Get_MainPlayerInfo()->Get_Player();
 	_float4 vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition_Start();
 
+	if (m_bRespawnTriggerClicked)
+	{
+		if (pMainPlayer->Get_Team()->Has_RespawnTrigger())
+		{
+			if (m_eLoadLevel == LEVEL_PADEN)
+			{
+				vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition("Paden_Trigger_R");
+				pMainPlayer->SetStartPath("Paden_RespawnToMain_0");
+			}
+			else
+			{
+				vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition("Hwara_Respawn");
+			}
+
+		}
+
+
+	}
+
 	pMainPlayer->Respawn_Unit(vStartPos, CUser::Get_Instance()->Get_MainPlayerInfo()->Get_ChonsenClass());
 	GAMEINSTANCE->Change_Camera(L"PlayerCam");
+
+	m_bIsOperation = false;
+	m_bRespawnTriggerClicked = false;
 
 }
 
@@ -232,8 +266,16 @@ void CUI_Oper::My_LateTick()
 	{
 		for (int i = 0; i < 8; ++i)
 		{
-			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 4.f;
-			m_pPlayerIcon[i]->Set_Pos(vPos.z, -vPos.x);
+			if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_PADEN)
+			{
+				_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 4.f;
+				m_pPlayerIcon[i]->Set_Pos(vPos.z, -vPos.x);
+			}
+			else
+			{
+				_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 3.8f;
+				m_pPlayerIcon[i]->Set_Pos(-vPos.x + 5.f, vPos.z - 65.f);
+			}
 
 			if (!m_pPlayerIcon[i]->Is_Valid())
 				m_pPlayerIcon[i]->SetActive(true);
@@ -267,13 +309,10 @@ void CUI_Oper::OnDisable()
 
 void CUI_Oper::Set_PointColor(_bool IsMainTeam, _uint iPoinIdx)
 {
-	_float4 vColor;
-	vColor = IsMainTeam ? m_vColorBlue : m_vColorRed;
+	_float4 vColor = IsMainTeam ? m_vColorBlue : m_vColorRed;
 
 	for (int i = 0; i < SP_TEXT; ++i)
-	{
 		m_pArrStrongHoldUI[i][iPoinIdx]->Set_Color(vColor);
-	}
 
 	m_pArrConquestBlur[iPoinIdx]->Set_Color(vColor);
 
@@ -475,8 +514,12 @@ void CUI_Oper::Progress_Oper()
 				m_fAccTime = 0.f;
 				m_iOperProgress++;
 
+
+				GAMEINSTANCE->Play_BGM(L"BGM_Oper", 0.3f);
+
 				Enable_Fade(m_pTextImg[Text_Oper1], 0.3f);
 				m_pTextImg[Text_Oper1]->DoScale(-512.f, 0.3f);
+				Play_Sound(L"UI_Oper01", 0.3f);
 			}
 		}
 		else if (m_iOperProgress == 2)
@@ -490,6 +533,8 @@ void CUI_Oper::Progress_Oper()
 				vPos.y += 200.f;
 				m_pTextImg[Text_Oper1]->DoMove(vPos, 0.3f, 0);
 				m_pTextImg[Text_Oper1]->DoScale(-256.f, 0.3f);
+
+				Play_Sound(L"UI_Oper0", 0.3f);
 
 				Set_OperProfile();
 
@@ -549,6 +594,8 @@ void CUI_Oper::Progress_Oper()
 			_uint iIndex;
 			iIndex = m_eLoadLevel == LEVEL_HWARA ? 2 : 3;
 
+			Play_Sound(L"UI_Oper02");
+
 			for (int i = 0; i < iIndex; ++i)
 			{
 				Enable_Fade(m_pArrStrongHoldEffect[i], 1.f);
@@ -564,6 +611,8 @@ void CUI_Oper::Progress_Oper()
 
 				_uint iIndex;
 				iIndex = m_eLoadLevel == LEVEL_HWARA ? 5 : 6;
+
+				Play_Sound(L"UI_Oper02");
 
 				for (int i = 3; i < iIndex; ++i)
 				{
@@ -593,6 +642,7 @@ void CUI_Oper::Progress_Oper()
 				vPos1.x -= 50.f;
 				m_pArrCharacterSideBG[1]->DoMove(vPos1, fDuration, 0);
 
+				Play_Sound(L"UI_Select");
 				for (int i = 0; i < CP_End; ++i)
 				{
 					for (int j = 0; j < 6; ++j)
@@ -712,13 +762,19 @@ void CUI_Oper::Progress_Oper()
 					iter->SetActive(false);
 				}
 
+				CFunctor::Stop_Sound(CHANNEL_BGM);
+				m_bIsOperation = false;
 				switch (m_eLoadLevel)
 				{
 				case Client::LEVEL_PADEN:
 					CGameSystem::Get_Instance()->On_StartGame();
+					GAMEINSTANCE->Play_BGM(L"BGM_Paden", 0.1f);
+					CFunctor::Play_Sound(L"UI_StartPaden", CHANNEL_UI, 1.f);
 					break;
 				case Client::LEVEL_HWARA:
 					CGameSystem::Get_Instance()->On_StartGame();
+					GAMEINSTANCE->Play_BGM(L"BGM_Hwara", 0.1f);
+					CFunctor::Play_Sound(L"UI_StartHwara", CHANNEL_UI, 1.f);
 					break;
 				}
 
@@ -1097,7 +1153,7 @@ void CUI_Oper::Set_OperProfile()
 
 	for (int i = 0; i < 4; ++i)
 	{
-		_uint iTextureNum = iter->second->Get_PlayerInfo()->Choose_Character();
+		_uint iTextureNum = iter->second->Get_PlayerInfo()->Get_ChonsenClass();
 		wstring wstrPlayerName = iter->second->Get_PlayerName();
 
 		m_pArrOperProfile[i]->Set_TextureIndex(iTextureNum);
@@ -1595,7 +1651,7 @@ void CUI_Oper::Init_StrongHoldUI()
 				{
 					if (i == SP_TEXT)
 					{
-						GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(0);
+						GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(2);
 						continue;
 					}
 
@@ -2107,7 +2163,7 @@ void CUI_Oper::Init_ConquestBlur()
 		for (int i = 0; i < 3; ++i)
 			m_pArrConquestBlur[i]->Set_PosX(23.f);
 
-		m_pArrConquestBlur[0]->Set_PosY(-22.f);
+		m_pArrConquestBlur[0]->Set_PosY(-30.f);
 		m_pArrConquestBlur[1]->Set_PosY(155.f);
 
 		break;

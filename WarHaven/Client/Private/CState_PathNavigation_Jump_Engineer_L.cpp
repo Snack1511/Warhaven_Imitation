@@ -60,7 +60,7 @@ HRESULT CState_PathNavigation_Jump_Engineer_L::Initialize()
 
 	iPlaceJumpAnimIndex = 5;
 
-    m_iAINextState = AI_STATE_PATHNAVIGATION_FALL_ENGINEER_L;
+    m_eFallState = AI_STATE_PATHNAVIGATION_FALL_ENGINEER_L;
 
 
     return S_OK;

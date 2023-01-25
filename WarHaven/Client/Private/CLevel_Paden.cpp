@@ -18,6 +18,8 @@
 #include "CUser.h"
 #include "CUI_MiniMap.h"
 
+#include "Functor.h"
+
 
 CLevel_Paden::CLevel_Paden()
 {
@@ -70,8 +72,6 @@ HRESULT CLevel_Paden::SetUp_Prototypes()
 	m_fLoadingFinish = 0.5f;
 
 	/* GameSystem */
-	if (FAILED(CGameSystem::Get_Instance()->SetUp_CellLayer(wstring(TEXT("Map_Paden")))))
-		return E_FAIL;
 
 	if (FAILED(CGameSystem::Get_Instance()->On_ReadyPaden(m_vecGameObjects)))
 		return E_FAIL;
@@ -98,13 +98,20 @@ HRESULT CLevel_Paden::Enter()
 
 #endif 
 
-
+	GAMEINSTANCE->Set_ChannelVolume((CHANNEL_GROUP)CHANNEL_BGM, 0.1f);
+	GAMEINSTANCE->Set_ChannelVolume((CHANNEL_GROUP)CHANNEL_UI, 1.f);
+	GAMEINSTANCE->Set_ChannelVolume((CHANNEL_GROUP)CHANNEL_VOICE, 10.f);
+	GAMEINSTANCE->Set_ChannelVolume((CHANNEL_GROUP)CHANNEL_ENVIRONMENT, 1.f);
 
 	return S_OK;
 }
 
 void CLevel_Paden::Tick()
 {
+	BirdSound();
+
+
+
 	__super::Tick();
 }
 
@@ -119,26 +126,33 @@ HRESULT CLevel_Paden::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
-
-#ifdef _DEBUG
-	if (FAILED(GAMEINSTANCE->Render_Font(L"DefaultFont", L"Paden Level", _float2(100.f, 30.f), _float4(1.f, 1.f, 1.f, 1.f))))
-		return E_FAIL;
-
-#endif
-
-#ifdef RELEASE_IMGUI
-
-#ifndef _DEBUG
-	if (FAILED(GAMEINSTANCE->Render_Font(L"DefaultFont", L"Paden Level", _float2(100.f, 30.f), _float4(1.f, 1.f, 1.f, 1.f))))
-		return E_FAIL;
-
-#endif // !_DEBUG
-#endif
-
 	return S_OK;
 }
 
 HRESULT CLevel_Paden::Exit()
 {
-	return __super::Exit();;
+	return __super::Exit();
+}
+
+void CLevel_Paden::BirdSound()
+{
+	m_fBirdTimeAcc += fDT(0);
+
+	if (m_fBird <= m_fBirdTimeAcc)
+	{
+		CFunctor::Play_Sound(L"Env_Ggugi", CHANNEL_ENVIRONMENT, _float4(48.6f, 5.5f, -0.f), 1.f);
+		
+		m_fBirdTimeAcc = 0.f;
+	}
+}
+
+void CLevel_Paden::WindSound()
+{
+	m_fWindTimeAcc += fDT(0);
+
+	if (18.f <= m_fWindTimeAcc)
+	{
+		CFunctor::Play_Sound(L"Env_CannonWind", CHANNEL_ENVIRONMENT, _float4(-61.8f, 20.4f, 0.2f), 10.f);
+		m_fWindTimeAcc = 0.f;
+	}
 }

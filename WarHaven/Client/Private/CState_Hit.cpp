@@ -2,11 +2,19 @@
 #include "CState_Hit.h"
 
 #include "UsefulHeaders.h"
+
 #include "HIerarchyNode.h"
 #include "CUnit_Priest.h"
 #include "CUnit_Paladin.h"
+#include "CUnit_Qanda.h"
+#include "CUnit_Lancer.h"
+#include "CUnit_Archer.h"
 #include "Loading_Manager.h"
 #include "CCamera_Follow.h"
+#include "CAnimWeapon_Crow.h"
+
+#include "CLancerNeedle.h"
+#include "CSnipeArrow.h"
 
 CState_Hit::CState_Hit()
 {
@@ -50,8 +58,16 @@ HRESULT CState_Hit::Initialize()
 
 void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData)
 {
+    STATE_TYPE eCurStateType = pOwner->Get_CurState();
 
+    if (pOwner->Get_HitType().eStingHitState == eCurStateType)
+    {
+        if (ePrevStateType == eCurStateType)
+        {
+            m_bStingDead = true;
+        }
 
+    }
 
     if (!m_tHitInfo.vDir.Is_Zero())
         pOwner->Get_PhysicsCom()->Set_Dir(m_tHitInfo.vDir);
@@ -66,13 +82,48 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
         pOwner->Get_PhysicsCom()->Set_Speed(m_tHitInfo.fKnockBackPower);
 
 
-    if (PRIEST == pOwner->Get_OwnerPlayer()->Get_CurClass())
+    CLASS_TYPE eClass = pOwner->Get_OwnerPlayer()->Get_CurClass();
+
+    CSnipeArrow* pArrow = nullptr;
+    
+    switch (eClass)
     {
-        static_cast<CUnit_Priest*>(pOwner)->TurnOff_AllEffect();
-    }
-    if (PALADIN == pOwner->Get_OwnerPlayer()->Get_CurClass())
-    {
+    case Client::WARRIOR:
+        break;
+    case Client::ARCHER:
+        pArrow = dynamic_cast<CSnipeArrow*>(static_cast<CUnit_Archer*>(pOwner)->Get_CurArrow());
+
+        if (pArrow)
+            pArrow->Turn_Effect(false);
+
+        break;
+    case Client::PALADIN:
         static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(false);
+        break;
+    case Client::PRIEST:
+        static_cast<CUnit_Priest*>(pOwner)->TurnOff_AllEffect();
+        break;
+    case Client::FIONA:
+        break;
+    case Client::QANDA:
+        static_cast<CUnit_Qanda*>(pOwner)->Turn_ChargeEffect(false);
+        static_cast<CUnit_Qanda*>(pOwner)->Turn_SteamEffect(false);
+        static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->On_ChangePhase(CAnimWeapon_Crow::eIDLE);
+        break;
+    case Client::LANCER:
+
+        for (_int i = 0; i < CUnit_Lancer::eNeedle::eNeedle_Max; ++i)
+        {
+            CLancerNeedle* pNeedle = static_cast<CUnit_Lancer*>(pOwner)->Get_Needle(i);
+
+            if (!pNeedle)
+                continue;
+
+            pNeedle->On_ChangePhase(CLancerNeedle::LANCERNEEDLE_STOP);
+        }
+        break;
+    default:
+        break;
     }
 
 
@@ -83,15 +134,15 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
         GAMEINSTANCE->Stop_ChromaticAberration();
     }
 
-
     __super::Enter(pOwner, pAnimator, ePrevStateType);
 }
 
 STATE_TYPE CState_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (m_tHitInfo.bSting && m_pStingBone)
+
+    if (m_tHitInfo.bSting)
     {
-        if (!m_bAttackTrigger)
+        if (!m_bStingDead)
         {
 
             CTransform* pMyTransform = pOwner->Get_Transform();
@@ -128,18 +179,22 @@ STATE_TYPE CState_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
                     CUser::Get_Instance()->Add_KillName(wstrEnemyName);
                 }
             }
-
-            m_bAttackTrigger = true;
         }
 
+        m_tHitInfo.bSting = false;
+    }
+
+    if (m_pStingBone)
+    {
         m_fTimeAcc += fDT(0);
 
         if (m_fTimeAcc > 1.5f)
+        {
+            CFunctor::Play_Sound(L"Effect_Die", CHANNEL_EFFECTS, pOwner->Get_Transform()->Get_World(WORLD_POS));
             pOwner->On_Die();
-            
- 
-    }
 
+        }
+    }
 
     return __super::Tick(pOwner, pAnimator);
 }

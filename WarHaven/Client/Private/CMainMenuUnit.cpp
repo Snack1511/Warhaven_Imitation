@@ -14,7 +14,9 @@
 
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
+#include "CAnimWeapon.h"
 
+#include "CRectEffects.h"
 CMainMenuUnit::CMainMenuUnit()
 {
 }
@@ -49,6 +51,17 @@ CMainMenuUnit* CMainMenuUnit::Create(const UNIT_MODEL_DATA& tUnitModelData, CLAS
 void CMainMenuUnit::On_Die()
 {
 
+}
+
+void CMainMenuUnit::Delete_Flare()
+{
+	if (!m_EyeFlare.empty())
+	{
+		for (auto& elem : m_EyeFlare)
+		{
+			DELETE_GAMEOBJECT(elem);
+		}
+	}
 }
 
 void CMainMenuUnit::SetUp_Colliders(_bool bPlayer)
@@ -216,17 +229,27 @@ HRESULT CMainMenuUnit::Start()
 	{
 	case Client::WARRIOR:
 		break;
+
 	case Client::SPEAR:
 		break;
 	case Client::ARCHER:
 		m_iAnimIndex = 4;
+
+		m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/longbow/SK_WP_LongBow0005_A00_30.fbx",
+			L"../bin/resources/meshes/weapons/longbow/LongBow_Anim2.fbx", this, "0B_L_WP1", 180.f, 180.f, 90.f);
+
+		if (!m_pAnimWeapon)
+			return E_FAIL;
+
+		m_pAnimWeapon->Initialize();
+		CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
+		DISABLE_GAMEOBJECT(m_pAnimWeapon);
+
 		break;
 	case Client::PALADIN:
-		m_eBaseType = ANIM_ATTACK;
 		m_pModelCom->Set_TransformMatrix(MODEL_PART_WEAPON_L, XMMatrixRotationZ(XMConvertToRadians(270.f)));
 		vMyPos.z += 0.35f;
-		m_iAnimIndex = 18;
-		m_fAnimSpeed = 2.f;
+		m_iAnimIndex = 3;
 		break;
 	case Client::PRIEST:
 		vMyPos.y += 0.2f;
@@ -269,6 +292,10 @@ HRESULT CMainMenuUnit::Start()
 	m_pTransform->Set_World(WORLD_POS, vMyPos);
 	m_pTransform->Set_Look(GAMEINSTANCE->Get_CurCamLook() * -1.f);
 
+	Set_EyeEffect();
+
+	m_TransformParticle.clear();
+
 	return S_OK;
 }
 
@@ -278,6 +305,56 @@ void CMainMenuUnit::OnEnable()
 
 	if(m_pMyLancerHead)
 		ENABLE_GAMEOBJECT(m_pMyLancerHead);
+
+	if (m_pAnimWeapon)
+		ENABLE_GAMEOBJECT(m_pAnimWeapon);
+
+	wstring wstrKey = L"";
+
+	switch (m_eClassType)
+	{
+	case Client::WARRIOR:
+		wstrKey = L"Warrior_Eye";
+		break;
+	case Client::SPEAR:
+		break;
+	case Client::ARCHER:
+		wstrKey = L"Archer_Eye";
+		break;
+	case Client::PALADIN:
+		break;
+	case Client::PRIEST:
+		wstrKey = L"Priest_Eye";
+		break;
+	case Client::ENGINEER:
+		wstrKey = L"WarHammer_Eye";
+		break;
+	case Client::FIONA:
+		if (m_TransformParticle.empty())
+			m_TransformParticle = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Main_Transform", this, m_pTransform->Get_World(WORLD_POS));
+		break;
+	case Client::QANDA:
+		if (m_TransformParticle.empty())
+			m_TransformParticle = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Main_Transform", this, m_pTransform->Get_World(WORLD_POS));
+		break;
+	case Client::HOEDT:
+		break;
+	case Client::LANCER:
+		break;
+	case Client::CLASS_END:
+		break;
+	default:
+		break;
+	}
+
+
+	if (wstrKey != L"")
+	{
+		if (m_EyeFlare.empty())
+			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(wstrKey, this, ZERO_VECTOR);
+	}
+
+	Turn_EyeEffect(true);
 }
 
 void CMainMenuUnit::OnDisable()
@@ -286,39 +363,44 @@ void CMainMenuUnit::OnDisable()
 
 	if (m_pMyLancerHead)
 		DISABLE_GAMEOBJECT(m_pMyLancerHead);
+
+	if (m_pAnimWeapon)
+		DISABLE_GAMEOBJECT(m_pAnimWeapon);
+
+	Turn_EyeEffect(false);
 }
 
 void CMainMenuUnit::My_Tick()
 {
-	_uint		iFrame = 0;
+	//_uint		iFrame = 0;
 
-	if (m_eClassType == PALADIN)
-	{
-		if (m_pAnimator->Is_CurAnimFinished() && m_pAnimator->Get_CurAnimIndex() != 3)
-		{
-			
-			ANIM_TYPE	eAnimType = ANIM_ATTACK;
+	//if (m_eClassType == PALADIN)
+	//{
+	//	if (m_pAnimator->Is_CurAnimFinished() && m_pAnimator->Get_CurAnimIndex() != 3)
+	//	{
+	//		
+	//		ANIM_TYPE	eAnimType = ANIM_ATTACK;
 
-			if (m_pAnimator->Get_CurAnimIndex() == 18)
-				iFrame = 19;
+	//		if (m_pAnimator->Get_CurAnimIndex() == 18)
+	//			iFrame = 19;
 
-			//else if (m_pAnimator->Get_CurAnimIndex() == 21)
-			//	iFrame = 19;
+	//		//else if (m_pAnimator->Get_CurAnimIndex() == 21)
+	//		//	iFrame = 19;
 
-			else if (m_pAnimator->Get_CurAnimIndex() == 19)
-			{
-				eAnimType = ANIM_BASE_R;
-				iFrame = 3;
-			}
-				
+	//		else if (m_pAnimator->Get_CurAnimIndex() == 19)
+	//		{
+	//			eAnimType = ANIM_BASE_R;
+	//			iFrame = 3;
+	//		}
+	//			
 
-			m_pAnimator->Set_CurAnimIndex(eAnimType, iFrame, ANIM_DIVIDE::eDEFAULT);
-			m_pAnimator->Set_InterpolationTime(eAnimType, iFrame, 0.f);
-			m_pAnimator->Set_AnimSpeed(eAnimType, iFrame, 1.f);
+	//		m_pAnimator->Set_CurAnimIndex(eAnimType, iFrame, ANIM_DIVIDE::eDEFAULT);
+	//		m_pAnimator->Set_InterpolationTime(eAnimType, iFrame, 0.f);
+	//		m_pAnimator->Set_AnimSpeed(eAnimType, iFrame, 1.f);
 
-		}
+	//	}
 
-	}
+	//}
 
 
 	
@@ -334,4 +416,113 @@ void CMainMenuUnit::ReFresh_Animation()
 	m_pAnimator->Set_CurAnimIndex(m_eBaseType, m_iAnimIndex, ANIM_DIVIDE::eDEFAULT);
 	m_pAnimator->Set_InterpolationTime(m_eBaseType, m_iAnimIndex, 0.f);
 	m_pAnimator->Set_AnimSpeed(m_eBaseType, m_iAnimIndex, m_fAnimSpeed);
+}
+
+void CMainMenuUnit::Set_EyeEffect()
+{
+	wstring wstrKey = L"Warrior_Eye";
+	string strBoneName = "0B_Face_L_Eye";
+	_float4 vColor = RGB(255, 0, 0);
+
+	m_EyeFlare.clear();
+
+	switch (m_eClassType)
+	{
+	case Client::WARRIOR:
+		wstrKey = L"Warrior_Eye";
+		vColor = RGBA(255, 30, 30, 0.7f);
+		strBoneName = "0B_Face_L_Eye";
+		break;
+
+	case Client::SPEAR:
+		break;
+	case Client::ARCHER:
+		wstrKey = L"Archer_Eye";
+		vColor = RGBA(255, 140, 0, 0.7f);
+		strBoneName = "0B_Face_R_Eye";
+		break;
+	case Client::PALADIN:
+		
+		vColor = RGBA(255, 30, 30, 0.f);
+		break;
+	case Client::PRIEST:
+		wstrKey = L"Priest_Eye";
+		vColor = RGBA(255, 255, 255, 0.7f);
+		break;
+	case Client::ENGINEER:
+		wstrKey = L"WarHammer_Eye";
+		vColor = RGBA(255, 40, 40, 0.7f);
+		strBoneName = "0B_Face_R_Eye";
+		break;
+	case Client::FIONA:
+		
+		vColor = RGBA(255, 140, 0, 0.f);
+		break;
+	case Client::QANDA:
+		
+		vColor = RGBA(255, 30, 30, 0.f);
+		break;
+	case Client::HOEDT:
+		break;
+	case Client::LANCER:
+		break;
+	case Client::CLASS_END:
+		break;
+	default:
+		break;
+	}
+
+	wstring strMask = L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds";
+	_float fAlpha = 0.7f;
+	_float fUpperSize = 2.f;
+
+	SetUp_EyeTrail(
+		_float4(2.f, fUpperSize, 0.f, 1.f),	//Weapon R
+		_float4(2.f, -fUpperSize, 0.f, 1.f),					//Weapon R
+		_float4(fUpperSize + 2.f, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize + 2.f, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		vColor, //vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		20,
+		strBoneName
+	);
+
+	if (m_EyeFlare.empty())
+		m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(wstrKey, this, ZERO_VECTOR);
+
+	Turn_EyeEffect(true);
+}
+
+void CMainMenuUnit::Turn_EyeEffect(_bool bValue)
+{
+	if (bValue)
+	{
+		Turn_EyeTrail(true);
+	}
+	else
+	{
+		if (!m_EyeFlare.empty())
+		{
+			for (auto& elem : m_EyeFlare)
+			{
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+			}
+			m_EyeFlare.clear();
+		}
+
+		if (!m_TransformParticle.empty())
+		{
+			for (auto& elem : m_TransformParticle)
+			{
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+			}
+			m_TransformParticle.clear();
+		}
+
+		Turn_EyeTrail(false);
+	}
+
 }

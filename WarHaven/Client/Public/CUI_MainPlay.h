@@ -6,7 +6,7 @@ class CUI_MainPlay : public CUI_Wrapper
 	DECLARE_GAMEOBJECT(CUI_MainPlay);
 
 public:
-	enum Select_Map { Paden, Training = 3, Stage_End };
+	enum Select_Map { Paden, Hwara, Training = 3, Stage_End };
 
 private:
 	CUI_MainPlay();

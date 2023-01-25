@@ -14,6 +14,8 @@
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
 
+#include "CRectEffects.h"
+
 CUnit_Warrior::CUnit_Warrior()
 {
 }
@@ -230,6 +232,15 @@ void CUnit_Warrior::SetUp_ReserveState(UNIT_TYPE eUnitType)
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
 		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_WARRIOR;
 
+		m_tAIChangeType.eAIPathFindDefaultState = AI_STATE_PATHNAVIGATION_DEFAULT_WARRIOR_R;
+		m_tAIChangeType.eAICommbatDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
+		m_tAIChangeType.eAIReviveDefaultState = AI_STATE_COMMON_REVIVE_AI;
+		m_tAIChangeType.eAICannonDefaultState = AI_STATE_CANNON_AI;
+		m_tAIChangeType.eAIGlidingDefaultState = AI_STATE_GLIDING_AI;
+		m_tAIChangeType.eAIPatrolDefaultState = AI_STATE_PATROL_DEFAULT_WARRIOR_R;
+		m_tAIChangeType.eAIGoTirrgerDefaultState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_WARRIOR;
+		m_tAIChangeType.eAIChangeDeafultState = AI_STATE_COMMON_CHANGE_HERO;
+
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_idiot:
@@ -264,20 +275,22 @@ void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		//상태변경
 		eNewState = AI_STATE_PATROL_DEFAULT_WARRIOR_R;
 		break;
-	case eBehaviorType::eFollow:
+	case eBehaviorType::ePadenCannonInteract:
 		//상태변경
+		eNewState = AI_STATE_CANNON_AI;
 		break;
-	case eBehaviorType::eAttack:
+	case eBehaviorType::eCombat:
 		//상태변경
 		eNewState = AI_STATE_COMBAT_DEFAULT_WARRIOR_L;
 
 		break;
-	case eBehaviorType::ePathNavigation:
+	 
+	case eBehaviorType::ePathFinding:
 		//상태변경
 		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_WARRIOR_R;
 		break;
 
-	case eBehaviorType::eResurrect:
+	case eBehaviorType::eRevive:
 		//상태변경
 		eNewState = AI_STATE_COMMON_REVIVE_AI;
 		break;
@@ -286,6 +299,15 @@ void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		//상태변경
 		eNewState = AI_STATE_COMMON_CHANGE_HERO;
 		break;
+
+	case eBehaviorType::eGliding:
+		eNewState = AI_STATE_GLIDING_AI;
+		break;
+
+	case eBehaviorType::eCatchCannon:
+		//eNewState = AI_STATE_BOUNE_WARRIOR_R;
+		break;
+
 	default:
 		assert(0);
 		break;
@@ -312,6 +334,7 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	switch (m_eCurState)
 	{
 	case STATE_ATTACK_HORIZONTALUP_L:
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS, 1.f);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LU", vHitPos, matWorld);
 		break;
 
@@ -319,18 +342,21 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY:
 	case AI_STATE_ATTACK_HORIZONTALMIDDLE_L:
 	case AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L:
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS, 1.f);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, matWorld);
 		break;
 
 	case STATE_ATTACK_HORIZONTALDOWN_L:
 	case STATE_SPRINTATTACK_PLAYER:
 	case AI_STATE_COMBAT_GUARDBREAK_WARRIOR:
+		Play_Sound(L"Effect_GuardBreak_Warrior", CHANNEL_EFFECTS);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", vHitPos, matWorld);
 		break;
 
 	case AI_STATE_COMBAT_OXEN_LOOPATTACK_WARRIOR:
 	case STATE_WARRIOR_OXEN_LOOPATTACK:
 	case STATE_ATTACK_HORIZONTALUP_R:
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS, 1.f);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", vHitPos, matWorld);
 		break;
 
@@ -342,18 +368,22 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 			break;
 
 	case STATE_ATTACK_HORIZONTALDOWN_R:
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS, 1.f);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", vHitPos, matWorld);
 		break;
 
 	case STATE_ATTACK_VERTICALCUT:
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", vHitPos, matWorld);
 		break;
 
 	case STATE_ATTACK_STING_PLAYER_L:
+		Play_Sound(L"Effect_Sting_Warrior", CHANNEL_EFFECTS, 1.f);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
 		break;
 
 	case STATE_ATTACK_STING_PLAYER_R:
+		Play_Sound(L"Effect_Sting_Warrior", CHANNEL_EFFECTS, 1.f);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
 		break;
 
@@ -362,6 +392,33 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 
 	}
 }
+
+void CUnit_Warrior::Turn_EyeEffect(_bool bOnOff)
+{
+	Turn_EyeFlare(bOnOff, L"Warrior_Eye");
+	Turn_EyeTrail(bOnOff);
+}
+
+//void CUnit_Warrior::Turn_EyeFlare(_bool bOnOff)
+//{
+//	/*if (bOnOff)
+//	{
+//		if (m_EyeFlare.empty())
+//			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Warrior_Eye", this, ZERO_VECTOR);
+//	}
+//	else
+//	{
+//		if (!m_EyeFlare.empty())
+//		{
+//			for (auto& elem : m_EyeFlare)
+//			{
+//				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+//			}
+//			m_EyeFlare.clear();
+//		}
+//
+//	}*/
+//}
 
 HRESULT CUnit_Warrior::Initialize_Prototype()
 {
@@ -481,6 +538,23 @@ HRESULT CUnit_Warrior::Start()
 		"0B_R_WP1"
 	);
 
+
+	_float fUpperSize = 2.f;
+
+	SetUp_EyeTrail(
+		_float4(2.f, fUpperSize, 0.f, 1.f),	//Weapon R
+		_float4(2.f, -fUpperSize, 0.f, 1.f),					//Weapon R
+		_float4(fUpperSize + 2.f, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize + 2.f, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		RGBA(255, 30, 30, 0.7f),
+		0.f,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		12,
+		"0B_Face_L_Eye"
+	);
+
 	return S_OK;
 }
 
@@ -488,12 +562,15 @@ void CUnit_Warrior::OnEnable()
 {
 	__super::OnEnable();
 
-	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Qanda_Sniping", this, ZERO_VECTOR);
+	Turn_EyeEffect(true);
+	
 }
 
 void CUnit_Warrior::OnDisable()
 {
 	__super::OnDisable();
+
+	Turn_EyeEffect(false);
 }
 
 void CUnit_Warrior::My_LateTick()
@@ -501,7 +578,18 @@ void CUnit_Warrior::My_LateTick()
 	__super::My_LateTick();
 
 	if (m_eCurState >= STATE_IDLE_WARRIOR_R_AI_ENEMY)
+	{		
+		//if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_TEST)
+		{
+			if (KEY(K, TAP))
+			{
+				Enter_State(AI_STATE_COMMON_CHANGE_HERO, nullptr);
+			}
+		}
+
 		return;
+	}
+		
 
 	if (KEY(CTRL, HOLD))
 	{
@@ -518,8 +606,5 @@ void CUnit_Warrior::My_LateTick()
 
 		//GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(50.f, 50.f, 50.f));
 
-	/*if (KEY(SPACE, TAP))
-	{
-		m_pPhysics->Set_Jump(7.f);
-	}*/
+
 }

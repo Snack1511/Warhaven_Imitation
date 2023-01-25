@@ -14,6 +14,7 @@ class CAIController;
 class CAIPersonality;
 class CPlayer;
 class CBehavior;
+class CTeamConnector;
 class CTable_Conditions
 {
     friend class CGameSystem;
@@ -31,7 +32,6 @@ public:
 
 public:
     HRESULT SetUp_Conditions();
-    HRESULT SetUp_BehaviorTick();
     HRESULT SetUp_Behaviors();
 
 public:
@@ -50,64 +50,115 @@ private:
     void EmptyBehaviorTick(CPlayer* pPlayer, CAIController* pAIController) { }
 
 private:
-    void Check_NoTarget(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-    void Check_FindTarget(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-    void Check_ReadyRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-    void Check_ArriveRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-    void Check_InRayTarget(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-    
 
+#pragma region 플레이어 체크
     void Check_FarAwayLeader(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-    void Check_PathArrived(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_LookEnemy(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-    void Check_FarAwayRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-    void Check_NearFromRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_DeadAllies(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_ValidPath(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_CombatDelay(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+#pragma endregion 플레이어 체크
 
-    void Check_CombatBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-    void Check_FollowBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-    void Check_ResurrectBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-    void Check_ChangeBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+
+
+#pragma region 맵 체크
+    void Check_Paden(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_Hwara(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_Need_Conquer(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_Conquer_Respawn(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_Conquer_MainPoint(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_Conquer_PadenCannon(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_Conquer_HwaraFinal(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    //캐논 사용가능할때
+    void Check_UsableCannon(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    //캐논 트리거 위치에 있을 때
+    void Check_InCannonConquerTrigger(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    //활공 트리거랑 충돌할 때
+    void Check_GriderTrigger(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_InNearCannonBall(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+#pragma endregion 맵 체크
+
+#pragma region 캐릭터체크
+    void Check_IsPriest(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+
+#pragma endregion 캐릭터체크
+
+#pragma region 쿨타임 체크
+    void Check_IsEnableSkill1(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_IsEnableSkill2(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_IsEnableSkill3(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+#pragma endregion 쿨타임 체크
+
+#pragma region 비해비어 체크
     void Check_PatrolBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_GotoTriggerBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_PadenCannonInteractBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_ReviveBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_CombatBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_ChangeBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+#pragma endregion 비해비어 체크
 
+#pragma region 플레이어 상태 체크
+    void Check_AdjCannon(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_AbleHero(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-    void Check_CurCellBlocked(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_EmptyRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_ReviveTeam(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_Gliding(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+#pragma endregion 플레이어 상태 체크
+#pragma region 패스 체크
+    void Check_GlidePath(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+
+#pragma endregion 패스 체크
 
     //void Check_Winning(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_EmptyEnemyInTerritory(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_Losing(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_LowHealthPoint(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+#pragma region 캐논볼  선택
+    void  Select_CannonBall(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+#pragma endregion 캐논볼 선택
 
 private:
-    void Select_Target(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
-
+#pragma region 플레이어 선택
     void  Select_Leader(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
-    void  Select_NearPath(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     void  Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
-
     void  Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
-    void  Select_NearTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
-    //void  Select_NearRouteEnemy(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     void  Select_MainPlayer(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+    void  Select_Cannon(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+    /* 리더 우선으로, 살아있는 팀원 아무나 가져오기 */
+    void  Select_Teammate(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+#pragma endregion 플레이어 선택
+
+#pragma region 트리거 선택
+    void  Select_ConquerTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+    void  Select_RandomConquerTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+
+    void  Select_PadenCannonTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+    void  Select_RespawnTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+    void  Select_MainTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+    void  Select_HwaraFinalTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+    void Select_NearGliderTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+    //void  Select_JumpTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+#pragma endregion 트리거 선택
+
+
+    //void  Select_NearRouteEnemy(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     //void  Select_LowHealthEnemy(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
-
-private:
-    void Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIController* pAIController);
-    void Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIController* pAIController);
-    void Callback_Tick_PatiFind(CPlayer* pPlayer, CAIController* pAIController);
-    void Callback_Tick_InRayTarget(CPlayer* pPlayer, CAIController* pAIController);
-    void Callback_Tick_FollowTarget(CPlayer* pPlayer, CAIController* pAIController);
-
 private:
     _bool RemovePlayer(_bool bFlag, list<CPlayer*>& PlayerList, list<CPlayer*>::iterator& rhsIter);
     _bool Check_Behavior(CBehavior* pBehavior, eBehaviorType eType);
+    _bool Check_Level(LEVEL_TYPE_CLIENT eLevelType);
+    _bool Check_Team(CTeamConnector* pTeamConnector, eTEAM_TYPE eTeam);
+
+private:
+    void Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIController* pAIController);
 
 private:
     map<_hashcode, function<void(_bool&, CPlayer*, CAIController*)>> m_OtherConditions;
     map<_hashcode, function<void(_bool&, BEHAVIOR_DESC*&, CPlayer*, CAIController*)>> m_WhatConditions;
     map<_hashcode, function<void(CPlayer*, CAIController*)>> m_BehaviorTick;
     map<_hashcode, CBehavior*> m_mapAllBehaviors;
-    vector<wstring> m_vecStrConditionName[2];
+    vector<wstring> m_vecStrConditionName[_uint(eBehaviorConditionType::eCount)];
     vector<wstring> m_vecBehaviorTickName;
     vector<wstring> m_vecBehaviorName;
 

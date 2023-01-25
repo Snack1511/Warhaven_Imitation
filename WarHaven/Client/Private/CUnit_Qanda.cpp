@@ -65,7 +65,6 @@ void CUnit_Qanda::On_Die()
 	m_bDie = false;
 	m_fDeadTimeAcc = 0.f;
 	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
-
 }
 
 void CUnit_Qanda::TurnOn_Trail(_bool bOn)
@@ -170,13 +169,14 @@ void CUnit_Qanda::SetUp_HitStates(UNIT_TYPE eUnitType)
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
-		//m_tHitType.eHitState = AI_STATE_COMMON_HIT_QANDA;
-		//m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_QANDA;
-		//m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_QANDA; // 이거 아직 안함.
-		//m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_QANDA;
-		//m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_QANDA;
-		//m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_QANDA;
-		//m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_QANDA;
+		m_tHitType.eHitState = AI_STATE_COMMON_HIT_QANDA;
+		m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_QANDA;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_QANDA; // 이거 아직 안함.
+		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_QANDA;
+		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_QANDA;
+		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_QANDA;
+		m_tHitType.eBounce = AI_STATE_COMMON_HIT_QANDA;
+
 		break;
 
 	default:
@@ -200,8 +200,16 @@ void CUnit_Qanda::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
-		//m_eDefaultState = AI_STATE_COMBAT_DEFAULT_QANDA_R;
-		//m_eSprintEndState = AI_STATE_PATROL_DEFAULT_QANDA_R;
+		m_eDefaultState = AI_STATE_COMBAT_DEAFULT_QANDA;
+
+		m_tAIChangeType.eAIPathFindDefaultState = AI_STATE_PATHNAVIGATION_DEFAULT_QANDA;
+		m_tAIChangeType.eAICommbatDefaultState = AI_STATE_COMBAT_DEAFULT_QANDA;
+		m_tAIChangeType.eAIReviveDefaultState = AI_STATE_COMMON_REVIVE_AI;
+		m_tAIChangeType.eAICannonDefaultState = AI_STATE_CANNON_AI;
+		m_tAIChangeType.eAIGlidingDefaultState = AI_STATE_GLIDING_AI;
+		m_tAIChangeType.eAIPatrolDefaultState = AI_STATE_PATROL_DEFAULT_QANDA;
+		m_tAIChangeType.eAIGoTirrgerDefaultState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_QANDA;
+		m_tAIChangeType.eAIChangeDeafultState = AI_STATE_COMMON_CHANGE_HERO;
 
 		break;
 
@@ -228,22 +236,24 @@ void CUnit_Qanda::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	{
 	case eBehaviorType::ePatrol:
 		//상태변경
-	//	eNewState = AI_STATE_PATROL_DEFAULT_QANDA_R;
+		eNewState = AI_STATE_PATROL_DEFAULT_QANDA;
 		break;
-	case eBehaviorType::eFollow:
+	case eBehaviorType::ePadenCannonInteract:
 		//상태변경
+		eNewState = AI_STATE_CANNON_AI;
 		break;
-	case eBehaviorType::eAttack:
+	case eBehaviorType::eCombat:
 		//상태변경
-	//	eNewState = AI_STATE_COMBAT_DEFAULT_QANDA_R;
+		eNewState = AI_STATE_COMBAT_DEAFULT_QANDA;
 
 		break;
-	case eBehaviorType::ePathNavigation:
+	 
+	case eBehaviorType::ePathFinding:
 		//상태변경
-	//	eNewState = AI_STATE_PATROL_DEFAULT_QANDA_R;
+		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_QANDA;
 		break;
 
-	case eBehaviorType::eResurrect:
+	case eBehaviorType::eRevive:
 		//상태변경
 		eNewState = AI_STATE_COMMON_REVIVE_AI;
 		break;
@@ -252,6 +262,15 @@ void CUnit_Qanda::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		//상태변경
 		eNewState = AI_STATE_COMMON_CHANGE_HERO;
 		break;
+
+	case eBehaviorType::eGliding:
+		eNewState = AI_STATE_GLIDING_AI;
+		break;
+
+	case eBehaviorType::eCatchCannon:
+		//eNewState = AI_STATE_BOUNE_WARRIOR_R;
+		break;
+
 	default:
 		assert(0);
 		break;
@@ -278,8 +297,30 @@ void CUnit_Qanda::On_ChangePhase(_uint eCurPhase)
 
 void CUnit_Qanda::Shoot_AnimCrow()
 {
-	_float4 vShootPos = m_pAnimCrow->Get_Transform()->Get_World(WORLD_POS);
-	_float4 vShootDir = Get_FollowCamLook();
+
+
+	_float4 vShootPos = m_pOwnerPlayer->Get_CurrentUnit()->Get_FollowCamLook();
+	_float4 vShootDir = m_pOwnerPlayer->Get_CurrentUnit()->Get_FollowCamRight();
+
+	if (m_pOwnerPlayer->Get_CurrentUnit()->Get_CurState() == AI_STATE_COMBAT_SHOOT_QANDA)
+	{
+		CUnit* pMyUnit = m_pOwnerPlayer->Get_CurrentUnit();
+		CUnit* pOtherUnit = m_pOwnerPlayer->Get_CurrentUnit()->Get_TargetUnit();
+
+		if (pOtherUnit)
+		{
+			_float4 vLook = pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - pMyUnit->Get_Transform()->Get_World(WORLD_POS);
+			vShootDir = vLook;
+		}
+		else
+		{
+			vShootDir = pMyUnit->Get_Transform()->Get_World(WORLD_LOOK);
+			
+		}
+
+		vShootDir.Normalize();
+	}
+		
 
 	m_pAnimCrow->Shoot_Crow(vShootPos, vShootDir);
 }
@@ -354,9 +395,10 @@ void CUnit_Qanda::Turn_TransformParticle(_bool bOnOff)
 		{
 			for (auto& elem : m_TransformParticles)
 				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+
+			m_TransformParticles.clear();
 		}
 
-		m_TransformParticles.clear();
 	}
 }
 
@@ -590,7 +632,7 @@ HRESULT CUnit_Qanda::Initialize_Prototype()
 
 	m_fCoolTime[SKILL1] = 3.f;
 	m_fCoolTime[SKILL2] = 5.f;
-	m_fCoolTime[SKILL3] = 3.f;
+	m_fCoolTime[SKILL3] = 60.f;
 
 	m_fCoolAcc[SKILL1] = 0.f;
 	m_fCoolAcc[SKILL2] = 0.f; 
@@ -798,7 +840,12 @@ void CUnit_Qanda::OnDisable()
 void CUnit_Qanda::My_Tick()
 {
 	if (m_eCurState == STATE_ATTACK_BEGIN_SNIPING_QANDA ||
-		m_eCurState == STATE_ATTACK_AIMING_SNIPING_QANDA)
+		m_eCurState == STATE_ATTACK_AIMING_SNIPING_QANDA ||
+		m_eCurState == AI_STATE_COMBAT_DEAFULT_QANDA ||
+		m_eCurState == AI_STATE_COMBAT_DEAFULT_QANDA ||
+		m_eCurState == AI_STATE_COMBAT_BEGIN_SNIPING_QANDA ||
+		m_eCurState == AI_STATE_COMBAT_AIMING_SNIPING_QANDA ||
+		m_eCurState == AI_STATE_COMBAT_SHOOT_SNIPING_QANDA)
 	{
 
 		__super::Check_MultipleObject_IsInFrustum();

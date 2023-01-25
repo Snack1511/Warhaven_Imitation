@@ -10,6 +10,7 @@
 
 #include "CUnit.h"
 #include "CPlayer.h"
+#include "Functor.h"
 
 CLevel_Hwara::CLevel_Hwara()
 {
@@ -82,6 +83,7 @@ HRESULT CLevel_Hwara::Enter()
 
 #endif 
 
+
 	return S_OK;
 }
 
@@ -102,20 +104,6 @@ HRESULT CLevel_Hwara::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
-
-#ifdef _DEBUG
-	if (FAILED(GAMEINSTANCE->Render_Font(L"DefaultFont", L"Hwara Level", _float2(100.f, 30.f), _float4(1.f, 1.f, 1.f, 1.f))))
-		return E_FAIL;
-#endif
-
-#ifdef RELEASE_IMGUI
-
-#ifndef _DEBUG
-	if (FAILED(GAMEINSTANCE->Render_Font(L"DefaultFont", L"Hwara Level", _float2(100.f, 30.f), _float4(1.f, 1.f, 1.f, 1.f))))
-		return E_FAIL;
-
-#endif // !_DEBUG
-#endif
 
 	return S_OK;
 }

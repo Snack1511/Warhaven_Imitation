@@ -40,6 +40,10 @@ class ENGINE_DLL CNavigation
 	: public CComponent
 {
 public:
+	static int Func_MakeRoute(list<_float4>* NodeList, map<_float, CCellLayer*>* Layers, _float4 vStart, _float4 vEnd, CNavigation* pNaviCom);
+	static int Func_GetStartCell(list<_float4>* NodeList, map<_float, CCellLayer*>* Layers, _float4 vStart, _float4 vEnd, CNavigation* pNaviCom);
+
+public:
 	enum CELL_TYPE {DEFAULT, WALL, BLOCKED, CELL_END};
 	DECLARE_PROTOTYPE(CNavigation)
 
@@ -49,6 +53,10 @@ protected:
 
 public:
 	static CNavigation* Create(_uint iGroupIdx, CCell* pStartCell, CPhysics* pPhysicsCom);
+
+public:
+	void		Set_Layers(map<_float, CCellLayer*>* Layers) { m_pLayers = Layers; }
+	_bool		Is_BlockedCell(_float4 vPosition);
 
 public:
 	void		Set_StartCell(CCell* pStartCell) { m_pCurCell = pStartCell; }
@@ -71,9 +79,16 @@ public:
 	void		Set_StartPosition(_float4 vPosition);
 	void		Set_EndPosition(_float4 vPosition);
 	//시작 점과 끝 점을 기반으로 각 레이어에서의 도착점 생성
-	list<pair<_float4, CCellLayer*>> Get_Goals(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd);
+	static list<pair<_float4, CCellLayer*>> Get_Goals(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd, CCellLayer* pStartLayer);
+
+
+	void			Make_Route(list<_float4>* NodeList, map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd);
 	list<_float4> Get_BestRoute(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd);
-	CCell* Get_CurCell(_float4 vPosition, map<_float, CCellLayer*>& Layers);
+
+
+
+	static CCell* Get_CurCell(_float4 vPosition, map<_float, CCellLayer*>& Layers, CCellLayer** ppOutInCellLayer = nullptr);
+	CCell* Get_NearOpenCell(_float4 vPosition, map<_float, CCellLayer*>& Layers, CCellLayer** ppOutInCellLayer = nullptr);
 public:
 	//CELL_TYPE	isMove(_vector vPosition, _float4* pOutPos);
 	_float4		Enter_Wall();
@@ -87,6 +102,9 @@ public:
 	virtual void Tick() override;
 	virtual void Late_Tick() override;
 	virtual void Release() override;
+
+protected:
+	map<_float, CCellLayer*>* m_pLayers = nullptr;
 
 protected:
 	CNode* m_pStartNode = nullptr;
@@ -108,6 +126,10 @@ protected:
 	_bool		m_bInWall = false;
 	_bool		m_bBlocked = false;
 
+protected:
+	CCellLayer* m_pStartLayer = nullptr;
+	CCell* m_pStartCell = nullptr;
+
 
 protected:
 	//_float4		Correct_Move(_float4 vPos);
@@ -120,9 +142,14 @@ protected:
 	_float4		Get_NewPosFromCell(CCell* pCell, _vector vPos);
 	_float4		Get_NewDirFromCellLine(CCell* pCell, _uint eOutLine, _vector vPos, _float4 _vDir, _float _fSpeed);
 	_float4		Get_NewPosFromWall(CCell* pCell, _float4 vRayPos, _float4 vRayDir);
+
 public:
 	list<_float4> m_DebugRouteNode;
+
+private:
+	_bool		m_bThreadOn = false;
 };
+
 
 
 END

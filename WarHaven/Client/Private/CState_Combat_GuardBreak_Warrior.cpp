@@ -87,6 +87,8 @@ void CState_Combat_GuardBreak_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator
     m_fMaxSpeed = pOwner->Get_Status().fSprintAttackSpeed;
     pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+    // Play_Sound(L"Effect_GuardBreak_Begin_Warrior");
 }
 
 STATE_TYPE CState_Combat_GuardBreak_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -132,6 +134,7 @@ void CState_Combat_GuardBreak_Warrior::On_KeyFrameEvent(CUnit* pOwner, CAnimator
 	{
 
 	case 1:
+        Play_Sound(L"Effect_GuardBreak_Warrior", CHANNEL_EFFECTS, m_fAIDeafultVolume);
         m_bKeyInputable = true;
         pOwner->Get_PhysicsCom()->Set_SpeedasMax();
         pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);

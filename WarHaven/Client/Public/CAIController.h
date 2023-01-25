@@ -66,7 +66,9 @@ class CPlayer;
 class CAIPersonality;
 class CBehavior;
 class CTrigger;
+class CCannonBall;
 class CPath;
+class CCannon;
 
 class CAIController :
     public CComponent
@@ -99,7 +101,9 @@ public:
     list<CPlayer*>& Get_NearAllies() { return m_NearAlliesList; }
     list<CPlayer*>& Get_NearEnemy() { return m_NearEnemyList; }
     list<CTrigger*> Get_NearTrigger() { return m_NearTriggerList; }
+    CCannon* Get_NearCannon() { return m_pNearCannon; }
 
+    list<CCannonBall*> Get_NearCannonBall() { return m_NearCannonBallList; }
 public:
     void Ready_Controller();
     void    Set_NewPath(CPath* pPath);
@@ -112,6 +116,7 @@ public:
     _bool Is_LongTimeRemain(eBehaviorType eBhavior);
     void Change_NearPath();
     void Set_BehaviorList(list<CBehavior*>& BehaviorList);
+
 private:
     CPlayer* m_pOwnerPlayer = nullptr;
     CAIPersonality* m_pPersonality = nullptr;
@@ -125,6 +130,9 @@ private:
     list<CPlayer*> m_NearAlliesList;
     list<CPlayer*> m_NearEnemyList;
     list<CTrigger*> m_NearTriggerList;
+    CCannon* m_pNearCannon = nullptr;
+
+    list<CCannonBall*> m_NearCannonBallList;
 
     /* 현재 타고 있는 경로*/
     CPath* m_pCurPath = nullptr;

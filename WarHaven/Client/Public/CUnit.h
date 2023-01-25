@@ -28,6 +28,7 @@ class CCannon;
 class CProjectile;
 class CUI_UnitHUD;
 class CGlider;
+class CCannonBall;
 
 class CUnit abstract : public CGameObject
 {
@@ -121,6 +122,7 @@ public:
 	virtual void	Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
 	virtual void	Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
 
+	void Play_Sound(wstring wstrFileName, _uint iGroupIndex = CHANNEL_EFFECTS, _float fVolume = 1.f);
 
 public: /* Physics */
 	_bool		Is_Air();
@@ -177,11 +179,13 @@ public:
 
 	CAnimWeapon* Get_AnimWeapon() { return m_pAnimWeapon; }
 	class CPath* Get_CurPath();
+	class CPath* Get_StartMainPath();
 
 	UNIT_STATUS& Get_Status() { return m_tUnitStatus; }
 	CPhysics* Get_PhysicsCom() { return m_pPhysics; }
 
 	CUnit* Get_TargetUnit();
+	CGameObject* Get_TargetObject();
 
 	STATE_TYPE	Get_CurState() { return m_eCurState; }
 	CState* Get_CurStateP() { return m_pCurState; }
@@ -190,6 +194,21 @@ public:
 	const STATE_TYPE& Get_DefaultState() { return m_eDefaultState; }
 	const STATE_TYPE& Get_SprintEndState() { return m_eSprintEndState; }
 	const STATE_TYPE& Get_SprintFallState() { return m_eSprintFallState; }
+
+	struct STATE_AI_TYPE
+	{
+		STATE_TYPE		eAIPathFindDefaultState = STATE_END;
+		STATE_TYPE		eAICommbatDefaultState = STATE_END;
+		STATE_TYPE		eAIReviveDefaultState = STATE_END;
+		STATE_TYPE		eAICannonDefaultState = STATE_END;
+		STATE_TYPE		eAIGlidingDefaultState = STATE_END;
+		STATE_TYPE		eAIPatrolDefaultState = STATE_END;
+		STATE_TYPE		eAIGoTirrgerDefaultState = STATE_END;
+		STATE_TYPE		eAIChangeDeafultState = STATE_END;
+	};
+
+	const STATE_AI_TYPE& Get_AIState_Type() { return m_tAIChangeType; }
+
 
 	SKILL_TRIGGER& Get_SkillTrigger() {
 		return m_tSkillTrigger;
@@ -318,7 +337,10 @@ public:
 
 public:
 	void Catch_ProjectileObject(CProjectile* pProjectileObject) { m_pCatchObejct = pProjectileObject; }
+	void Catch_CannonBall(CCannonBall* pProjectileObject) { m_pCatchBall = pProjectileObject; }
+
 	CProjectile* Get_CatchProjectileObject() { return m_pCatchObejct; }
+	CCannonBall* Get_CatchedBall() { return m_pCatchBall; }
 
 	list<CGameObject*> Get_MultipleFrustumObject() const { return m_MultipleFrustumObject; }
 
@@ -334,7 +356,8 @@ protected:
 
 
 protected:
-	CProjectile* m_pCatchObejct;
+	CProjectile* m_pCatchObejct = nullptr;
+	CCannonBall* m_pCatchBall = nullptr;
 
 	list<CGameObject*>  m_MultipleFrustumObject;
 
@@ -344,6 +367,10 @@ protected:
 
 	_bool				m_bForUseTeam = true;
 	_bool				m_bSameNearObject = false;
+
+	_bool				m_bForceChangeBehavior = false;
+	public:
+		void	Force_ChangeBehavior() { m_bForceChangeBehavior = true; }
 
 protected:
 	// 얘가 max
@@ -375,6 +402,7 @@ protected:
 	STATE_TYPE		m_eSprintEndState = STATE_END;
 	STATE_TYPE		m_eSprintFallState = STATE_END;
 
+
 	CState* m_pCurState = nullptr;
 
 protected:
@@ -390,11 +418,15 @@ protected:
 
 	CTrailEffect* m_pDistortionTrail = nullptr;
 
+	CTrailEffect* m_pEyeTrail = nullptr;
+	CTrailEffect* m_pEyeTrail2 = nullptr;
+
 protected:
 	CCamera_Follow* m_pFollowCam = nullptr;
 
 protected:
 	STATE_HIT_TYPE	m_tHitType;
+	STATE_AI_TYPE	m_tAIChangeType;
 
 	_uint			m_iDefaultType = 0;
 	_float			m_fHitDelayAcc = 0.f;
@@ -402,6 +434,8 @@ protected:
 
 
 protected:
+	void SetUp_EyeTrail(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
 	void SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
 		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
 	void SetUp_DistortionTrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
@@ -417,6 +451,9 @@ protected:
 	virtual void	Effect_Parring(_float4 vHitPos);
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos);
 	virtual void	Effect_Fall(_float fFallPower);
+	virtual void	Turn_EyeTrail(_bool bOnOff);
+	virtual void	Turn_EyeFlare(_bool bOnOff, wstring wstrKey = L"");
+
 public:
 	void Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _float fFadeInTime, _float fDuration,
 		_float fFadeOutTime, _float4 Diffuse, LIGHTDESC::EASING_TYPE eInEasingType = LIGHTDESC::EASING_TYPE::EAS_Linear,
@@ -424,6 +461,9 @@ public:
 	void Create_Light(CGameObject* pOwner, _float4 vOffset, _float fRange, _float fRandomRange,
 		_float fFadeInTime, _float fDuration, _float fFadeOutTime, _float4 Diffuse, _bool bLoop);
 	virtual void	Effect_HeroToDefaultUnit(CUnit* pOwner);
+
+public:
+		void Play_Voice(wstring strName, _float fVol, _bool bDist);
 
 protected:
 	void	Set_ShaderNoSpec(const _tchar* pModelPath);
@@ -457,6 +497,9 @@ protected:
 	CAnimWeapon* m_pAnimWeapon = nullptr;
 	CGlider* m_pGlider = nullptr;
 
+protected:
+	list<CGameObject*> m_EyeFlare;
+
 public:
 	void	Set_AnimWeaponIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);
 	void	Set_AnimWeaponFrame(_uint iChangeFrame);
@@ -474,6 +517,8 @@ private:
 	/* 딱 체력 0된 시점에 호출되는 함수 */
 	void		On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos);
 	void		On_Bounce(void* pHitInfo);
+
+
 
 };
 END

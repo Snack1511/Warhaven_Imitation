@@ -41,6 +41,19 @@ void CState_Patrol_Walk::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Patrol_Walk::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pOwner->Is_Air())
+        return m_eJumpFallStateType;
+
     return STATE_END;
+}
+
+void CState_Patrol_Walk::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.3f);
+        break;
+    }
 }
 

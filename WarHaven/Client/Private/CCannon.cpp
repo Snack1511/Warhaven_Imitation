@@ -14,6 +14,11 @@
 #include "CCannonBall.h"
 
 #include "CUI_Trail.h"
+#include "CUser.h"
+#include "CTeamConnector.h"
+#include "CSquad.h"
+//#define AUTO_CANNON
+
 CCannon::CCannon()
 {
 }
@@ -86,15 +91,15 @@ HRESULT CCannon::Initialize_Prototype()
 	m_pCannonBall->Initialize();
 
 	
-	CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 4, 0.2f, -0.1f, 3.f, ZERO_VECTOR, _float4(1.f, 1.f, 1.f, 1.f),
-		L"../bin/resources/textures/effects/warhaven/texture/T_ArrowUI_01_FX.dds",
-		L"../bin/resources/textures/White.png"
-	);
+	//CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 4, 0.2f, -0.1f, 3.f, ZERO_VECTOR, _float4(1.f, 1.f, 1.f, 1.f),
+	//	L"../bin/resources/textures/effects/warhaven/texture/T_ArrowUI_01_FX.dds",
+	//	L"../bin/resources/textures/White.png"
+	//);
 
-	if (!pUI_Trail)
-		return E_FAIL;
+	//if (!pUI_Trail)
+	//	return E_FAIL;
 
-	m_pUI_Trail = pUI_Trail;
+	//m_pUI_Trail = pUI_Trail;
 
 	return S_OK;
 }
@@ -107,13 +112,11 @@ HRESULT CCannon::Initialize()
 
 HRESULT CCannon::Start()
 {
+
+
 	__super::Start();
 
-	if (m_pUI_Trail)
-	{
-		CREATE_GAMEOBJECT(m_pUI_Trail, GROUP_EFFECT);
-		DISABLE_GAMEOBJECT(m_pUI_Trail);
-	}
+	
 
 	m_pCannonCam = CCamera_Follow::Create(this, nullptr);
 	m_pCannonCam->Initialize();
@@ -156,12 +159,12 @@ void CCannon::Control_Cannon(CPlayer* pPlayer)
 	{
 		GET_COMPONENT_FROM(m_pCannonCam, CScript_FollowCam)->Start_LerpType(CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_CANNON);
 		GAMEINSTANCE->Change_Camera(L"CannonCam");
+		CUser::Get_Instance()->SetActive_CannonUI(true);
+		CUser::Get_Instance()->SetActive_CannonCrosshair(true);
 	}
 
-	CUser::Get_Instance()->SetActive_CannonUI(true);
-	CUser::Get_Instance()->SetActive_CannonCrosshair(true);
 
-	ENABLE_GAMEOBJECT(m_pUI_Trail);
+	//ENABLE_GAMEOBJECT(m_pUI_Trail);
 }
 
 void CCannon::Exit_Cannon()
@@ -175,7 +178,7 @@ void CCannon::Exit_Cannon()
 	}
 	m_pCurOwnerPlayer = nullptr;
 
-	DISABLE_GAMEOBJECT(m_pUI_Trail);
+	//DISABLE_GAMEOBJECT(m_pUI_Trail);
 
 
 }
@@ -193,7 +196,8 @@ void CCannon::Shoot_Cannon()
 	m_pAnimator->Set_CurAnimIndex(0, 0);
 	m_pAnimator->Set_InterpolationTime(0, 0, 0.1f);
 	m_pAnimator->Set_AnimSpeed(0,0,1.f);
-
+	
+	CFunctor::Play_Sound_SetRange(L"Effect_CannonShoot", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS), 70.f, 2.f);
 
 	_float4x4 BoneMatrix = m_pBonePitch->Get_BoneMatrix();
 	_float4 vFirePos = BoneMatrix.XMLoad().r[3];
@@ -208,7 +212,6 @@ void CCannon::Shoot_Cannon()
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cannon_Smoke", this, m_pTransform->Get_World(WORLD_POS));
 
 	m_pCannonBall->Shoot_Cannon(m_pCurOwnerPlayer, vFirePos, vBoneLook);
-
 }
 
 _bool CCannon::Can_ControlCannon(CPlayer* pPlayer)
@@ -241,6 +244,49 @@ _float CCannon::Lerp_Position(_float fCurPosition, _float fTargetPosition, _floa
 
 void CCannon::My_Tick()
 {
+#ifdef AUTO_CANNON
+	if (m_fCannonCoolAcc > 0.f)
+		m_fCannonCoolAcc -= fDT(0);
+	else
+	{
+		m_fCannonCoolAcc = 0.f;
+	}
+
+	if (m_pCurOwnerPlayer)
+		Shoot_Cannon();
+	else
+	{
+		CPlayer* pPlayer = CUser::Get_Instance()->Get_MainPlayerInfo()->Get_Player();
+
+		if (pPlayer)
+		{
+			CTeamConnector* pTeamConnector = pPlayer->Get_Team();
+
+			if (pTeamConnector)
+			{
+				eTEAM_TYPE	eType = pTeamConnector->Get_TeamType();
+				if (eType == eTEAM_TYPE::eBLUE)
+					eType = eTEAM_TYPE::eRED;
+				else
+					eType = eTEAM_TYPE::eBLUE;
+
+				pTeamConnector = CGameSystem::Get_Instance()->Get_Team(eType);
+
+				m_pCurOwnerPlayer = pTeamConnector->Get_SquadList().front()->Get_LeaderPlayer();
+
+			}
+
+		}
+	}
+
+	return;
+
+
+#endif
+
+
+
+
 	if (!m_pCurOwnerPlayer)
 		return;
 
@@ -257,12 +303,16 @@ void CCannon::My_Tick()
 
 	CUser::Get_Instance()->Set_CannonCoolTime(m_fCannonCoolAcc, m_fCannonCoolTime);
 
-	if (KEY(LBUTTON, TAP))
+	if (m_pCurOwnerPlayer->IsMainPlayer())
 	{
-		Shoot_Cannon();
+		if (KEY(LBUTTON, TAP))
+		{
+			Shoot_Cannon();
 
-		CUser::Get_Instance()->SetActive_CannonCoolTime(true);
+			CUser::Get_Instance()->SetActive_CannonCoolTime(true);
+		}
 	}
+
 
 	if (m_pAnimator->Is_CurAnimFinished())
 	{
@@ -275,6 +325,11 @@ void CCannon::My_Tick()
 
 void CCannon::My_LateTick()
 {
+#ifdef AUTO_CANNON
+	return;
+#endif // !AUTO_CANNON
+
+
 	if (!m_pCurOwnerPlayer)
 		return;
 
@@ -286,11 +341,8 @@ void CCannon::My_LateTick()
 
 
 	/* 위 아래만 꺾어줘야함 */
-
 	_float4x4 matOffset;
 	_float4 vCurCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
-
-	m_fCannonMoveSpeed;
 
 	/* Radian 값으로 보간을 하자. */
 	_float fTargetPitch, fTargetYaw;
@@ -305,6 +357,12 @@ void CCannon::My_LateTick()
 	if (vCurCamLook.y < 0.f)
 		fTargetPitch *= -1.f;
 
+	if (!m_pCurOwnerPlayer->IsMainPlayer())
+	{
+		fTargetPitch = 0.f;
+		fTargetYaw = 0.f;
+	}
+
 
 	_float fNewPitch = Lerp_Position(m_fCurPitch, fTargetPitch, fRange);
 	if (fNewPitch > -9998.f)
@@ -317,6 +375,12 @@ void CCannon::My_LateTick()
 	fTargetYaw = acosf(fDot);
 	if (vCurCamLook.z > 0.f)
 		fTargetYaw *= -1.f;
+
+	if (!m_pCurOwnerPlayer->IsMainPlayer())
+	{
+		fTargetPitch = 0.f;
+		fTargetYaw = 0.f;
+	}
 
 	_float fNewYaw = Lerp_Position(m_fCurYaw, fTargetYaw, fRange);
 	if (fNewYaw > -9998.f)
@@ -336,16 +400,6 @@ void CCannon::My_LateTick()
 	_float4 vBoneLook = BoneMatrix.XMLoad().r[0];
 	vFirePos += vBoneLook * 500.f;
 	
-	m_pUI_Trail->Clear_Nodes();
-	m_pUI_Trail->Add_Node(vFirePos);
-
-	vBoneLook.Normalize();
-	vFirePos += vBoneLook * 2.f;
-	m_pUI_Trail->Add_Node(vFirePos);
-
-	vFirePos += vBoneLook * 2.f;
-	m_pUI_Trail->Add_Node(vFirePos);
-
-	m_pUI_Trail->ReMap_TrailBuffers();
+	
 
 }

@@ -241,6 +241,16 @@ _long CGameInstance::Get_DIMouseMoveState(MOUSEMOVE eMouseMove)
 	return m_pInputDevice->Get_DIMouseMoveState(eMouseMove);
 }
 
+_uint CGameInstance::Play_LoopSound(const _tchar* strSoundKey, CHANNEL_GROUP iGroupIndex, _float fVolumeRatio)
+{
+	return m_pSoundDevice->Play_LoopSound(strSoundKey, iGroupIndex, fVolumeRatio);
+}
+
+void CGameInstance::Stop_Sound(CHANNEL_GROUP eType, _uint iIndex)
+{
+	return m_pSoundDevice->Stop_Sound(eType, iIndex);
+}
+
 HRESULT CGameInstance::Load_SoundFile(wstring wstrFolderPath)
 {
 	return m_pSoundDevice->Load_SoundFile(wstrFolderPath);
@@ -255,6 +265,11 @@ void CGameInstance::Play_Sound(const _tchar* strSoundKey, CHANNEL_GROUP iGroupIn
 void CGameInstance::Play_BGM(const _tchar* strSoundKey)
 {
 	m_pSoundDevice->Play_BGM(strSoundKey);
+}
+
+void CGameInstance::Play_BGM(const _tchar* strSoundKey, _float fVolume)
+{
+	m_pSoundDevice->Play_BGM(strSoundKey, fVolume);
 }
 
 void CGameInstance::Stop_Sound(CHANNEL_GROUP eType)
@@ -463,6 +478,41 @@ void CGameInstance::Stop_DarkScreen(_float fTime)
 void CGameInstance::Start_MotionBlur(_float fTime)
 {
 	m_pRenderManager->Start_MotionBlur(fTime);
+}
+
+void CGameInstance::Set_PBR(_bool b)
+{
+	m_pRenderManager->Set_PBR(b);
+}
+
+void CGameInstance::Set_SSAO(_float f)
+{
+	m_pRenderManager->Set_SSAO(f);
+}
+
+void CGameInstance::Set_Brightness(_float f)
+{
+	m_pRenderManager->Set_Brightness(f);
+}
+
+void CGameInstance::Set_Contrast(_float f)
+{
+	m_pRenderManager->Set_Contrast(f);
+}
+
+void CGameInstance::Set_Saturation(_float f)
+{
+	m_pRenderManager->Set_Saturation(f);
+}
+
+void CGameInstance::Set_ShadowQuality(_float f)
+{
+	m_pRenderManager->Set_ShadowQuality(f);
+}
+
+void CGameInstance::Set_DOFPower(_float f)
+{
+	m_pRenderManager->Set_DOFPower(f);
 }
 
 list<CGameObject*>& CGameInstance::Get_ObjGroup(const _uint& iGroupIdx)

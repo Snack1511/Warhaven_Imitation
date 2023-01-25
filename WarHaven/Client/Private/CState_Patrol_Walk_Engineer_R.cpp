@@ -54,6 +54,8 @@ HRESULT CState_Patrol_Walk_Engineer_R::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 46;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 47;
 
+    m_eJumpFallStateType = AI_STATE_COMMON_LAND_ENGINEER_R;
+
     return S_OK;
 }
 

@@ -19,17 +19,17 @@ CState_Combat_Default_Fiona::~CState_Combat_Default_Fiona()
 
 HRESULT CState_Combat_Default_Fiona::Initialize()
 {
-	__super::Initialize();
-
-	m_fMyMaxLerp = 1.2f;
+	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;
 
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_Combat_Default_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Get_Status().fDamageMultiplier = 2.f;
+
 	if (ePrevType == m_eStateType)
 		m_fInterPolationTime = 0.f;
 
@@ -65,6 +65,11 @@ void CState_Combat_Default_Fiona::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Combat_Default_Fiona::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
+}
+
+void CState_Combat_Default_Fiona::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }
 

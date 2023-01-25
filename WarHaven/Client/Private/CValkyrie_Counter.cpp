@@ -60,6 +60,8 @@ void CValkyrie_Counter::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Sound(L"Effect_CounterEnter_Fiona");
 }
 
 STATE_TYPE CValkyrie_Counter::Tick(CUnit* pOwner, CAnimator* pAnimator)

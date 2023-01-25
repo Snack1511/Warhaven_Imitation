@@ -8,19 +8,23 @@ class CNode;
 #ifdef _DEBUG
 class CShader;
 #endif
+class CShader;
 class ENGINE_DLL CCellLayer
 {
 public:
 	typedef list<CNode*> NODES;
 	typedef vector<CCell*> CELLS;
 	typedef list<CCell*> CellList;
+
 public:
 	CCellLayer();
 	virtual ~CCellLayer();
+
 public:
 	static CCellLayer* Create(_uint XNums, _uint ZNums, _float fTileSize, _float4 vCenterPosition, _float fHeightMin, _float fHeightMax, _int BaseCellAttribute = 4);
 	static CCellLayer* Create(wstring strFolderPath, wstring strFolderName);
 	CCellLayer* Clone_Layer(_float MinHeight);
+	CCellLayer* Clone();
 public:
 	void Save(wstring strForlderPath, wstring strPath);
 	void Save_Info(wstring strInfoPath);
@@ -161,6 +165,10 @@ private:
 public:
 	CCell* Find_Cell(_float4 vPosition);
 	list<CCell*> Find_Cell_InRange(_float4 vPosition, _float fRange);
+	void Find_NearOpenCell(_float4 vPosition, list<CCell*>& NearOpenCells, _int NeighborLevel = 1);
+
+	CCell* Find_NearOpenCell(CCell* pTargetCell);
+
 	CCell* Get_Cell(_int Index);
 	_uint Get_XTileNums() { return m_iXNums; }
 	_uint Get_ZTileNums() { return m_iZNums; }
@@ -182,6 +190,7 @@ private:
 	_uint m_iXNums = 0;
 	_uint m_iZNums = 0;
 
+
 	
 
 private:
@@ -192,16 +201,27 @@ private:
 	//伎 加己喊肺 包府
 	map<_uint, CellList> m_CellList;
 	map<_float, CellList> m_StairList;
+	CellList m_BlockedList_NeighborOpen;
 	list < _float4> m_BlockedIncludePosition;
 	list<pair<_float4, _float4>> m_LinkPosList;
 	list<pair<CNode*, CNode*>> m_LinkList;
+
 private:
 	_float* m_NeighborLayerKeys = nullptr;
 	_int* m_NeighborIndex = nullptr;
 	wstring m_strFolderPath = L"";
 
+private:
+	_bool		m_bLocked = false;
+
+public:
+	_bool		Is_Locked() { return m_bLocked; }
+	void		Lock() { m_bLocked = true; }
+	void		UnLock() { m_bLocked = false; }
+
 public:
 	void Func_Compare_UseThread(list<pair<CNode*, CNode*>>* pList);
+
 private:
 	vector<shared_ptr<thread>> m_ThreadArr;
 

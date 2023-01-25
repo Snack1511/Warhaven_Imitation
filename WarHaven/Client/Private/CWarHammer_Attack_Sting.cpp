@@ -31,7 +31,7 @@ HRESULT CWarHammer_Attack_Sting::Initialize()
 
 	m_fInterPolationTime = 0.1f;
 	m_fAnimSpeed = 2.3f;
-	m_iStateChangeKeyFrame = 120;
+	m_iStateChangeKeyFrame = 140;
 
 
 	m_fMyAccel = 10.f;
@@ -117,7 +117,7 @@ HRESULT CWarHammer_Attack_Sting::Initialize()
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 99;
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 99;
 
-	m_fDamagePumping = 1.f;
+	m_fDamagePumping = 2.f;
 
 	return __super::Initialize();
 
@@ -128,6 +128,8 @@ void CWarHammer_Attack_Sting::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Voice(pOwner, L"Voice_Attack", 1.f);
 }
 
 STATE_TYPE CWarHammer_Attack_Sting::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -161,6 +163,7 @@ void CWarHammer_Attack_Sting::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnim
 	switch (iSequence)
 	{
 	case 0:
+		Play_Sound(L"Effect_Sting_Warrior");
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;

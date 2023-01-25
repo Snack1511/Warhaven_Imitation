@@ -10,6 +10,7 @@
 #include "CUser.h"
 
 #include "CEffects_Factory.h"
+#include "Functor.h"
 
 CWarrior_Attack_HorizontalMiddle::CWarrior_Attack_HorizontalMiddle()
 {
@@ -62,6 +63,7 @@ void CWarrior_Attack_HorizontalMiddle::Enter(CUnit* pOwner, CAnimator* pAnimator
 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -102,8 +104,10 @@ void CWarrior_Attack_HorizontalMiddle::On_KeyFrameEvent(CUnit * pOwner, CAnimato
 	switch (iSequence)
 	{
 	case 1:
-		m_bAttackTrigger = true;
+		Play_Sound(L"Effect_Swing_Warrior", CHANNEL_EFFECTS, 1.f);
+		m_bAttackTrigger = true;		
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		Play_Voice(pOwner, L"Voice_Attack", 1.f);
 		break;
 
 	case 2:

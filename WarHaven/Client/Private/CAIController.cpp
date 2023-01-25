@@ -9,7 +9,9 @@
 #include "CBehavior.h"
 #include "Functor.h"
 #include "CPath.h"
+#include "CCannon.h"
 #include  "CGameSystem.h"
+#include  "CCannonBall.h"
 
 CAIController::CAIController(_uint iGroupID)
 	: CComponent(iGroupID)
@@ -65,6 +67,9 @@ void CAIController::Start()
 
 void CAIController::Early_Tick()
 {
+	if (!m_pOwnerPlayer->Get_CurrentUnit())
+		return;
+
 	Ready_Controller();
 
 	CBehavior* pNextBehavior = nullptr;
@@ -107,10 +112,10 @@ void CAIController::Early_Tick()
 	}
 
 	/* For문 끝 */
-	CBehavior* pPatrolBehavior = m_pPersonality->Get_Patrol();
+	CBehavior* pPatrolBehavior = m_pPersonality->Get_DefaultBehavior();
 	if (nullptr == pNextBehavior && nullptr != pPatrolBehavior)
 	{
-		pNextBehavior = m_pPersonality->Get_Patrol();
+		pNextBehavior = m_pPersonality->Get_DefaultBehavior();
 		pBehaviorDescTemp = pNextBehavior->Get_BehaviorDesc();
 	}
 
@@ -148,6 +153,9 @@ void CAIController::Early_Tick()
 
 void CAIController::Tick()
 {
+
+	if (!m_pOwnerPlayer->Get_CurrentUnit())
+		return;
 	//연산량 많으면 빼야됨;;
 	if(m_pCurrentBehavior)
 		m_pCurrentBehavior->Callback_BehaviorTick(m_pOwnerPlayer, this);
@@ -157,9 +165,15 @@ void CAIController::Tick()
 
 void CAIController::Late_Tick()
 {
+	if (!m_pOwnerPlayer->Get_CurrentUnit())
+		return;
 
-
+	m_pNearCannon = nullptr;
 	m_NearObjectList.clear();
+	m_NearEnemyList.clear();
+	m_NearAlliesList.clear();
+	m_NearTriggerList.clear();
+	m_NearCannonBallList.clear();
 }
 
 void CAIController::Release()
@@ -179,23 +193,43 @@ void CAIController::OnDisable()
 
 void CAIController::Ready_Controller()
 {
+	m_NearAlliesList.clear();
+	m_NearEnemyList.clear();
+	m_NearCannonBallList.clear();
+
 	for (auto& Value : m_NearObjectList)
 	{
-		CUnit* pUnit = dynamic_cast<CUnit*>(Value);
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Value);
 		CTrigger* pTrigger = dynamic_cast<CTrigger*>(Value);
-
+		CUnit* pUnit = dynamic_cast<CUnit*>(Value);
+		CCannonBall* pCannonBall = dynamic_cast<CCannonBall*>(Value);
 		if (nullptr != pTrigger)
 		{
 			m_NearTriggerList.push_back(pTrigger);
 		}
-		else if (nullptr != pUnit)
+		else if (nullptr != pPlayer)
 		{
-			if(pUnit->Get_OwnerPlayer()->Get_Team() == m_pOwnerPlayer->Get_Team())
+			if (pPlayer->Get_Team() == m_pOwnerPlayer->Get_Team())
+				m_NearAlliesList.push_back(pPlayer);
+			else
+				m_NearEnemyList.push_back(pPlayer);
+
+		}
+		else if (pUnit)
+		{
+			if (pUnit->Get_OwnerPlayer()->Get_Team() == m_pOwnerPlayer->Get_Team())
 				m_NearAlliesList.push_back(pUnit->Get_OwnerPlayer());
 			else
 				m_NearEnemyList.push_back(pUnit->Get_OwnerPlayer());
 
 		}
+		else if (nullptr != pCannonBall)
+		{
+			if(!pCannonBall->Is_Catch())
+				m_NearCannonBallList.push_back(pCannonBall);
+		}
+		else
+			m_pNearCannon = dynamic_cast<CCannon*>(Value);
 	}
 
 	//m_NearTriggerList.sort();

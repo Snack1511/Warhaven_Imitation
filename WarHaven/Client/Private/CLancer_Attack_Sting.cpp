@@ -166,8 +166,12 @@ HRESULT CLancer_Attack_Sting::Initialize()
 
 void CLancer_Attack_Sting::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	m_fDamagePumping = 2.5f;
+	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
+
 	m_iAnimIndex = 0;
 
+	pOwner->TurnOn_TrailEffect(true);
 	pOwner->Set_BounceState(STATE_BOUNCE_LANCER);
 
     /* Owner의 Animator Set Idle로 */
@@ -176,13 +180,15 @@ void CLancer_Attack_Sting::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 STATE_TYPE CLancer_Attack_Sting::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	Follow_MouseLook(pOwner);
+	pOwner->Set_DirAsLook();
 
     return __super::Tick(pOwner, pAnimator);
 }
 
 void CLancer_Attack_Sting::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+	pOwner->TurnOn_TrailEffect(false);
 	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }
@@ -207,6 +213,9 @@ void CLancer_Attack_Sting::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 	case 0:
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		Play_Voice(pOwner, L"Voice_Attack", 1.f);
+		Play_Sound(L"Effect_Sting_Warrior");
+
 		break;
 
 	case 1:

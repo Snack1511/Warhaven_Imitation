@@ -7,11 +7,13 @@
 #include "CRectEffects.h"
 
 #include "CColorController.h"
+#include "Loading_Manager.h"
+#include "CCamera_Follow.h"
 
 #include "CCollider_Sphere.h"
 
 #include "CState.h"
-
+#include "Functor.h"
 CPurpleArrow::CPurpleArrow()
 {
 }
@@ -46,7 +48,7 @@ HRESULT CPurpleArrow::Start()
 	tColorDesc.fFadeInTime = 0.1f;
 	tColorDesc.fFadeOutStartTime = 9999.f;
 	tColorDesc.fFadeOutTime = 0.1f;
-	tColorDesc.vTargetColor = _float4((200.f / 255.f), (20.f / 255.f), (20.f / 255.f), 0.1f);
+	tColorDesc.vTargetColor = _float4((160.f / 255.f), (20.f / 255.f), (20.f / 255.f), 0.1f);
 	//tColorDesc.vTargetColor *= 1.1f;
 	tColorDesc.iMeshPartType = MODEL_PART_SKEL;
 
@@ -81,7 +83,7 @@ HRESULT CPurpleArrow::Initialize_Prototype()
 	m_fMaxPoisonTime = 0.3f;
 	m_fDamage = -5.f;
 
-	m_fMaxSpeed = 40.f;
+	m_fMaxSpeed = 50.f;
 	m_fMaxDistance = 70.f;
 
 
@@ -157,28 +159,20 @@ void CPurpleArrow::My_Tick()
 	
 		if (m_fCurPoisonTime > m_fMaxPoisonTime)
 		{
+			CFunctor::Play_Sound(L"Effect_Poison", CHANNEL_EFFECTS);
 
 			if (m_iTickCnt == m_iMaxTickCnt)
 			{
-				CState::HIT_INFO tHitInfo;
-				//ZeroMemory(&tHitInfo, sizeof(CState::HIT_INFO));
-
-				tHitInfo.eHitType = CState::HIT_TYPE::eUP;
-				tHitInfo.fKnockBackPower = 3.f;
-				tHitInfo.fJumpPower = 0.f;
-
-				pUnit->On_PlusHp(m_fDamage * 5.f, m_pOwnerUnit, false, 3);
-				pUnit->Enter_State(pUnit->Get_HitType().eGroggyState, &tHitInfo);
-				
-				if (pUnit->Get_Status().fHP <= 0.f)
-					pUnit->On_Die();
+				Death_Cam(pUnit);
 				
 				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Poison_End",
 					pUnit, pUnit->Get_Transform()->Get_World(WORLD_POS));
 
+				CFunctor::Play_Sound(L"Effect_Poison_Boom", CHANNEL_EFFECTS,
+					m_pTransform->Get_World(WORLD_POS), 1.f);
+
 				DISABLE_GAMEOBJECT(this);
-			}
-				
+			}				
 			else
 			{
 				pUnit->On_PlusHp(m_fDamage, m_pOwnerUnit, false, 9999);
@@ -187,7 +181,7 @@ void CPurpleArrow::My_Tick()
 				
 				if (pUnit->Get_Status().fHP <= 0.f)
 				{
-					pUnit->On_Die();
+					Death_Cam(pUnit);
 					DISABLE_GAMEOBJECT(this);
 				}
 
@@ -251,4 +245,57 @@ void CPurpleArrow::Clear_Addiction()
 		}
 		m_Test.clear();
 	}
+}
+
+void CPurpleArrow::Death_Cam(CUnit* pOtherUnit)
+{
+	CState::HIT_INFO tHitInfo;
+	//ZeroMemory(&tHitInfo, sizeof(CState::HIT_INFO));
+
+	tHitInfo.eHitType = CState::HIT_TYPE::eUP;
+	tHitInfo.fKnockBackPower = 3.f;
+	tHitInfo.fJumpPower = 0.f;
+
+	pOtherUnit->On_PlusHp(m_fDamage * 5.f, m_pOwnerUnit, false, 3);
+	pOtherUnit->Enter_State(pOtherUnit->Get_HitType().eGroggyState, &tHitInfo);
+
+	if (pOtherUnit->Get_Status().fHP <= 0.f)
+	{
+		CTransform* pMyTransform = m_pOwnerUnit->Get_Transform();
+		_float4 vMyPos = pMyTransform->Get_World(WORLD_POS);
+
+		// 데드에 넘겨주기	
+		if (CLoading_Manager::Get_Instance()->Get_LoadLevel() >= LEVEL_PADEN)
+		{
+			m_pOwnerUnit->Get_OwnerPlayer()->On_ScoreKDA_Kill(pOtherUnit->Get_OwnerPlayer());
+			pOtherUnit->Get_OwnerPlayer()->On_ScoreKDA_Death();
+		}
+
+
+		CUser::Get_Instance()->Add_KillLog(m_pOwnerUnit->Get_OwnerPlayer(), pOtherUnit->Get_OwnerPlayer());
+
+		if (pOtherUnit->Get_OwnerPlayer()->IsMainPlayer())
+		{
+			CUser::Get_Instance()->Turn_HeroGaugeFire(false);
+			CUser::Get_Instance()->SetActive_SquardInfo(false);
+			CUser::Get_Instance()->SetActive_HUD(false);
+			CUser::Get_Instance()->Set_TargetInfo(m_pOwnerUnit->Get_OwnerPlayer()->Get_PlayerInfo());
+			CUser::Get_Instance()->Toggle_DeadUI(true);
+
+			// Other(죽은) 유닛의 타겟은 죽인 유닛을 바라볼 수 있도록 설정
+			pOtherUnit->Get_FollowCam()->Set_FollowTarget(m_pOwnerUnit);
+		}
+		else
+		{
+			// 맞은놈이 메인 플레이어 였다면? 처치 로그
+			if (pOtherUnit->Get_OwnerPlayer()->IsMainPlayer())
+			{
+				wstring wstrEnemyName = m_pOwnerUnit->Get_OwnerPlayer()->Get_PlayerName();
+				CUser::Get_Instance()->Add_KillName(wstrEnemyName);
+			}
+		}
+
+		pOtherUnit->On_Die();
+	}
+
 }

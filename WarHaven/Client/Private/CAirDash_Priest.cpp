@@ -6,6 +6,7 @@
 #include "CUnit.h"
 
 #include "CUser.h"
+#include "CUnit_Priest.h"
 
 CAirDash_Priest::CAirDash_Priest()
 {
@@ -143,6 +144,9 @@ void CAirDash_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePre
     //pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);
     //pOwner->Get_PhysicsCom()->Set_SpeedasMax();
 
+    static_cast<CUnit_Priest*>(pOwner)->TurnOn_Trail(true);
+    CUser::Get_Instance()->SetActive_InteractUI(false); // test
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -172,6 +176,9 @@ void CAirDash_Priest::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     pOwner->Get_PhysicsCom()->Get_Physics().fPlusAcc = 1.f;
     pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fAirFriction = 1.f;
+
+    static_cast<CUnit_Priest*>(pOwner)->TurnOn_Trail(false);
+
 }
 
 STATE_TYPE CAirDash_Priest::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -195,6 +202,7 @@ void CAirDash_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, cons
     {
     case 0:
 
+        Play_Sound(L"Effect_AirDash_Priest");
         m_fMaxSpeed = pOwner->Get_Status().fDashAttackSpeed;
         Physics_Setting(m_fMaxSpeed, pOwner);
 

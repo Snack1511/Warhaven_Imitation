@@ -165,7 +165,10 @@ HRESULT CLancer_Attack_Default::Initialize()
 
 void CLancer_Attack_Default::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	m_fDamagePumping = 2.5f;
+	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
 
+	pOwner->TurnOn_TrailEffect(true);
 	m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
 	pOwner->Set_BounceState(STATE_BOUNCE_LANCER);
@@ -177,26 +180,15 @@ void CLancer_Attack_Default::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TY
 
 STATE_TYPE CLancer_Attack_Default::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	//Follow_MouseLook(pOwner);
-	//pOwner->Set_DirAsLook();
-
-	// _uint iFrame = (pAnimator->Get_CurAnimFrame() + 1) % 27;
-
-	//if (iFrame == 1)
-	//{
-	//	m_bStraight = false;
-	//	DoMove(STATE_DIRECTION_S, pOwner);
-	//	m_bStraight = true;
-	//}
-
-	//if(pAnimator->Is_ActionFinished())
-	//	DoMove(STATE_DIRECTION_E, pOwner);
+	Follow_MouseLook(pOwner);
+	pOwner->Set_DirAsLook();
 
     return __super::Tick(pOwner, pAnimator);
 }
 
 void CLancer_Attack_Default::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->TurnOn_TrailEffect(false);
     pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }
@@ -221,6 +213,9 @@ void CLancer_Attack_Default::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimato
 	case 0:
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		Play_Voice(pOwner, L"Voice_Attack", 1.f);
+		Play_Sound(L"Effect_Swing_Warrior");
+
 		break;
 
 	case 1:

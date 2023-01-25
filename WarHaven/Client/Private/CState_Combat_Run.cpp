@@ -19,9 +19,10 @@ CState_Combat_Run::~CState_Combat_Run()
 
 HRESULT CState_Combat_Run::Initialize()
 {
-    __super::Initialize();
+    if (m_eJumpFallStateType != STATE_END && m_eStateType != m_eJumpFallStateType)
+        m_vecAdjState.push_back(m_eJumpFallStateType);
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_Combat_Run::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -45,6 +46,23 @@ void CState_Combat_Run::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Combat_Run::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pOwner->Is_Air())
+        return m_eJumpFallStateType;
+
     return STATE_END;
+}
+
+void CState_Combat_Run::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS, m_fAIDeafultVolume);
+        break;
+
+    case 1:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS, m_fAIDeafultVolume);
+        break;
+    }
 }
 

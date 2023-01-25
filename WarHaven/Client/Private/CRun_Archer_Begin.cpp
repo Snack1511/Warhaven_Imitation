@@ -28,9 +28,9 @@ HRESULT CRun_Archer_Begin::Initialize()
 	Init_CommonState_Player();
 
 
-    m_iStateChangeKeyFrame = 0;
+	m_iStateChangeKeyFrame = 0;
 
-    m_fInterPolationTime = 0.f;
+	m_fInterPolationTime = 0.f;
 
 
 	m_fMyAccel = 10.f;
@@ -40,9 +40,9 @@ HRESULT CRun_Archer_Begin::Initialize()
 
 	m_fInterPolationTime = 0.1f;
 
+	Add_KeyFrame(13, 0, true);
 
-
-    return S_OK;
+	return S_OK;
 }
 
 void CRun_Archer_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
@@ -51,7 +51,7 @@ void CRun_Archer_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 	m_fMyAccel = 10.f;
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
-    __super::Enter(pOwner, pAnimator, ePrevType, pData);
+	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CRun_Archer_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -65,7 +65,7 @@ STATE_TYPE CRun_Archer_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		m_iCurDirection = iDirection;
 
 
-    return __super::Tick(pOwner, pAnimator);
+	return __super::Tick(pOwner, pAnimator);
 }
 
 void CRun_Archer_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
@@ -76,18 +76,18 @@ void CRun_Archer_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 STATE_TYPE CRun_Archer_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-    // 뛰어갈 준비를 한다.
-    if (KEY(W, HOLD) ||
-        KEY(A, HOLD) ||
-        KEY(S, HOLD) ||
-        KEY(D, HOLD))
-    {
+	// 뛰어갈 준비를 한다.
+	if (KEY(W, HOLD) ||
+		KEY(A, HOLD) ||
+		KEY(S, HOLD) ||
+		KEY(D, HOLD))
+	{
 
-        return m_eStateType;
-    }
+		return m_eStateType;
+	}
 
 
-    return STATE_END;
+	return STATE_END;
 }
 
 
@@ -107,4 +107,16 @@ void CRun_Archer_Begin::Change_Location_Begin(_uint iDirection, CAnimator* pAnim
 
 
 	m_bMoveTrigger = true;
+}
+
+void CRun_Archer_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+	switch (iSequence)
+	{
+	case 0:
+		Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+		break;
+	}
 }

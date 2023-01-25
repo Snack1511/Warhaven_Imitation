@@ -101,6 +101,8 @@ void CBounce_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 	}
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Sound(L"Effect_Bounce", 1.f);
 }
 
 STATE_TYPE CBounce_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)

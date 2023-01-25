@@ -19,8 +19,10 @@ public:
 
 protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
+	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
 protected:
+	STATE_TYPE m_eJumpState = STATE_END;
 	STATE_TYPE m_eWalkState = STATE_END;
 	STATE_TYPE m_eSprintBeginState = STATE_END;
 

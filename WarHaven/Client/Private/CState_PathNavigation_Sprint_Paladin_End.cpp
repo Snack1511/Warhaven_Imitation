@@ -32,9 +32,6 @@ CState_PathNavigation_Sprint_Paladin_End* CState_PathNavigation_Sprint_Paladin_E
 }
 HRESULT CState_PathNavigation_Sprint_Paladin_End::Initialize()
 {
-
-    __super::Initialize();
-
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 46;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_PATHNAVIGATION_SPRINTEND_PALADIN;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -47,7 +44,7 @@ HRESULT CState_PathNavigation_Sprint_Paladin_End::Initialize()
   
     m_fAnimSpeed = 2.5f;
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Sprint_Paladin_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
@@ -61,12 +58,11 @@ void CState_PathNavigation_Sprint_Paladin_End::Enter(CUnit* pOwner, CAnimator* p
 
 STATE_TYPE CState_PathNavigation_Sprint_Paladin_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
-    if (m_fAIDelayTime > m_fRand)
+    if (m_iEscapeFrame < pAnimator->Get_CurAnimFrame() || pAnimator->Is_CurAnimFinished())
         return AI_STATE_PATHNAVIGATION_DEFAULT_PALADIN_R;
 
 
-    return __super::Tick(pOwner, pAnimator);
+    return CState::Tick(pOwner, pAnimator);
 }
 
 void CState_PathNavigation_Sprint_Paladin_End::Exit(CUnit* pOwner, CAnimator* pAnimator)
@@ -83,15 +79,5 @@ STATE_TYPE CState_PathNavigation_Sprint_Paladin_End::Check_Condition(CUnit* pOwn
 
 void CState_PathNavigation_Sprint_Paladin_End::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
-    switch (iSequence)
-    {
-    case 222:
-        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
-        break;
-    case 333:
-        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
-        break;
-    default:
-        break;
-    }
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }

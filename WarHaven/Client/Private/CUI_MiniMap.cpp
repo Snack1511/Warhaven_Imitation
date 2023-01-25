@@ -14,6 +14,7 @@
 #include "CTeamConnector.h"
 #include "Functor.h"
 #include "CSquad.h"
+#include "CPlayerInfo.h"
 
 HRESULT CUI_MiniMap::Initialize_Prototype()
 {
@@ -32,7 +33,7 @@ HRESULT CUI_MiniMap::Start()
 
 	Init_MiniMap();
 	Init_MiniMapPoint();
-
+	Set_TeamType();
 	Bind_Shader();
 
 	return S_OK;
@@ -53,6 +54,11 @@ void CUI_MiniMap::Set_Shader_Guage_PointC(CShader* pShader, const char* pConstNa
 	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_C], sizeof(_float));
 }
 
+void CUI_MiniMap::Set_Shader_Guage_PointE(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_E], sizeof(_float));
+}
+
 void CUI_MiniMap::SetActive_MiniMap(_bool value)
 {
 	m_pMiniMap->SetActive(value);
@@ -63,14 +69,42 @@ void CUI_MiniMap::SetActive_MiniMap(_bool value)
 		{
 			m_pArrMiniMapPoint[i][j]->SetActive(value);
 
-			if (m_eLoadLevel == LEVEL_HWARA)
-				m_pArrMiniMapPoint[Point_C][j]->SetActive(false);
+			if (m_eLoadLevel == LEVEL_PADEN)
+				m_pArrMiniMapPoint[Point_E][j]->SetActive(false);
 		}
 	}
 
 	for (int i = 0; i < 8; ++i)
-	{
 		m_pPlayerIcon[i]->SetActive(value);
+}
+
+void CUI_MiniMap::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
+{
+	if (m_eTeamType == eTEAM_TYPE::eBLUE)
+	{
+		if (strPadenPointKey == "Hwara_Final_Blue")
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_A] = fConquestRatio;
+		}
+		else
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_E] = fConquestRatio;
+		}
+	}
+	else
+	{
+		if (strPadenPointKey == "Hwara_Final_Blue")
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_E] = fConquestRatio;
+		}
+		else
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_A] = fConquestRatio;
+		}
 	}
 }
 
@@ -155,6 +189,13 @@ void CUI_MiniMap::My_Tick()
 
 	for (int i = 0; i < 8; ++i)
 	{
+		if (!m_pPlayers[i]->Get_CurrentUnit())
+			continue;
+		if (!m_pPlayers[i])
+			m_pPlayerIcon[i]->SetActive(false);
+
+		
+
 		_float fHP = m_pPlayers[i]->Get_CurrentUnit()->Get_Status().fHP;
 		if (fHP <= 0.f)
 		{
@@ -198,6 +239,9 @@ void CUI_MiniMap::My_LateTick()
 	{
 		for (int i = 0; i < 8; ++i)
 		{
+			if (!m_pPlayerTransform[i])
+				continue;
+
 			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS);
 			vPos.x += m_fIconOffsetX;
 			vPos.z += m_fIconOffsetY;
@@ -205,10 +249,14 @@ void CUI_MiniMap::My_LateTick()
 		}
 	}
 	break;
+
 	case Client::LEVEL_HWARA:
 	{
 		for (int i = 0; i < 8; ++i)
 		{
+			if (!m_pPlayerTransform[i])
+				continue;
+
 			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 0.8f;
 			vPos.x += m_fHwaraOffSetX;
 			vPos.z += m_fHwaraOffSetY;
@@ -238,6 +286,14 @@ void CUI_MiniMap::Bind_Shader()
 	GET_COMPONENT_FROM(m_pArrMiniMapPoint[Point_A][MP_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_MiniMap::Set_Shader_Guage_PointA, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrMiniMapPoint[Point_R][MP_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_MiniMap::Set_Shader_Guage_PointR, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrMiniMapPoint[Point_C][MP_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_MiniMap::Set_Shader_Guage_PointC, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrMiniMapPoint[Point_E][MP_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_MiniMap::Set_Shader_Guage_PointE, this, placeholders::_1, "g_fValue");
+}
+
+void CUI_MiniMap::Set_TeamType()
+{
+	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+	auto iter = mapPlayers.begin();
+	m_eTeamType = iter->second->Get_Team()->Get_TeamType();
 }
 
 void CUI_MiniMap::Create_MiniMap()
@@ -411,15 +467,37 @@ void CUI_MiniMap::Init_MiniMapPoint()
 				GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Text], CTexture)->Set_CurTextureIndex(j);
 			}
 
-			if (i == MP_Text)
+			m_pArrMiniMapPoint[Point_C][i]->Set_PosY(246.f);
+			m_pArrMiniMapPoint[Point_A][i]->Set_PosY(246.f);
+			m_pArrMiniMapPoint[Point_E][i]->Set_PosY(246.f);
+			m_pArrMiniMapPoint[Point_R][i]->Set_PosY(278.f);
+
+			for (int i = 0; i < MP_End; ++i)
 			{
-				m_pArrMiniMapPoint[Point_A][i]->Set_PosY(245.f);
-				m_pArrMiniMapPoint[Point_R][i]->Set_PosY(277.f);
-				continue;
+				if (m_eTeamType == eTEAM_TYPE::eBLUE)
+				{
+					m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-565.f);
+					m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-433.f);
+				}
+				else
+				{
+					m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-433.f);
+					m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-565.f);
+				}
 			}
 
-			m_pArrMiniMapPoint[Point_A][i]->Set_PosY(246.f);
-			m_pArrMiniMapPoint[Point_R][i]->Set_PosY(278.f);
+			m_pArrMiniMapPoint[Point_A][i]->Set_Color(m_vColorBlue);
+			m_pArrMiniMapPoint[Point_E][i]->Set_Color(m_vColorRed);
+
+			if (i == MP_Text)
+			{
+				m_pArrMiniMapPoint[Point_C][i]->Set_PosY(245.f);
+				m_pArrMiniMapPoint[Point_A][i]->Set_PosY(245.f);
+				m_pArrMiniMapPoint[Point_E][i]->Set_PosY(245.f);
+				m_pArrMiniMapPoint[Point_R][i]->Set_PosY(277.f);
+
+				continue;
+			}
 		}
 		break;
 	}

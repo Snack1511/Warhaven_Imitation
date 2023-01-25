@@ -64,13 +64,10 @@ void CState_PathNavigation_Sprint_Archer_End::Enter(CUnit* pOwner, CAnimator* pA
 
 STATE_TYPE CState_PathNavigation_Sprint_Archer_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
-
-    if (m_fAIDelayTime > m_fRand)
+    if (m_iEscapeFrame < pAnimator->Get_CurAnimFrame() || pAnimator->Is_CurAnimFinished())
         return AI_STATE_PATHNAVIGATION_DEFAULT_ARCHER_R;
 
-
-    return __super::Tick(pOwner, pAnimator);
+    return CState::Tick(pOwner, pAnimator);
 }
 
 void CState_PathNavigation_Sprint_Archer_End::Exit(CUnit* pOwner, CAnimator* pAnimator)
@@ -86,15 +83,5 @@ STATE_TYPE CState_PathNavigation_Sprint_Archer_End::Check_Condition(CUnit* pOwne
 
 void CState_PathNavigation_Sprint_Archer_End::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
-    switch (iSequence)
-    {
-    case 222:
-        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
-        break;
-    case 333:
-        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
-        break;
-    default:
-        break;
-    }
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }

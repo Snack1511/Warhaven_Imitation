@@ -36,7 +36,6 @@ HRESULT CBounce_Player::Initialize()
 void CBounce_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 
-
 	/* Shake */
 	pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
 
@@ -89,6 +88,8 @@ void CBounce_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 	}
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Sound(L"Effect_Bounce", 1.f);
 }
 
 STATE_TYPE CBounce_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)

@@ -37,6 +37,7 @@ public:
 	void Set_ProjPos(CTransform* pTransform);
 	void Set_UnitStatus(CUnit::UNIT_STATUS tStatus) { m_tStatus = tStatus; }
 	void Set_UnitDis(_float fDis) { m_fUnitDis = fDis; }
+	void Set_UnitHP(_float fCurHP, _float fMaxHP);
 
 	void Set_OwnerPlayer(CPlayer* pOwner) { m_pOwner = pOwner; }
 
@@ -48,6 +49,10 @@ public:
 	void SetActive_UnitHP(_bool value);
 
 	void SetActive_TargetUI(_uint iIdx, _bool value);
+
+	void Enable_HealBlur();
+	void Disable_HealBlur();
+
 
 private:
 	CUI_Wrapper* m_pUnitUI[UI_End];

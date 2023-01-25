@@ -52,6 +52,8 @@ HRESULT CState_PathNavigation_Walk_Paladin::Initialize()
 	m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
 	m_iDirectionAnimIndex[STATE_DIRECTION_W] = 37;
 
+	Add_KeyFrame(33, 0, true);
+	Add_KeyFrame(67, 0, true);
     return S_OK;
 }
 
@@ -70,9 +72,8 @@ STATE_TYPE CState_PathNavigation_Walk_Paladin::Tick(CUnit* pOwner, CAnimator* pA
 	else
 		return m_iAINextState;
 
-	DoMove_AI_NoTarget(pOwner, pAnimator);
 
-    return CState::Tick(pOwner, pAnimator);
+    return __super::Tick(pOwner, pAnimator);
 }
 
 void CState_PathNavigation_Walk_Paladin::Exit(CUnit* pOwner, CAnimator* pAnimator)

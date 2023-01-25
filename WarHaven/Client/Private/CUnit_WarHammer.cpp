@@ -197,6 +197,16 @@ void CUnit_WarHammer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_ENGINEER;
 		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_ENGINEER;
 
+		m_tAIChangeType.eAIPathFindDefaultState = AI_STATE_PATHNAVIGATION_DEFAULT_ENGINEER_R;
+		m_tAIChangeType.eAICommbatDefaultState = AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
+		m_tAIChangeType.eAIReviveDefaultState = AI_STATE_COMMON_REVIVE_AI;
+		m_tAIChangeType.eAICannonDefaultState = AI_STATE_CANNON_AI;
+		m_tAIChangeType.eAIGlidingDefaultState = AI_STATE_GLIDING_AI;
+		m_tAIChangeType.eAIPatrolDefaultState = AI_STATE_PATROL_DEFAULT_ENGINEER_R;
+		m_tAIChangeType.eAIGoTirrgerDefaultState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_ENGINEER;
+		m_tAIChangeType.eAIChangeDeafultState = AI_STATE_COMMON_CHANGE_HERO;
+
+
 		break;
 
 
@@ -224,20 +234,22 @@ void CUnit_WarHammer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		//상태변경
 		eNewState = AI_STATE_PATROL_DEFAULT_ENGINEER_R;
 		break;
-	case eBehaviorType::eFollow:
+	case eBehaviorType::ePadenCannonInteract:
 		//상태변경
+		eNewState = AI_STATE_CANNON_AI;
 		break;
-	case eBehaviorType::eAttack:
+	case eBehaviorType::eCombat:
 		//상태변경
 		eNewState = AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
 
 		break;
-	case eBehaviorType::ePathNavigation:
+	 
+	case eBehaviorType::ePathFinding:
 		//상태변경
 		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_ENGINEER_R;
 		break;
 
-	case eBehaviorType::eResurrect:
+	case eBehaviorType::eRevive:
 		//상태변경
 		eNewState = AI_STATE_COMMON_REVIVE_AI;
 		break;
@@ -246,6 +258,15 @@ void CUnit_WarHammer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		//상태변경
 		eNewState = AI_STATE_COMMON_CHANGE_HERO;
 		break;
+
+	case eBehaviorType::eGliding:
+		eNewState = AI_STATE_GLIDING_AI;
+		break;
+
+	case eBehaviorType::eCatchCannon:
+		//eNewState = AI_STATE_BOUNE_WARRIOR_R;
+		break;
+
 	default:
 		assert(0);
 		break;
@@ -328,7 +349,6 @@ void CUnit_WarHammer::On_Die()
 
 	Add_DeathStones(CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle_Death(L"DeadBody_Engineer", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
 
-	m_DeathStones.push_back(CEffects_Factory::Get_Instance()->Create_MeshParticle_Death(L"EngineerDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
 }
 
 void CUnit_WarHammer::Set_BarricadeMatrix()
@@ -420,7 +440,7 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 	m_tUnitStatus.fSprintAttackSpeed *= 0.9f;
 	m_tUnitStatus.fSprintJumpSpeed *= 0.8f;
 	m_tUnitStatus.fSprintSpeed *= 0.85f;
-	m_tUnitStatus.fRunSpeed *= 0.75f;
+	m_tUnitStatus.fRunSpeed *= 0.85f;
 	m_tUnitStatus.fWalkSpeed *= 0.8f;
 	m_tUnitStatus.fRunBeginSpeed *= 0.8f;
 	m_tUnitStatus.fJumpPower *= 0.9f;
@@ -495,15 +515,37 @@ HRESULT CUnit_WarHammer::Start()
 		"0B_R_WP1"
 	);
 
+	_float fUpperSize = 2.f;
+
+	SetUp_EyeTrail(
+		_float4(2.f, fUpperSize, 0.f, 1.f),	//Weapon R
+		_float4(2.f, -fUpperSize, 0.f, 1.f),					//Weapon R
+		_float4(fUpperSize + 2.f, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize + 2.f, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		RGBA(255, 20, 20, 0.7f),
+		0.f,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		12,
+		"0B_Face_R_Eye"
+	);
+
 	return S_OK;
 }
 
 void CUnit_WarHammer::OnEnable()
 {
 	__super::OnEnable();
+
+	Turn_EyeFlare(true, L"WarHammer_Eye");
+	Turn_EyeTrail(true);
 }
 
 void CUnit_WarHammer::OnDisable()
 {
 	__super::OnDisable();
+
+	Turn_EyeFlare(false);
+	Turn_EyeTrail(false);
 }

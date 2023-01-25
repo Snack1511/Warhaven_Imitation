@@ -18,5 +18,6 @@ public:
 	virtual void Late_Tick() override;
 	virtual HRESULT Render() override;
 	virtual HRESULT Exit() override;
+
 };
 

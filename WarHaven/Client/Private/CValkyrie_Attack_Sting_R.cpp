@@ -210,8 +210,10 @@ void CValkyrie_Attack_Sting_R::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnima
 	{
 
 	case 0:
+		Play_Sound(L"Effect_Sting_Warrior", CHANNEL_EFFECTS, 1.f);
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		Play_Voice(pOwner, L"Voice_Attack", 1.f, 1);
 		break;
 
 	case 1:

@@ -21,6 +21,9 @@ public:
 	virtual void On_Die() override;
 
 public:
+	void Delete_Flare();
+
+public:
 	virtual void	SetUp_Colliders(_bool bPlayer);
 	virtual void	SetUp_HitStates(UNIT_TYPE eUnitType);
 
@@ -39,6 +42,10 @@ public:
 	void ReFresh_Animation();
 
 private:
+	void Set_EyeEffect();
+	void Turn_EyeEffect(_bool bValue);
+
+private:
 	ANIM_TYPE	m_eBaseType = ANIM_BASE_R;
 	_uint		m_iAnimIndex = 0;
 	_float		m_fAnimSpeed = 1.f;
@@ -46,6 +53,10 @@ private:
 	CLASS_TYPE	m_eClassType = CLASS_END;
 
 	CUnit_Lancer_Head* m_pMyLancerHead = nullptr;
+	CAnimWeapon* m_pAnimWeapon = nullptr;
+
+private:
+	list<CGameObject*> m_TransformParticle;
 };
 
 END

@@ -1,8 +1,8 @@
 #pragma once
 #define RELEASE_IMGUI
 
-#define MOUSE_DPI_X		0.03f
-#define MOUSE_DPI_Y		0.03f
+#define MOUSE_DPI_X		0.02f
+#define MOUSE_DPI_Y		0.02f
 
 #define PI				3.141592f
 #define PLAYER			CUser::Get_Instance()->Get_Player()

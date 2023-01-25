@@ -40,7 +40,7 @@ HRESULT CMainApp::Initialize()
 #ifdef _DEBUG
 	ShowCursor(true);
 #else
-	//ShowCursor(false);
+	ShowCursor(false);
 #endif // _DEBUG
 
 
@@ -77,11 +77,11 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 	//Sound
-	/*if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/ingame")))
+	if (FAILED(Load_SoundFile()))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/ui")))
-		return E_FAIL;*/
+	//GAMEINSTANCE->Set_ChannelVolume(CH_BGM, 0.1f);
+	//GAMEINSTANCE->Set_ChannelVolume((CHANNEL_GROUP)CHANNEL_VOICE, 0.5f);
 
 	return S_OK;
 }
@@ -134,11 +134,11 @@ HRESULT CMainApp::Render()
 
 void CMainApp::Release()
 {
+	CGame_Manager_HR::Get_Instance()->Destroy_Instance();
 	CEffects_Factory::Get_Instance()->Destroy_Instance();
 	
 	CLoading_Manager::Get_Instance()->Destroy_Instance();
 	CUser::Get_Instance()->Destroy_Instance();
-	CGame_Manager_HR::Get_Instance()->Destroy_Instance();
 	CGame_Manager_MJ::Get_Instance()->Destroy_Instance();
 
 	CGameSystem::Get_Instance()->Destroy_Instance();
@@ -310,8 +310,52 @@ HRESULT CMainApp::SetUp_Font()
 	return S_OK;
 }
 
+HRESULT CMainApp::Load_SoundFile()
+{
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/BGM")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/UI")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Env")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Effect")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Warrior")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Warhammer")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Paladin")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Archer")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Priest")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Valkyrie")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Qanda")))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_SoundFile(L"../bin/resources/sounds/Voice/Lancer")))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 void CMainApp::Col_Check()
 {
+	//GAMEINSTANCE->Check_Group(COL_BLUETEAM, COL_REDTEAM);
+
+
 	/* TRIGGER */
 	GAMEINSTANCE->Check_Group(COL_BLUETEAM, COL_TRIGGER);
 	GAMEINSTANCE->Check_Group(COL_REDTEAM, COL_TRIGGER);
@@ -417,7 +461,10 @@ void CMainApp::Col_Check()
 	GAMEINSTANCE->Check_Group(COL_REDFLYATTACKGUARDBREAK, COL_BLUEGUARD);
 
 	/* 가드 불가 띄우기 공격 적 */
+	GAMEINSTANCE->Check_Group(COL_SIGHTRANGE, COL_REVIVE);
 	GAMEINSTANCE->Check_Group(COL_SIGHTRANGE, COL_BLUETEAM);
 	GAMEINSTANCE->Check_Group(COL_SIGHTRANGE, COL_REDTEAM);
 	GAMEINSTANCE->Check_Group(COL_SIGHTRANGE, COL_TRIGGER);
+	GAMEINSTANCE->Check_Group(COL_SIGHTRANGE, COL_CANNON);
+	GAMEINSTANCE->Check_Group(COL_SIGHTRANGE, COL_CANNONBALL);
 }

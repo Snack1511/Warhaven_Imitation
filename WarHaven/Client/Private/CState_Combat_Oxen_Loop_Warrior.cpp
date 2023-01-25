@@ -62,6 +62,8 @@ HRESULT CState_Combat_Oxen_Loop_Warrior::Initialize()
 
     m_iEndFinishedFrame = 3;
 
+    Add_KeyFrame(47, 1);
+
     return S_OK;
 }
 
@@ -109,3 +111,22 @@ STATE_TYPE CState_Combat_Oxen_Loop_Warrior::Check_Condition(CUnit* pOwner, CAnim
 
     return STATE_END;
 }
+
+void CState_Combat_Oxen_Loop_Warrior::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+
+    case 1:
+        Play_Sound(L"Effect_Oxen_Loop_Attack_Warrior", CHANNEL_EFFECTS, 1.f);
+        m_bAttackTrigger = true;
+        pOwner->Enable_FlyAttackCollider(true);
+        Play_Voice(pOwner, L"Voice_Attack", 1.f);
+        break;
+    default:
+        break;
+    }
+
+
+}
+

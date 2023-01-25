@@ -135,13 +135,14 @@ public:
 	virtual void Release();
 public:
 	HRESULT SetUp_PersonalityName(wstring strPersonalityName);
-	HRESULT SetUp_PatrolBehavior();
+	HRESULT SetUp_DefaultBehavior();
 public:
 	_float Get_Delay();
 	_float Get_Range();
 	_float Get_CheckedHP();
 	list<CBehavior*>& Get_BehaviorList() { return m_BehaviorList; }
-	CBehavior* Get_Patrol() { return m_pPatrolBehavior; }
+	CBehavior* Get_DefaultBehavior() { return m_pDefaultBehavior; }
+	void Set_DefaultBehavior(CBehavior* pBehavior) { m_pDefaultBehavior = pBehavior; }
 	_bool Is_LongTimeRemain(eBehaviorType eBhavior);
 	void Update_RemainTime(eBehaviorType eBhavior);
 	void Init_RemainTime(eBehaviorType eBhavior);
@@ -174,7 +175,7 @@ protected:
 
 	/* Clone으로 받아온 복제품들 */
 	list<CBehavior*> m_BehaviorList;
-	CBehavior* m_pPatrolBehavior = nullptr;
+	CBehavior* m_pDefaultBehavior = nullptr;
 	_float m_fRemainAccTime[_uint(eBehaviorType::eCNT)] = { 0.f };
 	_float m_fRemainPathIndexAccTime = 0.f;
 	_float m_fMaxRemainPathIndexTime = 5.f;

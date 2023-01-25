@@ -66,6 +66,7 @@ HRESULT CState_Combat_SkillE_Priest_WindAttack::Initialize()
 
 void CState_Combat_SkillE_Priest_WindAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Get_Status().fDamageMultiplier = 1.f;
 	pOwner->On_Use(CUnit::SKILL2);
 
 	CColorController::COLORDESC tColorDesc;
@@ -136,6 +137,8 @@ void CState_Combat_SkillE_Priest_WindAttack::On_KeyFrameEvent(CUnit* pOwner, CAn
 	{
 
 	case 0:
+		Play_Sound(L"Effect_WindAttack_Priest", CHANNEL_EFFECTS);
+		Play_Voice(pOwner, L"Voice_Wind", 1.f);
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::FLYATTACK, true);
 

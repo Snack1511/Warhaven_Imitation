@@ -151,6 +151,9 @@ void CButton::Release()
 
 void CButton::Set_Rect()
 {
+	if (!m_pOwnerUI)
+		return;
+
 	_float4 vUIPos = m_pOwnerUI->Get_Transform()->Get_MyWorld(WORLD_POS);
 	_float4 vScale = m_pOwnerUI->Get_Scale();
 

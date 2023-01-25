@@ -56,7 +56,7 @@ HRESULT CState_Combat_Shoot_Archer::Initialize()
 
 void CState_Combat_Shoot_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	m_iRand = random(0, 2);
+	m_iRand = random(0, 4);
 
 	if (m_iRand == 1)
 		m_fMaxTime = 0.2f;
@@ -117,15 +117,29 @@ STATE_TYPE CState_Combat_Shoot_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	if (m_bAttackTrigger)
 	{
-		if (m_iRand == 0)
+		if (m_iRand != 0)
 			return AI_STATE_COMBAT_DEFAULT_ARCHER_R;
 		else
 		{
 			m_fTimeAcc += fDT(0);
 
-			if(m_fTimeAcc > m_fMaxTime)
-				return AI_STATE_COMBAT_ATTACK_BEGIN_ARCHER;
+			if (m_fTimeAcc > m_fMaxTime)
+			{
+				if (pOwner->Get_SkillTrigger().bSkillQTrigger && !pOwner->Get_SkillTrigger().bSkillETrigger)
+				{
+					pOwner->Get_SkillTrigger().bSkillQTrigger = false;
+					return AI_STATE_COMBAT_ATTACK_BEGIN_SNIPING_ARCHER;
+				}
 
+				else if (pOwner->Get_SkillTrigger().bSkillETrigger && !pOwner->Get_SkillTrigger().bSkillQTrigger)
+				{
+					pOwner->Get_SkillTrigger().bSkillETrigger = false;
+					return AI_STATE_COMBAT_ATTACK_BEGIN_POISION_ARCHER;
+				}
+
+				else if (!pOwner->Get_SkillTrigger().bSkillETrigger && !pOwner->Get_SkillTrigger().bSkillQTrigger)
+					return AI_STATE_COMBAT_ATTACK_BEGIN_ARCHER;
+			}
 		}
 
 	}

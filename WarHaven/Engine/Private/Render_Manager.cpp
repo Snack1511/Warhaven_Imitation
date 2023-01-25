@@ -16,6 +16,8 @@
 #include "CMesh_Rect.h"
 #include "Texture.h"
 
+#include "Level.h"
+
 #define SHADOW_ON
 
 IMPLEMENT_SINGLETON(CRender_Manager)
@@ -828,11 +830,23 @@ void CRender_Manager::Update()
 
 	if (!CFrustum_Manager::Get_Instance()->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f))
 	{
-		m_bLensFlare = false;
+		if (0.f < m_fLensPower)
+		{
+			m_fLensPower -= 3.f * fDT(0);
+			m_bLensFlare = true;
+		}
+		else
+		{
+			m_fLensPower = 0.f;
+			m_bLensFlare = false;
+
+		}
+
+
 		return;
 	}
-	else
-		m_bLensFlare = true;
+
+
 
 	/* ray 쏘기 */
 	_float4 vOutPos;
@@ -843,9 +857,27 @@ void CRender_Manager::Update()
 		vCamPos, vDir.Normalize(), 1500.f
 	))
 	{
-		m_bLensFlare = false;
+
+		if (0.f < m_fLensPower)
+		{
+			m_fLensPower -= 3.f * fDT(0);
+			m_bLensFlare = true;
+		}
+		else
+		{
+			m_fLensPower = 0.f;
+			m_bLensFlare = false;
+
+		}
 		return;
 	}
+
+	m_bLensFlare = true;
+
+	if (1.f > m_fLensPower)
+		m_fLensPower += 3.f * fDT(0);
+	else
+		m_fLensPower = 1.f;
 	
 
 	_float4x4 matVP = GAMEINSTANCE->Get_CurViewMatrix() * GAMEINSTANCE->Get_CurProjMatrix();
@@ -858,18 +890,11 @@ void CRender_Manager::Update()
 
 HRESULT CRender_Manager::Render()
 {
-	if (FAILED(CCamera_Manager::Get_Instance()->SetUp_ShaderResources()))
+
+	if (FAILED(Render_Priority()))
 		return E_FAIL;
 
-	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_SkyBox"))))
-		return E_FAIL;
-
-	if (FAILED(Render_Group(RENDER_PRIORITY)))
-		return E_FAIL;
-
-	if (FAILED(m_pTarget_Manager->End_MRT()))
-		return E_FAIL;
-
+	
 	/* Shadow Baking */
 #ifdef SHADOW_ON
 	if (FAILED(Bake_Shadow()))
@@ -1148,10 +1173,7 @@ HRESULT CRender_Manager::Render_Lights()
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_vCamPosition", &vCamPos, sizeof(_float4));
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_vCamLook", &vCamLook, sizeof(_float4));
 
-	static _bool	bPBR = false;
-	if (KEY(B, TAP))
-		bPBR = !bPBR;
-	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_bPBR", &bPBR, sizeof(_bool));
+	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_bPBR", &m_bPBR, sizeof(_bool));
 
 	m_pLight_Manager->Render_Lights(m_vecShader[SHADER_DEFERRED], m_pMeshRect);
 
@@ -1172,7 +1194,7 @@ HRESULT CRender_Manager::Render_ShadowBlur()
 	if (FAILED(m_vecShader[SHADER_SHADOW]->Set_ShaderResourceView("g_DepthTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Depth")))))
 		return E_FAIL;
 
-
+	
 
 	_float4x4		ViewMatrixInv, ProjMatrixInv;
 	XMStoreFloat4x4(&ViewMatrixInv, XMMatrixTranspose(GAMEINSTANCE->Get_CurViewMatrix().Inverse().XMLoad()));
@@ -1196,6 +1218,8 @@ HRESULT CRender_Manager::Render_ShadowBlur()
 
 	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_DownScale")))))
 		return E_FAIL;
+
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fShaderPower", &m_fShadowQuality, sizeof(_float));
 
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
@@ -1318,11 +1342,12 @@ HRESULT CRender_Manager::Render_SSAO()
 	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Forward")))))
 		return E_FAIL;
 
+	
+
+	_float3 fHDR = _float3(m_fBrightness, m_fContrast, m_fSaturation);
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_vHDR", &fHDR, sizeof(_float3));
+
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	static _bool g_bHDR = true;
-	if (KEY(N, TAP))
-		g_bHDR = !g_bHDR;
-	m_vecShader[SHADER_BLUR]->Set_RawValue("g_bHDR", &g_bHDR, sizeof(_bool));
 	m_vecShader[SHADER_BLUR]->Begin(11);
 
 	m_pMeshRect->Render();
@@ -1334,6 +1359,9 @@ HRESULT CRender_Manager::Render_SSAO()
 	//SSAO
 	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_SSAOAcc"))))
 		return E_FAIL;
+
+	/*Shader Option*/
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fShaderPower", &m_fSSAOPower, sizeof(_float));
 
 	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_DepthTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Depth")))))
 		return E_FAIL;
@@ -1350,14 +1378,6 @@ HRESULT CRender_Manager::Render_SSAO()
 
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
-
-
-	static _bool g_bSSAO = true;
-	if (KEY(M, TAP))
-	{
-		g_bSSAO = !g_bSSAO;
-	}
-	m_vecShader[SHADER_BLUR]->Set_RawValue("g_bSSAO", &g_bSSAO, sizeof(_bool));
 
 	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(10)))
 		return E_FAIL;
@@ -1546,6 +1566,9 @@ HRESULT CRender_Manager::Render_BloomBlend()
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_BlurTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_VerticalBlur")))))
 		return E_FAIL;
 
+
+	/*Shader Option*/
+	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_fDOFPower", &m_fDOFPower, sizeof(_float));
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
 	m_vecShader[SHADER_DEFERRED]->Begin(7);
@@ -1688,6 +1711,38 @@ HRESULT CRender_Manager::Render_DOF()
 
 	if (FAILED(m_pTarget_Manager->End_MRT()))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_Priority()
+{
+	for (auto& elem : m_Renderers[RENDER_PRIORITY])
+	{
+		if (elem->Get_Ortho())
+		{
+			if (FAILED(CCamera_Manager::Get_Instance()->SetUp_ShaderResources(true)))
+				return E_FAIL;
+
+		}
+		else
+		{
+			if (FAILED(CCamera_Manager::Get_Instance()->SetUp_ShaderResources()))
+				return E_FAIL;
+
+		}
+
+		if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_SkyBox"))))
+			return E_FAIL;
+
+		elem->Render();
+
+		if (FAILED(m_pTarget_Manager->End_MRT()))
+			return E_FAIL;
+
+	}
+
+	m_Renderers[RENDER_PRIORITY].clear();
 
 	return S_OK;
 }
@@ -2113,6 +2168,7 @@ HRESULT CRender_Manager::Render_LensFlare(const _tchar* pRenderTargetName)
 		return E_FAIL;
 
 	
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fShaderPower", &m_fLensPower, sizeof(_float));
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_vSunPos", &m_vSunUV, sizeof(_float2));
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 

@@ -61,6 +61,8 @@ void CState_Common_ChangeHero_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 	pOwner->Enable_HitBoxColliders(false);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinFlare", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));//henshin flare
 
+	_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+	CFunctor::Play_Sound(L"Effect_OnChangeHero", CHANNEL_EFFECTS, vPos, 1.f);
 
 	/* OwnerÀÇ Animator Set Idle·Î */
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -74,15 +76,37 @@ STATE_TYPE CState_Common_ChangeHero_AI::Tick(CUnit* pOwner, CAnimator* pAnimator
 
 	if (pAnimator->Is_CurAnimFinished())
 	{
-		switch (m_iRand)
+		CLASS_TYPE eClassType = pOwner->Get_OwnerPlayer()->Get_CurClass();
+
+		switch (eClassType)
 		{
-		case 0:
-			m_eChangeClassType = FIONA;
+		case Client::WARRIOR:
+			m_eChangeClassType = LANCER;
 			break;
+
+		case Client::ARCHER:
+			m_eChangeClassType = LANCER;
+			break;
+
+		case Client::PALADIN:
+			m_eChangeClassType = LANCER;
+			break;
+		case Client::PRIEST:
+			m_eChangeClassType = LANCER;
+
+			break;
+		case Client::ENGINEER:
+			m_eChangeClassType = LANCER;
+			break;
+
+
+
 		default:
-			m_eChangeClassType = FIONA;
 			break;
 		}
+
+		if (m_eChangeClassType <= FIONA)
+			m_eChangeClassType = FIONA;
 
 		Set_HeroType(pOwner, m_eChangeClassType);
 

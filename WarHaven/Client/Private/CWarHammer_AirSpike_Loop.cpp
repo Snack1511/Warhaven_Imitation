@@ -62,7 +62,7 @@ void CWarHammer_AirSpike_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
 
-	GAMEINSTANCE->Start_RadialBlur(0.05f);
+	GAMEINSTANCE->Start_RadialBlur(0.015f);
 
 	m_fMaxSpeed = pOwner->Get_Status().fSprintJumpSpeed;
 	Physics_Setting(m_fMaxSpeed, pOwner);

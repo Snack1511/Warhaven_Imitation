@@ -20,10 +20,14 @@ public:
 
 protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-
+	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
 private:
-	STATE_TYPE	Near_Enemy(CUnit* pOwner, _bool bUseAdjSkill);
+	STATE_TYPE	Near_Enemy(CUnit* pOwner, CAnimator* pAnimator);
+	STATE_TYPE	Choose_Arrow(CUnit* pOwner);
+
+private:
+	_bool m_bNoShoot = false;
 
 
 };

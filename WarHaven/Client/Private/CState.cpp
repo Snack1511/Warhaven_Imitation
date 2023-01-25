@@ -88,7 +88,8 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		pOwner->Get_Status().fDamageMultiplier < 1.f  - FLT_MIN||
 		pOwner->Get_Status().fDamageMultiplier > 1.f + FLT_MIN)
 	{
-		m_fDamagePumping = pOwner->Get_Status().fDamageMultiplier;
+		if(!m_bStopDamagePumping)
+			m_fDamagePumping = pOwner->Get_Status().fDamageMultiplier;
 	}
 
     Check_KeyFrameEvent(pOwner, pAnimator);
@@ -167,6 +168,8 @@ void CState::Hit_GroundEffect(CUnit* pOwner)
 {
 	pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
 
+	Play_Sound(L"Effect_Bounce");
+
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), pOwner->Get_HitMatrix());
 
@@ -181,7 +184,56 @@ void CState::Hit_GroundEffect(CUnit* pOwner)
 	{
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmashSoilParticle", pOwner->Get_HitPos());
 	}
+}
 
+void CState::Play_Voice(CUnit* pOwner, wstring strName, _float fVol, _int iRand)
+{
+	if (!pOwner)
+		return;
+
+	_int iRandom = random(0, iRand);
+
+	if (iRandom != 0)
+		return;
+
+	CLASS_TYPE eClass = pOwner->Get_OwnerPlayer()->Get_CurClass();
+	_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+	wstring strKey = strName;
+
+
+	switch (eClass)
+	{
+	case Client::WARRIOR:
+		strKey += L"_Warrior";
+		break;
+	case Client::ARCHER:
+		strKey += L"_Archer";
+		break;
+	case Client::PALADIN:
+		strKey += L"_Paladin";
+		break;
+	case Client::PRIEST:
+		strKey += L"_Priest";
+		break;
+	case Client::ENGINEER:
+		strKey += L"_Warhammer";
+		break;
+	case Client::FIONA:
+		strKey += L"_Fiona";
+		break;
+	case Client::QANDA:
+		strKey += L"_Qanda";
+		break;
+	case Client::LANCER:
+		strKey += L"_Lancer";
+		break;
+	case Client::CLASS_END:
+		break;
+	default:
+		break;
+	}
+
+	CFunctor::Play_Sound(strKey, CHANNEL_VOICE, vPos, fVol);
 }
 
 
@@ -193,14 +245,27 @@ void CState::Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator)
 
     for (_uint i = 0; i < iSize; ++i)
     {
+		if (iCurKeyFrame <= 1)
+		{
+			if (m_vecKeyFrameEvent[i].bLoop)
+			{
+				m_vecKeyFrameEvent[i].bExecuted = false;
+			}
+		}
+
         if (iCurKeyFrame >= m_vecKeyFrameEvent[i].iKeyFrame)
         {
             if (m_vecKeyFrameEvent[i].bExecuted)
                 continue;
 
             On_KeyFrameEvent(pOwner, pAnimator, m_vecKeyFrameEvent[i], m_vecKeyFrameEvent[i].iSequence);
+
+			
             m_vecKeyFrameEvent[i].bExecuted = true;
+
         }
+
+		
     }
 }
 _uint CState::Get_Direction()
@@ -660,16 +725,25 @@ void CState::DoMove_AI(CUnit* pOwner, CAnimator* pAnimator)
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-	CUnit* pUnit = pOwner->Get_TargetUnit();
+	CUnit* pUnit = m_pCurrentTargetUnit;
 	if (!pUnit)
-		return;
+	{
+		pUnit = pOwner;
+
+		if (!pOwner)
+			return;
+	}
+		
 
 
 
 	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
 	_float4 vRight = pOwner->Get_Transform()->Get_World(WORLD_RIGHT);
 
-	_float fLength = vLook.Length();
+	if (vLook.Is_Zero())
+		return;
+
+		_float fLength = vLook.Length();
 
 
 	vLook.Normalize();
@@ -741,7 +815,12 @@ void CState::DoMove_AI(CUnit* pOwner, CAnimator* pAnimator)
 
 	vDir.y = 0.f;
 
-	if (!vDir.Is_Zero())
+	_float4 vMyLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
+	vMyLook.y = 0.f;
+
+	if(pOwner->Get_OwnerPlayer()->Get_CurClass() == LANCER)
+		pMyPhysicsCom->Set_Dir(vMyLook);
+	else
 		pMyPhysicsCom->Set_Dir(vDir);
 
 	pMyPhysicsCom->Set_Accel(m_fMyAccel);
@@ -854,6 +933,55 @@ _float CState::Get_TargetLook_Length(CUnit* pOwner)
 	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
 
 	return vLook.Length();
+}
+
+_float4 CState::Get_TargetLook(CGameObject* pSourObject, CGameObject* pDestUnit, _bool bFixY)
+{
+	if (!pSourObject)
+	{
+		Call_MsgBox(L"PlayerUnit Is Null");
+		return _float4(0.f, 0.f, 0.f);
+	}
+
+	if (!pDestUnit)
+	{
+		Call_MsgBox(L"OtherUnit Is Null");
+		return _float4(0.f, 0.f, 0.f);
+	}
+
+	_float4 vLook = pDestUnit->Get_Transform()->Get_World(WORLD_POS) - pSourObject->Get_Transform()->Get_World(WORLD_POS);
+	vLook.Normalize();
+
+	if (bFixY)
+		vLook.y = 0.f;
+
+	return vLook;
+}
+
+void CState::Follow_Move(CGameObject* pSourObject, CGameObject* pDestUnit, _bool bFixY)
+{
+	_float4 vLook = Get_TargetLook(pSourObject, pDestUnit, bFixY);
+
+	CTransform* pMyTransform = pSourObject->Get_Transform();
+	
+	CPhysics* pMyPhysicsCom = nullptr;
+	pMyPhysicsCom = dynamic_cast<CUnit*>(pSourObject)->Get_PhysicsCom();
+
+	if (pMyPhysicsCom)
+	{
+		Call_MsgBox(L"SourObject is not unit");
+		return;
+	}
+
+	vLook.y = 0.f;
+
+	if (!vLook.Is_Zero())
+		pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
+
+	pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
+
+	pMyPhysicsCom->Set_Dir(vLook);
+	pMyPhysicsCom->Set_Accel(m_fMyAccel);
 }
 
 void CState::Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax, _bool bBackStep)
@@ -979,17 +1107,23 @@ void CState::Physics_Setting_Right_AI(_float fSpeed, CUnit* pOwner, _bool bSpeed
 		pMyPhysicsCom->Set_SpeedasMax();
 }
 
+void CState::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float fVolume)
+{
+	CFunctor::Play_Sound(wstrFileName, iGroupIndex, m_pOwner->Get_Transform()->Get_World(WORLD_POS), fVolume);
+}
+
 void CState::Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable)
 {
 	GET_COMPONENT_FROM(pOwner, CModel)->Enable_ModelParts(iPartType, bEnable);
 }
 
 
-void CState::Add_KeyFrame(_uint iKeyFrameIndex, _uint iSequence)
+void CState::Add_KeyFrame(_uint iKeyFrameIndex, _uint iSequence, _bool bLoop)
 {
     KEYFRAME_EVENT  tEvent;
     tEvent.iKeyFrame = iKeyFrameIndex;
 	tEvent.iSequence = iSequence;
+	tEvent.bLoop = bLoop;
     m_vecKeyFrameEvent.push_back(tEvent);
 
 	_uint iSize = (_uint)m_vecKeyFrameEvent.size();

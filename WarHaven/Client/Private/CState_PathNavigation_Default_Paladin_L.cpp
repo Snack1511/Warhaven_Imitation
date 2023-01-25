@@ -30,9 +30,6 @@ CState_PathNavigation_Default_Paladin_L* CState_PathNavigation_Default_Paladin_L
 }
 HRESULT CState_PathNavigation_Default_Paladin_L::Initialize()
 {
-    __super::Initialize();
-
-
     m_eAnimType = ANIM_BASE_L;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 19;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_PATHNAVIGATION_DEFAULT_PALADIN_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -50,11 +47,11 @@ HRESULT CState_PathNavigation_Default_Paladin_L::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 22;
 
-    m_iAINextState = AI_STATE_PATHNAVIGATION_JUMP_PALADIN_L;
+    m_eJumpState = AI_STATE_PATHNAVIGATION_JUMP_PALADIN_L;
     m_eJumpFallStateType = AI_STATE_COMMON_FALL_PALADIN_L;
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_PALADIN_L;
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Default_Paladin_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )

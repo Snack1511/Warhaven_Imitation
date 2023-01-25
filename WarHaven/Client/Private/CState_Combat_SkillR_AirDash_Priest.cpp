@@ -162,6 +162,7 @@ void CState_Combat_SkillR_AirDash_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnima
     {
     case 0:
 
+        Play_Sound(L"Effect_AirDash_Priest");
         m_fMaxSpeed = pOwner->Get_Status().fDashAttackSpeed;
         Physics_Setting(m_fMaxSpeed, pOwner);
 

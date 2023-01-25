@@ -21,9 +21,16 @@ public:
 	HRESULT		Group_Sounds(wstring wstrKey);
 
 	void		Play_Sound(const _tchar* strSoundKey, CHANNEL_GROUP iGroupIndex, _float fVolumeRatio = 1.f);
+
+	_uint		Play_LoopSound(const _tchar* strSoundKey, CHANNEL_GROUP iGroupIndex, _float fVolumeRatio = 1.f);
+	void		Stop_Sound(CHANNEL_GROUP eType, _uint iIndex);
+
+
 	void		Play_BGM(const _tchar* strSoundKey);
+	void		Play_BGM(const _tchar* strSoundKey, _float fVolume);
 
 	void		Stop_Sound(CHANNEL_GROUP eType);
+	void		Stop_Sound(const _tchar* strSoundKey);
 	void		Stop_All();
 
 	void		Set_Volume(_float fVolume);

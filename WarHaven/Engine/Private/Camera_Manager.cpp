@@ -7,6 +7,8 @@
 
 #include "CShader_Manager.h"
 
+#include "PhysX_Manager.h"
+
 IMPLEMENT_SINGLETON(CCamera_Manager)
 
 
@@ -65,34 +67,21 @@ HRESULT CCamera_Manager::SetUp_ShaderResources(_bool Ortho)
 		matView = m_tView.matView;
 		matProj = m_tProj.matProj;
 
-		if (!m_bOnceCheck)
-		{
-			m_bOnceCheck = true;
-			_float4 vCamPos = Get_ViewPos();
-
-			if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(7, "g_vCamPosition", &vCamPos, sizeof(_float4))))
-				return E_FAIL;
-
-			if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(8, "g_vCamPosition", &vCamPos, sizeof(_float4))))
-				return E_FAIL;
-
-			if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(9, "g_vCamPosition", &vCamPos, sizeof(_float4))))
-				return E_FAIL;
-
-			if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(12, "g_vCamPosition", &vCamPos, sizeof(_float4))))
-				return E_FAIL;
-		}
+	
 		
 	}
 
 	matView.Transpose();
 	matProj.Transpose();
 
-	if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue_All("g_ViewMatrix", (&matView), sizeof(_float4x4))))
-		return E_FAIL;
+	{
+		if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue_All("g_ViewMatrix", (&matView), sizeof(_float4x4))))
+			return E_FAIL;
 
-	if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue_All("g_ProjMatrix", (&matProj), sizeof(_float4x4))))
-		return E_FAIL;
+		if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue_All("g_ProjMatrix", (&matProj), sizeof(_float4x4))))
+			return E_FAIL;
+	}
+	
 
 	
 
@@ -163,6 +152,24 @@ void CCamera_Manager::Make_ViewProj()
 
 	Make_ViewMatrix();
 	Make_ProjMatrix();
+
+
+
+	/* For Test */
+	if (KEY(N, TAP))
+	{
+		_float4 pOutPos;
+		_float fOutDist;
+
+		if (CPhysX_Manager::Get_Instance()->Shoot_RaytoTerrain(&pOutPos, &fOutDist, m_pCurCam->Get_Transform()->Get_World(WORLD_POS)))
+		{
+			wstring wstrTemp = to_wstring(fOutDist);
+			MessageBox(0, wstrTemp.c_str(), TEXT("System Error"), MB_OK);
+		}
+	}
+	
+
+
 }
 
 CCamera * CCamera_Manager::Change_Camera(wstring strKey)

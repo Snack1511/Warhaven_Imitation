@@ -15,8 +15,8 @@ private:
 public:
 	static	CUnit_Priest* Create(const UNIT_MODEL_DATA& tUnitModelData);
 
-
-
+public:
+	void TurnOn_Trail(_bool bOn);
 
 public:
 	virtual void On_Die() override;
@@ -36,6 +36,16 @@ public:
 protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
 
+protected:
+	void SetUp_Trail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+	void SetUp_Trail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+	void SetUp_LowerTrail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+	void SetUp_LowerTrail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+
 public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;
@@ -54,6 +64,18 @@ private:
 	list<CGameObject*> m_CatchEffect;
 	list<CGameObject*> m_CatchMeshEffect;
 	CGameObject* m_pCureEffect = nullptr;
+
+private:
+	_float4 m_vTrailShader;
+	CTrailEffect* m_pTrail_R = nullptr;
+	CTrailEffect* m_pTrail_R2 = nullptr;
+	CTrailEffect* m_pTrail_L = nullptr;
+	CTrailEffect* m_pTrail_L2 = nullptr;
+
+	CTrailEffect* m_pLowerTrail_R = nullptr;
+	CTrailEffect* m_pLowerTrail_R2 = nullptr;
+	CTrailEffect* m_pLowerTrail_L = nullptr;
+	CTrailEffect* m_pLowerTrail_L2 = nullptr;
 
 };
 

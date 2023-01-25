@@ -40,7 +40,7 @@ HRESULT CLancer_Breeze_Loop::Initialize()
 	m_tHitInfo.fJumpPower = 0.f;
 	m_tHitInfo.bSting = true;
 
-	m_fDamagePumping = 9.f;
+	m_fDamagePumping = 15.f;
 
 
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
@@ -50,11 +50,18 @@ HRESULT CLancer_Breeze_Loop::Initialize()
 	m_fInterPolationTime = 0.f;
 	m_fAnimSpeed = 2.5f;
 
+	Add_KeyFrame(3, 0, true);
+
 	return S_OK;
 }
 
 void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+	pOwner->Enable_HitBoxColliders(false);
+
+	m_fDamagePumping = 15.f;
+	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
+
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
 
@@ -92,11 +99,13 @@ void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 	GAMEINSTANCE->Start_RadialBlur(0.015f);
 
+	pOwner->TurnOn_TrailEffect(true);
 	pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_BREEZE);
 
 	CUser::Get_Instance()->Disable_LancerGauge();
 	CUser::Get_Instance()->SetActive_Gauge(true);
+
 
 	for (int i = 0; i < 4; ++i)
 		CUser::Get_Instance()->Set_LancerGauge(i, 0.f, 1.f);
@@ -108,7 +117,8 @@ STATE_TYPE CLancer_Breeze_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	m_fTimeAcc += fDT(0);
 
-	CUser::Get_Instance()->Set_BreezeTime(m_fTimeAcc, 5.f);
+	if (pOwner->Is_MainPlayer())
+		CUser::Get_Instance()->Set_BreezeTime(m_fTimeAcc, 5.f);
 
 	if (m_fTimeAcc > 5.f || KEY(RBUTTON, AWAY))
 		return STATE_STOP_LANCER;
@@ -121,6 +131,8 @@ STATE_TYPE CLancer_Breeze_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CLancer_Breeze_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Enable_HitBoxColliders(true);
+
 	static_cast<CUnit_Lancer*>(pOwner)->Reset_NeedleNums();
 
 	for (_int i = 0; i < CUnit_Lancer::eNeedle::eNeedle_Max; ++i)
@@ -134,9 +146,10 @@ void CLancer_Breeze_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	}
 	CUser::Get_Instance()->SetActive_Gauge(false);
 
-
+	pOwner->TurnOn_TrailEffect(false);
 	GAMEINSTANCE->Stop_RadialBlur();
 
+	CFunctor::Play_Sound(L"Effect_LanceDisable", CHANNEL_EFFECTS);
 
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_LANCER);
 	pOwner->On_Use(CUnit::SKILL1);
@@ -154,4 +167,19 @@ STATE_TYPE CLancer_Breeze_Loop::Check_Condition(CUnit* pOwner, CAnimator* pAnima
 	}
 
 	return STATE_END;
+}
+
+void CLancer_Breeze_Loop::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	switch (iSequence)
+	{
+	case 0:
+		Play_Sound(L"Env_FootStepHorse", CHANNEL_ENVIRONMENT);
+		break;
+
+	default:
+		break;
+	}
+
+
 }

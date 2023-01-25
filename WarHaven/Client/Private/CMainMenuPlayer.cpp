@@ -5,6 +5,8 @@
 
 #include "CMainMenuUnit.h"
 
+#include "Easing_Utillity.h"
+
 CMainMenuPlayer::CMainMenuPlayer()
 {
 }
@@ -34,7 +36,51 @@ void CMainMenuPlayer::Set_CurClassType(CLASS_TYPE eClassType)
 	DISABLE_GAMEOBJECT(m_pMainMenuUnit[m_eCurClassType]);
 	m_eCurClassType = eClassType;
 	ENABLE_GAMEOBJECT(m_pMainMenuUnit[m_eCurClassType]);
-	
+	m_fRotateY[m_eCurClassType] = 180.f;
+
+	wstring strKey = L"Voice_Select";
+	_float fVol = 1.f;
+
+	switch (eClassType)
+	{
+	case Client::WARRIOR:
+		strKey += L"_Warrior";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::ARCHER:
+		strKey += L"_Archer";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::PALADIN:
+		strKey += L"_Paladin";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::PRIEST:
+		strKey += L"_Priest";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::ENGINEER:
+		strKey += L"_Warhammer";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::FIONA:
+		strKey += L"_Fiona";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::QANDA:
+		strKey += L"_Qanda";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::LANCER:
+		strKey += L"_Lancer";
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
+		break;
+	case Client::CLASS_END:
+		break;
+	default:
+		break;
+	}
+
 }
 
 void CMainMenuPlayer::Change_ModelParts(CLASS_TYPE eClassType, MODEL_PART_TYPE eModelPartType)
@@ -42,8 +88,9 @@ void CMainMenuPlayer::Change_ModelParts(CLASS_TYPE eClassType, MODEL_PART_TYPE e
 	if (eClassType >= CLASS_END)
 		return;
 
+	m_pMainMenuUnit[eClassType]->Delete_Flare();
 	DELETE_GAMEOBJECT(m_pMainMenuUnit[eClassType]);
-
+	
 	wstring wstrModeSkel[CLASS_END] =
 	{
 		L"../bin/resources/meshes/characters/Warrior/Warrior.fbx", // WARRIOR
@@ -131,6 +178,27 @@ void CMainMenuPlayer::Change_ModelParts(CLASS_TYPE eClassType, MODEL_PART_TYPE e
 	m_pMainMenuUnit[eClassType]->Initialize();
 	CREATE_GAMEOBJECT(m_pMainMenuUnit[eClassType], GROUP_PLAYER);
 
+
+
+}
+
+void CMainMenuPlayer::Set_Rotatable(_bool b)
+{
+
+
+	if (!b)
+	{
+		if (m_pMainMenuUnit[m_eCurClassType])
+		{
+			if (m_fRotateY[m_eCurClassType] != 180.f)
+				m_pMainMenuUnit[m_eCurClassType]->Get_Transform()->Set_LerpLook(_float4(0.f, 0.f, -1.f, 0.f), 1.f);
+
+		}
+	}
+	m_fRotateY[m_eCurClassType] = 180.f;
+
+	m_bRotatable = b; m_bLerpFOV = true; m_fTimeAcc = 0.f;
+
 }
 
 HRESULT CMainMenuPlayer::Initialize_Prototype()
@@ -202,13 +270,24 @@ HRESULT CMainMenuPlayer::Initialize_Prototype()
 
 	for (int i = 0; i < CLASS_END; ++i)
 	{
+		m_fRotateY[i] = 180.f;
+
 		if (wstrModeSkel[i].empty())
 			continue;
+
 
 		tModelData[i].strModelPaths[MODEL_PART_SKEL] = wstrModeSkel[i];
 		tModelData[i].strModelPaths[MODEL_PART_BODY] = wstrModeBody[i];
 		tModelData[i].strModelPaths[MODEL_PART_FACE] = wstrModeFace[i];
 		tModelData[i].strModelPaths[MODEL_PART_HEAD] = wstrModeHead[i];
+
+		if (i == FIONA)
+		{
+			tModelData[i].strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/Characters/Valkyrie/Body/SK_Fiona0001_Main_Body.fbx";
+			tModelData[i].strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Main_Face.fbx";
+			tModelData[i].strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Main_Head.fbx";
+		}
+
 
 		if (wstrModeWeapon_R[i] != L"")
 		{
@@ -252,38 +331,67 @@ HRESULT CMainMenuPlayer::Start()
 		DISABLE_GAMEOBJECT(m_pMainMenuUnit[i]);
 	}
 
+	m_fDefaultFOV = GAMEINSTANCE->Get_CurCam()->Get_Proj().fFOV;
+	m_fTargetFOV = m_fDefaultFOV * 1.4f;
+	m_fMaxTime = 0.5f;
+
     return S_OK;
 }
 
 void CMainMenuPlayer::My_Tick()
 {
-	if (KEY(UP, TAP))
+	if (!m_bLerpFOV)
+		return;
+
+	m_fTimeAcc += fDT(0);
+
+	if (m_fTimeAcc >= m_fMaxTime)
 	{
-		_uint iTemp = m_eCurClassType;
-		if (iTemp == 9)
-			return;
-		iTemp++;
+		m_bLerpFOV = false;
+		m_fTimeAcc = 0.f;
 
-		if(iTemp == SPEAR || iTemp == HOEDT)
-			iTemp++;
+		if (m_bRotatable)
+			GAMEINSTANCE->Get_CurCam()->Get_Proj().fFOV = m_fTargetFOV;
+		else
+			GAMEINSTANCE->Get_CurCam()->Get_Proj().fFOV = m_fDefaultFOV;
 
-		Set_CurClassType((CLASS_TYPE)iTemp);
-
-	}
-	else if (KEY(DOWN, TAP))
-	{
-		_uint iTemp = m_eCurClassType;
-		if (iTemp == 0)
-			return;
-
-		iTemp--;
-
-		if (iTemp == SPEAR || iTemp == HOEDT)
-			iTemp--;
-
-		Set_CurClassType((CLASS_TYPE)iTemp);
-
+		return;
 	}
 
+	_float fRatio = 0.f;
 
+	if (m_bRotatable)
+		fRatio = CEasing_Utillity::QuadOut(m_fDefaultFOV, m_fTargetFOV, m_fTimeAcc, m_fMaxTime);
+	else
+		fRatio = CEasing_Utillity::QuadOut(m_fTargetFOV, m_fDefaultFOV, m_fTimeAcc, m_fMaxTime);
+
+	GAMEINSTANCE->Get_CurCam()->Get_Proj().fFOV = fRatio;
+
+
+
+}
+
+void CMainMenuPlayer::My_LateTick()
+{
+	if (!m_bRotatable)
+		return;
+
+
+	if (KEY(LBUTTON, HOLD))
+	{
+		if (!m_pMainMenuUnit[m_eCurClassType])
+			return;
+
+		_float fMouseMove = (MOUSE_MOVE(MOUSEMOVE::MMS_X) / fDT(0)) * -0.0005f;
+
+		m_fRotateY[m_eCurClassType] += fMouseMove;
+
+		_float4 vCurPos = m_pMainMenuUnit[m_eCurClassType]->Get_Transform()->Get_World(WORLD_POS);
+		_float4x4 matRot;
+		matRot.Identity();
+		CUtility_Transform::Turn_ByAngle(matRot, _float4(0.f, 1.f, 0.f, 0.f), m_fRotateY[m_eCurClassType]);
+		m_pMainMenuUnit[m_eCurClassType]->Get_Transform()->Get_Transform().matMyWorld = matRot;
+		m_pMainMenuUnit[m_eCurClassType]->Get_Transform()->Set_World(WORLD_POS, vCurPos);
+		m_pMainMenuUnit[m_eCurClassType]->Get_Transform()->Make_WorldMatrix();
+	}
 }

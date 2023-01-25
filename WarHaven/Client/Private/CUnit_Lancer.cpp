@@ -93,15 +93,18 @@ void CUnit_Lancer::SetUp_Colliders(_bool bPlayer)
 	COL_GROUP_CLIENT	eHitBoxBody = (bPlayer) ? COL_BLUEHITBOX_BODY : COL_REDHITBOX_BODY;
 	COL_GROUP_CLIENT	eHitBoxHead = (bPlayer) ? COL_BLUEHITBOX_HEAD : COL_REDHITBOX_HEAD;
 	COL_GROUP_CLIENT	eAttack = (bPlayer) ? COL_BLUEATTACK : COL_REDATTACK;
-	COL_GROUP_CLIENT	eGuardBreak = (bPlayer) ? COL_BLUEGUARDBREAK : COL_REDGUARDBREAK;
-	COL_GROUP_CLIENT	eFlyAttack = (bPlayer) ? COL_BLUEFLYATTACK : COL_REDFLYATTACK;
+	COL_GROUP_CLIENT	eGroggy = (bPlayer) ? COL_BLUEGROGGYATTACK : COL_REDGROGGYATTACK;
 
 
-	const _uint iBodySphereNum = 4;
+	const _uint iBodySphereNum = 8;
 
 	CUnit::UNIT_COLLIDERDESC tUnitColDesc[iBodySphereNum] =
 	{
 		//Radius,	vOffsetPos.		eColType
+		{0.5f, _float4(0.f, 0.5f, -0.7f),(_uint)eHitBoxBody },
+		{0.5f, _float4(0.f, 0.5f, 0.7f),(_uint)eHitBoxBody },
+		{0.5f, _float4(0.f, 1.f, -0.7f),(_uint)eHitBoxBody },
+		{0.5f, _float4(0.f, 1.f, 0.7f),(_uint)eHitBoxBody },
 		{0.6f, _float4(0.f, 1.4f, -0.7f),(_uint)eHitBoxBody },
 		{0.6f, _float4(0.f, 1.4f, 0.f),(_uint)eHitBoxBody },
 		{0.6f, _float4(0.f, 1.4f, 0.7f),(_uint)eHitBoxBody },
@@ -126,7 +129,7 @@ void CUnit_Lancer::SetUp_Colliders(_bool bPlayer)
 
 	for (_uint i = 0; i < iWeaponSphereNum; ++i)
 	{
-		tWeaponUnitColDesc[i].fRadius = 0.2f;
+		tWeaponUnitColDesc[i].fRadius = 0.3f;
 		tWeaponUnitColDesc[i].vOffsetPos.z = -10.f * _float(i) - 10.f;
 		tWeaponUnitColDesc[i].eColType = (_uint)eAttack;
 	}
@@ -135,7 +138,7 @@ void CUnit_Lancer::SetUp_Colliders(_bool bPlayer)
 
 
 	for (_uint i = 0; i < iWeaponSphereNum; ++i)
-		tWeaponUnitColDesc[i].eColType = (_uint)eGuardBreak;
+		tWeaponUnitColDesc[i].eColType = (_uint)eGroggy;
 
 	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 
@@ -163,13 +166,13 @@ void	CUnit_Lancer::SetUp_HitStates(UNIT_TYPE eUnitType)
 
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
-		m_tHitType.eHitState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_WARRIOR;
-		m_tHitType.eGuardBreakState = AI_STATE_COMBAT_GUARDCANCEL_WARRIOR;
-		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_WARRIOR;
-		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_WARRIOR;
-		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_WARRIOR;
-		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_WARRIOR_L;
+		m_tHitType.eHitState = AI_STATE_COMMON_HIT_LANCER;
+		m_tHitType.eGuardState = AI_STATE_COMMON_GROGGYHIT_LANCER;
+		m_tHitType.eGuardBreakState = AI_STATE_COMMON_GROGGYHIT_LANCER;
+		m_tHitType.eStingHitState = AI_STATE_COMMON_GROGGYHIT_LANCER;
+		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_LANCER;
+		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_LANCER;
+		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_LANCER;
 		break;
 
 		
@@ -186,28 +189,39 @@ void	CUnit_Lancer::SetUp_HitStates(UNIT_TYPE eUnitType)
 
 void CUnit_Lancer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 {
+	m_eSprintEndState = NO_PATTERN;
+
 	switch (eUnitType)
 	{
 	case Client::CUnit::UNIT_TYPE::ePlayer:
 
 		m_eDefaultState = STATE_IDLE_LANCER;
-		m_eSprintEndState = NO_PATTERN;
 		m_eBreezeBegin = STATE_ATTACK_BREEZE_BEGIN_LANCER;
 		m_eBreezeLoop = STATE_ATTACK_BREEZE_LOOP_LANCER;
+
+		m_eSprintEndState = STATE_STOP_LANCER;
 
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
-		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
-		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+		m_eDefaultState = AI_STATE_COMBAT_DEAFULT_LANCER; 
+		m_eBreezeBegin = AI_STATE_COMBAT_BREEZE_BEGIN_LANCER;
+		m_eBreezeLoop = AI_STATE_COMBAT_BREEZE_LOOP_LANCER;
+
+		m_eSprintEndState = AI_STATE_PATHNAVIGATION_STOP_LANCER;
+
+		m_tAIChangeType.eAIPathFindDefaultState = AI_STATE_PATHNAVIGATION_DEFAULT_LANCER;
+		m_tAIChangeType.eAICommbatDefaultState = AI_STATE_COMBAT_DEAFULT_LANCER;
+		m_tAIChangeType.eAIPatrolDefaultState = AI_STATE_PATROL_DEFAULT_LANCER;
+		m_tAIChangeType.eAIGoTirrgerDefaultState = AI_STATE_PATHNAVIGATION_DEFAULT_LANCER;
 
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_idiot:
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
-		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+		//m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
 
 		break;
 
@@ -234,22 +248,24 @@ void CUnit_Lancer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	{
 	case eBehaviorType::ePatrol:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEFAULT_WARRIOR_R;
+		eNewState = AI_STATE_PATROL_DEFAULT_LANCER;
 		break;
-	case eBehaviorType::eFollow:
+	case eBehaviorType::ePadenCannonInteract:
 		//상태변경
+		eNewState = AI_STATE_CANNON_AI;
 		break;
-	case eBehaviorType::eAttack:
+	case eBehaviorType::eCombat:
 		//상태변경
-		eNewState = AI_STATE_COMBAT_DEFAULT_WARRIOR_L;
+		eNewState = AI_STATE_COMBAT_DEAFULT_LANCER;
 
 		break;
-	case eBehaviorType::ePathNavigation:
+	 
+	case eBehaviorType::ePathFinding:
 		//상태변경
-		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_WARRIOR_R;
+		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_LANCER;
 		break;
 
-	case eBehaviorType::eResurrect:
+	case eBehaviorType::eRevive:
 		//상태변경
 		eNewState = AI_STATE_COMMON_REVIVE_AI;
 		break;
@@ -284,15 +300,19 @@ void CUnit_Lancer::Turn_TransformParticle(_bool bOnOff)
 		{
 			for (auto& elem : m_TransformParticles)
 				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+
+			m_TransformParticles.clear();
 		}
-		m_TransformParticles.clear();
+		
 
 		if (!m_EyeFlares.empty())
 		{
 			for (auto& elem : m_EyeFlares)
 				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+
+			m_EyeFlares.clear();
 		}
-		m_EyeFlares.clear();
+		
 	}
 }
 
@@ -614,9 +634,9 @@ HRESULT CUnit_Lancer::Initialize_Prototype()
 
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// 칼 길이
-	tDesc.fHeight = 1.5f;
+	tDesc.fHeight = 1.2f;
 	// 칼 두께
-	tDesc.fRadius = 0.08f;
+	tDesc.fRadius = 0.1f;
 	// 칼 붙일 뼈
 	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1");
 
@@ -855,6 +875,7 @@ HRESULT CUnit_Lancer::Start()
 	m_pModelCom->Set_RimLightFlag(RGB(50, 30, 0));
 
 	m_TransformParticles.clear();
+	m_EyeFlares.clear();
 
 	return S_OK;
 }
@@ -911,11 +932,14 @@ void CUnit_Lancer::My_LateTick()
 		{
 			if (m_iNeedleNums < eNeedle_Max)
 			{
-				CUser::Get_Instance()->Set_LancerGauge(m_iNeedleNums, m_fTimeAcc, m_fNeedleCreateTime);
+				if(m_bIsMainPlayer)
+					CUser::Get_Instance()->Set_LancerGauge(m_iNeedleNums, m_fTimeAcc, m_fNeedleCreateTime);
+				
 				m_fTimeAcc += fDT(0);
 
 				if (m_fTimeAcc > m_fNeedleCreateTime)
 				{
+					CFunctor::Play_Sound(L"Effect_GaugeFull_Lancer", CHANNEL_UI);
 					m_pNeedle[m_iNeedleNums]->Enable_Needle(true);
 					++m_iNeedleNums;
 					m_fTimeAcc = 0.f;

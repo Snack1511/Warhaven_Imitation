@@ -36,8 +36,6 @@ CState_Common_Revive_AI* CState_Common_Revive_AI::Create()
 }
 HRESULT CState_Common_Revive_AI::Initialize()
 {
-
-
     m_eAnimType = ANIM_ETC;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 28;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_COMMON_REVIVE_AI;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -57,44 +55,31 @@ HRESULT CState_Common_Revive_AI::Initialize()
 
 void CState_Common_Revive_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    if (ePrevType != m_ePreStateType && pOwner->Get_OwnerPlayer()->Get_CurClass() >= FIONA)
+    m_eAnimType = ANIM_BASE_R;
+
+    switch (pOwner->Get_OwnerPlayer()->Get_CurClass())
     {
-        m_iAnimIndex = 20;
+    case WARRIOR:
+        m_iAnimIndex = 27;
+        break;
+    case ENGINEER:
+        m_iAnimIndex = 30;
+        break;
+    case ARCHER:
+        m_iAnimIndex = 27;
+        break;
+    case PALADIN:
+        m_iAnimIndex = 19;
+        break;
+    case PRIEST:
+        m_iAnimIndex = 19;
+        break;
+    default:
+        break;
     }
 
-    m_pAbjPlayer = pOwner->Get_RevivalPlayer();
+    pOwner->Get_PhysicsCom()->Set_MaxSpeed(pOwner->Get_Status().fRunSpeed);
 
-    _float4 vMyPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
-    m_vPos = vMyPos;
-    _float4 vDir;
-
-
-    if (m_pAbjPlayer)
-    {
-        static_cast<CPlayer*>(m_pAbjPlayer)->Get_CurrentUnit()->Start_Reborn();
-        m_vPos = pOwner->Get_RevivalPlayer()->Get_WorldPos();
-        vDir = m_vPos - vMyPos;
-
-    }
-    else
-    {
-        m_iRand = random(0, 2);
-
-        if (m_iRand == 0)
-        {
-            m_eCurPhase = DANCE;
-            m_iAnimIndex = 9;
-        }
-        else
-        {
-            m_eCurPhase = PHASE_NONE;
-        }
-
-        vDir = _float4(1.f, 0.f, 0.f);
-    }
-
-
-    pOwner->Get_Transform()->Set_LerpLook(vDir, 0.4f);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -105,8 +90,74 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
     STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
 
+    CUnit* pTargetUnit = pOwner->Get_TargetUnit();
+
+   /* if (pTargetUnit->Get_OwnerPlayer()->Get_Team() != pOwner->Get_OwnerPlayer()->Get_Team())
+    {
+        Call_RealMsgBox(L"sibla");
+    }*/
+
+    if (!pTargetUnit)
+    {
+        pOwner->Force_ChangeBehavior();
+        return eDefaultState;
+    }
+
+
     switch (m_eCurPhase)
     {
+    case Client::CState_Common_Revive_AI::eFOLLOW:
+    {
+        //목표까지 가야함
+        if (pOwner->Get_RevivalPlayer())
+        {
+            m_eCurPhase = BEGIN;
+            m_eAnimType = ANIM_ETC;
+
+            if (pOwner->Get_OwnerPlayer()->Get_CurClass() >= FIONA)
+                m_iAnimIndex = 22;
+            else
+                m_iAnimIndex = 30;
+
+
+            _float4 vMyPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+            _float4 vLook = pOwner->Get_RevivalPlayer()->Get_Transform()->Get_World(WORLD_POS) - vMyPos;
+
+            vLook.y = 0.f;
+
+            pOwner->Get_Transform()->Set_LerpLook(vLook.Normalize(), 0.5f);
+            pOwner->Get_RevivalPlayer()->Get_CurrentUnit()->Start_Reborn();
+            m_fTimeAcc = 0.f;
+
+            CState::Enter(pOwner, pAnimator, (STATE_TYPE)m_eCurPhase);
+        }
+        else
+        {
+            //방향으로 가기 
+            if (!pTargetUnit)
+                return __super::Tick(pOwner, pAnimator);
+
+            if (!pTargetUnit->Get_OwnerPlayer()->Is_AbleRevival())
+            {
+                pOwner->Force_ChangeBehavior();
+                return eDefaultState;
+
+            }
+
+
+            pOwner->Set_LookToTarget();
+            _float4 vLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
+            pOwner->Get_PhysicsCom()->Set_Dir(vLook);
+            pOwner->Get_PhysicsCom()->Set_Accel(50.f);
+
+
+        }
+
+
+    }
+
+    break;
+
     case Client::CState_Common_Revive_AI::PHASE_NONE:
 
         
@@ -169,7 +220,8 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
     case Client::CState_Common_Revive_AI::PHASE_END:
         if (pAnimator->Is_CurAnimFinished())
         {
-            CUser::Get_Instance()->Disable_RevivalUI();
+            //CUser::Get_Instance()->Disable_RevivalUI();
+            pOwner->Force_ChangeBehavior();
 
             STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
             return eDefaultState;

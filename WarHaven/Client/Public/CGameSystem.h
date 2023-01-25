@@ -25,7 +25,7 @@ class CCannon;
 class CGameSystem
 {
 public:
-	enum eSTAGE_TYPE {eSTAGE_PADEN, eSTAGE_HWARA, eSTAGE_CNT};
+	enum eSTAGE_TYPE {eSTAGE_PADEN, eSTAGE_HWARA, ePADEN_RELEASE, eHWARA_RELEASE, eSTAGE_CNT};
 	DECLARE_SINGLETON(CGameSystem)
 
 private:
@@ -65,7 +65,7 @@ public:	// Paden
 	HRESULT					On_ReadyPlayers_Stage(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 	
 	/* 파덴 스테이지 거점 세팅 */
-	HRESULT					On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_ReadyTriggers_Paden(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 	HRESULT					On_ReadyDestructible_Paden(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 	HRESULT					On_EnterStage();
 	HRESULT					On_Update_Paden();
@@ -80,7 +80,7 @@ public:	// Paden
 
 public: /* Hwara */
 	HRESULT					On_ReadyHwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
-	HRESULT					On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_ReadyTriggers_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 	HRESULT					On_ReadyDestructible_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 	HRESULT					On_Update_Hwara();
 	HRESULT					Hwara_EnvironmentEffect();
@@ -103,8 +103,13 @@ public: /* Pathes */
 	CPath*			Clone_RandomRespawnPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType);
 	CPath*			Clone_CenterPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType);
 
+	CPath* Clone_RandomReleasePath(_float4 vCurPos);
+	CPath* Clone_RandomNearestPath(_float4 vCurPos, CPlayer* pPlayer);
+
+
 	CPath* Get_NearPath(_float4 vPosition);
-public:	
+
+public:
 	CTrigger*					Find_Trigger(string strTriggerKey);
 	void						Enable_HwaraFinalTrigger(eTEAM_TYPE eTeamType);
 
@@ -114,10 +119,10 @@ public:
 	eSTAGE_TYPE m_eCurStageType = eSTAGE_TYPE::eSTAGE_CNT;
 
 public:
-	CGameObject* Get_Cannon() { return m_pCannon; }
+	CCannon* Get_Cannon() { return m_pCannon; }
 
 private:
-	CGameObject* m_pCannon = nullptr;
+	CCannon* m_pCannon = nullptr;
 
 private:
 	CPositionTable* m_pPositionTable = nullptr;
@@ -142,11 +147,10 @@ private:
 	/* Path들 map으로 들고 있기. */
 	map<_hashcode, CPath*>	m_mapAllPathes[eSTAGE_CNT];
 
-
 private:
 	HRESULT					SetUp_AllPlayerInfos();
 	HRESULT					SetUp_AllPathes();
-
+	
 #pragma region Personality Functions
 private:
 	HRESULT					SetUp_AllPersonality();

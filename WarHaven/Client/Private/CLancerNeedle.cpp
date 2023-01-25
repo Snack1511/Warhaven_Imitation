@@ -65,7 +65,7 @@ void	CLancerNeedle::Needle_CollisionEnter(CGameObject* pOtherObj, const _uint& e
 			return;
 
 		m_pStinedUnit = pOtherUnit;
-		//DISABLE_COMPONENT(GET_COMPONENT_FROM(m_pStinedUnit, CCollider_Sphere));
+		m_pStinedUnit->Enable_HitBoxColliders(false);
 
 		if (m_pOwnerUnit->Is_MainPlayer())
 		{
@@ -285,6 +285,8 @@ HRESULT CLancerNeedle::SetUp_Model(wstring wstrModelFilePath, CHierarchyNode* pO
 	pModel->Set_ShaderFlag(SH_LIGHT_BLOOM);
 	pModel->Set_ShaderPassToAll(VTXMODEL_PASS_NORMALMAPPING);
 
+	wstring strTexpath = L"../bin/resources/textures/black.png";
+	pModel->Change_Texture(0, 1, strTexpath);
 
 	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXMODEL,
 		VTXMODEL_DECLARATION::Element, VTXMODEL_DECLARATION::iNumElements);
@@ -310,7 +312,7 @@ HRESULT CLancerNeedle::SetUp_Model(wstring wstrModelFilePath, CHierarchyNode* pO
 	//vOffsetPos.z += fRadius;
 	//vOffsetPos.z += fRadius;
 
-	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, COL_BLUEFLYATTACKGUARDBREAK, vOffsetPos, DEFAULT_TRANS_MATRIX);
+	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, COL_BLUEGROGGYATTACK, vOffsetPos, DEFAULT_TRANS_MATRIX);
 	vOffsetPos.x += fRadius;
 	pCollider->Add_Collider(fRadius, vOffsetPos);
 	vOffsetPos.x += fRadius;
@@ -558,15 +560,15 @@ void CLancerNeedle::OnEnable()
 	__super::OnEnable();
 
 	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
-		m_pCollider->Set_ColIndex(COL_BLUEFLYATTACKGUARDBREAK);
+		m_pCollider->Set_ColIndex(COL_REDGROGGYATTACK);
 	else
 	{
 		eTEAM_TYPE eTeamType = m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType();
 
 		if (eTeamType == eTEAM_TYPE::eBLUE)
-			m_pCollider->Set_ColIndex(COL_BLUEFLYATTACKGUARDBREAK);
+			m_pCollider->Set_ColIndex(COL_BLUEGROGGYATTACK);
 		else
-			m_pCollider->Set_ColIndex(COL_REDFLYATTACKGUARDBREAK);
+			m_pCollider->Set_ColIndex(COL_REDGROGGYATTACK);
 	}
 
 	DISABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
@@ -598,15 +600,15 @@ void CLancerNeedle::OnDisable()
 	
 	if (m_pStinedUnit)
 	{
-		if (!m_pStinedUnit->Is_Valid())
-		{
-			m_pStinedUnit->On_Die();
-			m_pStinedUnit = nullptr;
-		}
+		CFunctor::Play_Sound(L"Effect_Die", CHANNEL_EFFECTS, m_pStinedUnit->Get_Transform()->Get_World(WORLD_POS));
+
+		m_pStinedUnit->On_Die();
+		m_pStinedUnit = nullptr;
 	}
 	
 	m_bStartNeedle = true;
 	m_bBeginNeedle = true;
+
 	/*if(m_pNiddleMesh)
 	{
 		static_cast<CEffect*>(m_pNiddleMesh)->Set_FadeOut();
@@ -676,7 +678,6 @@ void CLancerNeedle::Dragging_Unit()
 		}
 
 
-
 		_float4 vStartPos = m_vStartPos;
 		vStartPos.y -= 20.f;
 
@@ -743,7 +744,9 @@ void CLancerNeedle::Dragging_Unit()
 			break;
 
 		case Client::LANCER:
-
+			CFunctor::Play_Sound(L"Effect_Die", CHANNEL_EFFECTS, m_pStinedUnit->Get_Transform()->Get_World(WORLD_POS));
+			m_pStinedUnit->On_Die();
+			m_pStinedUnit = nullptr;
 			break;
 
 		default:

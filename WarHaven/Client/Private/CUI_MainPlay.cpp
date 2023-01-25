@@ -8,12 +8,12 @@
 #include "CShader.h"
 #include "CFader.h"
 #include "CButton.h"
-
+#include "Functor.h"
 #include "Loading_Manager.h"
 #include "Easing_Utillity.h"
 
 CUI_MainPlay::Select_Map CUI_MainPlay::m_eStage = Select_Map::Training;
-wstring CUI_MainPlay::m_wstrModeText = TEXT("¸Ê - ÈÆ·Ã¼Ò");
+wstring CUI_MainPlay::m_wstrModeText = TEXT("¸ðµå - ÈÆ·Ã¼Ò");
 
 CUI_MainPlay::CUI_MainPlay()
 {
@@ -125,6 +125,8 @@ void CUI_MainPlay::Set_Shader_BtnHighlight(CShader* pShader, const char* pConstN
 
 void CUI_MainPlay::On_PointEnter_PlayBtn(const _uint& iEventNum)
 {
+	CFunctor::Play_Sound(L"UI_Btn_Enter_MainPlay", CHANNEL_UI, 1.f);
+
 	m_pTarget = GET_COMPONENT_FROM(m_pPlayBtnUI[iEventNum], CButton)->Get_TargetUI();
 
 	_float4 vPos = m_pTarget->Get_Pos();
@@ -178,10 +180,16 @@ void CUI_MainPlay::On_PointUpEvent_Start(const _uint& iEventNum)
 {
 	if (!m_pBG->Is_Valid())
 	{
+		CFunctor::Play_Sound(L"UI_Btn_Down_MainPlay", CHANNEL_UI, 1.f);
+
 		switch (m_eStage)
 		{
 		case CUI_MainPlay::Paden:
 			CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_PADEN);
+			break;
+
+		case CUI_MainPlay::Hwara:
+			CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_HWARA);
 			break;
 
 		case CUI_MainPlay::Training:
@@ -195,6 +203,8 @@ void CUI_MainPlay::On_PointUpEvent_Mode(const _uint& iEventNum)
 {
 	if (!m_pBG->Is_Valid())
 	{
+		CFunctor::Play_Sound(L"UI_Btn_Down_MainPlay", CHANNEL_UI, 1.f);
+
 		m_bIsMouseEvent = true;
 		SetActive_ModeWindow();
 	}
@@ -207,6 +217,8 @@ void CUI_MainPlay::On_PointEnter_Stage(const _uint& iEventNum)
 	{
 		if (m_bIsMouseEvent)
 		{
+			CFunctor::Play_Sound(L"UI_Btn_Enter_Main", CHANNEL_UI, 1.f);
+
 			Enable_Fade(m_pStageHighlights[iEventNum], 0.3f);
 		}
 	}
@@ -231,6 +243,8 @@ void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
 	_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[iEventNum], CTexture)->Get_CurTextureIndex();
 	if (iTextureNum <= 3)
 	{
+		CFunctor::Play_Sound(L"UI_Btn_Down_Main", CHANNEL_UI, 1.f);
+
 		_float4 vPos = m_pStageSelectBtn[iEventNum]->Get_Pos();
 
 		if (iTextureNum == 0)
@@ -239,13 +253,17 @@ void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
 
 			m_eStage = Select_Map::Paden;
 
-			m_wstrModeText = TEXT("¸Ê - ÆÄµ§");
+			m_wstrModeText = TEXT("¸ðµå - Á¡·ÉÀü");
 			m_pStageNameRect->Set_FontText(m_wstrModeText);
-
 		}
 		else if (iTextureNum == 1)
 		{
 			Enable_StageClickRect(vPos);
+
+			m_eStage = Select_Map::Hwara;
+
+			m_wstrModeText = TEXT("¸ðµå - Áø°ÝÀü");
+			m_pStageNameRect->Set_FontText(m_wstrModeText);
 		}
 		else if (iTextureNum == 2)
 		{
@@ -257,7 +275,7 @@ void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
 
 			m_eStage = Select_Map::Training;
 
-			m_wstrModeText = TEXT("¸Ê - ÈÆ·Ã¼Ò");
+			m_wstrModeText = TEXT("¸ðµå - ÈÆ·Ã¼Ò");
 			m_pStageNameRect->Set_FontText(m_wstrModeText);
 		}
 	}
@@ -351,7 +369,7 @@ void CUI_MainPlay::SetActive_ModeWindow()
 			Enable_Fade(m_pStageSelectBtn[i], 0.3f);
 		}
 
-		for (int i = 0; i < 2; ++i)
+		for (int i = 1; i < 2; ++i)
 		{
 			Enable_Fade(m_pLockBtn[i], 0.3f);
 		}
@@ -433,7 +451,7 @@ void CUI_MainPlay::Create_PlayBtn()
 	m_pPlayBtnUI[1]->Set_LerpPos(vOrigin1, vTarget1);
 
 	m_pPlayBtnUI[1]->Set_Scale(128.f, 40.f);
-	m_pPlayBtnUI[1]->Set_FontText(TEXT("¸Ê º¯°æ"));
+	m_pPlayBtnUI[1]->Set_FontText(TEXT("¸ðµå º¯°æ"));
 	m_pPlayBtnUI[1]->Set_FontScale(0.4f);
 	m_pPlayBtnUI[1]->Set_FontOffset(-60.f, -17.f);
 }
@@ -524,7 +542,7 @@ void CUI_MainPlay::Create_StageBtn()
 		{
 			m_pStageSelectBtn[i]->Set_FontOffset(vFontOffset.x, vFontOffset.y);
 			m_pStageSelectBtn[i]->Set_FontScale(m_fFontSize);
-			m_pStageSelectBtn[i]->Set_FontText(TEXT("ÆÄµ§"));
+			m_pStageSelectBtn[i]->Set_FontText(TEXT("Á¡·ÉÀü"));
 
 			GET_COMPONENT_FROM(m_pStageSelectBtn[i], CTexture)->Set_CurTextureIndex(i);
 		}
@@ -533,7 +551,9 @@ void CUI_MainPlay::Create_StageBtn()
 		{
 			m_pStageSelectBtn[i]->Set_FontOffset(vFontOffset.x, vFontOffset.y);
 			m_pStageSelectBtn[i]->Set_FontScale(m_fFontSize);
-			m_pStageSelectBtn[i]->Set_FontText(TEXT("ÆÄ¶ó"));
+			m_pStageSelectBtn[i]->Set_FontText(TEXT("Áø°ÝÀü"));
+
+			GET_COMPONENT_FROM(m_pStageSelectBtn[i], CTexture)->Set_CurTextureIndex(i);
 		}
 
 		if (i == 2)
@@ -641,7 +661,7 @@ void CUI_MainPlay::Create_StageNameRect()
 	m_pStageNameRect = CUI_Object::Create();
 	m_pStageNameRect->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_BoxFrame.png"));
 
-	m_pStageNameRect->Set_Scale(80.f, 28.f);
+	m_pStageNameRect->Set_Scale(86.f, 28.f);
 	m_pStageNameRect->Set_Sort(0.91f);
 	m_pStageNameRect->Set_Pos(-545.f, 220.f);
 
@@ -651,7 +671,8 @@ void CUI_MainPlay::Create_StageNameRect()
 
 	m_pStageNameRect->Set_FontRender(true);
 	m_pStageNameRect->Set_FontStyle(true);
-	m_pStageNameRect->Set_FontOffset(-30.f, -11.f);
+	m_pStageNameRect->Set_FontCenter(true);
+	m_pStageNameRect->Set_FontOffset(5.f, 4.f);
 	m_pStageNameRect->Set_FontScale(0.2f);
 	m_pStageNameRect->Set_FontColor(m_vFontColor);
 	m_pStageNameRect->Set_FontText(m_wstrModeText);

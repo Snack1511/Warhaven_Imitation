@@ -21,14 +21,12 @@ CState_PathNavigation_Sprint_Engineer::~CState_PathNavigation_Sprint_Engineer()
 
 HRESULT CState_PathNavigation_Sprint_Engineer::Initialize()
 {
-	__super::Initialize();
-
-	m_eStateType = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_ENGINEER;
+	m_eJumpFallStateType = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_ENGINEER;
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Sprint_Engineer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -51,6 +49,11 @@ void CState_PathNavigation_Sprint_Engineer::Exit(CUnit* pOwner, CAnimator* pAnim
 
 STATE_TYPE CState_PathNavigation_Sprint_Engineer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
+}
+
+void CState_PathNavigation_Sprint_Engineer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }
 

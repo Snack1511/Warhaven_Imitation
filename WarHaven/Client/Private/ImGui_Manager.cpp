@@ -18,6 +18,7 @@
 #include "CWindow_Tile.h"
 #include "CWindow_Path.h"
 #include "CWindow_AI.h"
+#include "CWindow_Shader.h"
 
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
@@ -109,6 +110,7 @@ HRESULT CImGui_Manager::Initialize()
 	m_arrWindows[IMGUI_TILE] = CWindow_Tile::Create();
 	m_arrWindows[IMGUI_PATH] = CWindow_Path::Create();
 	m_arrWindows[IMGUI_AI] = CWindow_AI::Create();
+	m_arrWindows[IMGUI_SHADER] = CWindow_Shader::Create();
 #pragma endregion 윈도우 등록
 
 	return S_OK;

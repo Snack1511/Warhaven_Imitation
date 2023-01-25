@@ -47,19 +47,21 @@ HRESULT CLancer_Breeze_Begin::Initialize()
 	m_fInterPolationTime = 0.1f;
 	m_fAnimSpeed = 2.5f;
 
-	m_fDamagePumping = 9.f;
+	m_fDamagePumping = 15.f;
 
 	m_vecAdjState.push_back(STATE_ATTACK_BREEZE_LOOP_LANCER);
 
 
 	Add_KeyFrame(3, 0);
-
+	Add_KeyFrame(16, 1, true);
+	Add_KeyFrame(32, 1, true);
+	Add_KeyFrame(54, 1, true);
 
 	// return __super::Initialize();
 	return S_OK;
 }
 
-void CLancer_Breeze_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CLancer_Breeze_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
 	m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed * 1.5f;
 
@@ -68,6 +70,7 @@ void CLancer_Breeze_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 	GAMEINSTANCE->Start_RadialBlur(0.015f);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_RUSH);
+	pOwner->TurnOn_TrailEffect(true);
 
 	for (_int i = 0; i < CUnit_Lancer::eNeedle::eNeedle_Max; ++i)
 	{
@@ -79,13 +82,19 @@ void CLancer_Breeze_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 		pNeedle->On_ChangePhase(CLancerNeedle::LANCERNEEDLE_ATTACKBEGIN);
 	}
 
-	 
+
+
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Sound(L"Effect_LancerBreeze_Begin");
 }
 
 STATE_TYPE CLancer_Breeze_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	m_fDamagePumping = 15.f;
+	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
+
 	pOwner->Get_PhysicsCom()->Set_Accel(m_fMyAccel);
 	Follow_MouseLook(pOwner);
 	pOwner->Set_DirAsLook();
@@ -94,6 +103,7 @@ STATE_TYPE CLancer_Breeze_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CLancer_Breeze_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->TurnOn_TrailEffect(false);
 	GAMEINSTANCE->Stop_RadialBlur();
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_LANCER);
 }
@@ -117,6 +127,11 @@ void CLancer_Breeze_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 	{
 	case 0:
 		Physics_Setting(m_fMaxSpeed, pOwner);
+		Play_Voice(pOwner, L"Voice_Breeze", 1.f);
+		break;
+
+	case 1:
+		Play_Sound(L"Env_FootStepHorse", CHANNEL_ENVIRONMENT);
 		break;
 
 	default:

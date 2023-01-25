@@ -30,9 +30,6 @@ CState_PathNavigation_Default_Priest* CState_PathNavigation_Default_Priest::Crea
 }
 HRESULT CState_PathNavigation_Default_Priest::Initialize()
 {
-
-    __super::Initialize();
-
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 19;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_PATHNAVIGATION_DEFAULT_PRIEST;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -51,65 +48,31 @@ HRESULT CState_PathNavigation_Default_Priest::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 24;
 
-    m_iAINextState = AI_STATE_PATHNAVIGATION_JUMP_PRIEST;
+    m_eJumpState = AI_STATE_PATHNAVIGATION_JUMP_PRIEST;
     m_eJumpFallStateType = AI_STATE_COMMON_FALL_PRIEST;
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_PRIEST;
+    m_eSprintBeginState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_PRIEST;
 
-    return S_OK;
+    Add_KeyFrame(20, 0, true);
+    Add_KeyFrame(44, 0, true);
+
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Default_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
     m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_N];
 
+    cout << "프리스트 : " << m_iAnimIndex << endl;
     m_iStateChangeKeyFrame = 25;
 
-    m_eSprintBeginState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_PRIEST;
-
-    m_fRand = frandom(0.2f, 0.5f);
-    m_iRand = random(0, 5);
+    
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_PathNavigation_Default_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (m_fAIDelayTime > m_fRand)
-    {
-        switch (m_iRand)
-        {
-        case 0:
-        case 1:
-        case 2:
-
-            return m_eSprintBeginState;
-
-
-        case 3:
-
-            return m_iAINextState;
-
-        case 4:
-
-            if (pAnimator->Is_CurAnimFinished())
-                return m_eStateType;
-
-            break;
-
-        case 5:
-
-            return m_eWalkState;
-
-            break;
-
-        default:
-            return m_iAINextState;
-
-        }
-
-
-    }
-
     return __super::Tick(pOwner, pAnimator);
 }
 
@@ -121,4 +84,9 @@ void CState_PathNavigation_Default_Priest::Exit(CUnit* pOwner, CAnimator* pAnima
 STATE_TYPE CState_PathNavigation_Default_Priest::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
     return __super::Check_Condition(pOwner, pAnimator);
+}
+
+void CState_PathNavigation_Default_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }

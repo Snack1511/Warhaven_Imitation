@@ -460,15 +460,18 @@ void CUI_Crosshair::Create_LancerUI()
 		switch (i)
 		{
 		case LU_BG:
+			m_pLancerUI[i]->Set_Sort(0.5f);
 			m_pLancerUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Lancer_ArrowBG.png"));
 			break;
 
 		case LU_Gauge:
+			m_pLancerUI[i]->Set_Sort(0.49f);
 			GET_COMPONENT_FROM(m_pLancerUI[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_VerticalGauge);
 			m_pLancerUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Lancer_ArrowGauge.png"));
 			break;
 
 		case LU_Full:
+			m_pLancerUI[i]->Set_Sort(0.48f);
 			m_pLancerUI[i]->Set_Scale(45.f, 95.f);
 			m_pLancerUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Lancer_ArrowFull.png"));
 			break;
@@ -508,8 +511,8 @@ void CUI_Crosshair::Create_GaugeUI()
 			m_pGaugeUI[i]->Set_FontRender(true);
 			m_pGaugeUI[i]->Set_FontStyle(true);
 			m_pGaugeUI[i]->Set_FontCenter(true);
-			m_pGaugeUI[i]->Set_FontOffset(100.f, 3.f);
-			m_pGaugeUI[i]->Set_FontScale(0.4f);
+			m_pGaugeUI[i]->Set_FontOffset(80.f, 4.f);
+			m_pGaugeUI[i]->Set_FontScale(0.3f);
 			break;
 
 		case Gauge_Bar:

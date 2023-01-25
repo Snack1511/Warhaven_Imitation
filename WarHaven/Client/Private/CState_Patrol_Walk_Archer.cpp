@@ -37,6 +37,8 @@ HRESULT CState_Patrol_Walk_Archer::Initialize()
 
 	m_fAnimSpeed = 2.5f;
 
+	Add_KeyFrame(37, 0, true);
+	Add_KeyFrame(60, 0, true);
     return S_OK;
 }
 
@@ -59,8 +61,8 @@ STATE_TYPE CState_Patrol_Walk_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	_uint iFrame = pAnimator->Get_CurAnimFrame() + 1;
 
-	if (pAnimator->Is_CurAnimFinished())
-		return m_eStateType;
+	//if (pAnimator->Is_CurAnimFinished())
+	//	return m_eStateType;
 
 
 	DoMove_AI_NoTarget(pOwner, pAnimator);
@@ -76,6 +78,11 @@ void CState_Patrol_Walk_Archer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Patrol_Walk_Archer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
+}
+
+void CState_Patrol_Walk_Archer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }
 

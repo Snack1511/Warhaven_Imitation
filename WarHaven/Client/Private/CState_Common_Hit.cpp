@@ -29,6 +29,8 @@ HRESULT CState_Common_Hit::Initialize()
 void CState_Common_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+    Play_Voice(pOwner, L"Voice_Hit", 1.f);
 }
 
 STATE_TYPE CState_Common_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -36,7 +38,18 @@ STATE_TYPE CState_Common_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
     if (!m_bSting)
     {
         if (pAnimator->Is_CurAnimFinished())
-            return m_ePreStateType;
+        {
+            if(m_ePreStateType != STATE_END)
+                return m_ePreStateType;
+
+            else
+            {
+                STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+                return eDefaultState;
+            }
+            
+        }
+            
     }
 
     return __super::Tick(pOwner, pAnimator);

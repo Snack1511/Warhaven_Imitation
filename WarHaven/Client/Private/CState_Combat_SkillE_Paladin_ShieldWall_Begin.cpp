@@ -106,6 +106,8 @@ void CState_Combat_SkillE_Paladin_ShieldWall_Begin::On_KeyFrameEvent(CUnit* pOwn
 	switch (iSequence)
 	{
 	case 1:
+		Play_Voice(pOwner, L"Voice_Wall", 1.f);
+		Play_Sound(L"Effect_ShieldWall_Paladin");
 		pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
 		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"ShieldWall_0"), pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
 		break;

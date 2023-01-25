@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CHierarchyNode;
+class CCollider_Sphere;
 END
 
 BEGIN(Client)
@@ -24,12 +25,21 @@ protected:
 
 public:
 	void		Shoot_Cannon(CPlayer* pOwnerPlayer, _float4 vShootPos, _float4 vShootDir);
+	void		Shoot_CatchedCannon(_float4 vShootDir);
+
+public:
+	virtual void	Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos);
+	virtual void	Projectile_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
+	virtual void	Projectile_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
 
 public:
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT	Initialize();
 	virtual HRESULT	Start();
-
+public:
+	_float4 Get_Position();
+public:
+	_bool Is_Catch() { return m_bCatched; }
 protected:
 	CPlayer* m_pOwnerPlayer = nullptr;
 
@@ -49,7 +59,10 @@ private:
 	PxRigidDynamic* m_pActor = nullptr;
 
 private:
+	_bool	m_bCatched = false;
+	CCollider_Sphere* m_pCollider = nullptr;
 	CCannonBoom* m_pCannonBoom = nullptr;
+	CHierarchyNode* m_pTargetBone = nullptr;
 
 private:
 	void Create_Light(CGameObject* pOwner, _float4 vOffset, _float fRange, _float fRandomRange,

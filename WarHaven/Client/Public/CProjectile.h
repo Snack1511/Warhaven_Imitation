@@ -38,7 +38,7 @@ public:
 
 
 public:
-	enum ePROJECTILE_PHASE { eSTART, eLOOP, eRANDOM, eChase,eSHOOT, eHIT, eSTICK, eEND };
+	enum ePROJECTILE_PHASE { eSTART, eLOOP, eRANDOM, eChase, eSHOOT, eHIT, eSTICK, eCATCHED, eEND };
 	void		On_ShootProjectile();
 	void		On_ChangePhase(ePROJECTILE_PHASE eNextPhase);
 
@@ -109,10 +109,11 @@ protected:
 	virtual void OnDisable() override;
 
 protected:
-	void	Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos);
+	void	Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos, _bool bHeadShot);
 
 private:
 	_bool	m_bCloned = false;
+	_bool	m_bHit = false;
 	PxConvexMesh* m_pConvexMesh = nullptr;
 	PxRigidDynamic* m_pActor = nullptr;
 

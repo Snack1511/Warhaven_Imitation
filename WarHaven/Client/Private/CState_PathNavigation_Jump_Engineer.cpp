@@ -32,6 +32,7 @@ HRESULT CState_PathNavigation_Jump_Engineer::Initialize()
 	// 애니메이션의 전체 속도를 올려준다.
 	m_fAnimSpeed = 1.f;
 	
+	m_eJumpFallStateType = AI_STATE_COMMON_FALL_ENGINEER_R;
 
     return S_OK;
 }
@@ -55,5 +56,10 @@ void CState_PathNavigation_Jump_Engineer::Exit(CUnit* pOwner, CAnimator* pAnimat
 STATE_TYPE CState_PathNavigation_Jump_Engineer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
     return STATE_END;
+}
+
+void CState_PathNavigation_Jump_Engineer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }
 

@@ -34,7 +34,9 @@ HRESULT CWarHammer_Attack_HorizontalMiddle::Initialize()
 
 	m_fAnimSpeed = 2.5f;
 
-	m_iStateChangeKeyFrame = 110;
+	m_iStateChangeKeyFrame = 140;
+
+	m_fDamagePumping = 2.f;
 
 
 	m_fMyAccel = 10.f;
@@ -135,6 +137,8 @@ void CWarHammer_Attack_HorizontalMiddle::Enter(CUnit* pOwner, CAnimator* pAnimat
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Voice(pOwner, L"Voice_Attack", 1.f);
 }
 
 STATE_TYPE CWarHammer_Attack_HorizontalMiddle::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -176,6 +180,7 @@ void CWarHammer_Attack_HorizontalMiddle::On_KeyFrameEvent(CUnit * pOwner, CAnima
 	switch (iSequence)
 	{
 	case 1:
+		Play_Sound(L"Effect_Swing_Blunt", CHANNEL_EFFECTS, 1.f);
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;

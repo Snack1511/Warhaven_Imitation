@@ -25,9 +25,18 @@ public:
 	virtual HRESULT Exit() override;
 
 private:
+	void BirdSound();
+	void WindSound();//Env_CannonWind_0
+
+private:
 	CTrigger* m_pPadenTrigger_A = nullptr;
 	CTrigger* m_pPadenTrigger_R = nullptr;
 	CTrigger* m_pPadenTrigger_C = nullptr;
+
+private:
+	_float m_fBirdTimeAcc = 0.f;
+	_float m_fBird = 5.f;
+	_float m_fWindTimeAcc = 0.f;
 };
 
 END

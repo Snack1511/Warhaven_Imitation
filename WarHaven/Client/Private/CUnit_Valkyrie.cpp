@@ -16,6 +16,7 @@
 #include "CTrailBuffer.h"
 #include "CRectEffects.h"
 #include "HIerarchyNode.h"
+#include "CState.h"
 
 
 CUnit_Valkyrie::CUnit_Valkyrie()
@@ -176,6 +177,16 @@ void CUnit_Valkyrie::SetUp_ReserveState(UNIT_TYPE eUnitType)
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_FIONA;
 		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_FIONA;
 
+		m_tAIChangeType.eAIPathFindDefaultState = AI_STATE_PATHNAVIGATION_DEFAULT_FIONA_R;
+		m_tAIChangeType.eAICommbatDefaultState = AI_STATE_COMBAT_DEFAULT_FIONA_R;
+		m_tAIChangeType.eAIReviveDefaultState = AI_STATE_COMMON_REVIVE_AI;
+		m_tAIChangeType.eAICannonDefaultState = AI_STATE_CANNON_AI;
+		m_tAIChangeType.eAIGlidingDefaultState = AI_STATE_GLIDING_AI;
+		m_tAIChangeType.eAIPatrolDefaultState = AI_STATE_PATROL_DEFAULT_FIONA_R;
+		m_tAIChangeType.eAIGoTirrgerDefaultState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_FIONA;
+		m_tAIChangeType.eAIChangeDeafultState = AI_STATE_COMMON_CHANGE_HERO;
+
+
 		break;
 
 
@@ -203,20 +214,22 @@ void CUnit_Valkyrie::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		//상태변경
 		eNewState = AI_STATE_PATROL_DEFAULT_FIONA_R;
 		break;
-	case eBehaviorType::eFollow:
+	case eBehaviorType::ePadenCannonInteract:
 		//상태변경
+		eNewState = AI_STATE_CANNON_AI;
 		break;
-	case eBehaviorType::eAttack:
+	case eBehaviorType::eCombat:
 		//상태변경
 		eNewState = AI_STATE_COMBAT_DEFAULT_FIONA_R;
 
 		break;
-	case eBehaviorType::ePathNavigation:
+	 
+	case eBehaviorType::ePathFinding:
 		//상태변경
 		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_FIONA_R;
 		break;
 
-	case eBehaviorType::eResurrect:
+	case eBehaviorType::eRevive:
 		//상태변경
 		eNewState = AI_STATE_COMMON_REVIVE_AI;
 		break;
@@ -225,6 +238,15 @@ void CUnit_Valkyrie::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		//상태변경
 		eNewState = AI_STATE_COMMON_CHANGE_HERO;
 		break;
+
+	case eBehaviorType::eGliding:
+		eNewState = AI_STATE_GLIDING_AI;
+		break;
+
+	case eBehaviorType::eCatchCannon:
+		//eNewState = AI_STATE_BOUNE_WARRIOR_R;
+		break;
+
 	default:
 		assert(0);
 		break;
@@ -673,9 +695,10 @@ void CUnit_Valkyrie::OnDisable()
 	{
 		for(auto& elem : m_TransformParticles)
 			static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+
+		m_TransformParticles.clear();
 	}
 
-	m_TransformParticles.clear();
 
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	vPos.y += 0.5f;

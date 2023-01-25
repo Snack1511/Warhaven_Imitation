@@ -16,7 +16,7 @@ private:
 	CState_Common_Revive_AI();
 	virtual ~CState_Common_Revive_AI();
 
-	enum PHASE {BEGIN, LOOP, PHASE_END, DANCE, PHASE_NONE};
+	enum PHASE {eFOLLOW, BEGIN, LOOP, PHASE_END, DANCE, PHASE_NONE};
 
 public:
 	static CState_Common_Revive_AI* Create();
@@ -29,7 +29,7 @@ public:
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
 private:
-	PHASE	m_eCurPhase = BEGIN;
+	PHASE	m_eCurPhase = eFOLLOW;
 	_float4 m_vPos;
 	CGameObject* m_pAbjPlayer = nullptr;
 

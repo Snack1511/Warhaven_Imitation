@@ -19,6 +19,7 @@
 #include "CTrailBuffer.h"
 #include "Easing_Utillity.h"
 #include "CUI_UnitHUD.h"
+#include "CSnipeArrow.h"
 
 CProjectile::CProjectile()
 {
@@ -66,7 +67,7 @@ void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint&
 
 		m_pLeftHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pLeftBoneName);
 		m_pRightHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pRightBoneName);
-		On_ChangePhase(eLOOP);
+		On_ChangePhase(eCATCHED);
 
 		COL_GROUP_CLIENT eColType = (COL_GROUP_CLIENT)m_pCollider->Get_ColIndex();
 
@@ -83,8 +84,6 @@ void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint&
 
 		else if (eColType == COL_BLUEGUARDBREAK)
 			m_pCollider->Set_ColIndex(COL_REDGUARDBREAK);
-
-
 
 		else if (eColType == COL_REDGROGGYATTACK)
 			m_pCollider->Set_ColIndex(COL_BLUEGROGGYATTACK);
@@ -111,10 +110,20 @@ void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint&
 	}
 	else
 	{
+		if (m_bHit)
+			return;
+
+		m_bHit = true;
+
 		m_pOwnerUnit->CallBack_CollisionEnter(pOtherObj, eOtherColType, eMyColType, vHitPos);
 		pOtherObj->CallBack_CollisionEnter(m_pOwnerUnit, eMyColType, eOtherColType, vHitPos);
+		_bool bHeadShot = false;
+		if (eOtherColType == COL_REDHITBOX_HEAD || eOtherColType == COL_BLUEHITBOX_HEAD)
+			bHeadShot = true;
 
-		Hit_Unit(pOtherObj, vHitPos);
+		Hit_Unit(pOtherObj, vHitPos, bHeadShot);
+
+		
 	}
 
 }
@@ -326,6 +335,7 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 			m_pTrailEffect->TurnOn_TrailEffect(false);
 			m_pTrailEffect2->TurnOn_TrailEffect(false);
 		}
+
 		break;
 	case eSTICK:
 		DISABLE_COMPONENT(m_pCollider);
@@ -334,7 +344,13 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 			m_pTrailEffect->TurnOn_TrailEffect(false);
 			m_pTrailEffect2->TurnOn_TrailEffect(false);
 		}
+
 		Safe_release(m_pActor);
+		break;
+
+	case eCATCHED:
+		m_pCurStickBone = m_pLeftHandBone;
+		break;
 	case Client::CProjectile::eEND:
 		break;
 	default:
@@ -495,6 +511,7 @@ void CProjectile::My_LateTick()
 
 			m_pTransform->Make_WorldMatrix();
 		}
+
 		break;
 	case Client::CProjectile::eRANDOM:
 	{
@@ -526,6 +543,8 @@ void CProjectile::My_LateTick()
 
 		if (1.5f < m_fTimeAcc)
 		{
+			CFunctor::Play_Sound(L"Effect_Meteor_Shoot", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS));
+
 			On_ChangePhase(eChase);
 			m_fTimeAcc = 0.f;
 
@@ -549,7 +568,7 @@ void CProjectile::My_LateTick()
 
 		_float4 vLook = m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
 
-		if (0.f >= m_pTargetUnit->Get_Status().fHP)
+		if (0.f >= m_pTargetUnit->Get_Status().fHP || !m_pTargetUnit->Is_Valid())
 		{
 			if (0.5f > vLook.Length())
 				DISABLE_GAMEOBJECT(this);		
@@ -628,13 +647,49 @@ void CProjectile::My_LateTick()
 		if (!m_pHitUnit->Is_Valid())
 			DISABLE_GAMEOBJECT(this);
 
-		_float4x4 matCurWorld = m_pCurStickBone->Get_BoneMatrix();
-		matCurWorld = m_matHitOffset * matCurWorld;
+		if (m_pCurStickBone)
+		{
+			_float4x4 matCurWorld = m_pCurStickBone->Get_BoneMatrix();
+			matCurWorld = m_matHitOffset * matCurWorld;
 
-		m_pTransform->Get_Transform().matMyWorld = matCurWorld;
-		m_pTransform->Make_WorldMatrix();
+			m_pTransform->Get_Transform().matMyWorld = matCurWorld;
+			m_pTransform->Make_WorldMatrix();
+		}
+		else
+			DISABLE_GAMEOBJECT(this);
+
+
 	}
 		break;
+
+	case Client::CProjectile::eCATCHED:
+
+	{
+		_float4 vTargetPos;
+		memcpy(&vTargetPos, m_pCurStickBone->Get_BoneMatrix().m[3], sizeof(_float4));
+
+		vTargetPos += m_pOwnerUnit->Get_Transform()->Get_World(WORLD_LOOK) * 1.3f;
+
+		_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
+
+		_float4 vDir = vTargetPos - vCurPos;
+		_float fLength = vDir.Length();
+
+		_float fSpeed = 4.f;
+
+		vCurPos += vDir * fSpeed * fDT(0);
+
+		m_pTransform->Set_World(WORLD_POS, vCurPos);
+		m_pTransform->Set_LerpLook(m_pOwnerUnit->Get_Transform()->Get_World(WORLD_RIGHT), 0.4f);
+		m_pTransform->Make_WorldMatrix();
+
+	}
+		
+
+		break;
+
+
+
 	case Client::CProjectile::eEND:
 		break;
 	default:
@@ -647,11 +702,13 @@ void CProjectile::OnEnable()
 {
 	__super::OnEnable();
 	DISABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
+	m_bHit = false;
 }
 
 void CProjectile::OnDisable()
 {
 	__super::OnDisable();
+	m_bHit = false;
 
 	Safe_release(m_pActor);
 	m_fLoopTimeAcc = 0.f;
@@ -664,29 +721,48 @@ void CProjectile::OnDisable()
 
 }
 
-void CProjectile::Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos)
+void CProjectile::Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos, _bool bHeadShot)
 {
-	_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
-	_float4 vDir = (Get_ArrowHeadPos() - vHitPos);
-	vCurPos -= vDir * 0.5f;
-
-	m_pTransform->Set_World(WORLD_POS, vCurPos);
-	m_pTransform->Make_WorldMatrix();
-
+	//bHeadShot = true;
 
 	m_pHitUnit = pHitUnit;
 	On_ChangePhase(eSTICK);
-	m_pCurStickBone = GET_COMPONENT_FROM(pHitUnit, CModel)->Find_HierarchyNode("0B_COM");
-	
-	//맞은 순간에 worldmat과 맞은 놈의 월드 inverse
+
+	string strBoneName = "0B_Spine1";
+
+	if (bHeadShot)
+		strBoneName = "0B_Head";
+
+	m_pCurStickBone = GET_COMPONENT_FROM(pHitUnit, CModel)->Find_HierarchyNode(strBoneName.c_str());
+
+	if (!m_pCurStickBone)
+		return;
+
+
+
+	//1. 화살이 맞으면 일단 matInv를 곱해서 로컬로 들어가자
 	_float4x4 matWorldInv = m_pCurStickBone->Get_BoneMatrix().Inverse();
 	m_matHitOffset = m_pTransform->Get_WorldMatrix() * matWorldInv;
 
-	/**((_float4*)&m_matHitOffset.m[0]) = ((_float4*)&m_matHitOffset.m[0])->Normalize();
-	*((_float4*)&m_matHitOffset.m[1]) = ((_float4*)&m_matHitOffset.m[1])->Normalize();
-	*((_float4*)&m_matHitOffset.m[2]) = ((_float4*)&m_matHitOffset.m[2])->Normalize();*/
+
+	//2. 화살 방향도 돌아가야함
+	_float4 vDir = (Get_ArrowHeadPos() - vHitPos);
+	vDir = vDir.MultiplyNormal(matWorldInv);
+
+	//3. 화살의 로컬 매트릭스는 x랑 z는 지우고 dir 방향으로 밀기
+	_float4 vHitLocalPos = ZERO_VECTOR;
+	vHitLocalPos -= vDir.Normalize() * 100.f;
+
+	
+
+	memcpy(m_matHitOffset.m[3], &vHitLocalPos, sizeof(_float4));
 
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Blood", vHitPos);
+
+	CSnipeArrow* pSArrow = dynamic_cast<CSnipeArrow*>(this);
+
+	if(pSArrow)
+		pSArrow->Turn_Effect(false);
 
 
 } 

@@ -13,6 +13,7 @@
 
 #include "CProjectile.h"
 #include "CAnimWeapon_Crow.h"
+#include "CUnit_Qanda.h"
 
 CAttack_Qanda::CAttack_Qanda()
 {
@@ -216,6 +217,8 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 					CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Charge_End",
 						pQanda->Get_Crow(), ZERO_VECTOR);
 
+					CFunctor::Play_Sound(L"Effect_Steam", CHANNEL_EFFECTS, 1.f);
+
 					pQanda->Turn_ChargeEffect(false);
 
 					m_bCharge = false;
@@ -329,7 +332,7 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		{
 			_float4 vProjPos = CUtility_Transform::Get_ProjPos(vAimPos);
 			CUser::Get_Instance()->Set_CrossHairPos(vProjPos);
-			static_cast<CUnit_Qanda*>(pOwner)->ReMap_Trail(vTrailPos);
+			static_cast<CUnit_Qanda*>(pOwner)->ReMap_Trail(vAimPos);
 		}
 	}
 
@@ -696,10 +699,10 @@ _bool CAttack_Qanda::Check_CrowRay(_float4* pTraillPos, _float4* pAimPos, CUnit*
 	//}
 
 
-	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, &fMinDist, vStartPos, vDir, fMaxDistance))
-		*pTraillPos = vFinalHitPos;
-	else
-		return false;
+	GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, &fMinDist, vStartPos, vDir, fMaxDistance);
+
+	
+	*pAimPos = vFinalHitPos;
 
 	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
 	list<PxController*> listPxControllers;
@@ -736,7 +739,7 @@ _bool CAttack_Qanda::Check_CrowRay(_float4* pTraillPos, _float4* pAimPos, CUnit*
 
 	if (GAMEINSTANCE->Shoot_RaytoControllers(listPxControllers, fMinDist, &vFinalHitPos, vStartPos, vDir, fMaxDistance))
 	{
-		if (*pTraillPos != vFinalHitPos)
+		if (*pAimPos != vFinalHitPos)
 		{
 			CUser::Get_Instance()->Set_ArcherPoint(true);
 		}

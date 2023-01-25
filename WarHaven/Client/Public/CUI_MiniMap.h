@@ -18,10 +18,12 @@ public:
 	virtual void Set_Shader_Guage_PointA(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_Guage_PointR(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_Guage_PointC(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_Guage_PointE(CShader* pShader, const char* pConstName);
 
 public:
 	void SetActive_MiniMap(_bool value);
 
+	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_ConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime);
 	void Set_GaugeColor(_bool IsMainTeam, _uint iPointIdx);
 	void Set_PointColor(_bool IsMainTeam, _uint iPoinIdx);
@@ -43,11 +45,16 @@ private:
 
 	CUI_Object* m_pMiniMap = nullptr;
 
-	enum Point { Point_A, Point_R, Point_C, Point_End };
+	enum Point { Point_A, Point_R, Point_C, Point_E, Point_End };
 	enum MiniMapPoint { MP_Outline, MP_Gauge, MP_Text, MP_End };
 
 	CUI_Object* m_pMiniMapPoint[MP_End];
 	CUI_Object* m_pArrMiniMapPoint[Point_End][MP_End];
+
+private:
+	eTEAM_TYPE m_eTeamType = eTEAM_TYPE::eCOUNT;
+
+	void Set_TeamType();
 
 private:
 	CUI_Object* m_pPlayerIcon[8];
@@ -68,6 +75,7 @@ private:
 	_float m_fHwaraOffSetY = 230.f;
 
 	_bool m_bIsBattle = false;
+	_uint m_iStartCount = 0;
 
 private:
 	_float m_fConquestTime[Point_End];

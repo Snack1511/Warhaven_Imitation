@@ -12,6 +12,7 @@
 #include "CPath.h"
 #include "CDebugObject.h"
 #include "Transform.h"
+#include "CUnit.h"
 CWindow_AI::CWindow_AI()
 {
 }
@@ -186,20 +187,24 @@ void CWindow_AI::Func_AISetting()
     string strBehaviorName;
     string strPathName;
 
-    if (pBehavior) {
+    if (pBehavior) 
         strBehaviorName = CFunctor::To_String(pBehavior->Get_BehaviorName());
-    }
-    else
-    {
-        strBehaviorName = u8"행동 없음";
-    }
+    else strBehaviorName = u8"행동 없음";
+  
     if (pPath)
-    {
         strPathName = pPath->Get_PathName();
-    }
+    else strPathName = u8"패스 없음";
+
+    CUnit* CurUnit = m_pCurSelectPlayer->Get_CurrentUnit();
+    _int StateIndex = -1;
+    if (CurUnit)
+        StateIndex = _uint(CurUnit->Get_CurState());
+
     Display_Data(string(u8"현재 행동"), strBehaviorName.c_str());
 
     Display_Data(string(u8"현재 패스"), strPathName.c_str());
+
+    Display_Data(string(u8"현재 상태"), to_string(StateIndex).c_str());
     
     if (ImGui::CollapsingHeader(u8"경로찾기 테스트"))
     {
@@ -520,7 +525,7 @@ void CWindow_AI::ListUp_BehaviorConditions(const char* szListName, const char* L
     }
     else
     {
-        vector<wstring>& rhsConditionNameVector = pBehavior->Get_ConditionNames(CBehavior::eConditionType(iConditionType));
+        vector<wstring>& rhsConditionNameVector = pBehavior->Get_ConditionNames(eBehaviorConditionType(iConditionType));
         if (ImGui::BeginListBox(ListID, Size))
         {
             if (rhsConditionNameVector.empty())
@@ -538,7 +543,7 @@ void CWindow_AI::ListUp_BehaviorConditions(const char* szListName, const char* L
                     if (ImGui::Selectable(CFunctor::To_String(Name).c_str(), bSelect))
                     {
                         rhsConditionName = Name;
-                        m_pCurSelectBehavior->Delete_Condition(rhsConditionName, CBehavior::eConditionType(iConditionType));
+                        m_pCurSelectBehavior->Delete_Condition(rhsConditionName, eBehaviorConditionType(iConditionType));
                     }
                     //m_CurSelectIncludeCondition.strConditionName = rhsConditionName;
                     //lstrcpy(m_CurSelectIncludeCondition.szConditionName, Name.c_str());
@@ -571,7 +576,7 @@ void CWindow_AI::ListUp_BehaviorConditions(const char* szListName, const char* L
             {
                 if (ImGui::Selectable(CFunctor::To_String(Name).c_str()))
                 {
-                    m_pCurSelectBehavior->Add_Condition(Name, CBehavior::eConditionType(iConditionType));
+                    m_pCurSelectBehavior->Add_Condition(Name, eBehaviorConditionType(iConditionType));
                 }
                 //lstrcpy(m_CurSelectIncludeCondition.szConditionName, Name.c_str());
                 //m_CurSelectExcludeCondition.iConditionType = iConditionType;
@@ -585,7 +590,7 @@ void CWindow_AI::ListUp_BehaviorConditions(const char* szListName, const char* L
     }
     if (ImGui::Button(u8"조건 초기화")) 
     {
-        pBehavior->Clear_Condition(CBehavior::eConditionType(iConditionType));
+        pBehavior->Clear_Condition(eBehaviorConditionType(iConditionType));
     }
 }
 
@@ -619,17 +624,17 @@ void CWindow_AI::Func_ChangeBehaviorCondition()
         ListUp_BehaviorConditions("WhenCondition", "##WhenConditions",
             vBehaviorSize, m_pCurSelectBehavior,
             m_strCurSelectWhenCondition,
-            _uint(CBehavior::eConditionType::eWhen));
+            _uint(eBehaviorConditionType::eWhen));
 
         ListUp_BehaviorConditions("WhatCondition", "##WhatConditions",
             vBehaviorSize, m_pCurSelectBehavior,
             m_strCurSelectWhatCondition, 
-            _uint(CBehavior::eConditionType::eWhat));
+            _uint(eBehaviorConditionType::eWhat));
 
         ListUp_BehaviorConditions("BehaviorTick", "##BehaviorTick",
             vBehaviorSize, m_pCurSelectBehavior,
             m_strCurSelectBehaviorTick,
-            _uint(CBehavior::eConditionType::eTick));
+            _uint(eBehaviorConditionType::eTick));
     }
 
 }
@@ -811,7 +816,7 @@ void CWindow_AI::Add_Condition(const ImGuiPayload* pPayload)
     if (nullptr == pBehavior)
         return;
 
-    pBehavior->Add_Condition(strConditionName, CBehavior::eConditionType(iConditionType));
+    pBehavior->Add_Condition(strConditionName, eBehaviorConditionType(iConditionType));
 
 }
 

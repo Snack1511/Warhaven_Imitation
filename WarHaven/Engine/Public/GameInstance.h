@@ -66,11 +66,15 @@ public: /* For. Input_Device */
 	_long	Get_DIMouseMoveState(MOUSEMOVE eMouseMove);
 
 public: /* For. Sound_Device */
-	HRESULT		Load_SoundFile(wstring wstrFolderPath);
 
+	_uint		Play_LoopSound(const _tchar* strSoundKey, CHANNEL_GROUP iGroupIndex, _float fVolumeRatio = 1.f);
+	void		Stop_Sound(CHANNEL_GROUP eType, _uint iIndex);
+
+	HRESULT		Load_SoundFile(wstring wstrFolderPath);
 
 	void		Play_Sound(const _tchar* strSoundKey, CHANNEL_GROUP iGroupIndex, _float fVolumeRatio = 1.f);
 	void		Play_BGM(const _tchar* strSoundKey);
+	void		Play_BGM(const _tchar* strSoundKey, _float fVolume);
 
 	void		Stop_Sound(CHANNEL_GROUP eType);
 	void		Stop_All();
@@ -138,6 +142,14 @@ public:	/* For. Render_Manager */
 	void	Start_MotionBlur(_float fTime);
 
 	void	Set_SunUV(_float2 vSunUV) { m_pRenderManager->Set_SunUV(vSunUV); }
+
+	void	Set_PBR(_bool b);
+	void	Set_SSAO(_float f);
+	void	Set_Brightness(_float f);
+	void	Set_Contrast(_float f);
+	void	Set_Saturation(_float f);
+	void	Set_ShadowQuality(_float f);
+	void	Set_DOFPower(_float f);
 
 
 

@@ -6,6 +6,7 @@
 
 #include "CTrigger_BootCamp.h"
 #include "CTrigger_Stage.h"
+#include "CTrigger_Glider.h"
 
 #include "CPlayer.h"
 
@@ -18,6 +19,7 @@
 #include "CPlayerInfo_SandBack.h"
 #include "CPlayerInfo_Default.h"
 #include "CPlayerInfo_Leader.h"
+#include "CPlayerInfo_Sub.h"
 
 #include "CSquad.h"
 #include "CTeamConnector.h"
@@ -27,6 +29,8 @@
 #include "CPath.h"
 
 #include "CCannon.h"
+
+#include "CGame_Manager_HR.h"
 
 #pragma region AI 성향
 #include "CTable_Conditions.h"
@@ -75,6 +79,12 @@ HRESULT CGameSystem::Initialize()
 	}
 
 	if (FAILED(m_pPositionTable->Load_Position("Position_Hwara")))
+	{
+		Call_MsgBox(L"Failed to Load_Position : CGameSystem");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pPositionTable->Load_Position("Hwara_Glide")))
 	{
 		Call_MsgBox(L"Failed to Load_Position : CGameSystem");
 		return E_FAIL;
@@ -180,17 +190,17 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 
 		// 기본 코드
 		// AI_STATE_DEFAULT_IDLE_WARRIOR_R
-		//pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_WARRIOR_R);
+		pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_WARRIOR_R);
 		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
 
 		// 테스트용 샌드백
 		//pEnemy->Reserve_State(STATE_IDLE_WARRIOR_L_AI_ENEMY);
 		// AI 바보만드는 코드 (체력 10만)
-		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_idiot);
+		pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_idiot);
 
 		// 궁수 테스트
-		pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_ARCHER_R);
-		pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
+		//pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_ARCHER_R);
+		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
 
 		// 힐러 테스트
 		//pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_PRIEST);
@@ -651,7 +661,7 @@ HRESULT CGameSystem::On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyOb
 #endif // _DEBUG
 
 	/* 플레이어 모두 생성해서 분류까지 완료 */
-	if (FAILED(On_ReadyTirggers_Paden(vecReadyObjects)))
+	if (FAILED(On_ReadyTriggers_Paden(vecReadyObjects)))
 		return E_FAIL;
 
 #ifdef _DEBUG
@@ -699,13 +709,13 @@ HRESULT CGameSystem::On_ReadyPlayers_Stage(vector<pair<CGameObject*, _uint>>& ve
 		if (nullptr == pPlayerInfo)
 			continue;
 
-		if (m_mapPersonality.empty())
-			pPlayerInfo->Set_Personality(CAIPersonality::Create(L"Empty_Personality", m_pConditionTable));
-		else
-		{
-			//Personality 랜덤 할당
-			//Leader의 경우 특징적인 Personality할당
-		}
+		//if (m_mapPersonality.empty())
+		//	//pPlayerInfo->Set_Personality(CAIPersonality::Create(L"Empty_Personality", m_pConditionTable));
+		//else
+		//{
+		//	//Personality 랜덤 할당
+		//	//Leader의 경우 특징적인 Personality할당
+		//}
 
 		CPlayer* pPlayer = pPlayerInfo->Make_Player();
 		if (!pPlayer)
@@ -819,7 +829,7 @@ HRESULT CGameSystem::On_ReadyPlayers_Stage(vector<pair<CGameObject*, _uint>>& ve
 	return S_OK;
 }
 
-HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+HRESULT CGameSystem::On_ReadyTriggers_Paden(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
 	//0. 양쪽 진영
 	CTrigger* pTrigger = nullptr;
@@ -999,6 +1009,7 @@ HRESULT CGameSystem::On_ReadyDestructible_Paden(vector<pair<CGameObject*, _uint>
 	pCannon->Get_Transform()->Set_World(WORLD_POS, vPos);
 	pCannon->Get_Transform()->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
 	pCannon->Get_Transform()->Make_WorldMatrix();
+	m_pCannon = pCannon;
 	vecReadyObjects.push_back(make_pair(pCannon, GROUP_PROP));
 
 
@@ -1101,14 +1112,18 @@ HRESULT CGameSystem::On_Update_Paden()
 			//반대쪽 팀이 깎일 팀
 			pMinusScoreTeam = m_pTeamConnector[j];
 
-			cout << m_pTeamConnector[j]->m_iScore << endl;
 
 			break;
 		}
 	}
 
+	
+
 	if (pMinusScoreTeam)
 	{
+		if (KEY(H, TAP))
+			pMinusScoreTeam->Minus_Score();
+
 		m_fScoreAcc += fDT(0);
 
 		if (m_fScoreAcc >= m_fScoreMinusTime)
@@ -1117,6 +1132,33 @@ HRESULT CGameSystem::On_Update_Paden()
 
 			if (!pMinusScoreTeam->Minus_Score())
 				On_FinishGame(pMinusScoreTeam);
+			else
+			{
+				_int iScore = pMinusScoreTeam->Get_Score();
+
+				if (pMinusScoreTeam->m_bIsMainPlayerTeam)
+				{
+					if (iScore == 50)
+					{
+						CFunctor::Play_Sound(L"UI_ScoreRemain50", CHANNEL_UI, 1.f);
+					}
+					if (iScore == 20)
+					{
+						CFunctor::Play_Sound(L"UI_ScoreRemain20", CHANNEL_UI, 1.f);
+					}
+				}
+				else
+				{
+					if (iScore == 50)
+					{
+						CFunctor::Play_Sound(L"UI_EnemyRemain50", CHANNEL_UI, 1.f);
+					}
+					if (iScore == 20)
+					{
+						CFunctor::Play_Sound(L"UI_EnemyRemain20", CHANNEL_UI, 1.f);
+					}
+				}
+			}
 
 		}
 	}
@@ -1163,6 +1205,16 @@ void CGameSystem::On_StartGame()
 
 	/* 리더 먼저 */
 	_uint Index = 0;
+
+	/*쓰레드 준비 펴*/
+	CGame_Manager_HR::Get_Instance()->Ready_AllThreads();
+	list<CPlayer*>	listThreePlayers;
+
+#define ADDPLAYER(player) listThreePlayers.push_back(player); if (listThreePlayers.size() == 5) {\
+	CGame_Manager_HR::Get_Instance()->Create_RayThread(listThreePlayers);\
+	listThreePlayers.clear();\
+	}\
+
 	for (auto& elem : m_mapAllPlayers)
 	{
 		/* Leader가 아니면 건너 뛰기 */
@@ -1190,7 +1242,10 @@ void CGameSystem::On_StartGame()
 
 		/* ai들은 랜덤 선택 함수 호출 */
 		if (!elem.second->m_bIsMainPlayer)
+		{
 			elem.second->Choose_Character();
+			//ADDPLAYER(elem.second->m_pMyPlayer);
+		}
 
 		/* 자기 진영에서 포지션 가져오기 */
 		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
@@ -1204,9 +1259,10 @@ void CGameSystem::On_StartGame()
 #else
 	for (auto& elem : m_mapAllPlayers)
 	{
-		/* Default가 아니면 건너 뛰기 */
-		if (!dynamic_cast<CPlayerInfo_Default*>(elem.second))
+		/* Default나 Sub가 아니면 건너 뛰기 */
+		if (!dynamic_cast<CPlayerInfo_Default*>(elem.second) && !dynamic_cast<CPlayerInfo_Sub*>(elem.second))
 			continue;
+
 
 		/*static _uint g_iIndex = 0;
 
@@ -1224,6 +1280,7 @@ void CGameSystem::On_StartGame()
 	//	/* 자기 진영에서 포지션 가져오기 */
 		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
 		elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
+		//ADDPLAYER(elem.second->m_pMyPlayer);
 
 	}
 
@@ -1253,16 +1310,24 @@ void CGameSystem::On_FinishGame(CTeamConnector* pTeamConnector)
 			pPlayer->On_FinishGame(pTeamConnector);
 		}
 	}
+	GAMEINSTANCE->Stop_Sound(CH_BGM);
 
 	if (pTeamConnector->IsMainPlayerTeam())
 	{
 		// 패배
 		CUser::Get_Instance()->SetActive_Result(1, true);
+		GAMEINSTANCE->Play_BGM(L"BGM_Lose");
+		//CFunctor::Play_Sound(, CHANNEL_BGM, 1.f);
+		CFunctor::Play_Sound(L"UI_Lose", CHANNEL_UI, 1.f);
 	}
 	else
 	{
 		// 승리
 		CUser::Get_Instance()->SetActive_Result(0, true);
+		GAMEINSTANCE->Play_BGM(L"BGM_Win");
+		//CFunctor::Play_Sound(L"BGM_Win", CHANNEL_BGM, 1.f);
+		CFunctor::Play_Sound(L"UI_Win", CHANNEL_UI, 1.f);
+
 	}
 }
 
@@ -1283,7 +1348,7 @@ HRESULT CGameSystem::On_ReadyHwara(vector<pair<CGameObject*, _uint>>& vecReadyOb
 #endif // _DEBUG
 
 	/* 플레이어 모두 생성해서 분류까지 완료 */
-	if (FAILED(On_ReadyTirggers_Hwara(vecReadyObjects)))
+	if (FAILED(On_ReadyTriggers_Hwara(vecReadyObjects)))
 		return E_FAIL;
 
 #ifdef _DEBUG
@@ -1300,7 +1365,7 @@ HRESULT CGameSystem::On_ReadyHwara(vector<pair<CGameObject*, _uint>>& vecReadyOb
 	return S_OK;
 }
 
-HRESULT CGameSystem::On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+HRESULT CGameSystem::On_ReadyTriggers_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
 	//0. 양쪽 진영
 	CTrigger* pTrigger = nullptr;
@@ -1313,6 +1378,13 @@ HRESULT CGameSystem::On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& v
     m_mapAllTriggers.emplace(Convert_ToHash(strTriggerName), pTrigger);\
     READY_GAMEOBJECT(pTrigger, GROUP_TRIGGER);
 
+#define ADD_GLIDETRIGGER(name, radius)   strTriggerName = name;\
+    pTrigger = CTrigger_Glider::Create(strTriggerName, radius);\
+    if (!pTrigger)\
+        return E_FAIL;\
+    m_mapAllTriggers.emplace(Convert_ToHash(strTriggerName), pTrigger);\
+    READY_GAMEOBJECT(pTrigger, GROUP_TRIGGER);
+
 	_float fTriggerSize = 6.f;
 
 	ADD_TRIGGER("Hwara_RedTeam_Start", 2.f, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eSTART);
@@ -1320,7 +1392,6 @@ HRESULT CGameSystem::On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& v
 
 	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_BlueTeam_Start")]);
 	m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_RedTeam_Start")]);
-
 
 	//1. 메인 거점
 	ADD_TRIGGER("Hwara_Center", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER);
@@ -1353,9 +1424,17 @@ HRESULT CGameSystem::On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& v
 	TRIGGER_STAGE("Hwara_Final_Red")->Set_DominionEffect(pDominionEffect_F);
 
 
-	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_Final_Blue")]);
+	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_Final_Red")]);
 
-	m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_Final_Red")]);
+	m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_Final_Blue")]);
+
+
+	//1. 글라이딩 트리거
+	ADD_GLIDETRIGGER("Glide_Center_0", 1.f);
+	ADD_GLIDETRIGGER("Glide_Side_0", 1.f);
+	ADD_GLIDETRIGGER("Glide_Side_1", 1.f);
+	ADD_GLIDETRIGGER("Glide_Side_2", 1.f);
+	ADD_GLIDETRIGGER("Glide_Side_3", 1.f);
 
 	return S_OK;
 }
@@ -1534,8 +1613,10 @@ CPath* CGameSystem::Clone_RandomRespawnPath(CAIController* pOwnerController, eTE
 
 		}
 		else
-			strPathName = "Hwara_Respawn_ToCenter";
+			strPathName = "Hwara_Respawn_ToCenter_Glide_0";
 	}
+
+
 
 	CPath* pClonePath = Clone_Path(strPathName, pOwnerController);
 
@@ -1572,6 +1653,120 @@ CPath* CGameSystem::Clone_CenterPath(CAIController* pOwnerController, eTEAM_TYPE
 	pOwnerController->Set_NewPath(pClonePath);
 
 	return pClonePath;
+}
+
+CPath* CGameSystem::Clone_RandomReleasePath(_float4 vCurPos)
+{
+	eSTAGE_TYPE eEnum = eSTAGE_TYPE::ePADEN_RELEASE;
+
+	if (m_eCurStageType == eSTAGE_HWARA)
+		eEnum = eHWARA_RELEASE;
+
+	_float fMinDist = 9999.f;
+	CPath* pPath = nullptr;
+
+	for (auto& elem : m_mapAllPathes[eEnum])
+	{
+		_float4 vFirstPos = elem.second->Get_FirstPos();
+
+		/* Ray 쏴서 가능한지 확인 */
+		_float4 vRayStartPos = vCurPos;
+		_float4 vDir = vFirstPos - vRayStartPos;
+		vRayStartPos.y += 0.5f;
+
+		
+
+		_float fDist = (vCurPos - vFirstPos).Length();
+		if (fMinDist > fDist)
+		{
+			if (GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, vDir.Length()))
+				continue;
+
+			fMinDist = fDist;
+			pPath = elem.second;
+		}
+	}
+
+	if (pPath)
+		return pPath->Clone();
+
+	//MessageBox(0, L"Release Path 없", TEXT("System Error"), MB_OK);
+
+	return nullptr;
+}
+
+CPath* CGameSystem::Clone_RandomNearestPath(_float4 vCurPos, CPlayer* pPlayer)
+{
+
+
+	_float fMinDist = 9999.f;
+	CPath* pPath = nullptr;
+	for (auto& elem : m_mapAllPathes[m_eCurStageType])
+	{
+		_float4 vFirstPos = elem.second->Get_FirstPos();
+
+		/* Ray 쏴서 가능한지 확인 */
+		_float4 vRayStartPos = vCurPos;
+		_float4 vDir = vFirstPos - vRayStartPos;
+		_float fLength = vDir.Length();
+
+
+		vRayStartPos.y += 0.5f;
+
+
+		_float fDist = (vCurPos - vFirstPos).Length();
+		if (fMinDist > fDist)
+		{
+			if (GAMEINSTANCE->Shoot_RaytoStaticActors(nullptr, nullptr, vRayStartPos, vDir, fLength))
+				continue;
+
+			fMinDist = fDist;
+			pPath = elem.second;
+		}
+	}
+
+	
+	_bool bHwara = (m_eCurStageType == eSTAGE_HWARA);
+
+	if (pPath && bHwara)
+	{
+		string strPathName = pPath->Get_PathName();
+		_bool bCenterStart = (0 <= _int(strPathName.find("Center_To")));//못찾음 --> 넘겨
+		CTeamConnector* pTeamConnector = pPlayer->Get_Team();
+		_bool bConquerCenter = pTeamConnector->Has_CenterTrigger();
+		if ((bCenterStart && bConquerCenter))
+		{
+			//팀 찾고
+			_bool bRedTeam = (pTeamConnector->Get_TeamType() == eTEAM_TYPE::eRED);
+			//목적지가 맞는지
+			string strTargetName = (bRedTeam) ? "ToBlue" : "ToRed";
+			//찾고
+			_bool bGoToTarget = (0 <= _int(strPathName.find(strTargetName.c_str())));
+			auto ReUpdatePath = [](string strTargetName, map<_hashcode, CPath*>& PathMap, CPath*& pPath) {
+				auto Elem = PathMap.find(Convert_ToHash(strTargetName));
+				if (Elem != PathMap.end())
+				{
+					CPath* NewPath = Elem->second;
+					if (NewPath)
+						pPath = NewPath;
+				}
+			};
+			if (bCenterStart &&!bGoToTarget)
+			{
+				string ResultName = "Hwara_Center_";
+				ResultName += strTargetName;
+				ResultName += "_0";
+				ReUpdatePath(ResultName, m_mapAllPathes[eSTAGE_HWARA], pPath);
+			}
+
+		}
+	}
+
+
+	if (pPath)
+		return pPath->Clone();
+
+	return nullptr;
 }
 
 CPath* CGameSystem::Get_NearPath(_float4 vPosition)
@@ -1614,16 +1809,28 @@ CTrigger* CGameSystem::Find_Trigger(string strTriggerKey)
 
 void CGameSystem::Enable_HwaraFinalTrigger(eTEAM_TYPE eTeamType)
 {
+	_bool bConquestEnemy = false;
+
+	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+	auto iter = mapPlayers.begin();
+	eTEAM_TYPE eMainTeam = iter->second->Get_Team()->Get_TeamType();
+	bConquestEnemy = eMainTeam == eTeamType ? true : false;
+
 	if (eTeamType == eTEAM_TYPE::eBLUE)
 	{
 		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Red"));
 		ENABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Blue"));
-	}
 
+		/*if (!bConquestEnemy)
+			CUser::Get_Instance()->Enable_ConquestPopup(2);*/
+	}
 	else
 	{
 		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Blue"));
 		ENABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Red"));
+
+		/*if (!bConquestEnemy)
+			CUser::Get_Instance()->Enable_ConquestPopup(2);*/
 	}
 }
 
@@ -1661,12 +1868,21 @@ HRESULT CGameSystem::SetUp_AllPlayerInfos()
 	m_vecPlayerInfoNames.push_back(pPlayerInfo->m_tPlayerInfo.wstrName)
 
 	_uint iDefaultCnt = 0;
-	for (_uint i = 0; i < 12; ++i)
+	for (_uint i = 0; i < 6; ++i)
 	{
-		wstring wstrName = L"DefaultPlayer_";
-		wstrName += to_wstring(iDefaultCnt++);
-		ADD_DEFAULTINFO(wstrName);
+		pPlayerInfo = CPlayerInfo_Default::Create(); 
+		m_mapAllPlayers.emplace(Convert_ToHash(pPlayerInfo->m_tPlayerInfo.wstrName), pPlayerInfo); 
+		m_vecPlayerInfoNames.push_back(pPlayerInfo->m_tPlayerInfo.wstrName);
 	}
+
+
+	for (_uint i = 0; i < 6; ++i)
+	{
+		pPlayerInfo = CPlayerInfo_Sub::Create();
+		m_mapAllPlayers.emplace(Convert_ToHash(pPlayerInfo->m_tPlayerInfo.wstrName), pPlayerInfo);
+		m_vecPlayerInfoNames.push_back(pPlayerInfo->m_tPlayerInfo.wstrName);
+	}
+
 
 	/* 분대장급 AI들 */
 #define ADD_LEADERINFO pPlayerInfo = CPlayerInfo_Leader::Create();\
@@ -1736,13 +1952,15 @@ HRESULT CGameSystem::SetUp_AllPathes()
 
 			if (iFindKey >= 0)
 				eType = eSTAGE_PADEN;
-			else
-			{
-
-				iFindKey = HashKey.find("Hwara");
+			else if (_int(HashKey.find("Hwara")) >= 0)
 				eType = eSTAGE_HWARA;
 
-			}
+			if (_int(HashKey.find("PaRelease")) >= 0)
+				eType = ePADEN_RELEASE;
+			if (_int(HashKey.find("HwRelease")) >= 0)
+				eType = eHWARA_RELEASE;
+
+
 
 			if (eType == eSTAGE_CNT)
 			{

@@ -66,20 +66,34 @@ void CPath::Update_CurrentIndex(_float4 vCurrentPos)
         return;
     }
 
-    _float4 vTargetPos = m_vecPositions[m_iCurIndex];
-    
-    _float fLength = (vCurrentPos - vTargetPos).Length();
     _float fCurSpeed = 0.1f;
 
-    if (m_pOwnerController) 
+    if (m_pOwnerController)
     {
         fCurSpeed = GET_COMPONENT_FROM(m_pOwnerController->Get_OwnerPlayer()->Get_CurrentUnit(), CPhysics)->Get_Physics().fSpeed * fDT(0);
     }
-    
-    m_iPrevIndex = m_iCurIndex;
 
-    if (fLength < fCurSpeed + 10.f * fDT(0))
-        m_iCurIndex++;
+    while (1)
+    {
+        _float4 vTargetPos = m_vecPositions[m_iCurIndex];
+
+        _float fLength = (vCurrentPos - vTargetPos).Length();
+
+        m_iPrevIndex = m_iCurIndex;
+
+        if (fLength < fCurSpeed + 60.f * fDT(0))
+        {
+            m_iCurIndex++;
+
+            if (m_iCurIndex >= (m_iNumPositions))
+            {
+                m_iCurIndex = m_iNumPositions - 1;
+                return;
+            }
+        }
+        else
+            break;
+    }
 
     if (m_pOwnerController)
     {
@@ -99,15 +113,25 @@ void CPath::Release()
 {
 }
 
-_float4 CPath::Get_CurDir(_float4 vCurrentPos)
+_float4 CPath::Get_CurDir(_float4 vCurrentPos, _bool bNoY)
 {
     if (m_iCurIndex == m_iNumPositions)
         return ZERO_VECTOR;
 
     _float4 vDir = m_vecPositions[m_iCurIndex] - vCurrentPos;
-    vDir.y = 0.f;
+
+    if (bNoY)
+     vDir.y = 0.f;
 
     return vDir.Normalize();
+}
+
+_float CPath::Get_CurLength(_float4 vCurrentPos)
+{
+    if (m_iCurIndex == m_iNumPositions)
+        return -1.f;
+
+    return (vCurrentPos - m_vecPositions[m_iCurIndex]).Length();
 }
 
 _float4 CPath::Get_LatestPosition()

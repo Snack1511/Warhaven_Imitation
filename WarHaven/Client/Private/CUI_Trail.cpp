@@ -90,7 +90,11 @@ HRESULT CUI_Trail::Start()
 HRESULT CUI_Trail::SetUp_TrailEffect(_uint iGroupIdx, _uint iTriCnt, _float fWide, _float fUVSPeed, _float fUVPower, _float4 vGlowFlag, _float4 vColor, wstring wstrMaskMapPath, wstring wstrColorMapPath)
 {
 	m_fUVSpeed = fUVSPeed;
+
+	/*길이에 비례하여 변하여야 함*/
 	m_fUVPower = fUVPower;
+	
+
 	m_fWide = fWide;
 	m_vGlowFlag = vGlowFlag;
 	m_vColor = vColor;

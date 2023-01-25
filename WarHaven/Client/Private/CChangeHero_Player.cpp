@@ -73,7 +73,11 @@ void CChangeHero_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 	/* 히트박스 끄기 */
 	pOwner->Enable_HitBoxColliders(false);
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinFlare", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));//henshin flare
+	
+	_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinFlare", pOwner, vPos);//henshin flare
+	CFunctor::Play_Sound(L"Effect_OnChangeHero", CHANNEL_EFFECTS, vPos, 1.f);
 
 	/* Owner의 Animator Set Idle로 */
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -92,6 +96,10 @@ STATE_TYPE CChangeHero_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		pOwner->Shake_Camera(8.f, 1.f);
 		GAMEINSTANCE->Stop_RadialBlur();
 		GAMEINSTANCE->Stop_ChromaticAberration();
+		if (m_eChangeClassType == LANCER)
+			CFunctor::Play_Sound(L"Effect_HorseStop", CHANNEL_EFFECTS, pOwner->Get_Transform()->Get_World(WORLD_POS), 1.f);
+
+		_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
 
 		return STATE_END;
 	}
@@ -171,7 +179,7 @@ STATE_TYPE CChangeHero_Player::Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass)
 	_uint iIndex = (_uint)eClass;
 	pOwner->On_ChangeToHero(iIndex);
 
-
+	Play_Voice(pOwner, L"Voice_Start", 1.f);
 
 	return m_eStateType;
 }

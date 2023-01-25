@@ -26,22 +26,22 @@ return pInstance;\
 //GameSystem은 16개의 Player Info를 들고있따.
 //스테이지 진입 시 섞어서 매칭해준다.
 
-// Warrior, Engineer 는 지휘관 급에서 사용하기 때문에 만약 Define 을 주석건다면 PlayerInfo_Leader 에서 #else 나 #ifndef 로 처리해주세요
+//Warrior, Engineer 는 지휘관 급에서 사용하기 때문에 만약 Define 을 주석건다면 PlayerInfo_Leader 에서 #else 나 #ifndef 로 처리해주세요
 
 #define WARRIOR_TH
-#define ARCHER_TH
-//#define FIONA_TH
+//#define ARCHER_TH
+#define FIONA_TH
 //#define PALADIN_TH
-#define ENGINEER_TH
+//#define ENGINEER_TH
 //#define PRIEST_TH
-#define LANCER_TH
 #define QANDA_TH
+//#define LANCER_TH
 
 BEGIN(Client)
 
 class CTeamConnector;
 class CSquad;
-class CPlayer;
+class CPlayer;  
 class CAIPersonality;
 class CPlayerInfo abstract
 {
@@ -83,6 +83,8 @@ public:
 	void	Set_ChosenClass(CLASS_TYPE eEnum) { m_eCurChosenClass = eEnum; }
 
 	CLASS_TYPE	Get_ChonsenClass() { return m_eCurChosenClass; }
+	CLASS_TYPE	Get_ChangeHeroClass() { return m_eChangeHeroClass; }
+
 	_uint	Get_UnitType() { return m_iUnitType; }
 
 	wstring Get_PlayerName() { return m_tPlayerInfo.wstrName; }
@@ -131,11 +133,16 @@ protected:
 	eTEAM_TYPE	m_eTeamType = eTEAM_TYPE::eBLUE;
 	CLASS_TYPE	m_eCurChosenClass = WARRIOR;
 
+	CLASS_TYPE	m_eChangeHeroClass = FIONA;
+
 protected:
 	PLAYER_INFO	m_tPlayerInfo;
 	_bool	m_bIsMainPlayer = false;
 
 	_uint	m_iUnitType = 0;
+	_bool	m_bBurger = false;
+public:
+	_bool	Is_Burger() { return m_bBurger; }
 
 protected:
 	/* 이 안에 있는 클래스중 하나를 랜덤으로 선택해서 플레이 한다. */

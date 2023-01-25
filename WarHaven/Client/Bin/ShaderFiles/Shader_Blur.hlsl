@@ -37,11 +37,13 @@ float		g_fTimeDelta = 0.f;
 float		g_fShaderPower = 0.f;
 
 bool		g_bMotionBlur = false;
-bool		g_bSSAO = false;
 
 float2		g_vSunPos;
 
 float2		g_vResolution = float2(1280.f, 720.f);
+
+float3		g_vHDR;
+bool		g_bShaderOption;
 
 
 sampler DefaultSampler = sampler_state
@@ -380,7 +382,7 @@ PS_OUT PS_MAIN_LENSFLARE(PS_DOWNSCALE_IN In)
 	/*float3 color = float3(1.4, 1.2, 1.0) * lensflare(uv, mm);
 	color = cc(color, .5, .1);*/
 
-	Out.vColor.xyz += color;
+	Out.vColor.xyz += color * g_fShaderPower;;
 
 	return Out;
 }
@@ -493,31 +495,10 @@ PS_OUT PS_MAIN_SSAO(PS_DOWNSCALE_IN In)
 
 	Out.vColor = g_ShaderTexture.Sample(DefaultSampler, In.vTexUV);
 
-
-	if (!g_bSSAO)
-		return Out;
-
 	vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
 
 	if (vDepthDesc.y > 0.5f)
 		return Out;
-
-
-	//Shadow
-	/*vector			vWorldPos;
-
-	vWorldPos.x = uv.x * 2.f - 1.f;
-	vWorldPos.y = uv.y * -2.f + 1.f;
-	vWorldPos.z = vDepthDesc.x;
-	vWorldPos.w = 1.0f;
-
-	float			fViewZ = vDepthDesc.y * 1500.f;
-	vWorldPos *= fViewZ;
-
-	vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
-	vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
-
-	vWorldPos.xyz;*/
 
 	float3 p = getPosition(In.vTexUV);
 	float3 n = getNormal(In.vTexUV);
@@ -535,7 +516,7 @@ PS_OUT PS_MAIN_SSAO(PS_DOWNSCALE_IN In)
 	if (vDepthDesc.z > 0.99f)
 		fPower = 1.f;
 
-	Out.vColor.xyz *= pow(ao, fPower);
+	Out.vColor.xyz *= pow(ao, (fPower * g_fShaderPower));
 
 	return Out;
 }
@@ -669,7 +650,6 @@ float4x4 saturationMatrix(float saturation)
 float brightness = 0.37;
 float contrast = 3.;
 float saturation = 2.;
-bool g_bHDR = true;
 
 PS_OUT PS_MAIN_HDR(PS_DOWNSCALE_IN In)
 {
@@ -679,12 +659,9 @@ PS_OUT PS_MAIN_HDR(PS_DOWNSCALE_IN In)
 
 	if (vDepthDesc.y > 0.8f)
 		return Out;
-
-	if (!g_bHDR)
-		return Out;
-
-	float4x4 matBrightnessContrast = mul(brightnessMatrix(brightness), contrastMatrix(contrast));
-	float4x4 matBrightnessContrastSaturation = mul(matBrightnessContrast, saturationMatrix(saturation));
+	
+	float4x4 matBrightnessContrast = mul(brightnessMatrix(brightness * g_vHDR.x), contrastMatrix(contrast * g_vHDR.y));
+	float4x4 matBrightnessContrastSaturation = mul(matBrightnessContrast, saturationMatrix(saturation * g_vHDR.z));
 
 	Out.vColor = mul(Out.vColor, matBrightnessContrastSaturation);
 
@@ -960,14 +937,12 @@ PS_OUT	PS_MAIN_FASTBLUR(PS_DOWNSCALE_IN input)
 	float Pi = 6.28318530718; // Pi*2
 
    // GAUSSIAN BLUR SETTINGS {{{
-	float Directions = 16.0; // BLUR DIRECTIONS (Default 16.0 - More is better but slower)
-	float Quality = 4.0; // BLUR QUALITY (Default 4.0 - More is better but slower)
-	float Size = 20.0; // BLUR SIZE (Radius)
+	float Directions = 20.0 *g_fShaderPower; // BLUR DIRECTIONS (Default 16.0 - More is better but slower)
+	float Quality = 20.0 *(g_fShaderPower / 4); // BLUR QUALITY (Default 4.0 - More is better but slower)
+	float Size = 10.0;// *g_fShaderPower; // BLUR SIZE (Radius)
 	// GAUSSIAN BLUR SETTINGS }}}
 
 	float2 Radius = Size / g_vResolution;
-
-
 
 	// Blur calculations
 	for (float d = 0.0; d < Pi; d += Pi / Directions)

@@ -3,6 +3,9 @@
 
 BEGIN(Client)
 
+class CUnit;
+
+
 class CPurpleArrow
 	: public CProjectile
 {
@@ -14,6 +17,9 @@ private:
 
 public:
 	static CPurpleArrow* Create();
+
+public:
+	void Clear_Addiction();
 
 public:
 	virtual HRESULT Start() override;
@@ -42,7 +48,9 @@ private:
 private:
 	virtual void Set_ColliderType(eTEAM_TYPE eTeamType);
 	void AddictionEffect(CUnit* pUnit);
-	void Clear_Addiction();
+
+	void Death_Cam(CUnit* pOtherUnit);
+
 
 };
 

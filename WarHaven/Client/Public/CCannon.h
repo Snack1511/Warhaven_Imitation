@@ -41,6 +41,7 @@ public:
 	void		Exit_Cannon();
 	void		Shoot_Cannon();
 	_bool		Can_ControlCannon(CPlayer* pPlayer);
+	CPlayer* Get_CurOwnerPlayer() { return m_pCurOwnerPlayer; }
 
 private:
 	CPlayer* m_pCurOwnerPlayer = nullptr;

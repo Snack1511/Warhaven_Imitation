@@ -26,7 +26,7 @@
 #include "CTrailBuffer.h"
 #include "Loading_Manager.h"
 #include "CMesh_Particle.h"
-
+#include "CGameSystem.h"
 #include "CScript_FollowCam.h"
 
 #include "CEffects_Factory.h"
@@ -35,6 +35,7 @@
 
 #include "CState.h"
 #include "CState_Manager.h"
+#include "CUser.h"
 
 #include "CPhysXCharacter.h"
 
@@ -59,9 +60,11 @@
 #include "CUI_UnitHUD.h"
 
 #include "CGlider.h"
+#include "CUI_UnitHP.h"	
+
+#include "CRectEffects.h"
 
 #define PHYSX_ON
-
 
 CUnit::CUnit()
 {
@@ -74,6 +77,9 @@ CUnit::~CUnit()
 
 void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
+	if (eOtherColType == COL_BLUETEAM || eOtherColType == COL_REDTEAM)
+		return;
+
 	if (eOtherColType == COL_REVIVE)
 	{
 		if (pOtherObj == m_pOwnerPlayer)
@@ -88,6 +94,9 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 		{
 			if (m_bIsMainPlayer)
 			{
+				if (!m_pAdjRevivalPlayer->Get_UnitHUD())
+					return;
+
 				m_pAdjRevivalPlayer->Get_UnitHUD()->Get_ReviveUI()->Set_ReviveIcon(1);
 			}
 		}
@@ -170,7 +179,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	tOtherHitInfo.vDir = (m_pTransform->Get_World(WORLD_POS) - vHitPos);
 	tOtherHitInfo.vDir.y = 0.f;
 	tOtherHitInfo.vDir.Normalize();
-	
+
 	tOtherHitInfo.pOtherUnit = pOtherUnit;
 
 	//상대 위치 계산
@@ -203,7 +212,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	case COL_BLUEHITBOX_HEAD:
 	case COL_REDHITBOX_HEAD:
-		if(!tOtherHitInfo.bNoneHeadAttack)
+		if (!tOtherHitInfo.bNoneHeadAttack)
 			tOtherHitInfo.bHeadShot = true;
 		else
 			tOtherHitInfo.bHeadShot = false;
@@ -221,6 +230,19 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 void CUnit::Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
+	/*if (eOtherColType == COL_BLUETEAM || eOtherColType == COL_REDTEAM)
+	{
+		if (static_cast<CUnit*>(pOtherObj)->Is_MainPlayer())
+			return;
+
+		_float4 vCurPos = pOtherObj->Get_Transform()->Get_World(WORLD_POS);
+
+		_float4 vDir = CUtility_Transform::Get_Dir_2D(m_pTransform, pOtherObj->Get_Transform());
+
+		vCurPos += vDir * fDT(0);
+		static_cast<CUnit*>(pOtherObj)->Teleport_Unit(vCurPos);
+
+	}*/
 }
 
 void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
@@ -255,6 +277,11 @@ void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColTyp
 
 		m_pAdjCannon = nullptr;
 	}
+}
+
+void CUnit::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float fVolume)
+{
+	CFunctor::Play_Sound(wstrFileName, iGroupIndex, Get_Transform()->Get_World(WORLD_POS), fVolume);
 }
 
 _bool CUnit::Is_Air()
@@ -332,6 +359,8 @@ void CUnit::On_Respawn()
 	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
 	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
 
+	if (m_bIsMainPlayer)
+		Play_Voice(L"Voice_Respawn", 1.f, false);
 
 }
 
@@ -377,6 +406,7 @@ void CUnit::On_Die()
 	{
 		GAMEINSTANCE->Start_GrayScale(1.f);
 	}
+
 }
 
 _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
@@ -411,6 +441,7 @@ _bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot, _uint iDm
 	{
 		if (bHeadShot)
 		{
+			Play_Sound(L"Effect_HeadShot");
 			CUser::Get_Instance()->Enable_DamageFont(0, fHp);
 		}
 		else
@@ -461,12 +492,17 @@ void CUnit::On_FallDamage(_float fFallPower)
 
 	if (m_tUnitStatus.fHP <= 0.f)
 	{
+		Get_CurStateP()->Play_Voice(this, L"Voice_Dead", 1.f);
 		m_tUnitStatus.fHP = 0.f;
 		On_Die();
 	}
 	else if (m_tUnitStatus.fHP >= m_tUnitStatus.fMaxHP)
 	{
 		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
+	}
+	else
+	{
+		Get_CurStateP()->Play_Voice(this, L"Voice_Hit", 1.f);
 	}
 
 	if (m_bIsMainPlayer)
@@ -528,6 +564,11 @@ CPath* CUnit::Get_CurPath()
 	return m_pOwnerPlayer->Get_CurPath();
 }
 
+CPath* CUnit::Get_StartMainPath()
+{
+	return m_pOwnerPlayer->Get_CurMainPath();
+}
+
 CUnit* CUnit::Get_TargetUnit()
 {
 	if (!m_pOwnerPlayer->Get_TargetPlayer())
@@ -535,6 +576,12 @@ CUnit* CUnit::Get_TargetUnit()
 
 	return m_pOwnerPlayer->Get_TargetPlayer()->Get_CurrentUnit();
 }
+
+CGameObject* CUnit::Get_TargetObject()
+{
+	return m_pOwnerPlayer->Get_TargetObject();
+}
+
 
 void CUnit::Enter_State(STATE_TYPE eType, void* pData)
 {
@@ -628,8 +675,8 @@ HRESULT CUnit::Initialize_Prototype()
 
 	Add_Component(CPhysics::Create(0));
 
-	CNavigation* pNavigation = CNavigation::Create(CP_AFTER_TRANSFORM, nullptr, nullptr);
-	Add_Component<CNavigation>(pNavigation);
+
+
 
 #ifdef PHYSX_ON
 
@@ -649,10 +696,17 @@ HRESULT CUnit::Initialize_Prototype()
 
 HRESULT CUnit::Initialize()
 {
+	if (!m_pOwnerPlayer->IsMainPlayer())
+	{
+		m_pNavigation = CNavigation::Create(CP_AFTER_TRANSFORM, nullptr, nullptr);
+		Add_Component<CNavigation>(m_pNavigation);
+		m_pNavigation->Set_Layers(&CGameSystem::Get_Instance()->Get_CellLayer());
+	}
+
 	m_pModelCom = GET_COMPONENT(CModel);
 	m_pAnimator = GET_COMPONENT(CAnimator);
 	m_pPhysics = GET_COMPONENT(CPhysics);
-	m_pNavigation = GET_COMPONENT(CNavigation);
+
 #ifdef PHYSX_ON
 	m_pPhysXCharacter = GET_COMPONENT(CPhysXCharacter);
 	if (!m_pPhysXCharacter)
@@ -669,8 +723,6 @@ HRESULT CUnit::Initialize()
 	if (!m_pPhysics)
 		return E_FAIL;
 
-	if (!m_pNavigation)
-		return E_FAIL;
 
 	if (FAILED(m_pModelCom->SetUp_AnimModel_LOD()))
 		return E_FAIL;
@@ -725,10 +777,12 @@ HRESULT CUnit::Start()
 
 	/* PASS */
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
-	m_pModelCom->Set_ShaderPass(MODEL_PART_FACE, VTXANIM_PASS_FACE);
+	//m_pModelCom->Set_ShaderPass(MODEL_PART_FACE, VTXANIM_PASS_FACE);
 
-	if(m_pGlider)
-		m_pGlider->SetUp_GliderTrail();	
+	if (m_pGlider)
+		m_pGlider->SetUp_GliderTrail();
+
+	m_EyeFlare.clear();
 
 	return S_OK;
 }
@@ -833,7 +887,6 @@ void CUnit::Enable_GuardBreakCollider(UNITCOLLIDER ePartType, _bool bEnable)
 				DISABLE_COMPONENT(m_pWeaponCollider_R);
 		}
 	}
-
 	else if (ePartType == GUARDBREAK_L)
 	{
 		if (bEnable)
@@ -1105,7 +1158,7 @@ void CUnit::Check_MultipleObject_IsInFrustum()
 		// ray쏴서 장애물 판별
 		_float4 vOutPos;
 		_float fOutDist;
-		_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
+		_float4 vCamPos = Get_FollowCam()->Get_Transform()->Get_World(WORLD_POS);//GAMEINSTANCE->Get_ViewPos();
 		_float4 vOtherPos = pUnit->Get_Transform()->Get_World(WORLD_POS);
 		vOtherPos.y += 0.8f;
 		_float4 vRayDir = vOtherPos - vCamPos;
@@ -1123,7 +1176,7 @@ void CUnit::Check_MultipleObject_IsInFrustum()
 		m_MultipleFrustumObject.push_back(pUnit);
 	}
 
-	
+
 }
 
 void CUnit::On_ChangeToHero(_uint iIndex)
@@ -1174,6 +1227,32 @@ void CUnit::TurnOn_TrailEffect(_bool bOn)
 }
 
 
+
+void CUnit::SetUp_EyeTrail(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pEyeTrail = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pEyeTrail2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pEyeTrail)
+		return;
+
+	CREATE_GAMEOBJECT(m_pEyeTrail, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pEyeTrail, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pEyeTrail2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pEyeTrail2, CMesh))->Set_NoCurve();
+
+	m_pEyeTrail->Set_EffectFlag(SH_EFFECT_NONE);
+	m_pEyeTrail2->Set_EffectFlag(SH_EFFECT_NONE);
+
+	m_pEyeTrail->TurnOn_TrailEffect(false);
+	m_pEyeTrail2->TurnOn_TrailEffect(false);
+}
 
 void CUnit::SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
 {
@@ -1272,6 +1351,9 @@ HRESULT CUnit::SetUp_Navigation(CCell* pStartCell)
 
 void CUnit::My_Tick()
 {
+	if (Get_OwnerHUD())
+		Get_OwnerHUD()->Set_UnitHP(m_tUnitStatus.fHP, m_tUnitStatus.fMaxHP);
+
 	for (_int i = 0; i < COOL_END; ++i)
 	{
 		if (m_fCoolAcc[i] > 0.f)
@@ -1289,12 +1371,11 @@ void CUnit::My_Tick()
 		}
 	}
 
-
 	if (m_fAttackDelay > 0.f)
 		m_fAttackDelay -= fDT(0);
 	else
 		m_fAttackDelay = 0.f;
-	
+
 	if (m_fGlidingTime > 0.f)
 		m_fGlidingTime -= fDT(0);
 	else
@@ -1309,7 +1390,7 @@ void CUnit::My_Tick()
 
 	if (m_eReserveState != STATE_END)
 	{
-		if (m_pCurState->m_iStateChangeKeyFrame <= m_pAnimator->Get_CurAnimFrame())
+		if (m_pCurState->m_iStateChangeKeyFrame <= m_pAnimator->Get_CurAnimFrame() || m_pAnimator->Is_CurAnimFinished())
 		{
 			if (m_eReserveState != m_eDefaultState)
 			{
@@ -1322,8 +1403,20 @@ void CUnit::My_Tick()
 			m_pOwnerPlayer->On_RealChangeBehavior();
 
 		}
+		else if (m_bForceChangeBehavior)
+		{
+			if (m_eReserveState != m_eDefaultState)
+			{
+				Enter_State(m_eReserveState);
+				m_eDefaultState = m_eReserveState;
+				m_eReserveState = STATE_END;
+			}
 
-	}	
+			m_pOwnerPlayer->On_RealChangeBehavior();
+			m_bForceChangeBehavior = false;
+		}
+
+	}
 
 	STATE_TYPE eNewState = STATE_END;
 	eNewState = m_pCurState->Tick(this, m_pAnimator);
@@ -1418,6 +1511,8 @@ void CUnit::Effect_Parring(_float4 vHitPos)
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos);
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), vHitPos);*/
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Parring_Particle", vHitPos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
+
+	CFunctor::Play_Sound(L"Effect_Guard", CHANNEL_EFFECTS, vHitPos);
 }
 
 void CUnit::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
@@ -1432,6 +1527,36 @@ void CUnit::Effect_Fall(_float fFallPower)
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Fall_Particle", m_pTransform->Get_World(WORLD_POS));
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", this, m_pTransform->Get_World(WORLD_POS));
 
+}
+
+void CUnit::Turn_EyeTrail(_bool bOnOff)
+{
+	if (!m_pEyeTrail)
+		return;
+
+	m_pEyeTrail->TurnOn_TrailEffect(bOnOff);
+	m_pEyeTrail2->TurnOn_TrailEffect(bOnOff);
+}
+
+void CUnit::Turn_EyeFlare(_bool bOnOff, wstring wstrKey)
+{
+	if (bOnOff)
+	{
+		if (m_EyeFlare.empty())
+			m_EyeFlare = CEffects_Factory::Get_Instance()->Create_MultiEffects(wstrKey, this, ZERO_VECTOR);
+	}
+	else
+	{
+		if (!m_EyeFlare.empty())
+		{
+			for (auto& elem : m_EyeFlare)
+			{
+				DISABLE_GAMEOBJECT(elem);
+			}
+			m_EyeFlare.clear();
+		}
+
+	}
 }
 
 void CUnit::Effect_HeroToDefaultUnit(CUnit* pOwner)
@@ -1503,6 +1628,12 @@ void CUnit::Start_Reborn()
 	if (!m_pOwnerPlayer->Is_AbleRevival())
 		return;
 
+	if (m_bIsMainPlayer)
+	{
+		CUser::Get_Instance()->Toggle_DeadUI(false);
+		CUser::Get_Instance()->SetActive_HUD_RevivalUI(true);
+	}
+
 	m_pOwnerPlayer->Start_Reborn();
 
 	static_cast<CMesh_Particle*>(m_DeathStones.front())->Start_Reverse(this);
@@ -1522,12 +1653,61 @@ void CUnit::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	m_pOwnerPlayer->Reserve_BehaviorDesc(pBehaviorDesc);
 
 
+
+
 }
 
 void CUnit::On_FinishGame(_bool bWin)
 {
 	Enter_State((bWin) ? STATE_VICTORY : STATE_DEFEAT);
 	m_eReserveState = STATE_END;
+}
+
+void CUnit::Play_Voice(wstring strName, _float fVol, _bool bDist)
+{
+
+
+	CLASS_TYPE eClass = Get_OwnerPlayer()->Get_CurClass();
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	wstring strKey = strName;
+
+
+	switch (eClass)
+	{
+	case Client::WARRIOR:
+		strKey += L"_Warrior";
+		break;
+	case Client::ARCHER:
+		strKey += L"_Archer";
+		break;
+	case Client::PALADIN:
+		strKey += L"_Paladin";
+		break;
+	case Client::PRIEST:
+		strKey += L"_Priest";
+		break;
+	case Client::ENGINEER:
+		strKey += L"_Warhammer";
+		break;
+	case Client::FIONA:
+		strKey += L"_Fiona";
+		break;
+	case Client::QANDA:
+		strKey += L"_Qanda";
+		break;
+	case Client::LANCER:
+		strKey += L"_Lancer";
+		break;
+	case Client::CLASS_END:
+		break;
+	default:
+		break;
+	}
+
+	if (bDist)
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, vPos, fVol);
+	else
+		CFunctor::Play_Sound(strKey, CHANNEL_VOICE, fVol);
 }
 
 void CUnit::Set_AnimWeaponIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed)
@@ -1566,7 +1746,20 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 
 	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot, 3);
 
-	Get_OwnerHUD()->SetActive_UnitHP(true);
+	CFunctor::Play_Sound(L"Effect_Blood", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS));
+
+	_float fVolume = 1.f;
+
+	if (!m_bIsMainPlayer)
+	{
+		if (!Get_OwnerHUD())
+			return;
+
+		Get_OwnerHUD()->SetActive_UnitHP(true);
+		fVolume = 0.2f;
+	}
+
+	Get_CurStateP()->Play_Voice(this, L"Voice_Hit", fVolume);
 
 	/*블러드 오버레이*/
 	if (m_bIsMainPlayer)
@@ -1634,6 +1827,7 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 	case COL_REDGROGGYATTACK:
 		//1. 이펙트
 
+		Play_Sound(L"Effect_Grogy_Warhammer");
 
 		//2. 나와 적 상태 변경
 		Enter_State(m_tHitType.eGroggyState, pHitInfo);
@@ -1654,7 +1848,9 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 	CState::HIT_INFO tInfo = *(CState::HIT_INFO*)(pHitInfo);
 
 	//마주보지않았을 경우 가드 실패
-	if (!tInfo.bFace)
+	if (!tInfo.bFace ||
+		iOtherColType == COL_BLUEGROGGYATTACK ||
+		iOtherColType == COL_REDGROGGYATTACK)
 	{
 		On_Hit(pOtherUnit, iOtherColType, vHitPos, pHitInfo);
 		return;
@@ -1665,11 +1861,8 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 	_float fDamage = pOtherUnit->Calculate_Damage(tInfo.bHeadShot, true);
 
 	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot, 1);
-
 	if (!bDie)
-	{
 		m_tUnitStatus.fHP = 1.f;
-	}
 
 
 	switch (iOtherColType)
@@ -1693,6 +1886,8 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 	case COL_REDGUARDBREAK:
 		//1. 이펙트
 		Effect_Parring(vHitPos);
+
+		Play_Sound(L"Effect_GuardBreak");
 
 		//2. 나와 적 상태 변경
 		Enter_State(m_tHitType.eGuardBreakState, pHitInfo);
@@ -1722,6 +1917,9 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 {
 	m_bDie = true;
+	CFunctor::Play_Sound(L"Effect_Die", CHANNEL_EFFECTS, Get_Transform()->Get_World(WORLD_POS));
+
+
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StoneSpark", vHitPos);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Hit_Particle", vHitPos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
 
@@ -1752,13 +1950,18 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 			CUser::Get_Instance()->Add_KillName(wstrEnemyName);
 		}
 	}
+
+
+	Get_CurStateP()->Play_Voice(this, L"Voice_Dead", 1.f);
+
+
 }
 
 void CUnit::On_Bounce(void* pHitInfo)
 {
 	//Left인지 Right인지 판단
 
-	if(m_tHitType.eBounce != STATE_END)
+	if (m_tHitType.eBounce != STATE_END)
 		Enter_State(m_tHitType.eBounce, pHitInfo);
 }
 

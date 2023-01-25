@@ -19,17 +19,17 @@ CWalk_Paladin::~CWalk_Paladin()
 
 HRESULT CWalk_Paladin::Initialize()
 {
-    m_fInterPolationTime = 0.2f;
+	m_fInterPolationTime = 0.2f;
 
-    m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
 
-    m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
-    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
+	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
 
-    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_PALADIN);
-    m_vecAdjState.push_back(STATE_SHIELDWALL_BEGIN_PALADIN);
-    m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
-    m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
+	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_PALADIN);
+	m_vecAdjState.push_back(STATE_SHIELDWALL_BEGIN_PALADIN);
+	m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
+	m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
 
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
@@ -41,21 +41,23 @@ HRESULT CWalk_Paladin::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
-    Init_CommonState_Player();
+	Init_CommonState_Player();
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;
-	
 
-    return S_OK;
+	Add_KeyFrame(33, 0, true);
+	Add_KeyFrame(67, 0, true);
+
+	return S_OK;
 }
 
-void CWalk_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CWalk_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    /* Owner의 Animator Set Idle로 */
+	/* Owner의 Animator Set Idle로 */
 	m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
 
-    __super::Enter(pOwner, pAnimator, ePrevType, pData);
+	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CWalk_Paladin::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -64,31 +66,42 @@ STATE_TYPE CWalk_Paladin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 
 
-    return __super::Tick(pOwner, pAnimator);
+	return __super::Tick(pOwner, pAnimator);
 }
 
 void CWalk_Paladin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+	/* 할거없음 */
 }
 
 STATE_TYPE CWalk_Paladin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-    if (KEY(C, HOLD))
-    {
-        // 걸어간다.
-        if (KEY(W, HOLD) ||
-            KEY(A, HOLD) ||
-            KEY(S, HOLD) ||
-            KEY(D, HOLD))
-        {
+	if (KEY(C, HOLD))
+	{
+		// 걸어간다.
+		if (KEY(W, HOLD) ||
+			KEY(A, HOLD) ||
+			KEY(S, HOLD) ||
+			KEY(D, HOLD))
+		{
 
-            return m_eStateType;
-        }
+			return m_eStateType;
+		}
 
-    }
+	}
 
-    return STATE_END;
+	return STATE_END;
 }
 
+void CWalk_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+	switch (iSequence)
+	{
+	case 0:
+		Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+		break;
+	}
+}

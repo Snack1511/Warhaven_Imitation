@@ -71,11 +71,20 @@ void CState_Combat_Attack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 	case 1:
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		Play_Voice(pOwner, L"Voice_Attack", m_fAIDeafultVolume);
+		Play_Sound(L"Effect_Swing_Warrior");
 		break;
 
 	case 2:
 		m_bAttackTrigger = false;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+		break;
+
+	case 3:
+		m_bAttackTrigger = true;
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		Play_Voice(pOwner, L"Voice_Attack", m_fAIDeafultVolume);
+		Play_Sound(L"Effect_Swing_Blunt");
 		break;
 
 	default:

@@ -23,9 +23,11 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
+	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
 private:
 	STATE_TYPE Random_State(CUnit* pOwner, CAnimator* pAnimator);
+	
 
 };
 

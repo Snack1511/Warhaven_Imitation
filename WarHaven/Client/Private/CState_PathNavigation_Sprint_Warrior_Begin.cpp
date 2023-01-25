@@ -30,9 +30,6 @@ CState_PathNavigation_Sprint_Warrior_Begin* CState_PathNavigation_Sprint_Warrior
 }
 HRESULT CState_PathNavigation_Sprint_Warrior_Begin::Initialize()
 {
-    __super::Initialize();
-
-
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 55;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_WARRIOR;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -43,7 +40,14 @@ HRESULT CState_PathNavigation_Sprint_Warrior_Begin::Initialize()
 
     m_fInterPolationTime = 0.1f;
 
-    return S_OK;
+    Add_KeyFrame(23, 0, true);
+    Add_KeyFrame(42, 0, true);
+    Add_KeyFrame(58, 0, true);
+    Add_KeyFrame(75, 0, true);
+    Add_KeyFrame(93, 0, true);
+    Add_KeyFrame(108, 0, true);
+
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Sprint_Warrior_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )

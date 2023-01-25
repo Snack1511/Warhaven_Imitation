@@ -23,15 +23,15 @@ CPriest_Attack_Sting::~CPriest_Attack_Sting()
 
 CPriest_Attack_Sting* CPriest_Attack_Sting::Create()
 {
-    CPriest_Attack_Sting* pInstance = new CPriest_Attack_Sting();
+	CPriest_Attack_Sting* pInstance = new CPriest_Attack_Sting();
 
-    if (FAILED(pInstance->Initialize()))
-    {
-        Call_MsgBox(L"Failed to Initialize : CPriest_Attack_Sting");
-        SAFE_DELETE(pInstance);
-    }
+	if (FAILED(pInstance->Initialize()))
+	{
+		Call_MsgBox(L"Failed to Initialize : CPriest_Attack_Sting");
+		SAFE_DELETE(pInstance);
+	}
 
-    return pInstance;
+	return pInstance;
 }
 HRESULT CPriest_Attack_Sting::Initialize()
 {
@@ -44,19 +44,19 @@ HRESULT CPriest_Attack_Sting::Initialize()
 
 	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
 
-    m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
-    m_iAnimIndex = 4;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_ATTACK_STING_PRIEST;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
+	m_iAnimIndex = 4;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+	m_eStateType = STATE_ATTACK_STING_PRIEST;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
-    // 선형 보간 시간
-    m_fInterPolationTime = 0.1f;
+	// 선형 보간 시간
+	m_fInterPolationTime = 0.1f;
 
-    // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.4f;
+	// 애니메이션의 전체 속도를 올려준다.
+	m_fAnimSpeed = 2.4f;
 
-    //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_iStateChangeKeyFrame = 70;
+	//enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
+	m_iStateChangeKeyFrame = 70;
 
 	m_vecAdjState.push_back(STATE_IDLE_PRIEST);
 	m_vecAdjState.push_back(STATE_RUN_PRIEST);
@@ -140,7 +140,7 @@ HRESULT CPriest_Attack_Sting::Initialize()
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 99;
 
 
-	
+
 
 	m_eWalkState = STATE_WALK_PRIEST;
 	m_eJumpState = STATE_JUMP_PRIEST;
@@ -163,34 +163,36 @@ HRESULT CPriest_Attack_Sting::Initialize()
 	return __super::Initialize();
 }
 
-void CPriest_Attack_Sting::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CPriest_Attack_Sting::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
 	pOwner->Set_BounceState(STATE_BOUNCE_PRIEST);
 
-    /* Owner의 Animator Set Idle로 */
-    __super::Enter(pOwner, pAnimator, ePrevType, pData);
+	/* Owner의 Animator Set Idle로 */
+	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Voice(pOwner, L"Voice_Attack", 1.f);
 }
 
 STATE_TYPE CPriest_Attack_Sting::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-    return __super::Tick(pOwner, pAnimator);
+	return __super::Tick(pOwner, pAnimator);
 }
 
 void CPriest_Attack_Sting::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+	/* 할거없음 */
 	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }
 
 STATE_TYPE CPriest_Attack_Sting::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-   
-    if (KEY(LBUTTON, TAP))
-        return m_eStateType;
 
-    return STATE_END;
+	if (KEY(LBUTTON, TAP))
+		return m_eStateType;
+
+	return STATE_END;
 }
 
 
@@ -202,6 +204,8 @@ void CPriest_Attack_Sting::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 	{
 
 	case 0:
+		Play_Sound(L"Effect_Sting_Warrior", CHANNEL_EFFECTS);
+		pOwner->Get_Status().fDamageMultiplier = 1.f;
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;

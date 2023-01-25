@@ -25,6 +25,7 @@ public:
 		IMGUI_TILE,
 		IMGUI_PATH,
 		IMGUI_AI,
+		IMGUI_SHADER,
 		IMGUI_END
 	};
 

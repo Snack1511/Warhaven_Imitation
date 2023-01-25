@@ -46,7 +46,7 @@ HRESULT CSprint_Jump_Fall_Player::Initialize()
     m_vecAdjState.push_back(STATE_JUMP_LAND_PLAYER_R);
     m_vecAdjState.push_back(STATE_SPRINT_END_PLAYER);
 
-
+    Add_KeyFrame(3, 0);
     return S_OK;
 }
 

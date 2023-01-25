@@ -27,22 +27,23 @@ HRESULT CRun_WarHammer::Initialize()
 
 	Init_CommonState_Player();
 
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 1.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.7f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.7f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 	
-
+	Add_KeyFrame(25, 0, true);
+	Add_KeyFrame(49, 0, true);
 
 
 	// 선형 보간 시간
 	m_fInterPolationTime = 0.1f;
 
-	m_fAnimSpeed = 1.5f;
+	m_fAnimSpeed = 2.f;
 
 	m_iStateChangeKeyFrame = 0;
 
@@ -104,4 +105,16 @@ STATE_TYPE CRun_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
 
     return STATE_END;
+}
+
+void CRun_WarHammer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+	switch (iSequence)
+	{
+	case 0:
+		Play_Sound(L"Env_FootStepGround", CHANNEL_ENVIRONMENT, 0.4f);
+		break;
+	}
 }

@@ -158,7 +158,8 @@ void CValkyrie_ShieldAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimato
 
 		pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
 
-		
+		Play_Sound(L"Effect_ShiledAttack_Fiona");
+		Play_Voice(pOwner, L"Voice_ShieldAttack", 1.f);
 		break;
 
 	case 1:

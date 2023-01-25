@@ -81,6 +81,9 @@ HRESULT CLevel_Main::Enter()
 
 	GAMEINSTANCE->Save_Memory();
 
+
+	GAMEINSTANCE->Stop_GrayScale();
+
 	return S_OK;
 }
 
@@ -128,6 +131,9 @@ HRESULT CLevel_Main::Exit()
 {
 	__super::Exit();
 	CUser::Get_Instance()->On_ExitLevel();
+	CEffects_Factory::Get_Instance()->On_ExitLevel();
 
 	return S_OK;
 }
+
+

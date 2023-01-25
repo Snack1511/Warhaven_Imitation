@@ -73,7 +73,7 @@ void CState_Combat_Oxen_Loop_Attack_Warrior::Enter(CUnit* pOwner, CAnimator* pAn
     /*effect*/
     pOwner->TurnOn_TrailEffect(true);
     CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SkillLightParticle", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
-
+    CFunctor::Play_Sound(L"Effect_Oxen_Loop_Attack_Begin", CHANNEL_EFFECTS, pOwner->Get_Transform()->Get_World(WORLD_POS));
     CColorController::COLORDESC tColorDesc;
     ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
 
@@ -213,8 +213,10 @@ void CState_Combat_Oxen_Loop_Attack_Warrior::On_KeyFrameEvent(CUnit* pOwner, CAn
 	break;
        
 	case 1:
+        Play_Sound(L"Effect_Oxen_Loop_Attack_Warrior", CHANNEL_EFFECTS, m_fAIDeafultVolume);
         m_bAttackTrigger = true;
 		pOwner->Enable_FlyAttackCollider(true);
+        Play_Voice(pOwner, L"Voice_Oxen", m_fAIDeafultVolume);
 		break;
 
 

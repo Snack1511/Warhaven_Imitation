@@ -49,15 +49,19 @@ void CUnit_Paladin::On_Die()
 	__super::On_Die();
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
 
-	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
+	//_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
+	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS);
 
 	_float4x4 matWeapon = m_pModelCom->Find_HierarchyNode("0B_R_WP1")->Get_BoneMatrix();
 	_float4 vBonePos = matWeapon.XMLoad().r[3];
 	ZeroMemory(&matWeapon.m[3], sizeof(_float4));
 
 
-	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_Paladin", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
-	CEffects_Factory::Get_Instance()->Create_MeshParticle(L"PaladinDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
+	Add_DeathStones(CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle_Death(L"DeadBody_Paladin", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
+
+	//m_DeathStones.push_back(CEffects_Factory::Get_Instance()->Create_MeshParticle_Death(L"PaladinDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
+	//CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_Paladin", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
+	//CEffects_Factory::Get_Instance()->Create_MeshParticle(L"PaladinDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 
 }
 
@@ -234,6 +238,16 @@ void CUnit_Paladin::SetUp_ReserveState(UNIT_TYPE eUnitType)
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_PALADIN;
 		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_PALADIN;
 
+		m_tAIChangeType.eAIPathFindDefaultState = AI_STATE_PATHNAVIGATION_DEFAULT_PALADIN_R;
+		m_tAIChangeType.eAICommbatDefaultState = AI_STATE_COMBAT_DEFAULT_PALADIN_R;
+		m_tAIChangeType.eAIReviveDefaultState = AI_STATE_COMMON_REVIVE_AI;
+		m_tAIChangeType.eAICannonDefaultState = AI_STATE_CANNON_AI;
+		m_tAIChangeType.eAIGlidingDefaultState = AI_STATE_GLIDING_AI;
+		m_tAIChangeType.eAIPatrolDefaultState = AI_STATE_PATROL_DEFAULT_PALADIN_R;
+		m_tAIChangeType.eAIGoTirrgerDefaultState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_PALADIN;
+		m_tAIChangeType.eAIChangeDeafultState = AI_STATE_COMMON_CHANGE_HERO;
+
+
 		break;
 
 
@@ -261,20 +275,22 @@ void CUnit_Paladin::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		//상태변경
 		eNewState = AI_STATE_PATROL_DEFAULT_PALADIN_R;
 		break;
-	case eBehaviorType::eFollow:
+	case eBehaviorType::ePadenCannonInteract:
 		//상태변경
+		eNewState = AI_STATE_CANNON_AI;
 		break;
-	case eBehaviorType::eAttack:
+	case eBehaviorType::eCombat:
 		//상태변경
 		eNewState = AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 
 		break;
-	case eBehaviorType::ePathNavigation:
+	 
+	case eBehaviorType::ePathFinding:
 		//상태변경
 		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_PALADIN_R;
 		break;
 
-	case eBehaviorType::eResurrect:
+	case eBehaviorType::eRevive:
 		//상태변경
 		eNewState = AI_STATE_COMMON_REVIVE_AI;
 		break;
@@ -283,6 +299,15 @@ void CUnit_Paladin::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		//상태변경
 		eNewState = AI_STATE_COMMON_CHANGE_HERO;
 		break;
+
+	case eBehaviorType::eGliding:
+		eNewState = AI_STATE_GLIDING_AI;
+		break;
+
+	case eBehaviorType::eCatchCannon:
+		//eNewState = AI_STATE_BOUNE_WARRIOR_R;
+		break;
+
 	default:
 		assert(0);
 		break;
@@ -422,7 +447,7 @@ HRESULT CUnit_Paladin::Initialize_Prototype()
 	m_tUnitStatus.fSprintAttackSpeed *= 0.9f;
 	m_tUnitStatus.fSprintJumpSpeed *= 0.8f;
 	m_tUnitStatus.fSprintSpeed *= 0.75f;
-	m_tUnitStatus.fRunSpeed *= 0.75f;
+	m_tUnitStatus.fRunSpeed *= 0.85f;
 	m_tUnitStatus.fWalkSpeed *= 0.8f;
 	m_tUnitStatus.fRunBeginSpeed *= 0.8f;
 	m_tUnitStatus.fJumpPower *= 0.9f;

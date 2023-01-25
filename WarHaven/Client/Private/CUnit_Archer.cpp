@@ -25,6 +25,7 @@
 #include "CColorController.h"
 
 #include "CUI_Trail.h"
+#include "CRectEffects.h"
 
 CUnit_Archer::CUnit_Archer()
 {
@@ -191,6 +192,15 @@ void CUnit_Archer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_ARCHER;
 		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_ARCHER;
 
+		m_tAIChangeType.eAIPathFindDefaultState = AI_STATE_PATHNAVIGATION_DEFAULT_ARCHER_R;
+		m_tAIChangeType.eAICommbatDefaultState = AI_STATE_COMBAT_DEFAULT_ARCHER_R;
+		m_tAIChangeType.eAIReviveDefaultState = AI_STATE_COMMON_REVIVE_AI;
+		m_tAIChangeType.eAICannonDefaultState = AI_STATE_CANNON_AI;
+		m_tAIChangeType.eAIGlidingDefaultState = AI_STATE_GLIDING_AI;
+		m_tAIChangeType.eAIPatrolDefaultState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+		m_tAIChangeType.eAIGoTirrgerDefaultState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_ARCHER;
+		m_tAIChangeType.eAIChangeDeafultState = AI_STATE_COMMON_CHANGE_HERO;
+
 		break;
 
 
@@ -218,20 +228,22 @@ void CUnit_Archer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		//상태변경
 		eNewState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
 		break;
-	case eBehaviorType::eFollow:
+	case eBehaviorType::ePadenCannonInteract:
 		//상태변경
+		eNewState = AI_STATE_CANNON_AI;
 		break;
-	case eBehaviorType::eAttack:
+	case eBehaviorType::eCombat:
 		//상태변경
 		eNewState = AI_STATE_COMBAT_DEFAULT_ARCHER_R;
 
 		break;
-	case eBehaviorType::ePathNavigation:
+	 
+	case eBehaviorType::ePathFinding:
 		//상태변경
 		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_ARCHER_R;
 		break;
 
-	case eBehaviorType::eResurrect:
+	case eBehaviorType::eRevive:
 		//상태변경
 		eNewState = AI_STATE_COMMON_REVIVE_AI;
 		break;
@@ -240,6 +252,16 @@ void CUnit_Archer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		//상태변경
 		eNewState = AI_STATE_COMMON_CHANGE_HERO;
 		break;
+
+	case eBehaviorType::eGliding:
+		eNewState = AI_STATE_GLIDING_AI;
+		break;
+
+	case eBehaviorType::eCatchCannon:
+		//eNewState = AI_STATE_BOUNE_WARRIOR_R;
+		break;
+
+
 	default:
 		assert(0);
 		break;
@@ -272,6 +294,7 @@ void CUnit_Archer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	case STATE_ATTACK_HORIZONTALMIDDLE_L:
 	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY:
 	case AI_STATE_ATTACK_HORIZONTALMIDDLE_L:
+		Play_Sound(L"Effect_Swing_Warhammer", CHANNEL_EFFECTS, 1.f);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, matWorld);
 		break;
 
@@ -598,6 +621,23 @@ HRESULT CUnit_Archer::Start()
 	);
 
 
+	_float fUpperSize = 2.f;
+
+	SetUp_EyeTrail(
+		_float4(2.f, fUpperSize, 0.f, 1.f),	//Weapon R
+		_float4(2.f, -fUpperSize, 0.f, 1.f),					//Weapon R
+		_float4(fUpperSize + 2.f, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize + 2.f, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		RGBA(255, 140, 0, 0.7f),
+		0.f,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		12,
+		"0B_Face_R_Eye"
+	);
+
+
 	return S_OK;
 }
 
@@ -606,6 +646,8 @@ void CUnit_Archer::OnEnable()
 	__super::OnEnable();
 	Create_DefaultArrow();
 
+	Turn_EyeFlare(true, L"Archer_Eye");
+	Turn_EyeTrail(true);
 }
 
 void CUnit_Archer::OnDisable()
@@ -616,6 +658,9 @@ void CUnit_Archer::OnDisable()
 
 	if (m_pUI_Trail)
 		DISABLE_GAMEOBJECT(m_pUI_Trail);
+
+	Turn_EyeFlare(false);
+	Turn_EyeTrail(false);
 }
 
 void CUnit_Archer::My_Tick()

@@ -53,16 +53,18 @@ public:
 		//EVENT_TYPE	eEventType = EVENT_END;
 		_uint	iSequence = 0;
 		_bool	bExecuted = false;
+		_bool	bLoop = false;
 
 	};
 
 public:
 	enum STATE_DIRECTION {
-		STATE_DIRECTION_NW, STATE_DIRECTION_NE, STATE_DIRECTION_N, 
-		STATE_DIRECTION_SW, STATE_DIRECTION_SE, STATE_DIRECTION_S, 
-		STATE_DIRECTION_W, 
-		STATE_DIRECTION_E, 
-		STATE_DIRECTION_END};
+		STATE_DIRECTION_NW, STATE_DIRECTION_NE, STATE_DIRECTION_N,
+		STATE_DIRECTION_SW, STATE_DIRECTION_SE, STATE_DIRECTION_S,
+		STATE_DIRECTION_W,
+		STATE_DIRECTION_E,
+		STATE_DIRECTION_END
+	};
 
 protected:
 	CState();
@@ -91,6 +93,9 @@ public:
 	HIT_INFO& Get_HitInfo() { return m_tHitInfo; }
 
 public:
+	virtual void Play_Voice(CUnit* pOwner, wstring strName, _float fVol = 1.f, _int iRand = 0);
+
+public:
 	virtual HRESULT		Initialize()	PURE;
 	virtual void		Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData = nullptr);
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
@@ -116,6 +121,9 @@ protected:
 	CUnit* m_pOwner = nullptr;
 
 protected:
+	CUnit* m_pCurrentTargetUnit = nullptr; // AI 용 변수 타겟을 쫒아간다.
+
+protected:
 	vector<STATE_TYPE>		m_vecAdjState;
 	STATE_TYPE			m_eStateType = STATE_END;
 	ANIM_DIVIDE			m_eAnimDivide = ANIM_DIVIDE::eDEFAULT;
@@ -127,6 +135,9 @@ protected:
 	_float				m_fTimeAcc = 0.f;
 	_float				m_fMaxTime = 0.f;
 
+	_float m_fSndTime = 0.f;
+	_float m_fMaxSndTime = 2.f;
+
 	_bool				m_bExecuted = false;
 
 	_uint				m_iStateChangeKeyFrame = 0;
@@ -134,7 +145,7 @@ protected:
 	_float				m_fETCCurTime = 0.f; // 건설, 점령 수리 등에 사용 
 	_float				m_fETCCoolTime = 0.f; // 건설, 점령 수리 등에 사용 
 
-	_float				m_fMyMaxLerp = 0.f; 
+	_float				m_fMyMaxLerp = 0.f;
 	_float				m_fMyAccel = 0.f;
 	_float				m_fMaxSpeed = 0.f;
 
@@ -147,7 +158,7 @@ protected:
 
 	_bool				m_bAIMove = false;
 	_bool				m_bAIAttack = false;
-	
+
 	_float				m_fRand = 0.f;
 	_uint				m_iRand = 0;
 	_int				m_iDirectionRand = 0;
@@ -164,8 +175,11 @@ protected:
 
 	_int				m_iStateForcePushIndex = 0;
 
+	_float				m_fAIDeafultVolume = 0.3f;
+
 protected:
 	_bool				m_bStraight = false;
+	_bool				m_bStopDamagePumping = false;
 
 protected:
 	_float				m_fAIDelayTime = 0.f;
@@ -176,7 +190,7 @@ protected:
 
 
 protected:
-		/*애니메이션 끝나고 돌아갈 상태 ENUM 값*/
+	/*애니메이션 끝나고 돌아갈 상태 ENUM 값*/
 	STATE_TYPE			m_eBounceState = STATE_END;
 
 	STATE_TYPE			m_ePreStateType = STATE_END;
@@ -187,7 +201,7 @@ protected:
 	/* 공격, 피격 정보
 	1. 공격하는 상태가 들고있는 hit Info를
 	맞는 상태한테 넘겨줘서 쓰는 방식.
-	
+
 	*/
 	HIT_INFO			m_tHitInfo;
 	_float				m_fDamagePumping = 1.f;
@@ -201,7 +215,7 @@ protected:
 protected:
 	_uint	Get_Direction(); // 8방향
 	_uint	Get_Direction_Four(); // 4방향
-	
+
 	_uint	Move_Direction_Loop(CUnit* pOwner, CAnimator* pAnimator, _float fInterPolationTime);
 
 	void	Change_Location_Loop(_uint iDirection, CAnimator* pAnimator, _float fInterPolationTime);
@@ -222,6 +236,9 @@ protected:
 	_float	Move_Direction_Loop_AI(CUnit* pOwner);
 
 	_float	Get_TargetLook_Length(CUnit* pOwner);
+	_float4 Get_TargetLook(CGameObject* pSourObject, CGameObject* pDestUnit, _bool bFixY = true);
+
+	void	Follow_Move(CGameObject* pSourObject, CGameObject* pDestUnit, _bool bFixY = true);
 
 	void	DoMove_AI(CUnit* pOwner, CAnimator* pAnimator);
 	void	DoMove_AI_NoTarget(CUnit* pOwner, CAnimator* pAnimator);
@@ -233,14 +250,15 @@ protected:
 	void	Physics_Setting_AI(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bBackStep = false);
 	void	Physics_Setting_Right_AI(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bRight = true);
 
-
+protected:
+	void Play_Sound(wstring wstrFileName, _uint iGroupIndex = CHANNEL_EFFECTS, _float fVolume = 1.f);
 
 protected:
 	void	Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable);
 
 
 protected:
-	void					Add_KeyFrame(_uint iKeyFrameIndex, _uint iSequence);
+	void					Add_KeyFrame(_uint iKeyFrameIndex, _uint iSequence, _bool bLoop = false);
 	void					Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator);
 	virtual		void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence) {};
 
@@ -263,7 +281,7 @@ protected:
 
 private:
 
-	
+
 };
 
 END

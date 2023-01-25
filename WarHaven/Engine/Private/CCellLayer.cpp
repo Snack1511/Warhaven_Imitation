@@ -194,6 +194,13 @@ CCellLayer* CCellLayer::Clone_Layer(_float MinHeight)
 	return pCellLayer;
 }
 
+CCellLayer* CCellLayer::Clone()
+{
+	CCellLayer* pNewLayer = new CCellLayer(*this);
+	pNewLayer->m_Nodes.clear();
+	return pNewLayer;
+}
+
 void CCellLayer::Save(wstring strForlderPath, wstring strForlderName)
 {
 	wstring SavePath = strForlderPath;
@@ -1251,6 +1258,20 @@ HRESULT CCellLayer::SetUp_CellList()
 		Add_CellList(CELL_BLOCKED, Cell);
 	}
 
+	for (auto BlockCell : m_CellList[CELL_BLOCKED])
+	{
+		for (_uint i = 0; i < CCell::LINE_END; ++i)
+		{
+			CCell* pNeighbor = BlockCell->Get_NeighborCell(CCell::LINE(i));
+			if (pNeighbor && !pNeighbor->Check_Attribute(CELL_BLOCKED))
+			{
+				m_BlockedList_NeighborOpen.push_back(BlockCell);
+				break;
+			}
+
+		}
+	}
+
 	/*auto Iter = m_CellList.find(CELL_BLOCKED);
 	if (Iter == m_CellList.end())
 		return S_OK;
@@ -1752,15 +1773,15 @@ HRESULT CCellLayer::SetUp_LayerRoute(map<_float, CCellLayer*>& Layers)
 {
 	//나를 제외한 모든 레이어에 대해 검사
 	list<_float>CircularTest;
-	CircularTest.push_back(m_fLayerHeightMin);
+	//CircularTest.push_back(m_fLayerHeightMin);
 	for (auto Layer : Layers)
 	{
 		if (Layer.second == this)
 			continue;
 		list<_float> LayerRoute;
-		LayerRoute.push_back(m_fLayerHeightMin);
+		//LayerRoute.push_back(m_fLayerHeightMin);
 		
-		if (Layer.second->Check_MovableLayer(Layer.first, Layers, LayerRoute, CircularTest))
+		if (Check_MovableLayer(Layer.first, Layers, LayerRoute, CircularTest))
 		{
 			m_LayerRoute.emplace(Layer.first, LayerRoute);
 		}
@@ -1798,6 +1819,8 @@ _bool CCellLayer::Check_MovableLayer(_float fTargetLayerKey, map<_float, CCellLa
 		list<list<_float>> LayerListArr;
 		for (auto StairList : m_StairList)
 		{
+			if (StairList.second.empty())
+				continue;
 			auto LayerIter = Layers.find(StairList.first);
 			if (Layers.end() == LayerIter)
 				assert(0);//못찾으면 사고임 서순 확인ㄱㄱ
@@ -1816,16 +1839,24 @@ _bool CCellLayer::Check_MovableLayer(_float fTargetLayerKey, map<_float, CCellLa
 			//}
 		}
 		LayerListArr.sort([](auto& Sour, auto& Dest) {
-			if (Sour.size() > Dest.size())
+			if (Sour.size() < Dest.size())
 				return true;
 			else return false;
 			});
+		if (LayerListArr.empty())
+			return false;
 		list<_float> Route = LayerListArr.front();
 
 		if (Route.back() != fTargetLayerKey)
 			assert(0);//이론상 여기 걸리면 안됨 뭔가 큰 문제가 있는거
-
-		LayerRoute.merge(Route);
+		for (auto Pos : Route)
+		{
+			LayerRoute.push_back(Pos);
+		}
+		//if (LayerRoute.empty())
+		//	LayerRoute = Route;
+		//else
+		//	LayerRoute.merge(Route);
 		return true;
 	}
 }
@@ -1999,15 +2030,16 @@ CCellLayer::CellList CCellLayer::Get_BestRoute(CNode* pStartNode, CNode* pEndNod
 
 	if (Bake_OpenCloseList(OpenList, CloseList, pEndNode))
 	{
+		//Start-End까지..
 		//맨마지막의 노드로 부터 부모노드로 거슬러 올라가면서 경로 구축
 		Bake_BestList(BestRoute, OpenList, CloseList, pEndNode);
-		if (BestRoute.size() > 2)
-			int a = 0;
+		//if (BestRoute.size() > 2)
+		//	int a = 0;
 		BestCellList = Make_CellList(BestRoute);
-		for (auto Node : BestRoute)
-		{
-			OutNodeList.push_back(Node->Get_Positon());
-		}
+		//for (auto Node : BestRoute)
+		//{
+		//	OutNodeList.push_back(Node->Get_Positon());
+		//}
 		Clear_Nodes();
 		
 	}//찾음
@@ -2255,30 +2287,81 @@ CCellLayer::CellList CCellLayer::Make_CellList(NODES& OutBestList)
 	CellList BestList;
 	CNode* pStartNode = nullptr;
 	CNode* pEndNode = nullptr;
-	auto NodeIter = OutBestList.begin();
+	//auto BeginNodeIter = OutBestList.begin();
+	//auto NodeIter = BeginNodeIter;
+	//NodeIter++;
 
-	for (auto& Node : OutBestList)
+	//Start/End 길이
+	//Cell/End길이
+	//가장 짧은것..
+	auto EndIter= OutBestList.begin();
+	auto StartIter = EndIter;
+	EndIter++;
+	//처음부터 OutBest-1까지만 CellList만듬
+	for (; EndIter != OutBestList.end(); EndIter++)
 	{
-		//pEndNode = Node;
-		//Find_NearCell(pStartNode, pEndNode, BestList);
-		//pStartNode = pEndNode;
-		Find_NearCell(Node, BestList);
-	}
-	_float4 vEndPos = OutBestList.back()->Get_Positon();
-	BestList.sort([&vEndPos](auto Sour, auto Dest) {
-		_float SourLength = (Sour->Get_Position() - vEndPos).Length();
-		_float DestLength = (Dest->Get_Position() - vEndPos).Length();
-		if (SourLength > DestLength)
-			return true;
-		else if (SourLength == DestLength)
+		_float EndToStartLength = ((*EndIter)->Get_Positon() - (*StartIter)->Get_Positon()).Length();
+		_float4 vEndPos = (*EndIter)->Get_Positon();
+		CellList TmpList;
+		Find_NearCell((*StartIter), TmpList);
+
+		if (!TmpList.empty()) 
 		{
-			if (Sour->Get_Index() > Dest->Get_Index())
-				return true;
-			else return false;
+			TmpList.sort([&EndToStartLength, &vEndPos](auto Sour, auto Dest)
+				{
+					_float SourLength = (Sour->Get_Position() - vEndPos).Length();
+					_float DestLength = (Dest->Get_Position() - vEndPos).Length();
+					_float SourDiff = fabsf(EndToStartLength - SourLength);
+					_float DestDiff = fabsf(EndToStartLength - DestLength);
+					//짧은 순으로 정렬
+					if (SourDiff < DestDiff)
+						return true;
+					else return false;
+				});
+			BestList.push_back(TmpList.front());
 		}
-		else return false;
-		});
-	BestList.unique();
+		StartIter = EndIter;
+		//for (auto Cell : TmpList)
+		//	BestList.push_back(Cell);
+	}
+	//마지막 애는 BestList.back위치의 셀
+	CCell* pLastCell = Find_Cell(OutBestList.back()->Get_Positon());
+	BestList.push_back(pLastCell);
+
+	//for (auto& Node : OutBestList)
+	//{
+
+
+	//	CellList TmpList;
+	//	Find_NearCell(Node, TmpList);
+	//	for (auto Cell : TmpList)
+	//		BestList.push_back(Cell);
+	//}
+
+
+	_float4 vEndPos = OutBestList.back()->Get_Positon();
+	//중복 셀 제거
+	auto SourIter = BestList.begin();
+	for (; SourIter != BestList.end();)
+	{
+		_bool bRemove = false;
+		for (auto DestIter = SourIter; DestIter != BestList.end(); ++DestIter)
+		{
+			if (DestIter == SourIter)
+				continue;
+			if ((*SourIter) == (*DestIter)) {
+				bRemove = true;
+				break;
+			}
+		}
+		if (bRemove)
+			SourIter = BestList.erase(SourIter);
+		else
+			SourIter++;
+	}
+
+
+	//BestList.unique();
 	//if (BestList.empty())
 	//	return;
 
@@ -2356,7 +2439,10 @@ void CCellLayer::Find_NearCell(CNode* pNode, CellList& rhsCellList)
 				if (Cell->Check_InCell(vPosition))// && Cell->Check_CrossLines(vStartPosition, vEndPosition, true))
 				{
 					rhsCellList.push_back(Cell);
-					break;
+	///*				if (Cell->Check_Attribute(CELL_STAIR))
+	//					for (_uint i = 0; i < CCell::LINE_END; ++i)*/
+
+	//				break;
 				}
 			}
 		}
@@ -2366,7 +2452,15 @@ void CCellLayer::Find_NearCell(CNode* pNode, CellList& rhsCellList)
 		}
 
 	}
-
+	/*
+				CellList TmpList;
+			for (_uint i = 0; i < CCell::LINE_END; ++i)
+			{
+				CCell* pNeighborCell = pCell->Get_NeighborCell(CCell::LINE(i));
+				if (pNeighborCell && !pNeighborCell->Check_Attribute(CELL_BLOCKED))
+					TmpList.push_back(pNeighborCell);
+			}
+	*/
 
 
 }
@@ -2481,6 +2575,120 @@ list<CCell*> CCellLayer::Find_Cell_InRange(_float4 vPosition, _float fRange)
 
 	return Return;
 }
+void CCellLayer::Find_NearOpenCell(_float4 vPosition, list<CCell*>& NearOpenCells, _int NeighborLevel)
+{
+	CCell* pCell = Find_Cell(vPosition);
+	if (!pCell->Check_Attribute(CELL_BLOCKED))
+		NearOpenCells.push_back(pCell);
+	else
+		int a = 0;
+	if(0 >= NeighborLevel)
+		return;
+
+	for (_uint i = 0; i < CCell::LINE_END; ++i)
+	{
+		CCell* pNeighborCell = pCell->Get_NeighborCell(CCell::LINE(i));
+
+		if (pNeighborCell) 
+		{
+			_int iNeighborLevel = NeighborLevel - 1;
+			Find_NearOpenCell(pNeighborCell->Get_Position(), NearOpenCells, iNeighborLevel);
+		}
+	}
+
+}
+CCell* CCellLayer::Find_NearOpenCell(CCell* pTargetCell)
+{
+	if (nullptr == pTargetCell)
+	{
+		assert(0);
+		return nullptr;
+	}
+
+	if (m_BlockedList_NeighborOpen.empty())
+		assert(0);
+
+	_float fCheckLength = 10.f;
+	
+	if (!pTargetCell->Check_Attribute(CELL_BLOCKED))
+		return pTargetCell;
+	CCell* pReturnCell = nullptr;
+	CCell* pNearBlockedCell = nullptr;
+	//fCheckLength보다 멀리 떨어져 있다 --> 공중에 떠있다 --> 잘못되었다
+	_float4 vTargetPos = pTargetCell->Get_Position();
+	_float fMin = 999999.f;
+	for (auto BlockedCell : m_BlockedList_NeighborOpen)
+	{
+		_float4 vPosition = BlockedCell->Get_Position();
+		//가로 세로 10만큼 떨어진 녀석들은 넘김
+		if (fabsf(vPosition.x - vTargetPos.x) - fCheckLength > 0.f)
+			continue;
+		if (fabsf(vPosition.z- vTargetPos.z) - fCheckLength > 0.f)
+			continue;
+
+		if (BlockedCell == pTargetCell)
+		{
+			pNearBlockedCell = pTargetCell;
+			break;
+		}
+		_float fLength = (vPosition - vTargetPos).Length();
+		if (fLength < fMin)
+		{
+			fMin = fLength;
+			pNearBlockedCell = BlockedCell;
+		}
+	}
+
+	if (nullptr == pNearBlockedCell) 
+	{
+		pNearBlockedCell = m_BlockedList_NeighborOpen.front();
+		assert(0);//잘못됨
+	}
+
+	for (_uint i = 0; i < CCell::LINE_END; ++i)
+	{
+		CCell* pNeighborCell = pNearBlockedCell->Get_NeighborCell(CCell::LINE(i));
+		if (pNeighborCell && pNeighborCell->Check_Attribute(CELL_GROUND)) 
+		{
+			pReturnCell = pNeighborCell;
+			break;
+		}
+	}
+
+	//Ground와 이어지지 않은 녀석
+	if (nullptr == pReturnCell)
+	{
+		_int Index = pNearBlockedCell->Get_Index();
+		CCell* pNextCell = nullptr;
+		if (Index % 2 == 0)
+		{
+			pNextCell = pNearBlockedCell->Get_NeighborCell(CCell::LINE_CA);
+		}//왼쪽 삼각형
+		if (Index % 2 == 1)
+		{
+			pNextCell = pNearBlockedCell->Get_NeighborCell(CCell::LINE_AB);
+			
+		}//오른쪽 삼각형
+
+		for (_uint i = 0; i < CCell::LINE_END; ++i)
+		{
+			CCell* pNeighborCell = pNextCell->Get_NeighborCell(CCell::LINE(i));
+			if (pNeighborCell && pNeighborCell->Check_Attribute(CELL_GROUND))
+			{
+				pReturnCell = pNeighborCell;
+				break;
+			}
+		}
+	}
+
+	if (nullptr == pReturnCell)
+	{
+		pReturnCell = m_CellList[CELL_GROUND].front();
+		assert(0);
+	}
+
+	return pReturnCell;
+}
 void CCellLayer::Set_MinHeight(_float Height) 
 {
 	m_fLayerHeightMin = Height;
@@ -2527,6 +2735,8 @@ void CCellLayer::Add_CellList(_uint iCellAttribute, CCell* pCell)
 	}
 
 }
+
+
 
 void CCellLayer::Func_Compare_UseThread(list<pair<CNode*, CNode*>>* pList)
 {

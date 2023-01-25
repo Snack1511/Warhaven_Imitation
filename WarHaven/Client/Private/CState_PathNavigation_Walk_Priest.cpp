@@ -60,6 +60,8 @@ HRESULT CState_PathNavigation_Walk_Priest::Initialize()
     m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
     m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
+    Add_KeyFrame(15, 0, true);
+    Add_KeyFrame(50, 0, true);
 
     return S_OK;
 }
@@ -79,7 +81,6 @@ STATE_TYPE CState_PathNavigation_Walk_Priest::Tick(CUnit* pOwner, CAnimator* pAn
     else
         return m_iAINextState;
 
-    DoMove_AI_NoTarget(pOwner, pAnimator);
 
     return __super::Tick(pOwner, pAnimator);
 }

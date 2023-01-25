@@ -760,25 +760,29 @@ void CModel::Final_Tick()
 
 			for (_uint i = 0; i < m_iNumInstance; ++i)
 			{
-				//1. 절두체로 걸러
+
+				/* 너무많은 잔디같은애면 거리 체크 까지*/
+				_float fCurDistance = (vCamPos - m_pInstancingCenterPos[i]).Length();
+
+				if (m_bHardLOD)
+				{
+					if (fCurDistance > 35.f)
+						continue;
+				}
+
 
 				_float4x4 matInstance;
 				memcpy(&matInstance, &m_pInstancingMatrices[i], sizeof(_float4x4));
 
-				if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pInstancingCenterPos[i].XMLoad(), m_pInstancingMaxRange[i]))
+				//1. 절두체로 걸러
+				if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pInstancingCenterPos[i].XMLoad(), m_pInstancingMaxRange[i] + 0.3f))
 				{
 					continue;
 				}
 
 				//2. 살아남은 애들 LOD 체크
-				_float fCurDistance = (vCamPos - m_pInstancingCenterPos[i]).Length();
 
-				/* 너무많은 잔디같은애면 거리 체크 까지*/
-				if (m_bHardLOD)
-				{
-					if (fCurDistance > 40.f)
-						continue;
-				}
+				
 
 
 				eLOD_LEVEL eLODLevel = eLOD_LEVEL::eLOD1;
@@ -791,7 +795,7 @@ void CModel::Final_Tick()
 				{
 					for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
 					{
-						_float fLODDistance = (m_bHardLOD) ? m_fLODDistance * 0.5f : m_fLODDistance;
+						_float fLODDistance = (m_bHardLOD) ? m_fLODDistance * 0.4f : m_fLODDistance;
 						//i만큼 곱해서 단계를 나눔
 						fLODDistance *= (_float)i;
 						fLODDistance += m_pInstancingMaxRange[i];

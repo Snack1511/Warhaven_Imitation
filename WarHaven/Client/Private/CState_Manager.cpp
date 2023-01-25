@@ -647,6 +647,12 @@
 #include "CState_Patrol_Cure_Loop_Priest.h"
 #include "CState_Patrol_Cure_End_Priest.h"
 
+#include "CState_Patrol_Default_Qanda.h"
+#include "CState_Patrol_Walk_Qanda.h"
+
+#include "CState_Patrol_Default_Lancer.h"
+#include "CState_Patrol_Walk_Lancer.h"
+
 
 #pragma endregion 
 
@@ -743,6 +749,8 @@
 #include "CState_Combat_Attack_Archer_Begin_Sniping.h"
 #include "CState_Combat_Attack_Archer_Aiming_Sniping.h"
 #include "CState_Combat_Attack_Archer_Shoot_Sniping.h"
+#include "CState_Combat_Guard_Archer.h"
+#include "CState_Combat_SkillR_Archer_Swing.h"
 
 #include "CState_Combat_Default_Priest.h"
 #include "CState_Combat_Cure_Begin_Priest.h"
@@ -752,6 +760,23 @@
 #include "CState_Combat_SkillR_AirDash_Priest.h"
 #include "CState_Combat_SkillE_Priest_WindAttack.h"
 
+#include "CState_Combat_Default_Qanda.h"
+#include "CState_Combat_Attack_Default_Begin_Qanda.h"
+#include "CState_Combat_Attack_Default_Aiming_Qanda.h"
+#include "CState_Combat_Attack_Default_Shoot_Qanda.h"
+#include "CState_Combat_SkillQ_Begin_Sniping_Qanda.h"
+#include "CState_Combat_SkillQ_Aiming_Sniping_Qanda.h"
+#include "CState_Combat_SkillQ_Shoot_Sniping_Qanda.h"
+#include "CState_Combat_SkillE_ShadowStep_Qanda.h"
+#include "CState_Combat_Guard_Qanda.h"
+
+
+#include "CState_Combat_Default_Lancer.h"
+#include "CState_Combat_Attack_Default_Lancer.h"
+#include "CState_Combat_Attack_Sting_Lancer.h"
+#include "CState_Combat_SkillR_Breeze_Begin_Lancer.h"
+#include "CState_Combat_SkillR_Breeze_Loop_Lancer.h"
+#include "CState_Combat_Stop_Lancer.h"
 
 #pragma endregion
 
@@ -840,6 +865,21 @@
 #include "CState_PathNavigation_Walk_Priest.h"
 #include "CState_PathNavigation_Fall_Priest.h"
 
+#include "CState_PathNavigation_Default_Qanda.h"
+#include "CState_PathNavigation_Walk_Qanda.h"
+#include "CState_PathNavigation_Sprint_Qanda_Begin.h"
+#include "CState_PathNavigation_Sprint_Qanda_Loop.h"
+#include "CState_PathNavigation_Sprint_Qanda_End.h"
+#include "CState_PathNavigation_Sprint_Qanda_Jump.h"
+#include "CState_PathNavigation_Sprint_Qanda_Fall.h"
+#include "CState_PathNavigation_Jump_Qanda.h"
+#include "CState_PathNavigation_Fall_Qanda.h"
+
+#include "CState_PathNavigation_Default_Lancer.h"
+#include "CState_PathNavigation_Jump_Lancer.h"
+#include "CState_PathNavigation_Stop_Lancer.h"
+
+
 
 #pragma endregion
 
@@ -918,6 +958,36 @@
 #include "CState_Common_Groggy_Priest.h"
 #include "CState_Common_Sting_Priest.h"
 #include "CState_Common_FlyHit_Priest.h"
+#include "CState_Combat_SkillQ_Catch_Begin_Priest.h"
+#include "CState_Combat_SkillQ_Catch_Loop_Priest.h"
+#include "CState_Combat_SkillQ_Catching_Priest.h"
+#include "CState_Combat_SkillQ_Shoot_Priest.h"
+
+
+#include "CState_Common_Fall_Qanda.h"
+#include "CState_Common_Land_Qanda.h"
+#include "CState_Common_Hit_Qanda.h"
+#include "CState_Common_GuardHit_Qanda.h"
+#include "CState_Common_Groggy_Qanda.h"
+#include "CState_Common_Sting_Qanda.h"
+#include "CState_Common_FlyHit_Qanda.h"
+
+
+#include "CState_Common_Bounce_Lancer.h"
+#include "CState_Common_Fall_Lancer.h"
+#include "CState_Common_Land_Lancer.h"
+#include "CState_Common_Hit_Lancer.h"
+#include "CState_Common_Groggy_Lancer.h"
+#include "CState_Common_FlyHit_Lancer.h"
+
+
+#include "CState_Catch_Begin_Priest.h"
+#include "CState_Catch_Loop_Priest.h"
+#include "CState_Catch_Catching_Priest.h"
+#include "CState_Catch_Shoot_Priest.h"
+
+
+
 
 #pragma endregion
 
@@ -934,6 +1004,8 @@
 #include "CState_Common_Slide_Begin_AI.h"
 #include "CState_Common_Slide_Loop_AI.h"
 #include "CState_Common_Slide_End_AI.h"
+#include "CState_Common_Cannon_AI.h"
+#include "CState_Common_Gliding_AI.h"
 
 #pragma endregion
 
@@ -974,6 +1046,8 @@ HRESULT CState_Manager::Initialize()
 	m_arrStates[AI_STATE_COMMON_SLIDELOOP_AI] = CState_Common_Slide_Loop_AI::Create();
 	m_arrStates[AI_STATE_COMMON_SLIDEEND_AI] = CState_Common_Slide_End_AI::Create();
 	m_arrStates[AI_STATE_COMMON_TRANSFORM_AI] = CState_Victory::Create();
+	m_arrStates[AI_STATE_CANNON_AI] = CState_Common_Cannon_AI::Create();
+	m_arrStates[AI_STATE_GLIDING_AI] = CState_Common_Gliding_AI::Create();
 
 
 	Spear_State();
@@ -999,14 +1073,16 @@ HRESULT CState_Manager::Initialize()
 	Paladin_State_AI();
 	Archer_State_AI();
 	Priest_State_AI();
+	Qanda_State_AI();
 	Lancer_State_AI();
+
 
 	for (_uint i = 0; i < STATE_END; ++i)
 	{
 		if (!m_arrStates[i])
 		{
-			STATE_TYPE iType = (STATE_TYPE)i;
-			Call_MsgBox(L"태호야 상태추가하랬지");
+			STATE_TYPE iType = (STATE_TYPE)0;
+			Call_MsgBox(L"enum 갱신 안한 State 객체 발견 (이 코드의 중단점을 걸어주십시오.)");
 			return E_FAIL;
 
 		}
@@ -2148,7 +2224,6 @@ void CState_Manager::Archer_State_AI()
 	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_ARCHER_L] = CState_PathNavigation_Run_Archer_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_ARCHER_R] = CState_PathNavigation_Run_Archer_R::Create();
 
-	// 수정 ㄱㄱ
 	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_ARCHER_L] = CState_PathNavigation_Run_Archer_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_ARCHER_R] = CState_PathNavigation_Run_Archer_R::Create();
 
@@ -2182,8 +2257,8 @@ void CState_Manager::Archer_State_AI()
 	m_arrStates[AI_STATE_COMBAT_ATTACK_AIMING_SNIPING_ARCHER] = CState_Combat_Attack_Archer_Aiming_Sniping::Create();
 	m_arrStates[AI_STATE_COMBAT_ATTACK_SHOOT_SNIPING_ARCHER] = CState_Combat_Attack_Archer_Shoot_Sniping::Create();
 
-	m_arrStates[AI_STATE_COMBAT_GUARDLOOP_ARCHER] = CState_Combat_Default_Archer_R::Create();
-	m_arrStates[AI_STATE_COMBAT_ATTACK_SWING_ARCHER] = CState_Combat_Default_Archer_R::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDLOOP_ARCHER] = CState_Combat_Guard_Archer::Create();
+	m_arrStates[AI_STATE_COMBAT_ATTACK_SWING_ARCHER] = CState_Combat_SkillR_Archer_Swing::Create();
 	m_arrStates[AI_STATE_COMBAT_STATE_SWAP_ARCHER] = CState_Combat_Default_Archer_R::Create();
 
 #pragma endregion
@@ -2210,6 +2285,62 @@ void CState_Manager::Archer_State_AI()
 
 void CState_Manager::Qanda_State_AI()
 {
+#pragma region Patrol
+
+	m_arrStates[AI_STATE_PATROL_DEFAULT_QANDA] = CState_Patrol_Default_Qanda::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_QANDA] = CState_Patrol_Walk_Qanda::Create();
+
+#pragma endregion
+
+#pragma region Combat
+
+	m_arrStates[AI_STATE_COMBAT_DEAFULT_QANDA] = CState_Combat_Default_Qanda::Create();
+
+	m_arrStates[AI_STATE_COMBAT_BEGIN_QANDA] = CState_Combat_Attack_Default_Begin_Qanda::Create();
+	m_arrStates[AI_STATE_COMBAT_AIMING_QANDA] = CState_Combat_Attack_Default_Aiming_Qanda::Create();
+	m_arrStates[AI_STATE_COMBAT_SHOOT_QANDA] = CState_Combat_Attack_Default_Shoot_Qanda::Create();
+
+	m_arrStates[AI_STATE_COMBAT_BEGIN_SNIPING_QANDA] = CState_Combat_SkillQ_Begin_Sniping_Qanda::Create();
+	m_arrStates[AI_STATE_COMBAT_AIMING_SNIPING_QANDA] = CState_Combat_SkillQ_Aiming_Sniping_Qanda::Create();
+	m_arrStates[AI_STATE_COMBAT_SHOOT_SNIPING_QANDA] = CState_Combat_SkillQ_Shoot_Sniping_Qanda::Create();
+
+	m_arrStates[AI_STATE_COMBAT_SHADOWSTEP_QANDA] = CState_Combat_SkillE_ShadowStep_Qanda::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARD_QANDA] = CState_Combat_Guard_Qanda::Create();
+
+#pragma endregion
+
+
+#pragma region PathNavigation
+
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_QANDA] = CState_PathNavigation_Default_Qanda::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_QANDA] = CState_PathNavigation_Walk_Qanda::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_QANDA] = CState_PathNavigation_Sprint_Qanda_Begin::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTLOOP_QANDA] = CState_PathNavigation_Sprint_Qanda_Loop::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTEND_QANDA] = CState_PathNavigation_Sprint_Qanda_End::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMP_QANDA] = CState_PathNavigation_Sprint_Qanda_Jump::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_QANDA] = CState_PathNavigation_Sprint_Qanda_Fall::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_QANDA] = CState_PathNavigation_Jump_Qanda::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_QANDA] = CState_PathNavigation_Fall_Qanda::Create();
+
+
+
+#pragma endregion
+
+#pragma region Common
+
+
+	m_arrStates[AI_STATE_COMMON_HIT_QANDA] = CState_Common_Hit_Qanda::Create();
+	m_arrStates[AI_STATE_COMMON_GUARDHIT_QANDA] = CState_Common_GuardHit_Qanda::Create();
+	m_arrStates[AI_STATE_COMMON_GROGGYHIT_QANDA] = CState_Common_Groggy_Qanda::Create();
+	m_arrStates[AI_STATE_COMMON_STINGHIT_QANDA] = CState_Common_Sting_Qanda::Create();
+	m_arrStates[AI_STATE_COMMON_FLYHIT_QANDA] = CState_Common_FlyHit_Qanda::Create();
+	m_arrStates[AI_STATE_COMMON_FALL_QANDA] = CState_Common_Fall_Qanda::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_QANDA] = CState_Common_Land_Qanda::Create();
+	m_arrStates[AI_STATE_COMMON_GUARD_CANCEL_QANDA] = CState_Common_Land_Qanda::Create();
+
+
+#pragma endregion
 
 }
 
@@ -2240,6 +2371,11 @@ void CState_Manager::Priest_State_AI()
 	m_arrStates[AI_STATE_COMBAT_CURE_BEGIN_PRIEST] = CState_Combat_Cure_Begin_Priest::Create();
 	m_arrStates[AI_STATE_COMBAT_CURE_LOOP_PRIEST] = CState_Combat_Cure_Loop_Priest::Create();
 	m_arrStates[AI_STATE_COMBAT_CURE_END_PRIEST] = CState_Combat_Cure_End_Priest::Create();
+
+	m_arrStates[AI_STATE_COMBAT_CATCH_BEGIN_PRIEST] = CState_Combat_SkillQ_Catch_Begin_Priest::Create();
+	m_arrStates[AI_STATE_COMBAT_CATCH_LOOP_PRIEST] = CState_Combat_SkillQ_Catch_Loop_Priest::Create();
+	m_arrStates[AI_STATE_COMBAT_CATCHING_PRIEST] = CState_Combat_SkillQ_Catching_Priest::Create();
+	m_arrStates[AI_STATE_COMBAT_CATCH_SHOOT_PRIEST] = CState_Combat_SkillQ_Shoot_Priest::Create();
 
 	m_arrStates[AI_STATE_COMBAT_WINDATTACK_PRIEST] = CState_Combat_SkillE_Priest_WindAttack::Create();
 
@@ -2278,10 +2414,59 @@ void CState_Manager::Priest_State_AI()
 	m_arrStates[AI_STATE_COMMON_FLYHIT_PRIEST] = CState_Common_FlyHit_Priest::Create();
 
 #pragma endregion
+
+	// CannonCatch
+	m_arrStates[AI_STATE_CATCH_CANNON_BEGIN_PRIEST] = CState_Catch_Begin_Priest::Create();
+	m_arrStates[AI_STATE_CATCH_CANNON_LOOP_PRIEST] = CState_Catch_Loop_Priest::Create();
+	m_arrStates[AI_STATE_CATCH_CANNON_PRIEST] = CState_Catch_Catching_Priest::Create();
+	m_arrStates[AI_STATE_CATCH_CANNON_SHOOT_PRIEST] = CState_Catch_Shoot_Priest::Create();
+
 }
 
 void CState_Manager::Lancer_State_AI()
 {
+
+#pragma region Patrol
+
+	m_arrStates[AI_STATE_PATROL_DEFAULT_LANCER] = CState_Patrol_Default_Lancer::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_LANCER] = CState_Patrol_Walk_Lancer::Create();
+	
+
+#pragma endregion
+
+#pragma region Combat
+	
+	m_arrStates[AI_STATE_COMBAT_DEAFULT_LANCER] = CState_Combat_Default_Lancer::Create();
+	m_arrStates[AI_STATE_COMBAT_ATTACKSWING_LANCER] = CState_Combat_Attack_Default_Lancer::Create();
+	m_arrStates[AI_STATE_COMBAT_STING_LANCER] = CState_Combat_Attack_Sting_Lancer::Create();
+
+	m_arrStates[AI_STATE_COMBAT_BREEZE_BEGIN_LANCER] = CState_Combat_SkillR_Breeze_Begin_Lancer::Create();
+	m_arrStates[AI_STATE_COMBAT_BREEZE_LOOP_LANCER] = CState_Combat_SkillR_Breeze_Loop_Lancer::Create();
+	m_arrStates[AI_STATE_COMBAT_STOP_LANCER] = CState_Combat_Stop_Lancer::Create();
+
+#pragma endregion
+
+
+#pragma region PathNavigation
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_LANCER] = CState_PathNavigation_Default_Lancer::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_LANCER] = CState_PathNavigation_Jump_Lancer::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_STOP_LANCER] = CState_PathNavigation_Stop_Lancer::Create();
+
+#pragma endregion
+
+#pragma region Common
+
+	m_arrStates[AI_STATE_COMMON_BOUNCE_LANCER] = CState_Common_Bounce_Lancer::Create();
+
+	m_arrStates[AI_STATE_COMMON_FALL_LANCER] = CState_Common_Fall_Lancer::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_LANCER] = CState_Common_Land_Lancer::Create();
+
+	m_arrStates[AI_STATE_COMMON_HIT_LANCER] = CState_Common_Hit_Lancer::Create();
+	m_arrStates[AI_STATE_COMMON_GROGGYHIT_LANCER] = CState_Common_Groggy_Lancer::Create();
+	m_arrStates[AI_STATE_COMMON_FLYHIT_LANCER] = CState_Common_FlyHit_Lancer::Create();
+
+#pragma endregion
 
 }
 

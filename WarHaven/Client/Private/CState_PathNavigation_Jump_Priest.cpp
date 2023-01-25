@@ -60,7 +60,7 @@ HRESULT CState_PathNavigation_Jump_Priest::Initialize()
 
 	iPlaceJumpAnimIndex = 11;
 
-    m_iAINextState = AI_STATE_PATHNAVIGATION_FALL_PRIEST;
+    m_eFallState = AI_STATE_PATHNAVIGATION_FALL_PRIEST;
 
 
     return S_OK;
@@ -88,4 +88,9 @@ STATE_TYPE CState_PathNavigation_Jump_Priest::Check_Condition(CUnit* pOwner, CAn
 
     return __super::Check_Condition(pOwner, pAnimator);
 
+}
+
+void CState_PathNavigation_Jump_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }

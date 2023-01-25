@@ -30,9 +30,6 @@ CState_PathNavigation_Default_Fiona_R* CState_PathNavigation_Default_Fiona_R::Cr
 }
 HRESULT CState_PathNavigation_Default_Fiona_R::Initialize()
 {
-
-    __super::Initialize();
-
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 19;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_PATHNAVIGATION_DEFAULT_FIONA_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -51,11 +48,11 @@ HRESULT CState_PathNavigation_Default_Fiona_R::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 35;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 22;
 
-    m_iAINextState = AI_STATE_PATHNAVIGATION_JUMP_FIONA_R;
+    m_eJumpState = AI_STATE_PATHNAVIGATION_JUMP_FIONA_R;
     m_eJumpFallStateType = AI_STATE_COMMON_FALL_FIONA_R;
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_FIONA_R;
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Default_Fiona_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)

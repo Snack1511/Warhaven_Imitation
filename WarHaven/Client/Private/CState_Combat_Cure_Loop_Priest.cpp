@@ -67,6 +67,7 @@ void CState_Combat_Cure_Loop_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, 
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
 
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
+	Play_Voice(pOwner, L"Voice_Cure", 1.f);
 }
 
 void CState_Combat_Cure_Loop_Priest::Exit(CUnit* pOwner, CAnimator* pAnimator)
@@ -74,12 +75,11 @@ void CState_Combat_Cure_Loop_Priest::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
 	
-	if(m_pTargetObject)
-		static_cast<CUnit*>(m_pTargetObject)->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
-
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
+	GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)CHANNEL_EFFECTS, m_iSndIdx);
+
 }
 
 STATE_TYPE CState_Combat_Cure_Loop_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -94,16 +94,22 @@ STATE_TYPE CState_Combat_Cure_Loop_Priest::Tick(CUnit* pOwner, CAnimator* pAnima
 		return AI_STATE_COMBAT_CURE_END_PRIEST;
 
 
-	if(!pOwner->Get_SameNearObejct())
+	if (!pOwner->Get_SameNearObejct())
+	{
 		static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);
+	}
 
 
 	// Å¸°Ù À¯´ÖÀÌ ÈúÀ» ¹Þ°í ÀÖ´Â ´ë»ó
-	pTargetUnit->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(true);
 	m_pTargetObject = pTargetUnit;
 
 	_float fLength = (pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS)).Length();
+	if (m_fSndTime <= 0.f)
+		m_iSndIdx = CFunctor::Play_LoopSound(L"Effect_Cure_Priest", CHANNEL_EFFECTS);
 
+	m_fSndTime += fDT(0);
+	if (m_fSndTime >= m_fMaxSndTime)
+		m_fSndTime = 0.f;
 
 	if (fabs(fLength) > pOwner->Get_MaxDistance())
 		return AI_STATE_COMBAT_CURE_END_PRIEST;

@@ -10,6 +10,9 @@
 #include "CLevel_Paden.h"
 #include "CLevel_Hwara.h"
 #include "CShader.h"
+#include "Functor.h"
+
+#include "CGame_Manager_HR.h"
 
 IMPLEMENT_SINGLETON(CLoading_Manager)
 
@@ -67,8 +70,12 @@ HRESULT CLoading_Manager::Reserve_Load_Level(LEVEL_TYPE_CLIENT eLevelID)
 		return E_FAIL;
 	}
 
+	CFunctor::Stop_Sound(CHANNEL_BGM);
+
 	m_eLoadID = eLevelID;
 	m_bReservation = true;
+
+	CGame_Manager_HR::Get_Instance()->Delete_AllThreads();
 
 	return S_OK;
 }

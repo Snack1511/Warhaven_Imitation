@@ -35,9 +35,7 @@ HRESULT CUI_UnitHUD::Start()
 	CREATE_GAMEOBJECT(m_pUnitNameText, GROUP_UI);
 
 	for (int i = 0; i < UI_End; ++i)
-	{
 		CREATE_GAMEOBJECT(m_pUnitUI[i], GROUP_UI);
-	}
 
 	__super::Start();
 
@@ -68,6 +66,7 @@ void CUI_UnitHUD::My_Tick()
 {
 	__super::My_Tick();
 
+
 	if (m_fUnitDis > 10.f)
 	{
 		m_vOffset = _float4(0.f, 1.9f, 0.f);
@@ -94,6 +93,10 @@ void CUI_UnitHUD::My_Tick()
 						GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(3);
 				}
 			}
+			else
+			{
+				return;
+			}
 		}
 		else
 		{
@@ -102,7 +105,6 @@ void CUI_UnitHUD::My_Tick()
 				if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 1)
 				{
 					m_pUnitNameText->Set_Scale(m_fLeaderIconScale);
-
 					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(1);
 				}
 			}
@@ -111,25 +113,30 @@ void CUI_UnitHUD::My_Tick()
 				m_pUnitNameText->Set_Scale(8.f);
 
 				if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 0)
-				{
 					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(0);
-				}
 			}
 
-			if (m_pOwner->Get_Team() && m_pOwner->Get_Team()->IsMainPlayerTeam())
+			if (m_pOwner->Get_Team())
 			{
-				if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+				if (m_pOwner->Get_Team()->IsMainPlayerTeam())
 				{
-					m_pUnitNameText->Set_Color(m_vColorLightGreen);
+					if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+					{
+						m_pUnitNameText->Set_Color(m_vColorLightGreen);
+					}
+					else
+					{
+						m_pUnitNameText->Set_Color(m_vColorBlue);
+					}
 				}
 				else
 				{
-					m_pUnitNameText->Set_Color(m_vColorBlue);
+					m_pUnitNameText->Set_Color(m_vColorRed);
 				}
 			}
 			else
 			{
-				m_pUnitNameText->Set_Color(m_vColorRed);
+				return;
 			}
 		}
 
@@ -155,8 +162,10 @@ void CUI_UnitHUD::My_Tick()
 					m_pUnitNameText->Set_Color(m_vColorRed);
 				}
 			}
-
-			SetActive_UnitHP(false);
+			else
+			{
+				return;
+			}
 		}
 	}
 	else
@@ -195,6 +204,8 @@ void CUI_UnitHUD::My_Tick()
 		}
 	}
 
+	// Set_ProjPos(m_pOwner->Get_Transform());
+
 	Tick_UnitHP();
 	Tick_TargetUI();
 }
@@ -211,7 +222,10 @@ CUI_UnitHP* CUI_UnitHUD::Get_UnitHP()
 
 CUI_Revive* CUI_UnitHUD::Get_ReviveUI()
 {
-	return static_cast<CUI_Revive*>(m_pUnitUI[UI_Revive]);
+	if (m_pUnitUI[UI_Revive])
+		return static_cast<CUI_Revive*>(m_pUnitUI[UI_Revive]);
+
+	return nullptr;
 }
 
 void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
@@ -228,6 +242,11 @@ void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
 	vNewPos.y -= 30.f;
 	for (int i = 0; i < Target_End; ++i)
 		m_pTargetUI[i]->Set_Pos(vNewPos);
+}
+
+void CUI_UnitHUD::Set_UnitHP(_float fCurHP, _float fMaxHP)
+{
+	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHP(fCurHP, fMaxHP);
 }
 
 void CUI_UnitHUD::Enable_RevivalUI()
@@ -269,6 +288,18 @@ void CUI_UnitHUD::SetActive_TargetUI(_uint iIdx, _bool value)
 		m_bEnableTargetUI = value;
 	}
 }
+
+void CUI_UnitHUD::Enable_HealBlur()
+{
+	SetActive_UnitHP(true);
+	static_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Enable_HealBlur();
+}
+
+void CUI_UnitHUD::Disable_HealBlur()
+{
+	static_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Disable_HealBlur();
+}
+
 
 void CUI_UnitHUD::Create_UnitHUD()
 {
@@ -338,6 +369,10 @@ void CUI_UnitHUD::Init_UnitNameText()
 			m_pUnitNameText->Set_FontColor(m_vColorRed);
 		}
 	}
+	else
+	{
+		return;
+	}
 
 	wstring wstrUnitName = m_pOwner->Get_PlayerName();
 	m_pUnitNameText->Set_FontText(wstrUnitName);
@@ -345,58 +380,44 @@ void CUI_UnitHUD::Init_UnitNameText()
 
 void CUI_UnitHUD::SetActive_UnitHP(_bool value)
 {
-	if (value == true)
+	if (m_pOwner->Get_Team())
 	{
-		if (!m_pUnitUI[UI_Hp]->Is_Valid())
+		if (m_pOwner->Get_Team()->IsMainPlayerTeam())
 		{
-			if (m_pOwner->Get_Team())
+			if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
 			{
-				if (m_pOwner->Get_Team()->IsMainPlayerTeam())
-				{
-					if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
-					{
-						dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorLightGreen);
-					}
-					else
-					{
-						dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorBlue);
-					}
-				}
-				else
-				{
-					dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorRed);
-				}
+				dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorLightGreen);
 			}
-
-			ENABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);
+			else
+			{
+				dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorBlue);
+			}
+		}
+		else
+		{
+			dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorRed);
 		}
 	}
 	else
 	{
-		if (m_pUnitUI[UI_Hp]->Is_Valid())
-		{
-			DISABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);
-		}
+		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorOrigin);
 	}
+
+	if (m_pUnitUI[UI_Hp]->Is_Valid() == !value)
+		m_pUnitUI[UI_Hp]->SetActive(value);
 }
 
 void CUI_UnitHUD::Tick_UnitHP()
 {
-	if (m_pOwner->IsMainPlayer())
-		return;
-
 	if (m_pUnitUI[UI_Hp]->Is_Valid())
 	{
-		_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
-		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_GaugeRatio(fHpGaugeRatio);
-
 		m_fEnableHpTime += fDT(0);
 		if (m_fEnableHpTime > m_fDisableHpTime)
 		{
 			m_fEnableHpTime = 0.f;
 			SetActive_UnitHP(false);
 		}
-		else if (fHpGaugeRatio <= 0.f)
+		else if (m_tStatus.fHP <= 0.01f)
 		{
 			SetActive_UnitHP(false);
 		}
@@ -422,6 +443,7 @@ void CUI_UnitHUD::Tick_TargetUI()
 			m_fEanbleTargetUITime = 0.f;
 			m_bEnableTargetUI = false;
 
+			Play_Sound(L"Effect_MeteorTarget");
 			m_pTargetUI[Target_Point]->SetActive(true);
 			m_pTargetUI[Target_Point]->Lerp_Scale(70.f, 30.f, 0.3f);
 		}

@@ -60,6 +60,8 @@ HRESULT CState_Patrol_Walk_Priest::Initialize()
 
     m_fAnimSpeed = 2.5f;
 
+    Add_KeyFrame(15, 0, true);
+    Add_KeyFrame(50, 0, true);
     return __super::Initialize();
 }
 
@@ -74,6 +76,8 @@ void CState_Patrol_Walk_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
     m_vAIRandLook = _float4(frandom(0.f, 1.f), frandom(0.f, 1.f), frandom(0.f, 1.f));
 
     m_iWalkDelay = 20;
+
+    m_eJumpFallStateType = AI_STATE_COMMON_LAND_PRIEST;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -128,4 +132,9 @@ void CState_Patrol_Walk_Priest::Exit(CUnit* pOwner, CAnimator* pAnimator)
 STATE_TYPE CState_Patrol_Walk_Priest::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
     return __super::Check_Condition(pOwner, pAnimator);
+}
+
+void CState_Patrol_Walk_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }

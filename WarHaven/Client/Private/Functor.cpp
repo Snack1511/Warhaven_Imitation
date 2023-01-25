@@ -7,6 +7,8 @@
 
 #include "CUser.h"
 
+#include "CUnit.h"
+
 _float4 CFunctor::Get_MousePos(void)
 {
 	POINT pt{};
@@ -94,9 +96,9 @@ string	CFunctor::Remove_String(string str, _bool value)
 		_int iFind = (_int)str.rfind("/") + 1;
 		string strFileName = str.substr(iFind, str.length() - iFind);
 
-		
+
 	}
-	
+
 	return str;
 }
 
@@ -149,31 +151,115 @@ string CFunctor::Get_FileName(string strFilePath)
 	return strFileName;
 }
 
-//void	CFunctor::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float4 vPosition, _float fVolume)
-//{
-//#define SOUND_MAX_RANGE	30.f
-//#define SOUND_MIN_RANGE	4.f
-//
-//	_float fRatio = 0.f;
-//
-//	_float4 vPlayerPos = PLAYER->Get_Transform()->Get_World(WORLD_POS);
-//	
-//	_float fLength = (vPlayerPos - vPosition).Length();
-//	_float fMinRatio = 0.1f;
-//
-//	if (iGroupIndex == CHANNEL_VOICE)
-//		fMinRatio = 0.5f;
-//
-//
-//	if (fLength <= SOUND_MIN_RANGE)
-//		fRatio = 1.f;
-//	else
-//	{
-//		fRatio = max(1.f - (fLength / SOUND_MAX_RANGE), fMinRatio);
-//	}
-//
-//	//Length가 낮을 수록 소리는 커야함.
-//	//거리가 5보다 가까우면 rATIO는 1로 보장
-//
-//	GAMEINSTANCE->Play_Sound(wstrFileName.c_str(), (CHANNEL_GROUP)iGroupIndex, fRatio * fVolume);
-//}
+void	CFunctor::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float4 vPosition, _float fVolume)
+{
+#define SOUND_MAX_RANGE	20.f
+#define SOUND_MIN_RANGE	4.f
+
+	_float fRatio = 0.05f;
+
+	_float4 vPlayerPos = GAMEINSTANCE->Get_ViewPos();
+
+	_float fLength = (vPlayerPos - vPosition).Length();
+	_float fMinRatio = 0.0005f;
+
+	//if (iGroupIndex == CHANNEL_VOICE)
+	//	fMinRatio = 0.5f;
+
+	//fLength *= 2.f;
+
+	if (fLength >= SOUND_MAX_RANGE)
+		return;
+
+
+	if (fLength <= SOUND_MIN_RANGE)
+		fRatio = 1.f;
+	else
+	{
+		fRatio = max(1.f - (fLength / SOUND_MAX_RANGE), fMinRatio);
+	}
+
+	//Length가 낮을 수록 소리는 커야함.
+	//거리가 5보다 가까우면 rATIO는 1로 보장
+
+	GAMEINSTANCE->Play_Sound(wstrFileName.c_str(), (CHANNEL_GROUP)iGroupIndex, fRatio * fVolume);
+}
+
+void CFunctor::Play_Sound_SetRange(wstring wstrFileName, _uint iGroupIndex, _float4 vPosition, _float fMaxRange, _float fVolume)
+{
+#define SOUND_MIN_RANGE	4.f
+
+	_float fRatio = 0.05f;
+
+	_float4 vPlayerPos = GAMEINSTANCE->Get_ViewPos();
+
+	_float fLength = (vPlayerPos - vPosition).Length();
+	_float fMinRatio = 0.0005f;
+
+	//if (iGroupIndex == CHANNEL_VOICE)
+	//	fMinRatio = 0.5f;
+
+	//fLength *= 2.f;
+
+
+	if (fLength >= SOUND_MAX_RANGE)
+		return;
+
+
+	if (fLength <= SOUND_MIN_RANGE)
+		fRatio = 1.f;
+	else
+	{
+		fRatio = max(1.f - (fLength / fMaxRange), fMinRatio);
+	}
+
+	//Length가 낮을 수록 소리는 커야함.
+	//거리가 5보다 가까우면 rATIO는 1로 보장
+
+	GAMEINSTANCE->Play_Sound(wstrFileName.c_str(), (CHANNEL_GROUP)iGroupIndex, fRatio * fVolume);
+}
+
+void CFunctor::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float fVolume)
+{
+	GAMEINSTANCE->Play_Sound(wstrFileName.c_str(), (CHANNEL_GROUP)iGroupIndex, fVolume);
+}
+
+_int CFunctor::Play_LoopSound(wstring wstrFileName, _uint iGroupIndex, _float4 vPosition, _float fVolume)
+{
+#define SOUND_MAX_RANGE	15.f
+#define SOUND_MIN_RANGE	4.f
+
+	_float fRatio = 0.f;
+
+	_float4 vPlayerPos = GAMEINSTANCE->Get_ViewPos();
+
+	_float fLength = (vPlayerPos - vPosition).Length();
+	_float fMinRatio = 0.1f;
+
+	//if (iGroupIndex == CHANNEL_VOICE)
+	//	fMinRatio = 0.5f;
+
+
+	if (fLength <= SOUND_MIN_RANGE)
+		fRatio = 1.f;
+	else
+	{
+		fRatio = max(1.f - (fLength / SOUND_MAX_RANGE), fMinRatio);
+	}
+
+	//Length가 낮을 수록 소리는 커야함.
+	//거리가 5보다 가까우면 rATIO는 1로 보장
+
+	return GAMEINSTANCE->Play_LoopSound(wstrFileName.c_str(), (CHANNEL_GROUP)iGroupIndex, fRatio * fVolume);
+}
+
+_int CFunctor::Play_LoopSound(wstring wstrFileName, _uint iGroupIndex, _float fVolume)
+{
+	return GAMEINSTANCE->Play_LoopSound(wstrFileName.c_str(), (CHANNEL_GROUP)iGroupIndex, fVolume);
+
+}
+
+void CFunctor::Stop_Sound(_uint iGroupIndex)
+{
+	GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)iGroupIndex);
+}

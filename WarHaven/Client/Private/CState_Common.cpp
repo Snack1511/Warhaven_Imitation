@@ -24,9 +24,16 @@ HRESULT CState_Common::Initialize()
     return S_OK;
 }
 
-void CState_Common::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CState_Common::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    m_ePreStateType = ePrevType;
+    if (pOwner->Get_HitType().eGroggyState != ePrevType &&
+        pOwner->Get_HitType().eGuardBreakState != ePrevType &&
+        pOwner->Get_HitType().eGuardState != ePrevType &&
+        pOwner->Get_HitType().eFlyState != ePrevType &&
+        pOwner->Get_HitType().eStingHitState != ePrevType)
+    {
+        m_ePreStateType = ePrevType;
+    }
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

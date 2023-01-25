@@ -47,6 +47,7 @@ HRESULT CUI_ScoreBoard::Start()
 	GET_COMPONENT_FROM(m_pArrPointUI[Point_A][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_ScoreBoard::Set_Shader_Guage_PointA, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrPointUI[Point_R][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_ScoreBoard::Set_Shader_Guage_PointR, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_ScoreBoard::Set_Shader_Guage_PointC, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrPointUI[Point_E][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_ScoreBoard::Set_Shader_Guage_PointE, this, placeholders::_1, "g_fValue");
 
 	return S_OK;
 }
@@ -64,6 +65,11 @@ void CUI_ScoreBoard::Set_Shader_Guage_PointR(CShader* pShader, const char* pCons
 void CUI_ScoreBoard::Set_Shader_Guage_PointC(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_C], sizeof(_float));
+}
+
+void CUI_ScoreBoard::Set_Shader_Guage_PointE(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_E], sizeof(_float));
 }
 
 void CUI_ScoreBoard::Get_ScoreInfo(CPlayer* pPlayer)
@@ -147,10 +153,10 @@ void CUI_ScoreBoard::OnEnable()
 		}
 	}
 
-	if (m_eLoadLevel == LEVEL_HWARA)
+	if (m_eLoadLevel == LEVEL_PADEN)
 	{
 		for (int i = 0; i < PU_End; ++i)
-			m_pArrPointUI[Point_C][i]->SetActive(false);
+			m_pArrPointUI[Point_E][i]->SetActive(false);
 	}
 }
 
@@ -548,15 +554,29 @@ void CUI_ScoreBoard::Init_PointUI()
 			for (int j = 0; j < PU_End; ++j)
 			{
 				m_pArrPointUI[i][j]->Set_PosX(-370.f);
+
+				map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+				auto iter = mapPlayers.begin();
+				eTEAM_TYPE eTeam = iter->second->Get_Team()->Get_TeamType();
+				if (eTeam == eTEAM_TYPE::eBLUE)
+				{
+					m_pArrPointUI[Point_A][j]->Set_PosX(-465.f);
+					m_pArrPointUI[Point_E][j]->Set_PosX(-275.f);
+				}
+				else
+				{
+					m_pArrPointUI[Point_A][j]->Set_PosX(-275.f);
+					m_pArrPointUI[Point_E][j]->Set_PosX(-465.f);
+				}
 			}
 		}
 
-		m_pArrPointUI[Point_A][PU_Outline]->Set_TextureIndex(2);
-		m_pArrPointUI[Point_A][PU_Gauge]->Set_TextureIndex(1);
-		m_pArrPointUI[Point_A][PU_Text]->Set_TextureIndex(0);
-		m_pArrPointUI[Point_A][PU_Outline]->Set_PosY(-15.f);
-		m_pArrPointUI[Point_A][PU_Gauge]->Set_PosY(-15.f);
-		m_pArrPointUI[Point_A][PU_Text]->Set_PosY(-17.f);
+		m_pArrPointUI[Point_C][PU_Outline]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_C][PU_Gauge]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_C][PU_Text]->Set_TextureIndex(2);
+		m_pArrPointUI[Point_C][PU_Outline]->Set_PosY(-15.f);
+		m_pArrPointUI[Point_C][PU_Gauge]->Set_PosY(-15.f);
+		m_pArrPointUI[Point_C][PU_Text]->Set_PosY(-17.f);
 
 		m_pArrPointUI[Point_R][PU_Outline]->Set_TextureIndex(1);
 		m_pArrPointUI[Point_R][PU_Gauge]->Set_TextureIndex(1);
@@ -564,6 +584,26 @@ void CUI_ScoreBoard::Init_PointUI()
 		m_pArrPointUI[Point_R][PU_Outline]->Set_PosY(35);
 		m_pArrPointUI[Point_R][PU_Gauge]->Set_PosY(35);
 		m_pArrPointUI[Point_R][PU_Text]->Set_PosY(33.f);
+
+		m_pArrPointUI[Point_A][PU_Outline]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_A][PU_Gauge]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_A][PU_Text]->Set_TextureIndex(0);
+		m_pArrPointUI[Point_A][PU_Outline]->Set_PosY(-15.f);
+		m_pArrPointUI[Point_A][PU_Gauge]->Set_PosY(-15.f);
+		m_pArrPointUI[Point_A][PU_Text]->Set_PosY(-17.f);
+
+		m_pArrPointUI[Point_E][PU_Outline]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_E][PU_Gauge]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_E][PU_Text]->Set_TextureIndex(3);
+		m_pArrPointUI[Point_E][PU_Outline]->Set_PosY(-15.f);
+		m_pArrPointUI[Point_E][PU_Gauge]->Set_PosY(-15.f);
+		m_pArrPointUI[Point_E][PU_Text]->Set_PosY(-17.f);
+
+		for (int i = 0; i < PU_End; ++i)
+		{
+			m_pArrPointUI[Point_A][i]->Set_Color(m_vColorBlue2);
+			m_pArrPointUI[Point_E][i]->Set_Color(m_vColorRed2);
+		}
 
 		break;
 	}
@@ -603,6 +643,39 @@ void CUI_ScoreBoard::Set_ConquestTime(_uint iPointIdx, _float fConquestTime, _fl
 {
 	_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
 	m_fConquestRatio[iPointIdx] = fConquestRatio;
+}
+
+void CUI_ScoreBoard::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
+{
+	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+	auto iter = mapPlayers.begin();
+	eTEAM_TYPE eTeam = iter->second->Get_Team()->Get_TeamType();
+	if (eTeam == eTEAM_TYPE::eBLUE)
+	{
+		if (strPadenPointKey == "Hwara_Final_Blue")
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_A] = fConquestRatio;
+		}
+		else
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_E] = fConquestRatio;
+		}
+	}
+	else
+	{
+		if (strPadenPointKey == "Hwara_Final_Blue")
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_E] = fConquestRatio;
+		}
+		else
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_A] = fConquestRatio;
+		}
+	}
 }
 
 void CUI_ScoreBoard::Set_GaugeColor(_bool IsMainTeam, _uint iPointIdx)

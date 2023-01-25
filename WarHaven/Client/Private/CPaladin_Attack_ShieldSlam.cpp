@@ -241,7 +241,9 @@ void CPaladin_Attack_ShieldSlam::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAni
 	switch (iSequence)
 	{
 	case 1:
+		Play_Sound(L"Effect_ShiledAttack_Fiona");
 		pOwner->Enable_FlyAttackCollider(true);
+		Play_Voice(pOwner, L"Voice_Slam", 1.f);
 		break;
 	case 2:
 		pOwner->Enable_FlyAttackCollider(false);

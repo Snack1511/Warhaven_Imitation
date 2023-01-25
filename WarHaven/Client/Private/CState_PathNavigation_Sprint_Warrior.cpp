@@ -21,14 +21,12 @@ CState_PathNavigation_Sprint_Warrior::~CState_PathNavigation_Sprint_Warrior()
 
 HRESULT CState_PathNavigation_Sprint_Warrior::Initialize()
 {
-	__super::Initialize();
-
-	m_eJumpFallStateType = AI_STATE_COMMON_FALL_WARRIOR_R;
+	m_eJumpFallStateType = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_WARRIOR;
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;	
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Sprint_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -51,6 +49,11 @@ void CState_PathNavigation_Sprint_Warrior::Exit(CUnit* pOwner, CAnimator* pAnima
 
 STATE_TYPE CState_PathNavigation_Sprint_Warrior::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
+}
+
+void CState_PathNavigation_Sprint_Warrior::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }
 

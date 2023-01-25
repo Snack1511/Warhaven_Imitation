@@ -177,6 +177,11 @@ public:
 	void	Set_TargetPlayer(CPlayer* pTargetPlayer) { m_pTargetPlayer = pTargetPlayer; }
 	CPlayer* Get_TargetPlayer(eTargetPlayerType eType = eEnemy);
 
+	void	Set_TargetObj(CGameObject* pTargetObject) { m_pTargetObj = pTargetObject; }
+	CGameObject* Get_TargetObject() { return m_pTargetObj; }
+	_float4		Get_TargetObjPos();
+
+
 public:
 	_bool& AbleHero() { return m_bAbleHero; }
 	_bool& IsHero() { return m_bIsHero; }
@@ -242,19 +247,40 @@ private: /*AI 추가용*/
 	BEHAVIOR_DESC* m_pCurBehaviorDesc = nullptr;
 	BEHAVIOR_DESC* m_pReserveBehaviorDesc = nullptr;
 
+
+
 	string m_strStartPath;
+
+	/* 리스폰 시 지정된 MainPath */
+	CPath* m_pStartMainPath = nullptr;
+
+	/* 현재 타고 있는 Path. Main일 수도, release Path일 수도 있음 */
 	CPath* m_pCurPath = nullptr;
+
+public:
 	void	Set_NewPath(CPath* pPath);
+	void	Set_NewMainPath(CPath* pPath);
 
 
 public:
 	void Set_MainPlayerStartPath(_uint iTriggerType);
+	void SetStartPathEmpty() { m_strStartPath.clear(); };
+	void SetStartPath(string strPath) { m_strStartPath = strPath; };
+
+	void	Set_CurPathNull() { m_pCurPath = nullptr; }
 	CPath* Get_CurPath();
+	CPath* Get_CurMainPath() { return m_pStartMainPath; };
+
 	_float4 Get_LookDir();
 	_float4 Get_SquadDir();
 
 public:
-	CUI_UnitHUD* Get_UnitHUD() { return m_pUnitHUD; }
+	CUI_UnitHUD* Get_UnitHUD()
+	{
+			return m_pUnitHUD;
+
+		return nullptr;
+	}
 
 private:
 	//어떤 타입인지(적, 샌드백)
@@ -266,7 +292,47 @@ private:
 	OUTLINETYPE m_eOutlineType = OUTLINETYPE::eEnd;
 
 private:
+	/* 쓰레드가 만질 타겟 플레이어 포인터 */
+	list<CPlayer*> m_SortedEnemies;
+	CPlayer* m_pReserveTargetPlayer = nullptr;
+	_bool	m_bTargetLocked = false;
+	_float	m_fTargetAcc = 0.f;
+	_float	m_fTargetMaxTime = 0.2f;
+
+private:
+	/* 쓰레드가 만질 타겟 플레이어 포인터 */
+	list<CPlayer*> m_SortedAllies;
+	CPlayer* m_pReserveTargetAlly = nullptr;
+	_bool	m_bAllyLocked = false;
+	_float	m_fAllyAcc = 0.f;
+	_float	m_fAllyMaxTime = 0.2f;
+
+
+public:
+	list<CPlayer*>* Get_SortedEnemiesP() { return &m_SortedEnemies; }
+	void			Set_SortedEnemies(list<CPlayer*>& listEnemies) { m_SortedEnemies = listEnemies; }
+
+	list<CPlayer*>* Get_SortedAlliesP() { return &m_SortedAllies; }
+	void			Set_SortedAllies(list<CPlayer*>& listEnemies) { m_SortedAllies = listEnemies; }
+
+	void	ReserveTargetPlayer(CPlayer* pPlayer) { m_pReserveTargetPlayer = pPlayer; }
+	CPlayer*	Get_ReserveTargetPlayer() { return m_pReserveTargetPlayer; }
+
+
+	void	ReserveTargetAlly(CPlayer* pPlayer) { m_pReserveTargetAlly = pPlayer; }
+	CPlayer* Get_ReserveTargetAlly() { return m_pReserveTargetAlly; }
+
+	void	Target_Lock() { m_bTargetLocked = true; }
+	void	Ally_Lock() { m_bAllyLocked = true; }
+	void	Ally_UnLock() { m_bAllyLocked = false; }
+	void	Target_UnLock() { m_bTargetLocked = false; }
+
+	_bool	Is_TargetLocked() { return m_bTargetLocked; }
+	_bool	Is_AllyLocked() { return m_bAllyLocked; }
+
+private:
 	CPlayer* m_pTargetPlayer = nullptr;
+	CGameObject* m_pTargetObj = nullptr;
 
 public:
 	_bool IsDieDlay() { return m_bDieDelay; }
@@ -284,7 +350,10 @@ private:
 	_bool	m_bReborn = false;
 	_bool	m_bAbleRevival = false;
 	_float		m_fRevivalAcc = 0.f;
+	_float		m_fRevivalEffectAcc = 0.f;
 	_float		m_fMaxRevivalTime = 10.f;
+	_float		m_fMaxRevivalEffectTime = 1.f;
+
 private:
 	CUnit* m_pCurrentUnit = nullptr;
 	CCamera_Follow* m_pFollowCam = nullptr;
@@ -307,6 +376,8 @@ private:
 private:
 	CUI_UnitHUD* m_pUnitHUD = nullptr;
 
+	_float m_fHUDTime = 0.f;
+
 private:
 	_float m_fEnable_UnitHUDis = 35.f;
 
@@ -318,6 +389,7 @@ private:	// 화신 게이지
 
 private:
 	list<CGameObject*>	m_DeadLights;
+	_bool				m_bFirstPath = false;
 
 private:
 	_float	m_fKillStreakTimeAcc = 0.f;
@@ -348,6 +420,8 @@ private:
 	virtual void My_LateTick() override;
 
 private:
+	void Update_TargetLock();
+
 	void Create_UnitHUD();
 	void Enable_UnitHUD();
 
@@ -363,6 +437,12 @@ private:
 public:
 	_bool IsBattle() { return m_bIsBattle; }
 	void Set_IsBattle(_bool value) { m_bIsBattle = value; }
+
+private:
+	_bool	m_bKeepRay = false;
+	
+public:
+	_bool	Is_KeepRay() { return m_bKeepRay; }
 
 private:
 	_bool m_bIsBattle = false;
@@ -387,5 +467,6 @@ public:
 	_bool Is_OpenCell();
 
 	_bool m_bIsInFrustum = false;
+	_bool m_bKillVoice = true;
 };
 END

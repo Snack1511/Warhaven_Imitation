@@ -8,6 +8,7 @@
 
 #include "Physics.h"
 #include "CUtility_PhysX.h"
+#include "CNavigation.h"
 
 
 CPhysXCharacter::CPhysXCharacter(_uint iGroupID)
@@ -45,6 +46,7 @@ void CPhysXCharacter::Set_Position(_float4 vPos)
 
 void CPhysXCharacter::onShapeHit(const PxControllerShapeHit& hit)
 {
+
 	if (PxActorType::eRIGID_DYNAMIC == hit.actor->getType())
 	{
 		//밀어내야함
@@ -99,6 +101,9 @@ void CPhysXCharacter::Start()
 {
 	__super::Start();
 	m_pPhysicsCom = GET_COMPONENT_FROM(m_pOwner, CPhysics);
+
+	if (!m_pOwner->Get_Component<CNavigation>().empty())
+		m_pNaviCom = GET_COMPONENT_FROM(m_pOwner, CNavigation);
 }
 
 void CPhysXCharacter::Tick()
@@ -118,7 +123,28 @@ void CPhysXCharacter::Tick()
 
 	_float4 vMove = vDir * fSpeed * fDT(0) * m_fCurCosTheta;
 
+	/* Navigation 검사 */
+	/*if (m_pNaviCom)
+	{
+		_float4 vCurPos = m_pOwner->Get_Transform()->Get_World(WORLD_POS);
+
+		vCurPos += vMove;
+
+		if (m_pNaviCom->Is_BlockedCell(vCurPos))
+		{
+			vMove = ZERO_VECTOR;
+		}
+
+	}*/
+
+
+
+
 	vMove += vFall;
+
+
+	
+
 
 	m_bColGround = false;
 
@@ -130,8 +156,6 @@ void CPhysXCharacter::Tick()
 
 	if (eFlag & PxControllerCollisionFlag::eCOLLISION_DOWN)
 		m_bColGround = true;
-
-	
 	
 	//만약 move에서 m_bColGround가 true가 안댔다면
 	//땅에 붙은상황

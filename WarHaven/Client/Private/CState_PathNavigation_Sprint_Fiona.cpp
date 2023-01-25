@@ -21,17 +21,13 @@ CState_PathNavigation_Sprint_Fiona::~CState_PathNavigation_Sprint_Fiona()
 
 HRESULT CState_PathNavigation_Sprint_Fiona::Initialize()
 {
-	__super::Initialize();
-
-	m_eJumpFallStateType = AI_STATE_COMMON_FALL_FIONA_R;
-
-	m_fMyMaxLerp = 0.4f;
-	m_fMyAccel = 100.f;
-
-	
+	m_eJumpFallStateType = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_FIONA;
 	m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_FIONA_R;
 
-    return S_OK;
+	m_fMyMaxLerp = 0.4f;
+	m_fMyAccel = 100.f;	
+
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Sprint_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -54,6 +50,11 @@ void CState_PathNavigation_Sprint_Fiona::Exit(CUnit* pOwner, CAnimator* pAnimato
 
 STATE_TYPE CState_PathNavigation_Sprint_Fiona::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
+}
+
+void CState_PathNavigation_Sprint_Fiona::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }
 

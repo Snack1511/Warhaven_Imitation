@@ -752,6 +752,17 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"KillSmoke_Right"), "KillSmoke_Right")))
 		return E_FAIL;
 
+
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Warrior_Eye"), "Warrior_Eye")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Archer_Eye"), "Archer_Eye")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Priest_Eye"), "Priest_Eye")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"WarHammer_Eye"), "WarHammer_Eye")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Main_Transform"), "Main_Transform")))
+		return E_FAIL;
 		/*cat*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"PoisonTest"), "PoisonTest")))
 		return E_FAIL;
@@ -762,6 +773,8 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Arrow_Hit"), "Arrow_Hit")))
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Arrow_Blood"), "Arrow_Blood")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Sniping_Arrow"), "Sniping_Arrow")))
 		return E_FAIL;
 
 	/*Transform*/
@@ -1262,7 +1275,7 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 	wstrName = L"PaladinDead_Weapon";
 	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
 		L"../bin/resources/meshes/weapons/KiteShield/SM_WP_KiteShield0001_A00.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime, wstring(), wstring(),
-		wstring(), XMMatrixScaling(0.01f, 0.01f, 0.01f)
+		wstring(), XMMatrixScaling(0.001f, 0.001f, 0.001f)
 	))))
 		return E_FAIL;
 

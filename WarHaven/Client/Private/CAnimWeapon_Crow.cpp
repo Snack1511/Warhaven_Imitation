@@ -7,6 +7,7 @@
 #include "HIerarchyNode.h"
 #include "CColorController.h"
 #include "CCollider_Sphere.h"
+#include "CTeamConnector.h"
 
 #include "CCrowBoom.h"
 #include "CColorController.h"
@@ -50,24 +51,25 @@ void CAnimWeapon_Crow::Crow_CollisionEnter(CGameObject* pOtherObj, const _uint& 
 	if (m_eCurPhase == eSHOOT)
 	{
 
-
 		switch (eMyColType)
 		{
-		case COL_BLUEFLYATTACKGUARDBREAK:
+		case COL_BLUEGROGGYATTACK:
 
-			if (eOtherColType != COL_REDHITBOX_BODY)
-				return;
+			if (eOtherColType == COL_REDHITBOX_BODY ||
+				eOtherColType == COL_REDGUARD)
+				Boom_Crow();
 
-			Boom_Crow();
+
 
 			break;
 
-		case COL_REDFLYATTACKGUARDBREAK:
+		case COL_REDGROGGYATTACK:
 
-			if (eOtherColType != COL_BLUEHITBOX_BODY)
-				return;
+			if (eOtherColType == COL_BLUEHITBOX_BODY ||
+				eOtherColType == COL_BLUEGUARD)
+				Boom_Crow();
 
-			Boom_Crow();
+			
 
 			break;
 
@@ -112,6 +114,10 @@ void CAnimWeapon_Crow::Boom_Crow()
 
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Crow_Boom", m_pTransform->Get_World(WORLD_POS),
 		GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE));
+
+	CFunctor::Play_Sound(L"Effect_Crow_Boom0", CHANNEL_EFFECTS, m_pTransform->Get_World(WORLD_POS), 1.f);
+	CFunctor::Play_Sound(L"Effect_Crow_Boom1", CHANNEL_EFFECTS, m_pTransform->Get_World(WORLD_POS), 1.f);
+	CFunctor::Play_Sound(L"Effect_Crow_Boom2", CHANNEL_EFFECTS, m_pTransform->Get_World(WORLD_POS), 1.f);
 }
 
 
@@ -210,13 +216,42 @@ void CAnimWeapon_Crow::Shoot_Crow(_float4 vShootPos, _float4 vShootDir)
 
 	ENABLE_COMPONENT(m_pBoneColider);
 
+	m_pCollider = GET_COMPONENT(CCollider_Sphere);
+
+	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
+		m_pCollider->Set_ColIndex(COL_REDFLYATTACKGUARDBREAK);
+	else
+	{
+		eTEAM_TYPE eTeam = m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType();
+
+
+		if (eTeam == eTEAM_TYPE::eBLUE)
+			m_pCollider->Set_ColIndex(COL_BLUEGROGGYATTACK);
+
+		else if(eTeam == eTEAM_TYPE::eRED)
+			m_pCollider->Set_ColIndex(COL_REDGROGGYATTACK);
+		
+	}
+
+
 	m_eCurPhase = eSHOOT;
 	m_vStartPosition = vCurPos;
 	Set_AnimIndex(19, 0.1f, 2.f);
 
 	m_pPhysics->Set_MaxSpeed(20.f);
-	m_vChaseLook = m_pOwnerUnit->Get_FollowCamLook();
-	m_vChaseRight = m_pOwnerUnit->Get_FollowCamRight();
+
+	if (m_pOwnerUnit->Get_CurState() == AI_STATE_COMBAT_SHOOT_QANDA)
+	{
+		vShootDir.y -= 0.2f;
+		m_vChaseLook = vShootDir;
+	}
+	else
+	{
+		m_vChaseLook = m_pOwnerUnit->Get_FollowCamLook();
+		m_vChaseRight = m_pOwnerUnit->Get_FollowCamRight();
+	}
+
+	
 
 
 
@@ -260,7 +295,7 @@ HRESULT CAnimWeapon_Crow::Initialize_Prototype()
 	//vOffsetPos.z += fRadius;
 	
 	// ÆÀ ÁöÁ¤ ÇÊ¿ä
-	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, COL_BLUEFLYATTACKGUARDBREAK, vOffsetPos, DEFAULT_TRANS_MATRIX);
+	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, COL_REDFLYATTACKGUARDBREAK, vOffsetPos, DEFAULT_TRANS_MATRIX);
 	vOffsetPos.x += fRadius;
 
 	Add_Component(pCollider);

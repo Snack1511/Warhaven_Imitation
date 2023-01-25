@@ -9,6 +9,7 @@
 #include "CPlayerInfo_Main.h"
 #include "CPlayerInfo.h"
 #include "CMainMenuPlayer.h"
+#include "Functor.h"
 
 _bool CUI_Barracks::m_bIsUnlock_RabbitHat = false;
 _bool CUI_Barracks::m_bIsUnlock_EpicWarriorClothes = false;
@@ -53,6 +54,8 @@ HRESULT CUI_Barracks::Start()
 
 void CUI_Barracks::On_PointerEnter_Port(const _uint& iEventNum)
 {
+	CFunctor::Play_Sound(L"UI_Btn_Enter_Main", CHANNEL_UI, 1.f);
+
 	Enable_Fade(m_pArrClassPort[iEventNum][Port_Highlight], 0.3f);
 }
 
@@ -63,6 +66,8 @@ void CUI_Barracks::On_PointerExit_Port(const _uint& iEventNum)
 
 void CUI_Barracks::On_PointerDown_Port(const _uint& iEventNum)
 {
+	CFunctor::Play_Sound(L"UI_Btn_Down_Main", CHANNEL_UI, 1.f);
+
 	CUser::Get_Instance()->Enable_SkinPopup(0);
 
 	m_iPrvEventNum = m_iCurEventNum;
@@ -105,6 +110,8 @@ void CUI_Barracks::On_PointerEnter_Btn(const _uint& iEventNum)
 	if (iEventNum > 0)
 		return;
 
+	CFunctor::Play_Sound(L"UI_Btn_Enter_Main", CHANNEL_UI, 1.f);
+
 	m_pArrClassBtn[iEventNum][Btn_Outline]->Set_Color(m_vColorGold);
 	m_pArrClassBtn[iEventNum][Btn_Deco]->Set_Color(m_vColorGold);
 }
@@ -129,6 +136,8 @@ void CUI_Barracks::On_PointerDown_Btn(const _uint& iEventNum)
 	if (iEventNum > 0)
 		return;
 
+	CFunctor::Play_Sound(L"UI_Btn_Down_Main", CHANNEL_UI, 1.f);
+
 	for (auto& iter : m_pUIList)
 		Disable_Fade(iter, m_fDuration);
 
@@ -140,6 +149,11 @@ void CUI_Barracks::On_PointerDown_Btn(const _uint& iEventNum)
 	m_bIsSkinEnable = true;
 }
 
+void CUI_Barracks::On_PointerEnter_TopBtn(const _uint& iEventNum)
+{
+	CFunctor::Play_Sound(L"UI_Btn_Enter_Main", CHANNEL_UI, 1.f);
+}
+
 void CUI_Barracks::On_PointerDown_TopBtn(const _uint& iEventNum)
 {
 	m_iPrvSelectSkin = m_iCurSelectSkin;
@@ -147,6 +161,8 @@ void CUI_Barracks::On_PointerDown_TopBtn(const _uint& iEventNum)
 
 	if (m_iPrvSelectSkin == iEventNum)
 		return;
+
+	CFunctor::Play_Sound(L"UI_Btn_Down_Main", CHANNEL_UI, 1.f);
 
 	_float fPosX = -550.f + (iEventNum * 95.f);
 	CUser::Get_Instance()->Set_TopBtnEffectPosX(fPosX);
@@ -192,6 +208,9 @@ void CUI_Barracks::On_PointerStay_SkinBG(const _uint& iEventNum)
 
 void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
 {
+	if (iEventNum == 0)
+		CFunctor::Play_Sound(L"UI_Btn_Down_Skin", CHANNEL_UI, 1.f);
+
 	if (m_iCurSelectSkin == Skin::Clothes)
 	{
 		if (m_iSelectClass != WARRIOR)
@@ -209,23 +228,25 @@ void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
 		switch (iEventNum)
 		{
 		case 0:
+			CFunctor::Play_Sound(L"UI_Btn_Down_Skin", CHANNEL_UI, 1.f);
 			m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("»∆∑√∫π"));
 			m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("¿œπ›"));
 
 			for (int i = SB_Outline; i < SB_Lock; ++i)
-				Enable_Fade(m_pArrSkinBtn[0][i], m_fDuration);
+				Enable_Fade(m_pArrSkinBtn[iEventNum][i], m_fDuration);
 
-			CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomBody((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_BODY::eDEFAULT);
+			CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomBody((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_BODY::eBODY1);
 			CUser::Get_Instance()->Change_ModelParts(m_iSelectClass, MODEL_PART_BODY);
 			break;
 
 		case 2:
+			CFunctor::Play_Sound(L"UI_Btn_Down_Skin", CHANNEL_UI, 1.f);
 			m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("øµøı¿« ∞©ø "));
 			m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("øµøı"));
 			m_pSkinInfo[Skin_Tier]->Set_FontColor(RGB(90, 60, 130));
 
 			for (int i = SB_Outline; i < SB_Lock; ++i)
-				Enable_Fade(m_pArrSkinBtn[0][i], m_fDuration);
+				Enable_Fade(m_pArrSkinBtn[iEventNum][i], m_fDuration);
 
 			CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomBody((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_BODY::eBODY2);
 			CUser::Get_Instance()->Change_ModelParts(m_iSelectClass, MODEL_PART_BODY);
@@ -245,24 +266,26 @@ void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
 			switch (iEventNum)
 			{
 			case 0:
+				CFunctor::Play_Sound(L"UI_Btn_Down_Skin", CHANNEL_UI, 1.f);
 				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("πÃ¬¯øÎ"));
 				m_pSkinInfo[Skin_Tier]->Set_FontRender(false);
 
 				for (int i = SB_Outline; i < SB_Lock; ++i)
-					Enable_Fade(m_pArrSkinBtn[0][i], m_fDuration);
+					Enable_Fade(m_pArrSkinBtn[iEventNum][i], m_fDuration);
 
-				CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomHead((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_HEAD::eDEFAULT);
+				CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomHead((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_HEAD::eHEAD1);
 				CUser::Get_Instance()->Change_ModelParts(m_iSelectClass, MODEL_PART_HEAD);
 				break;
 
 			case 1:
+				CFunctor::Play_Sound(L"UI_Btn_Down_Skin", CHANNEL_UI, 1.f);
 				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("≈‰≥¢≈ª"));
 				m_pSkinInfo[Skin_Tier]->Set_FontRender(true);
 				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("∞Ì±ﬁ"));
 				m_pSkinInfo[Skin_Tier]->Set_FontColor(RGB(60, 100, 200));
 
 				for (int i = SB_Outline; i < SB_Lock; ++i)
-					Enable_Fade(m_pArrSkinBtn[1][i], m_fDuration);
+					Enable_Fade(m_pArrSkinBtn[iEventNum][i], m_fDuration);
 
 				CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomHead((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_HEAD::eRABBIT);
 				CUser::Get_Instance()->Change_ModelParts(m_iSelectClass, MODEL_PART_HEAD);
@@ -926,6 +949,7 @@ void CUI_Barracks::Bind_Btn()
 
 	for (int i = 0; i < 4; ++i)
 	{
+		m_pTopBtn[i]->CallBack_PointEnter += bind(&CUI_Barracks::On_PointerEnter_TopBtn, this, i);
 		m_pTopBtn[i]->CallBack_PointDown += bind(&CUI_Barracks::On_PointerDown_TopBtn, this, i);
 	}
 

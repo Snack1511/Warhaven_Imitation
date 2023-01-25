@@ -341,12 +341,12 @@ void	CPlayerInfo::Set_CustomBody_Arhcer(eCUSTOM_BODY eBodyEnum)
 	switch (eBodyEnum)
 	{
 	case Client::CPlayerInfo::eCUSTOM_BODY::eDEFAULT:
-		//m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/SK_Archer0010_Body_A00_20.fbx"; // 기본
-		m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/SK_Archer0010_Body_A00_20.fbx"; // 누더기
+		m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/SK_Archer0010_Body_A00_20.fbx"; // 기본
+		//m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/SK_Archer0010_Body_A00_20.fbx"; // 누더기
 		break;
 	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
-		//m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/SK_Archer0001_Body_A00_50.fbx"; // 기본
-		m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/Archer_Body_002.fbx"; // 누더기
+		m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/SK_Archer0001_Body_A00_50.fbx"; // 기본
+		//m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/Archer_Body_002.fbx"; // 누더기
 		
 		break;
 
@@ -378,12 +378,12 @@ void CPlayerInfo::Set_CustomHead_Engineer(eCUSTOM_HEAD eHeadEnum)
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eDEFAULT:
 		m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer0004_Helmet_A00_50.fbx";
 		break;
-	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
-		m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer0008_Helmet_A00_20.fbx";
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1: 
+		m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer0001_Helmet_A00_50.fbx";
 		//m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer0006_Helmet_A00_50.fbx";
 		break;
-	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD2:
-		m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer0001_Helmet_A00_50.fbx";
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD2: 
+		m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer0008_Helmet_A00_20.fbx";
 		//m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer0006_Helmet_A00_50.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eRABBIT:
@@ -402,10 +402,10 @@ void CPlayerInfo::Set_CustomBody_Engineer(eCUSTOM_BODY eBodyEnum)
 		m_tPlayerSetUpData.wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0004_Body_A00_30.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
-		m_tPlayerSetUpData.wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0008_Body_A00_20.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0001_Body_A00_50.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY2:
-		m_tPlayerSetUpData.wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0001_Body_A00_50.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0008_Body_A00_20.fbx";
 		break;
 
 		m_tPlayerSetUpData.wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0004_Body_A00_30.fbx";
@@ -464,11 +464,11 @@ void CPlayerInfo::Set_CustomBody_Fiona(eCUSTOM_BODY eBodyEnum)
 		break;
 	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
 		//m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0004_Body_A00_50.fbx";
-		m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0001_Body_A00.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0001_Body_A00_20.fbx";
 		break;
 
 	default:
-		m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0001_Body_A00.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0001_Body_A00_20.fbx";
 		break;
 	}
 }

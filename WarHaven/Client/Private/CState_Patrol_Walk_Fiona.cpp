@@ -38,6 +38,10 @@ HRESULT CState_Patrol_Walk_Fiona::Initialize()
 	m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 35;
 	m_iDirectionAnimIndex[STATE_DIRECTION_W] = 36;
 
+
+	Add_KeyFrame(0, 0, true);
+	Add_KeyFrame(40, 0, true);
+
     return S_OK;
 }
 
@@ -89,6 +93,11 @@ void CState_Patrol_Walk_Fiona::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Patrol_Walk_Fiona::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
+}
+
+void CState_Patrol_Walk_Fiona::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }
 

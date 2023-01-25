@@ -42,11 +42,18 @@ public:
 	eTEAM_TYPE	Get_TeamType() { return m_eTeamType; }
 	_bool	IsMainPlayerTeam() { return m_bIsMainPlayerTeam; }
 	_bool	Minus_Score();
+	_bool	Has_Trigger(_uint iIndex) { return m_bHasTrigger[iIndex]; }
 	_bool	Has_MainTrigger() { return m_bHasTrigger[0]; }
-	_bool	Has_CannonTrigger() { return m_bHasTrigger[2]; }
 	_bool	Has_RespawnTrigger() { return m_bHasTrigger[1]; }
+	_bool	Has_CannonTrigger() { return m_bHasTrigger[2]; }
+
 	_bool	Has_CenterTrigger() { return m_bHasTrigger[3]; }
+	_bool	Has_HwaraRespawnTrigger() { return m_bHasTrigger[1]; }
+	_bool	Has_HwaraFinalTrigger() { return m_bHasTrigger[4]; }
 	list<CSquad*>& Get_SquadList() { return m_SquadList; }
+
+public:
+	list<CPlayer*>	Get_AllPlayers();
 
 public:
 	/* 파덴 진입시 호출 */
@@ -73,8 +80,8 @@ private:
 private:
 	//3. 남은 점수 표기
 	_uint			m_iScore = 0;
-	 _uint			m_iMaxScore = 100;
-	//_uint			m_iMaxScore = 3;
+	// _uint			m_iMaxScore = 100;
+	_uint			m_iMaxScore = 100;
 };
 
 END

@@ -58,6 +58,7 @@ HRESULT CPhysX_Manager::Initialize()
 	}
 
 	m_listAllStatics.clear();
+	m_pTerrainStatic = nullptr;
 
 	return S_OK;
 }
@@ -196,6 +197,9 @@ PxRigidStatic * CPhysX_Manager::Create_StaticActor(const PxTransform & Transform
 
 	m_pCurScene->addActor(*pStatic);
 	m_listAllStatics.push_back(pStatic);
+
+	if (Geometry.getType() == PxGeometryType::eTRIANGLEMESH)
+		m_pTerrainStatic = pStatic;
 
 	return pStatic;
 }
@@ -486,7 +490,7 @@ void CPhysX_Manager::Release()
 _bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance)
 {
 	_float fMinDist = 9999.f;
-	_float4 vFinalHitPos = vStartPos + vStartDir * fMaxDistance;
+	_float4 vFinalHitPos = vStartPos + vStartDir.Normalize() * fMaxDistance;
 
 	for (auto& elem : m_listAllStatics)
 	{
@@ -511,7 +515,11 @@ _bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist
 			{
 				continue;
 			}
+
+			if (((vCenterPos - vStartPos).Length() - fRadius) >= fMaxDistance)
+				continue;
 		}
+
 
 		PxU32 hitCount = PxGeometryQuery::raycast(
 			CUtility_PhysX::To_PxVec3(vStartPos),
@@ -536,12 +544,19 @@ _bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist
 	}
 
 	if (fMinDist == 9999.f)
+	{
+		if (pOutPos)
+			*pOutPos = vFinalHitPos;
+
 		return false;
+	}
 
 	/* GROUP_PLAYER °Ë»ç */
 
-	*pOutPos = vFinalHitPos;
-	*pMinDist = fMinDist;
+	if (pOutPos)
+		*pOutPos = vFinalHitPos;
+	if (pMinDist)
+		*pMinDist = fMinDist;
 
 	return true;
 }
@@ -584,5 +599,38 @@ _bool CPhysX_Manager::Shoot_RaytoControllers(list<PxController*>& listController
 
 	*pOutPos = vFinalHitPos;
 	return true;
+}
+
+_bool CPhysX_Manager::Shoot_RaytoTerrain(_float4* pOutPos, _float* pOutDist, _float4 vStartPos, _float4 vStartDir)
+{
+	if (!m_pTerrainStatic)
+		return false;
+
+	vStartPos.y += 0.5f;
+
+	PxRaycastHit hitInfo;
+	PxShape* pCurShape = nullptr;
+	m_pTerrainStatic->getShapes(&pCurShape, sizeof(PxShape));
+
+	PxU32 hitCount = PxGeometryQuery::raycast(
+		CUtility_PhysX::To_PxVec3(vStartPos),
+		CUtility_PhysX::To_PxVec3(vStartDir),
+		pCurShape->getGeometry().any(),
+		m_pTerrainStatic->getGlobalPose(),
+		1000.f, PxHitFlag::ePOSITION, 1, &hitInfo
+	);
+
+	if (hitCount > 0)
+	{
+		_float4 vHitPos = CUtility_PhysX::To_Vector(hitInfo.position);
+		_float fLength = (vHitPos - vStartPos).Length();
+
+		*pOutDist = fLength - 0.5f;
+		*pOutPos = vHitPos;
+		return true;
+	}
+
+
+	return false;
 }
 

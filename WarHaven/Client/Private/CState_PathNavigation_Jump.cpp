@@ -19,9 +19,7 @@ CState_PathNavigation_Jump::~CState_PathNavigation_Jump()
 
 HRESULT CState_PathNavigation_Jump::Initialize()
 {
-    __super::Initialize();
-
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_PathNavigation_Jump::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -45,7 +43,7 @@ void CState_PathNavigation_Jump::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 STATE_TYPE CState_PathNavigation_Jump::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (!pOwner->Is_Air() || pAnimator->Is_CurAnimFinished())
-        return m_iAINextState;
+        return m_eFallState;
 
     return __super::Tick(pOwner, pAnimator);
 }
@@ -58,5 +56,15 @@ void CState_PathNavigation_Jump::Exit(CUnit* pOwner, CAnimator* pAnimator)
 STATE_TYPE CState_PathNavigation_Jump::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
     return STATE_END;
+}
+
+void CState_PathNavigation_Jump::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS, m_fAIDeafultVolume);
+        break;
+    }
 }
 

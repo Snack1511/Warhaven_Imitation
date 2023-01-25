@@ -22,12 +22,14 @@ public:
 	virtual void Set_Shader_Guage_PointA(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_Guage_PointR(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_Guage_PointC(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_Guage_PointE(CShader* pShader, const char* pConstName);
 
 public:
 	void Get_ScoreInfo(CPlayer* pPlayer);
 	void Sort_ScoreInfo();
 
 	void Set_ConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime);
+	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_GaugeColor(_bool IsMainTeam, _uint iPointIdx);
 	void Set_PointColor(_bool IsMainTeam, _uint iPoinIdx);
 
@@ -58,7 +60,7 @@ private:
 	CUI_Object* m_pSquard[Squad_End];
 	CUI_Object* m_pArrSquard[4][Squad_End];
 
-	enum Point { Point_A, Point_R, Point_C, Point_End };
+	enum Point { Point_A, Point_R, Point_C, Point_E, Point_End };
 	enum PointUI { PU_Outline, PU_Gauge, PU_Text, PU_End };
 	CUI_Object* m_pPointUI[PU_End];
 	CUI_Object* m_pArrPointUI[Point_End][PU_End];
@@ -80,6 +82,9 @@ private:
 	_float4 m_vColorGold = _float4(0.773f, 0.714f, 0.596f, 1.f);
 	_float4 m_vColorBlue = _float4(0.f, 0.8f, 1.f, 0.1f);
 	_float4 m_vColorRed = _float4(1.f, 0.2f, 0.f, 0.1f);
+
+	_float4 m_vColorBlue2 = _float4(0.f, 0.8f, 1.f, 1.f);
+	_float4 m_vColorRed2 = _float4(1.f, 0.2f, 0.f, 1.f);
 
 private:
 	void Create_ScoreMiniMap();

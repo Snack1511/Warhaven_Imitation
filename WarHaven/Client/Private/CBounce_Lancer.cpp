@@ -54,6 +54,8 @@ void CBounce_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
     /* Owner¿« Animator Set Idle∑Œ */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+    Play_Sound(L"Effect_Bounce");
 }
 
 STATE_TYPE CBounce_Lancer::Tick(CUnit* pOwner, CAnimator* pAnimator)

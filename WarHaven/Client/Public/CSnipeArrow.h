@@ -22,13 +22,14 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
-private:
+public:
 	void Turn_Effect(_bool bOnOff);
 
 private:
 	list<CGameObject*> m_Test;
 	_bool m_bShot = false;
 	_float m_fTick = 0.f;
+	_bool m_bEffect = true;
 
 
 };

@@ -56,7 +56,7 @@ HRESULT CState_PathNavigation_Jump_Archer_R::Initialize()
 
 	iPlaceJumpAnimIndex = 12;
 
-    m_iAINextState = AI_STATE_PATHNAVIGATION_FALL_ARCHER_R;
+    m_eFallState = AI_STATE_PATHNAVIGATION_FALL_ARCHER_R;
 
 
     return S_OK;

@@ -108,11 +108,13 @@ void CTeamConnector::Add_Trigger(CTrigger* pTrigger)
     m_OurTriggers.push_back(pTrigger);
 
     CTrigger_Stage::eSTAGE_TRIGGER_TYPE eType = static_cast<CTrigger_Stage*>(pTrigger)->Get_TriggerType();
+    static_cast<CTrigger_Stage*>(pTrigger)->Set_ConqueredTeam(this);
 
     if (eType != CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eSTART)
     {
         m_bHasTrigger[(_uint)eType - 1] = true;
     }
+
 }
 
 void CTeamConnector::Erase_Trigger(string strTriggerKey)
@@ -176,6 +178,21 @@ _bool CTeamConnector::Minus_Score()
     }
 
     return true;
+}
+
+list<CPlayer*> CTeamConnector::Get_AllPlayers()
+{
+    list<CPlayer*>  listPlayers;
+
+    for (auto& elem : m_SquadList)
+    {
+        for (auto& pPlayer : elem->Get_AllPlayers())
+        {
+            listPlayers.push_back(pPlayer.second);
+        }
+    }
+
+    return listPlayers;
 }
 
 HRESULT CTeamConnector::On_EnterPaden()

@@ -9,6 +9,8 @@
 #include "CPlayerInfo.h"
 #include "CUI_Renderer.h"
 #include "CShader.h"
+#include "Functor.h"
+#include "Loading_Manager.h"
 
 CUI_Result::CUI_Result()
 {
@@ -50,6 +52,8 @@ void CUI_Result::Set_Shader_MVP(CShader* pShader, const char* pConstName)
 void CUI_Result::SetActive_Result(_uint iResult, _bool value)
 {
 	m_iResult = iResult;
+
+	
 
 	CUser::Get_Instance()->SetActive_PadenUI(false);
 
@@ -93,7 +97,10 @@ void CUI_Result::OnEnable()
 {
 	__super::OnEnable();
 
+	//GAMEINSTANCE->Stop_Sound(CH_BGM);
+
 	SetActive_Result(m_iResult, true);
+	m_bOnce = true;
 }
 
 void CUI_Result::OnDisable()
@@ -544,6 +551,15 @@ void CUI_Result::Progress_Result()
 	}
 	else if (m_iResultProgressCnt == 3)
 	{
+		if (m_bOnce)
+		{
+			Play_Sound(L"Env_Cheers", CHANNEL_ENVIRONMENT);
+			GAMEINSTANCE->Stop_Sound(CH_BGM);
+			GAMEINSTANCE->Play_BGM(L"BGM_Result");
+			m_bOnce = false;
+		}
+
+
 		for (int i = 0; i < Score_End; ++i)
 			m_pResultScoreBG[i]->SetActive(true);
 
@@ -592,7 +608,9 @@ void CUI_Result::Progress_Result()
 		if (m_fDissolveValue < 0.f)
 		{
 			m_fDissolveValue = 0.f;
-			m_iResultProgressCnt++;
+
+			if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_PADEN)
+				m_iResultProgressCnt++;
 
 			m_pResultMVP[MVP_Player]->Set_FontRender(true);
 		}
@@ -618,5 +636,18 @@ void CUI_Result::Progress_Result()
 
 			CUser::Get_Instance()->Enable_SkinPopup(1);
 		}
+	}
+	else if (m_iResultProgressCnt == 7)
+	{
+		if (KEY(SPACE, TAP))
+		{
+			m_iResultProgressCnt++;
+			Disable_Fade(m_pBG, 0.3f);
+		}
+	}
+	else if (m_iResultProgressCnt == 8)
+	{
+		if (KEY(ENTER, TAP))
+			CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_MAINMENU);
 	}
 }

@@ -51,11 +51,13 @@ HRESULT CJump_Player_Land_L::Initialize()
 
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
     
-
+    
 
 	m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
 	m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
     
+    Add_KeyFrame(3, 0);
+
     Init_CommonState_Player();
 
     return S_OK;
@@ -93,4 +95,20 @@ STATE_TYPE CJump_Player_Land_L::Check_Condition(CUnit* pOwner, CAnimator* pAnima
 		return m_eStateType;
 
     return STATE_END;
+}
+
+void CJump_Player_Land_L::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 0:
+        Play_Sound(L"Env_FootStepGround", CHANNEL_EFFECTS);
+        break;
+
+
+    default:
+        break;
+    }
+
+
 }

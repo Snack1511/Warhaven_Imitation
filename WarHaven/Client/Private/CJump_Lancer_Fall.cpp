@@ -26,10 +26,10 @@ HRESULT CJump_Lancer_Fall::Initialize()
     m_iStateChangeKeyFrame = 0;
 
     // 선형 보간 시간
-    m_fInterPolationTime = 0.f;
+    m_fInterPolationTime = FLT_MAX;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.5f;
+    m_fAnimSpeed = FLT_MIN;
 
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
@@ -57,10 +57,16 @@ CJump_Lancer_Fall* CJump_Lancer_Fall::Create()
 
 void CJump_Lancer_Fall::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    if (ePrevType == STATE_JUMP_LANCER)
-        m_fInterPolationTime = 0.05f;
+    //if (ePrevType == STATE_JUMP_LANCER)
+    //    m_fInterPolationTime = 0.05f;
 
-    __super::Enter(pOwner, pAnimator, ePrevType, pData);
+    CUser::Get_Instance()->Clear_KeyCommands();
+    m_pOwner = pOwner;
+    m_fTimeAcc = 0.f;
+    m_bExecuted = false;
+    pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, m_fAnimSpeed);
+
+   //__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CJump_Lancer_Fall::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -68,9 +74,8 @@ STATE_TYPE CJump_Lancer_Fall::Tick(CUnit* pOwner, CAnimator* pAnimator)
     Follow_MouseLook(pOwner);
     pOwner->Set_DirAsLook();
 
-    //// 땅에 닿았을 시 
-    //if (!pOwner->Get_PhysicsCom()->Get_Physics().bAir)
-    //    return STATE_JUMP_LAND_LANCER;
+    if (!pOwner->Is_Air())
+        return STATE_IDLE_LANCER;
 
     return __super::Tick(pOwner, pAnimator);
 }

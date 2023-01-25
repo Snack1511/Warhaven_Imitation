@@ -130,15 +130,22 @@ void CTrigger_Stage::My_Tick()
 		return;
 
 	CUser::Get_Instance()->Set_ConquestTime(m_strTriggerName, m_fConqueredTimeAcc, m_fConqueredTime);
+	CUser::Get_Instance()->Set_MiniMapConquestTime(m_strTriggerName, m_fConqueredTimeAcc, m_fConqueredTime);
+	CUser::Get_Instance()->Set_ScoreBoardConquestTime(m_strTriggerName, m_fConqueredTimeAcc, m_fConqueredTime);
 
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	_bool isIsFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
+
+	CUser::Get_Instance()->Set_PointUI_ProjectionTransform(m_strTriggerName, m_pTransform, isIsFrustum);
+
 	switch (m_eTriggerType)
 	{
 	case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eMAIN:
+
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(0, m_pTransform, isIsFrustum);
 		CUser::Get_Instance()->Set_MiniMapConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
 		CUser::Get_Instance()->Set_ScoreBoardConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
+
 		break;
 
 	case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN:
@@ -154,9 +161,9 @@ void CTrigger_Stage::My_Tick()
 		break;
 
 	case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER:
-		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(0, m_pTransform, isIsFrustum);
-		CUser::Get_Instance()->Set_MiniMapConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
-		CUser::Get_Instance()->Set_ScoreBoardConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
+		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(2, m_pTransform, isIsFrustum);
+		CUser::Get_Instance()->Set_MiniMapConquestTime(2, m_fConqueredTimeAcc, m_fConqueredTime);
+		CUser::Get_Instance()->Set_ScoreBoardConquestTime(2, m_fConqueredTimeAcc, m_fConqueredTime);
 		break;
 	}
 
@@ -219,8 +226,8 @@ void CTrigger_Stage::Update_Conquered()
 			break;
 
 		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER:
-			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 0);
-			CUser::Get_Instance()->Set_ScoreBoardGaugeColor(bMainPlayerTeam, 0);
+			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 2);
+			CUser::Get_Instance()->Set_ScoreBoardGaugeColor(bMainPlayerTeam, 2);
 			break;
 		}
 
@@ -254,7 +261,13 @@ void CTrigger_Stage::Update_Conquered()
 		_bool IsMainPlayerTeam = m_pConqueredTeam->IsMainPlayerTeam();
 		if (IsMainPlayerTeam)
 		{
+			CFunctor::Play_Sound(L"Effect_ConquestPoint_Ally", CHANNEL_EFFECTS);
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eConquest);
+		}
+		else
+		{
+			CFunctor::Play_Sound(L"Effect_ConquestPoint_Enemy", CHANNEL_EFFECTS);
+			CUser::Get_Instance()->Enable_ConquestPopup(2);
 		}
 
 		CUser::Get_Instance()->Conquest_PointUI(m_strTriggerName, IsMainPlayerTeam);
@@ -265,41 +278,66 @@ void CTrigger_Stage::Update_Conquered()
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 0);
 			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 0);
 			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 0);
+
+			if (IsMainPlayerTeam)
+				CFunctor::Play_Sound(L"UI_MainTrigger", CHANNEL_UI, 1.f);
+
 			break;
 		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN:
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 1);
 			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 1);
 			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 1);
+
+			if (IsMainPlayerTeam)
+				CFunctor::Play_Sound(L"UI_RespawnTrigger", CHANNEL_UI, 1.f);
+
 			break;
 		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eCANNON:
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 2);
 			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 2);
 			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 2);
+
+			if(IsMainPlayerTeam)
+				CFunctor::Play_Sound(L"UI_CannonTrigger", CHANNEL_UI, 1.f);
+
+
 			break;
 
 		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER:
-		
+
 			/* Center 점령 시 final 점령 가능하게 열림 */
 			CGameSystem::Get_Instance()->Enable_HwaraFinalTrigger(m_pConqueredTeam->Get_TeamType());
 
-			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 0);
+			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 2);
 			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 0);
-			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 0);
+			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 2);
+
+			if (IsMainPlayerTeam)
+				CFunctor::Play_Sound(L"UI_HwaraTrigger", CHANNEL_UI, 1.f);
 
 			break;
 
 		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_FINAL:
 			/* Final 점령 시 게임 종료 */
 			if (m_pConqueredTeam == CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eBLUE))
+			{
 				CGameSystem::Get_Instance()->On_FinishGame(CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eRED));
+
+			}
 			else
+			{
+
 				CGameSystem::Get_Instance()->On_FinishGame(CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eBLUE));
+			}
+
+
 
 			break;
 
 		}
 
-
+		if (!IsMainPlayerTeam)
+			CFunctor::Play_Sound(L"UI_EnemyTrigger", CHANNEL_UI, 1.f);
 
 		m_pConqueredTeam->Add_Trigger(this);
 
@@ -321,6 +359,6 @@ void CTrigger_Stage::Update_Conquered()
 #endif // _DEBUG
 
 		m_fConqueredTimeAcc = 0.f;
-	}
+		}
 
-}
+	}

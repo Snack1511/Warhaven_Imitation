@@ -29,6 +29,9 @@ HRESULT CState_Patrol_Walk_Warrior::Initialize()
 
 	// 애니메이션의 전체 속도를 올려준다.
 	m_fAnimSpeed = 1.f;
+
+	Add_KeyFrame(34, 0, true);
+	Add_KeyFrame(75, 0, true);
 	
 
     return S_OK;
@@ -82,6 +85,11 @@ void CState_Patrol_Walk_Warrior::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Patrol_Walk_Warrior::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
+}
+
+void CState_Patrol_Walk_Warrior::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }
 

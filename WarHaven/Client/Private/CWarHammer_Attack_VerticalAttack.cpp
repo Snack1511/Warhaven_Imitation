@@ -39,7 +39,9 @@ HRESULT CWarHammer_Attack_VerticalAttack::Initialize()
 
 	m_fInterPolationTime = 0.1f;
 	m_fAnimSpeed = 2.3f;
-	m_iStateChangeKeyFrame = 120;
+	m_iStateChangeKeyFrame = 130;
+
+	m_fDamagePumping = 2.5f;
 
 
 	m_fMyAccel = 10.f;
@@ -136,6 +138,8 @@ void CWarHammer_Attack_VerticalAttack::Enter(CUnit* pOwner, CAnimator* pAnimator
 	pOwner->On_Attack(this);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	Play_Voice(pOwner, L"Voice_Attack", 1.f);
 }
 
 STATE_TYPE CWarHammer_Attack_VerticalAttack::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -169,6 +173,7 @@ void CWarHammer_Attack_VerticalAttack::On_KeyFrameEvent(CUnit * pOwner, CAnimato
 	switch (iSequence)
 	{
 	case 0:
+		Play_Sound(L"Effect_Swing_Blunt", CHANNEL_EFFECTS);
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;

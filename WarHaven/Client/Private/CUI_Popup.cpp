@@ -5,6 +5,7 @@
 #include "CFader.h"
 #include "CUser.h"
 #include "Loading_Manager.h"
+#include "Functor.h"
 
 CUI_Popup::CUI_Popup()
 {
@@ -38,6 +39,10 @@ HRESULT CUI_Popup::Start()
 
 void CUI_Popup::Enable_Popup(ePOPUP_TYPE ePopupType)
 {
+	GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)CHANNEL_UI);
+
+	Play_Sound(L"Effect_Popup");
+
 	switch (ePopupType)
 	{
 	case Client::CUI_Popup::eConquest:
@@ -45,24 +50,31 @@ void CUI_Popup::Enable_Popup(ePOPUP_TYPE ePopupType)
 		break;
 	case Client::CUI_Popup::eKILL:
 		Enable_KillPopup(L"2연속 처치", ePopupType);
+		CFunctor::Play_Sound(L"UI_Killstreak2", CHANNEL_UI, 1.f);
 		break;
 	case Client::CUI_Popup::eKILL2:
 		Enable_KillPopup(L"3연속 처치", ePopupType);
+		CFunctor::Play_Sound(L"UI_Killstreak3", CHANNEL_UI, 1.f);
 		break;
 	case Client::CUI_Popup::eKILL3:
 		Enable_KillPopup(L"4연속 처치", ePopupType);
+		CFunctor::Play_Sound(L"UI_Killstreak4", CHANNEL_UI, 1.f);
 		break;
 	case Client::CUI_Popup::eKILL4:
 		Enable_KillPopup(L"전장의 화신", ePopupType);
+		CFunctor::Play_Sound(L"UI_Killstreak5", CHANNEL_UI, 1.f);
 		break;
 	case Client::CUI_Popup::eBURGERKING:
 		Enable_ConquestPopup(L"버거킹", ePopupType);
+		CFunctor::Play_Sound(L"UI_BurgerKing", CHANNEL_UI, 1.f);
 		break;
 	case Client::CUI_Popup::eHEADHUNTER:
 		Enable_ConquestPopup(L"헤드 헌터", ePopupType);
+		CFunctor::Play_Sound(L"UI_HeadShot", CHANNEL_UI, 1.f);
 		break;
 	case Client::CUI_Popup::eKILLELITE:
 		Enable_ConquestPopup(L"영웅 처치", ePopupType);
+		CFunctor::Play_Sound(L"UI_KillHero", CHANNEL_UI, 1.f);
 		break;
 	case Client::CUI_Popup::eCNT:
 		break;
@@ -107,22 +119,21 @@ void CUI_Popup::Enable_KillPopup(wstring Text, _uint iIconIndex)
 void CUI_Popup::Enable_SkinPopup(_uint iSkin)
 {
 	m_iSkinIdx = iSkin;
+	m_pSKinPopup[Skin_Item]->Set_TextureIndex(iSkin);
+	m_pSKinPopup[Skin_BG]->Set_TextureIndex(iSkin);
+
 	switch (m_iSkinIdx)
 	{
 	case 0:
-		m_pSKinPopup[Skin_Item]->Set_TextureIndex(iSkin);
 		m_pSKinPopup[Skin_Text0]->Set_FontText(TEXT("축하합니다."));
 		m_pSKinPopup[Skin_Text1]->Set_FontText(TEXT("훈련장을 완료하여 토끼탈을 드립니다."));
 		break;
 
 	case 1:
-		m_pSKinPopup[Skin_Item]->Set_TextureIndex(iSkin);
 		m_pSKinPopup[Skin_Text0]->Set_FontText(TEXT("축하합니다."));
 		m_pSKinPopup[Skin_Text1]->Set_FontText(TEXT("점령전을 완료하여 영웅 갑옷을 드립니다."));
 		break;
 	}
-
-	SetActive_SkinPopup(true);
 
 	m_bEnableSkinPopup = true;
 }
@@ -137,6 +148,10 @@ void CUI_Popup::My_Tick()
 		if (m_fAccTime > 1.f)
 		{
 			m_fAccTime = 0.f;
+
+			Play_Sound(L"Effect_GetSkin");
+
+			SetActive_SkinPopup(true);
 
 			m_bEnableSkinPopup = false;
 			m_bFadePopup = true;
@@ -157,11 +172,12 @@ void CUI_Popup::My_Tick()
 
 			case 1:
 				CUser::Get_Instance()->Unlock_EpicWarriorClothes();
-				CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_MAINMENU);
 				break;
 			}
+
 			SetActive_SkinPopup(false);
 			DISABLE_GAMEOBJECT(this);
+
 		}
 	}
 }
@@ -334,13 +350,16 @@ void CUI_Popup::Create_SkinPopup()
 		case Skin_BG:
 			m_pSKinPopup[i]->Set_Sort(0.13f);
 			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/Skin/T_ItemBG4.dds"));
+			GET_COMPONENT_FROM(m_pSKinPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/Skin/T_ItemBG3.dds"));
+			//m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/Skin/T_ItemBG3.dds"));
 			m_pSKinPopup[i]->Set_PosY(65.f);
 			m_pSKinPopup[i]->Set_Scale(100.f);
 			break;
 		case Skin_Item:
 			m_pSKinPopup[i]->Set_Sort(0.12f);
 			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/Skin/Hat/T_SkinHatCommon1002.dds"));
-			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/Skin/Clothes/Clothes02.dds"));
+			GET_COMPONENT_FROM(m_pSKinPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/Skin/Clothes/Clothes02.dds"));
+			// m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/Skin/Clothes/Clothes02.dds"));
 
 			m_pSKinPopup[i]->Set_PosY(65.f);
 			m_pSKinPopup[i]->Set_Scale(100.f);

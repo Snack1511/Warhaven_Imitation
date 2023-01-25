@@ -62,7 +62,6 @@ void CState_Gliding_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
     pOwner->Get_Glider()->Set_GliderState(CGlider::eGliderState::eOpen);
 
     GAMEINSTANCE->Start_RadialBlur(0.015f);
-    GAMEINSTANCE->Start_ChromaticAberration(30.f);
 
     m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
@@ -75,21 +74,27 @@ STATE_TYPE CState_Gliding_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (!pOwner->Is_Air())
     {
+        //SprintEnd
+        STATE_TYPE eSprintEndState = pOwner->Get_SprintEndState();
         m_bReturn = true;
-        STATE_TYPE eLandEndState = pOwner->Get_SprintEndState();
-        return eLandEndState;
+        return eSprintEndState;
     }
 
     if (KEY(SPACE, TAP))
     {
-        STATE_TYPE eLandState = pOwner->Get_SprintFallState();
+        STATE_TYPE eSprintFallState = pOwner->Get_SprintFallState();
         pOwner->Reset_GlidingTime();
+        pOwner->Get_PhysicsCom()->Set_Jump(0.f);
         m_bReturn = true;
-        return  eLandState;
+        return  eSprintFallState;
     }
 
     _float4 vLook = pOwner->Get_FollowCamLook();
-    vLook.y = 0.f;
+
+    if (vLook.y > -0.5f)
+        vLook.y = 0.f;
+    else
+        vLook.y += 0.5f - FLT_MIN;
 
     pOwner->Get_Transform()->Set_LerpLook(vLook, m_fMyMaxLerp);
     pOwner->Get_PhysicsCom()->Set_Dir(vLook);
@@ -108,7 +113,6 @@ void CState_Gliding_Archer::Exit(CUnit* pOwner, CAnimator* pAnimator)
         pOwner->Enable_Glider(false);
 
     GAMEINSTANCE->Stop_RadialBlur();
-    GAMEINSTANCE->Stop_ChromaticAberration();
 
     pOwner->Get_Glider()->Set_GliderState(CGlider::eGliderState::eClose);
 }
@@ -121,16 +125,19 @@ STATE_TYPE CState_Gliding_Archer::Check_Condition(CUnit* pOwner, CAnimator* pAni
     if (pOwner->Get_GlidingTime() > 0.f)
         return STATE_END;
 
-
     if (pOwner->Is_Air())
     {
+        CUser::Get_Instance()->Set_InteractKey(50);
+        CUser::Get_Instance()->Set_InteractText(TEXT("È°°ø"));
+        CUser::Get_Instance()->SetActive_InteractUI(true);
+
         if (KEY(SPACE, TAP))
         {
             return m_eStateType;
         }
-            
     }
-        
+    else
+        CUser::Get_Instance()->SetActive_InteractUI(false);
 
 
     return STATE_END;

@@ -55,6 +55,7 @@ using namespace DirectX;
 #include <functional>
 #include <iostream>
 #include <thread>
+#include <future>
 
 
 /* For.PhysX*/

@@ -706,10 +706,9 @@ _bool CAttack_Archer::Check_ArrowRay(_float4* pOutPos, CUnit* pOwner)
 	_float fMinDist;
 	_float4 vFinalHitPos;
 
-	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, &fMinDist, vStartPos, vDir, fMaxDistance))
-		*pOutPos = vFinalHitPos;
-	else
-		return false;
+	GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, &fMinDist, vStartPos, vDir, fMaxDistance);
+
+	*pOutPos = vFinalHitPos;
 
 	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
 	list<PxController*> listPxControllers;
@@ -754,8 +753,6 @@ _bool CAttack_Archer::Check_ArrowRay(_float4* pOutPos, CUnit* pOwner)
 
 		*pOutPos = vFinalHitPos;
 	}
-	else
-		return false;
 
 	return true;
 }

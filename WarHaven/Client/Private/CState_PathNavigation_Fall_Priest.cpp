@@ -50,9 +50,6 @@ CState_PathNavigation_Fall_Priest* CState_PathNavigation_Fall_Priest::Create()
 
 void CState_PathNavigation_Fall_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    //if (ePrevType == STATE_JUMP_PLAYER_R)
-    //    m_fInterPolationTime = 0.05f;
-
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

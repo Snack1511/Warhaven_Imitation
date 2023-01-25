@@ -57,6 +57,9 @@ void CUI_Dead::OnDisable()
 
 	SetActive_DeadUI(false);
 	SetActive_RevivalUI(false);
+
+	m_bAbleRevival = false;
+	m_bIsFall = false;
 }
 
 void CUI_Dead::Toggle_DeadUI(_bool value, _bool isFall)
@@ -92,10 +95,11 @@ void CUI_Dead::SetActive_RevivalUI(_bool value)
 {
 	m_pRevivalUI[RU_Bar]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
 
+	if (value == false)
+		m_bAbleRevival = false;
+
 	for (int i = 0; i < RU_End; ++i)
-	{
 		m_pRevivalUI[i]->SetActive(value);
-	}
 }
 
 void CUI_Dead::My_Tick()
@@ -125,7 +129,7 @@ void CUI_Dead::My_Tick()
 			m_bAbleRevival = false;
 			m_bIsFall = false;
 
-			SetActive_RevivalUI(true);
+			SetActive_RevivalUI(false);
 			Toggle_DeadUI(false);
 
 			CUser::Get_Instance()->SetActive_UnitHUD(false);
@@ -135,6 +139,7 @@ void CUI_Dead::My_Tick()
 
 			CUser::Get_Instance()->Set_FixCursor(false);
 			CUser::Get_Instance()->SetActive_Cursor(true);
+
 			GAMEINSTANCE->Change_Camera(L"DefaultCam");
 
 			return;

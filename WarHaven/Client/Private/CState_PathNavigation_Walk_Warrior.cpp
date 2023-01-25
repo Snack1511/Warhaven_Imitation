@@ -32,6 +32,9 @@ HRESULT CState_PathNavigation_Walk_Warrior::Initialize()
 
 	m_fAnimSpeed = 2.5f;
 
+	Add_KeyFrame(34, 0, true);
+	Add_KeyFrame(75, 0, true);
+
     return S_OK;
 }
 
@@ -50,9 +53,7 @@ STATE_TYPE CState_PathNavigation_Walk_Warrior::Tick(CUnit* pOwner, CAnimator* pA
 	else
 		return m_iAINextState;
 
-	DoMove_AI_NoTarget(pOwner, pAnimator);
-
-    return CState::Tick(pOwner, pAnimator);
+    return __super::Tick(pOwner, pAnimator);
 }
 
 void CState_PathNavigation_Walk_Warrior::Exit(CUnit* pOwner, CAnimator* pAnimator)
