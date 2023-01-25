@@ -49,7 +49,7 @@ HRESULT CState_Common_ChangeHero_AI::Initialize()
 
 void CState_Common_ChangeHero_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-	m_iRand = random(0, 3);
+	m_iRand = random(0, 9);
 
 	CPlayer* pPlayer = pOwner->Get_OwnerPlayer();
 
@@ -76,34 +76,15 @@ STATE_TYPE CState_Common_ChangeHero_AI::Tick(CUnit* pOwner, CAnimator* pAnimator
 
 	if (pAnimator->Is_CurAnimFinished())
 	{
-		CLASS_TYPE eClassType = pOwner->Get_OwnerPlayer()->Get_CurClass();
+		//CLASS_TYPE eClassType = pOwner->Get_OwnerPlayer()->Get_CurClass();
 
-		switch (eClassType)
-		{
-		case Client::WARRIOR:
+		if(m_iRand == 9)
 			m_eChangeClassType = LANCER;
-			break;
+		else if(m_iRand >= 6)
+			m_eChangeClassType = QANDA;
+		else
+			m_eChangeClassType = FIONA;
 
-		case Client::ARCHER:
-			m_eChangeClassType = LANCER;
-			break;
-
-		case Client::PALADIN:
-			m_eChangeClassType = LANCER;
-			break;
-		case Client::PRIEST:
-			m_eChangeClassType = LANCER;
-
-			break;
-		case Client::ENGINEER:
-			m_eChangeClassType = LANCER;
-			break;
-
-
-
-		default:
-			break;
-		}
 
 		if (m_eChangeClassType <= FIONA)
 			m_eChangeClassType = FIONA;

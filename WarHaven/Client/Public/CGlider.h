@@ -34,7 +34,7 @@ public:
 public:
 	void	Set_AnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);
 
-	void	Set_GliderState(eGliderState eGilderState) { m_eCurState = eGilderState; }
+	void	Set_GliderState(eGliderState eGilderState);
 
 public:
 	void SetUp_GliderTrail();

@@ -451,7 +451,7 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 
 				if (!m_bFirstPath && (CUser::Get_Instance()->Get_CurLevel() == LEVEL_PADEN))
 				{
-					m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
+					m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_Cannon_0") : ("Paden_RedTeam_Cannon_0");
 					pNewPath = CGameSystem::Get_Instance()->Clone_Path(m_strStartPath, m_pAIController);
 				}
 				else	// 1. respawn 거점 먹었으면 respawn에서
