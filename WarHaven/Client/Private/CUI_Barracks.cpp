@@ -11,8 +11,8 @@
 #include "CMainMenuPlayer.h"
 #include "Functor.h"
 
-_bool CUI_Barracks::m_bIsUnlock_RabbitHat = false;
-_bool CUI_Barracks::m_bIsUnlock_EpicWarriorClothes = false;
+_bool CUI_Barracks::m_bIsUnlock_RabbitHat = true;
+_bool CUI_Barracks::m_bIsUnlock_EpicWarriorClothes = true;
 
 CUI_Barracks::CUI_Barracks()
 {

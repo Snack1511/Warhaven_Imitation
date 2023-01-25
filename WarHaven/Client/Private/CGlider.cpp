@@ -48,6 +48,25 @@ void CGlider::Set_AnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fA
 	m_pAnimator->Set_AnimSpeed(0, iAnimIndex, fAnimSpeed);
 }
 
+void CGlider::Set_GliderState(eGliderState eGilderState)
+{
+	m_eCurState = eGilderState;
+
+	switch (m_eCurState)
+	{
+	case Client::CGlider::eOpen:
+		CFunctor::Play_Sound(L"Effect_GlidingBegin", CHANNEL_EFFECTS, m_pTransform->Get_World(WORLD_POS));
+		break;
+
+
+	case Client::CGlider::eClose:
+		CFunctor::Play_Sound(L"Effect_GlidingEnd", CHANNEL_EFFECTS, m_pTransform->Get_World(WORLD_POS));
+		break;
+	default:
+		break;
+	}
+}
+
 void CGlider::SetUp_GliderTrail()
 {
 	_float fX = 180.f;
@@ -238,7 +257,6 @@ void CGlider::Late_Tick()
 	{
 	case Client::CGlider::eOpen:
 
-		CFunctor::Play_Sound(L"Effect_GlidingBegin", CHANNEL_EFFECTS, m_pTransform->Get_World(WORLD_POS));
 
 		m_vScale += fDT(0) * 10.f;
 
@@ -258,7 +276,6 @@ void CGlider::Late_Tick()
 
 	case Client::CGlider::eClose:
 
-		CFunctor::Play_Sound(L"Effect_GlidingEnd", CHANNEL_EFFECTS, m_pTransform->Get_World(WORLD_POS));
 
 		m_vScale -= fDT(0) * 10.f;
 
