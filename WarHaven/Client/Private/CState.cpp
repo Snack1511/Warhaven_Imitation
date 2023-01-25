@@ -177,7 +177,7 @@ void CState::Hit_GroundEffect(CUnit* pOwner)
 
 	if (STATE_WARRIOR_OXEN_LOOPATTACK == pOwner->Get_CurState())
 	{
-		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Oxen_smoke_0"), pOwner->Get_HitPos());
+		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Oxen_Smoke_0"), pOwner->Get_HitPos());
 	}
 
 	else if (CLASS_TYPE::ENGINEER == pOwner->Get_Status().eClass)

@@ -433,7 +433,7 @@ void CScript_FollowCam::Find_TargetPos()
 	//실제 차이나는 거리
 	_float fRealDistance = vDir.Length();
 
-	_float fRatio = (fRealDistance / m_fMaxDistance);
+	_float fRatio = fRealDistance / m_fMaxDistance;
 	fRatio = powf(fRatio, 2.f);
 
 	_float fSpeed = m_fCamSpeed * fRatio;
