@@ -126,8 +126,8 @@ private:
 	_bool					m_bDistanceLerping = false;
 	_float					m_fCurrentDistance = 2.5f;
 	_float					m_fMaxDistance = 0.5f;
-	//_float					m_fCamSpeed = 30.f;
-	_float					m_fCamSpeed = 60.f;
+	_float					m_fCamSpeed = 30.f;
+	//_float					m_fCamSpeed = 60.f;
 
 	_float					m_fCameraMoveLerpTime = 0.f;
 	_float					m_fCameraDistanceLerpTime = 0.f;
